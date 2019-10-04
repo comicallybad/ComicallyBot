@@ -15,6 +15,17 @@ module.exports = {
 
                 if (message.deletable) message.delete();
 
+                // No author permissions
+                if (!message.member.hasPermission("BAN_MEMBERS")) {
+                    return message.reply("❌ You do not have permissions to ban members. Please contact a staff member")
+                        .then(m => m.delete(5000));
+
+                }
+                // No bot permissions
+                if (!message.guild.me.hasPermission("BAN_MEMBERS")) {
+                    return message.reply("❌ I do not have permissions to ban members. Please contact a staff member")
+                        .then(m => m.delete(5000));
+                }
                 // No args
                 if (!args[0]) {
                     return message.reply("Please provide a person to ban.")
@@ -27,17 +38,6 @@ module.exports = {
                         .then(m => m.delete(5000));
                 }
 
-                // No author permissions
-                if (!message.member.hasPermission("BAN_MEMBERS")) {
-                    return message.reply("❌ You do not have permissions to ban members. Please contact a staff member")
-                        .then(m => m.delete(5000));
-
-                }
-                // No bot permissions
-                if (!message.guild.me.hasPermission("BAN_MEMBERS")) {
-                    return message.reply("❌ I do not have permissions to ban members. Please contact a staff member")
-                        .then(m => m.delete(5000));
-                }
 
                 const toBan = message.mentions.members.first() || message.guild.members.get(args[0]);
 
