@@ -18,6 +18,7 @@ module.exports = {
 
                     let guildID = message.guild.id;
                     let serverChannels = client.channels.map(channel => channel).filter(channel => channel.type === "text").filter(channel => channel.guild.id === guildID)
+                    let channelNames = serverChannels.map(channel => channel.name)
                     let channelIDs = serverChannels.map(channel => channel.id)
                     let hashMention = args[0].slice(2, args[0].length - 1)
 
@@ -25,24 +26,24 @@ module.exports = {
                         return message.reply("Channel not found in this server").then(m => m.delete(7500));
 
                     if (channelIDs.includes(args[0]))
-                        dbUpdate(args[0]);
+                        dbUpdate(args[0], channelNames[channelIDs.indexOf(args[0])]);
 
                     if (channelIDs.includes(hashMention))
-                        dbUpdate(hashMention)
+                        dbUpdate(hashMention, channelNames[channelIDs.indexOf(hashMention)])
 
-                    function dbUpdate(channel) {
-                        db.findOne({ guildID: guildID, channels: { $elemMatch: { name: "tot" } } }, (err, exists) => {
+                    function dbUpdate(channelID, channelName) {
+                        db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "tot" } } }, (err, exists) => {
                             if (err) console.log(err)
                             if (!exists) {
                                 //push channel if it doesn't exist
                                 db.updateOne({ guildID: guildID },
                                     {
-                                        $push: { channels: { name: "tot", channelID: channel } }
+                                        $push: { channels: { command: "tot", channelID: channelID, channelName: channelName } }
                                     }).catch(err => console.log(err))
                             } else {
                                 ///update channel if it doesn't exist
-                                db.updateOne({ guildID: guildID, 'channels.name': "tot" }, {
-                                    $set: { 'channels.$.channelID': channel }
+                                db.updateOne({ guildID: guildID, 'channels.command': "tot" }, {
+                                    $set: { 'channels.$.channelID': channelID, 'channels.$.channelName': channelName }
                                 }).catch(err => console.log(err))
                             }
                         }).catch(err => console.log(err))
