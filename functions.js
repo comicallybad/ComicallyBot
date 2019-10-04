@@ -24,7 +24,7 @@ module.exports = {
         let responseChannel = new Promise((resolve, reject) => {
             db.findOne({ guildID: guildID, channels: { $elemMatch: { name: command } } }, (err, exists) => {
                 if (err) console.log(err)
-                if (!exists) return message.reply("Try setting channel first");
+                if (!exists) return message.reply("Try setting channel first").then(m => m.delete(7500));
                 else {
                     resolve(exists.channels[exists.channels.map(cmd => cmd.name).indexOf(command)].channelID)
                 }

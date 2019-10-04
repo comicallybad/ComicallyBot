@@ -9,6 +9,7 @@ module.exports = {
     description: "Returns all commands, or one specific command info",
     usage: "[command | alias]",
     run: async (client, message, args) => {
+        if (message.deletable) message.delete();
         // If there's an arg found
         // Send the info of that command found
         // If no info found, return not found embed.

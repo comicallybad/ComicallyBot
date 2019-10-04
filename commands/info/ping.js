@@ -8,11 +8,11 @@ module.exports = {
         getCommandStatus(message, "ping").then(async function (res) {
             if (res === false) message.reply("Command disabled").then(m => m.delete(5000))
             if (res === true) {
+                if (message.deletable) message.delete();
                 const msg = await message.channel.send(`🏓 Pinging....`);
                 msg.edit(`🏓 Pong!
                 Latency is ${Math.floor(msg.createdTimestap - message.createdTimestap)}ms
                 API Latency is ${Math.round(client.ping)}ms`);
-                if (message.deletable) message.delete();
             }
         });
     }

@@ -12,6 +12,7 @@ module.exports = {
             if (res === false) message.reply("Command disabled").then(m => m.delete(5000))
             if (res === true) {
                 if (message.member.hasPermission("ADMINISTRATOR")) {
+                    if (message.deletable) message.delete();
                     if (!args[0])
                         return message.reply("Please provide a channel.").then(m => m.delete(7500))
 

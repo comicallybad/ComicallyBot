@@ -9,7 +9,7 @@ module.exports = {
     run: (client, message, args) => {
         let guildID = message.guild.id;
         let commands = client.commands.map(cmd => cmd.name);
-
+        if (message.deletable) message.delete();
         if (!message.member.hasPermission("MANAGE_MESSAGES"))
             return message.reply("You don't have the required permissions to use this command.").then(m => m.delete(7500));
 
@@ -53,6 +53,5 @@ module.exports = {
             }).catch(err => console.log(err))
             return message.reply("Toggling command... this may take a second...").then(m => m.delete(7500))
         }
-        if (message.deletable) message.delete();
     }
 }

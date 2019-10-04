@@ -3,7 +3,7 @@ const { RichEmbed } = require("discord.js")
 
 module.exports = {
     name: "status",
-    aliases: ["commandstatus", "command"],
+    aliases: ["commandstatus", "commands"],
     category: "command",
     description: "Enable or disable commands",
     usage: prefix + "status",

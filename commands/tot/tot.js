@@ -13,6 +13,7 @@ module.exports = {
             if (res === true) {
                 if (message.member.hasPermission("ADMINISTRATOR"))
                     getResponseChannel(message, "tot").then(async function (res) {
+                        if (message.deletable) message.delete();
                         tot(client, message, res);
                     });
             }
@@ -92,9 +93,10 @@ async function tot(client, message, responseChannel) {
             .setTitle('This or That')
             .setImage(image)
             .setDescription(firstChoice + " or " + secondChoice)
-
-        client.channels.get(responseChannel).send(embed).then(function (msg) {
-            msg.react("⬅").then(() => msg.react("➡")).catch(err => console.log(err))
-        }).catch(err => console.log(err))
+        if (client.channels.get(responseChannel))
+            client.channels.get(responseChannel).send(embed).then(function (msg) {
+                msg.react("⬅").then(() => msg.react("➡")).catch(err => console.log(err))
+            }).catch(err => console.log(err))
+        else return message.reply("Channel has been deleted?").then(m => m.delete(7500))
     }
 }

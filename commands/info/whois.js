@@ -12,6 +12,7 @@ module.exports = {
         getCommandStatus(message, "whois").then(async function (res) {
             if (res === false) message.reply("Command disabled").then(m => m.delete(5000))
             if (res === true) {
+                if (message.deletable) message.delete();
                 const member = getMember(message, args.join(" "));
 
                 // Member variables
