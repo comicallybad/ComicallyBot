@@ -19,7 +19,7 @@ module.exports = {
                         if (err) console.log(err)
                         if (!exists) return message.reply("Channel has not been set.").then(m => m.delete(7500))
                         else {
-                            return message.reply(`tot response channel: <#${exists.channels[exists.channels.map(cmd => cmd.command).indexOf("tot")].channelID}>`).then(m => m.delete(7500))
+                            return message.reply(`TOT's response channel is: <#${exists.channels[exists.channels.map(cmd => cmd.command).indexOf("tot")].channelID}>`).then(m => m.delete(7500))
                         }
                     }).catch(err => console.log(err))
                 }
