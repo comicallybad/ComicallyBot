@@ -16,6 +16,10 @@ module.exports = {
                         if (message.deletable) message.delete();
                         tot(client, message, res);
                     });
+                else {
+                    message.delete();
+                    return message.reply("You do not have the required permissions").then(m => m.delete(7500));
+                }
             }
         });
     }
