@@ -4,14 +4,10 @@ module.exports = {
     getCommandStatus: async function (message, command) {
         let guildID = message.guild.id;
         let commandStatus = new Promise((resolve, reject) => {
-            db.findOne({
-                guildID: guildID,
-                commands: { $elemMatch: { name: command } }
-            }, (err, exists) => {
+            db.findOne({ guildID: guildID, commands: { $elemMatch: { name: command } } }, (err, exists) => {
                 if (err) console.log(err)
-                if (!exists) {
-                    return message.reply("Error within database")
-                } else {
+                if (!exists) return message.reply("Error within database").then(m => m.delete(7500))
+                else {
                     if (exists.commands[exists.commands.map(cmd => cmd.name).indexOf(command)].status === true) {
                         resolve(true);
                     } else {
@@ -23,6 +19,21 @@ module.exports = {
         let status = await commandStatus;
         return status;
     },
+    getResponseChannel: async function (message, command) {
+        let guildID = message.guild.id;
+        let responseChannel = new Promise((resolve, reject) => {
+            db.findOne({ guildID: guildID, channels: { $elemMatch: { name: command } } }, (err, exists) => {
+                if (err) console.log(err)
+                if (!exists) return message.reply("Try setting channel first");
+                else {
+                    resolve(exists.channels[exists.channels.map(cmd => cmd.name).indexOf(command)].channelID)
+                }
+            }).catch(err => console.log(err))
+        });
+        let status = await responseChannel;
+        return status;
+    },
+
     getMember: function (message, toFind = '') {
         toFind = toFind.toLowerCase();
 

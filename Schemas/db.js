@@ -4,7 +4,8 @@ const dbSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     guildID: String,
     guildName: String,
-    commands: [Object]
+    commands: [Object],
+    channels: [Object],
 });
 
 module.exports = mongoose.model("db", dbSchema)

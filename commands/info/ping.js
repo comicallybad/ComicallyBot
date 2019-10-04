@@ -1,4 +1,4 @@
-const { getCommandStatus } = require("../../functions.js")
+const { getCommandStatus, getResponseChannel } = require("../../functions.js")
 
 module.exports = {
     name: "ping",
@@ -9,7 +9,6 @@ module.exports = {
             if (res === false) message.reply("Command disabled").then(m => m.delete(5000))
             if (res === true) {
                 const msg = await message.channel.send(`🏓 Pinging....`);
-
                 msg.edit(`🏓 Pong!
                 Latency is ${Math.floor(msg.createdTimestap - message.createdTimestap)}ms
                 API Latency is ${Math.round(client.ping)}ms`);

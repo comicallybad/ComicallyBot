@@ -1,5 +1,5 @@
 const { RichEmbed } = require("discord.js");
-const { getCommandStatus } = require("../../functions.js")
+const { getCommandStatus, getResponseChannel } = require("../../functions.js")
 
 module.exports = {
     name: "tot",
@@ -12,12 +12,15 @@ module.exports = {
             if (res === false) message.reply("Command disabled").then(m => m.delete(5000))
             if (res === true) {
                 if (message.member.hasPermission("ADMINISTRATOR"))
-                    tot(client, message);
+                    getResponseChannel(message, "tot").then(async function (res) {
+                        tot(client, message, res);
+                    });
             }
         });
     }
 }
-async function tot(client, message) {
+
+async function tot(client, message, responseChannel) {
     awaitFirstChoice(message)
     async function awaitFirstChoice(message) {
         message.reply(" First Choice? This will expire in 30 seconds...").then(r => r.delete(10000))
@@ -90,7 +93,7 @@ async function tot(client, message) {
             .setImage(image)
             .setDescription(firstChoice + " or " + secondChoice)
 
-        client.channels.get('629022897893015602').send(embed).then(function (msg) {
+        client.channels.get(responseChannel).send(embed).then(function (msg) {
             msg.react("⬅").then(() => msg.react("➡")).catch(err => console.log(err))
         }).catch(err => console.log(err))
     }
