@@ -90,9 +90,7 @@ function dbSetup() {
             }, (err, exists) => {
                 if (err) console.log(err)
                 if (!exists) {
-                    db.updateOne({
-                        guildID: guildID
-                    }, {
+                    db.updateOne({ guildID: guildID }, {
                         $push: { commands: { name: commands[cmdIndex], status: false } }
                     }).catch(err => console.log(err))
                 }

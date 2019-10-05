@@ -4,6 +4,8 @@ const dbSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     guildID: String,
     guildName: String,
+    memberRoles: [Object],
+    modRoles: [Object],
     commands: [Object],
     channels: [Object],
 });

@@ -2,7 +2,7 @@ const db = require('../../schemas/db.js');
 
 module.exports = {
     name: "toggleall",
-    aliases: ["allcommands", "commandsall"],
+    aliases: ["ta", "allcommands", "commandsall"],
     category: "command",
     description: "Enable or disable commands",
     usage: "<true|false>",

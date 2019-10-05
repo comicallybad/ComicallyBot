@@ -1,6 +1,9 @@
 const db = require('./schemas/db.js');
 
 module.exports = {
+    hasPermissions: async function (client, message, role) {
+
+    },
     getCommandStatus: async function (message, command) {
         let guildID = message.guild.id;
         let commandStatus = new Promise((resolve, reject) => {
