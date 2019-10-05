@@ -30,7 +30,7 @@ module.exports = {
                         let channelMention = args[0].slice(3, args[0].length - 1);
                         let userMention = args[0].slice(2, args[0].length - 1)
 
-                        if (!roleNames.includes(args[0].toLowerCase()) && !roleIDs.includes(channelMention)
+                        if (!roleNames.includes(args[0].toLowerCase()) && !roleIDs.includes(channelMention) && !roleIDs.includes(args[0])
                             && !userIDs.includes(userMention) && !userIDs.includes(args[0]))
                             return message.reply("user/role not found").then(m => m.delete(7500));
 
@@ -40,8 +40,8 @@ module.exports = {
                         if (roleIDs.includes(channelMention))
                             addMember(roleNames[roleIDs.indexOf(channelMention)], channelMention);
 
-                        if (roleIDs.includes(channelMention))
-                            addMember(roleNames[roleIDs.indexOf(channelMention)], channelMention);
+                        if (roleIDs.includes(args[0]))
+                            addMember(roleNames[roleIDs.indexOf(args[0])], args[0])
 
                         if (userIDs.includes(args[0]))
                             addMember(userNames[userIDs.indexOf(args[0])], args[0])
