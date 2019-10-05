@@ -3,7 +3,8 @@ const db = require('./schemas/db.js');
 module.exports = {
     hasPermissions: async function (message, commandType) {
         let guildID = message.guild.id;
-        let roleIDs = message.member.roles.map(roles => roles.id)
+        let roleIDs = message.member.roles.map(roles => roles.id);
+        let userID = message.member.id;
 
         let hasPermissions = new Promise((resolve, reject) => {
             if (message.member.hasPermission("ADMINISTRATOR")) {
@@ -17,13 +18,13 @@ module.exports = {
                         let memberRolesIDs = exists.memberRoles.map(roles => roles.roleID)
 
                         if (commandType === "moderator" && roleIDs.forEach((element) => {
-                            if (modRolesIDs.includes(element)) resolve(true)
+                            if (modRolesIDs.includes(element) || modRolesIDs.includes(userID)) resolve(true)
                         })) {
                             roleIDs.forEach((element) => {
                                 if (memberRolesIDs.includes(element)) resolve(true);
                             });
                         } else if (commandType === "member" && roleIDs.forEach((element) => {
-                            if (memberRolesIDs.includes(element)) resolve(true)
+                            if (memberRolesIDs.includes(element) || memberRolesIDs.includes(userID)) resolve(true)
                         })) {
                             roleIDs.forEach((element) => {
                                 if (memberRolesIDs.includes(element)) resolve(true);

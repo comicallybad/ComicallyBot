@@ -4,7 +4,7 @@ const fs = require("fs");
 const mongoose = require("mongoose");
 const db = require('./schemas/db.js');
 
-global.prefix = "_";
+global.prefix = "cb";
 
 const client = new Client({
     disableEveryone: true
