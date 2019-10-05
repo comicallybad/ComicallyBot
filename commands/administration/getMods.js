@@ -3,14 +3,14 @@ const { RichEmbed } = require("discord.js");
 const db = require('../../schemas/db.js');
 
 module.exports = {
-    name: "getmod",
+    name: "getmods",
     aliases: ["mods", "listmods"],
     category: "administration",
     description: "Add permitted role for mod commands",
     permissions: "admin",
     usage: "<role name|@role>",
     run: (client, message, args) => {
-        getCommandStatus(message, "getmod").then(function (res) {
+        getCommandStatus(message, "getmods").then(function (res) {
             if (res === false) message.reply("Command disabled").then(m => m.delete(7500));
             if (res === true) {
                 hasPermissions(message, "admin").then(async function (res) {
