@@ -1,25 +1,26 @@
 const { RichEmbed } = require("discord.js");
-const { getCommandStatus, getResponseChannel } = require("../../functions.js")
+const { hasPermissions, getCommandStatus, getResponseChannel } = require("../../functions.js")
 
 module.exports = {
     name: "tot",
     aliases: ["thisorthat", "wyr", "wouldyourather"],
     category: "tot",
     description: "This Or That Command",
-    usage: prefix + "tot",
+    permissions: "moderator",
     run: (client, message) => {
         getCommandStatus(message, "tot").then(function (res) {
             if (res === false) message.reply("Command disabled").then(m => m.delete(5000))
             if (res === true) {
-                if (message.member.hasPermission("ADMINISTRATOR"))
-                    getResponseChannel(message, "tot").then(async function (res) {
-                        if (message.deletable) message.delete();
-                        tot(client, message, res);
-                    });
-                else {
-                    message.delete();
-                    return message.reply("You do not have the required permissions").then(m => m.delete(7500));
-                }
+                hasPermissions(message, "moderator").then(async function (res) {
+                    if (res === false) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
+                    if (res === true) {
+
+                        getResponseChannel(message, "tot").then(async function (res) {
+                            if (message.deletable) message.delete();
+                            tot(client, message, res);
+                        });
+                    }
+                })
             }
         });
     }

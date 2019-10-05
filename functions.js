@@ -1,13 +1,52 @@
 const db = require('./schemas/db.js');
 
 module.exports = {
-    hasPermissions: async function (client, message, role) {
+    hasPermissions: async function (message, commandType) {
+        let guildID = message.guild.id;
+        let roleIDs = message.member.roles.map(roles => roles.id)
 
+        let hasPermissions = new Promise((resolve, reject) => {
+            if (message.member.hasPermission("ADMINISTRATOR")) {
+                resolve(true)
+            } else {
+                db.findOne({ guildID: guildID }, (err, exists) => {
+                    if (err) console.log(err)
+                    if (!exists) {
+                    } else {
+                        let modRolesIDs = exists.modRoles.map(roles => roles.roleID);
+                        let memberRolesIDs = exists.memberRoles.map(roles => roles.roleID)
+
+                        if (commandType === "moderator" && roleIDs.forEach((element) => {
+                            if (modRolesIDs.includes(element)) resolve(true)
+                        })) {
+                            roleIDs.forEach((element) => {
+                                if (memberRolesIDs.includes(element)) resolve(true);
+                            });
+                        } else if (commandType === "member" && roleIDs.forEach((element) => {
+                            if (memberRolesIDs.includes(element)) resolve(true)
+                        })) {
+                            roleIDs.forEach((element) => {
+                                if (memberRolesIDs.includes(element)) resolve(true);
+                            });
+                        } else resolve(false);
+                    }
+                })
+            }
+        });
+        let bool = await hasPermissions;
+        return bool;
     },
     getCommandStatus: async function (message, command) {
         let guildID = message.guild.id;
         let commandStatus = new Promise((resolve, reject) => {
-            db.findOne({ guildID: guildID, commands: { $elemMatch: { name: command } } }, (err, exists) => {
+            db.findOne({
+                guildID: guildID,
+                commands: {
+                    $elemMatch: {
+                        name: command
+                    }
+                }
+            }, (err, exists) => {
                 if (err) console.log(err)
                 if (!exists) return message.reply("Error within database").then(m => m.delete(7500))
                 else {
@@ -25,7 +64,14 @@ module.exports = {
     getResponseChannel: async function (message, command) {
         let guildID = message.guild.id;
         let responseChannel = new Promise((resolve, reject) => {
-            db.findOne({ guildID: guildID, channels: { $elemMatch: { command: command } } }, (err, exists) => {
+            db.findOne({
+                guildID: guildID,
+                channels: {
+                    $elemMatch: {
+                        command: command
+                    }
+                }
+            }, (err, exists) => {
                 if (err) console.log(err)
                 if (!exists) return message.reply("Try setting channel first").then(m => m.delete(7500));
                 else {
@@ -70,7 +116,10 @@ module.exports = {
         const filter = (reaction, user) => validReactions.includes(reaction.emoji.name) && user.id === author.id;
 
         return message
-            .awaitReactions(filter, { max: 1, time: time })
+            .awaitReactions(filter, {
+                max: 1,
+                time: time
+            })
             .then(collected => collected.first() && collected.first().emoji.name);
     }
 }
