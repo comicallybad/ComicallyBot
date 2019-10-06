@@ -15,8 +15,6 @@ module.exports = {
             if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
             if (res) {
                 let guildID = message.guild.id;
-                // let output = new RichEmbed()
-                //     .setColor("#0efefe")
                 db.findOne({ guildID: guildID }, (err, exists) => {
                     if (err) console.log(err)
                     if (!exists) return message.reply("Error in database")
