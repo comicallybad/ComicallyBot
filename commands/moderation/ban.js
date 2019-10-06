@@ -10,11 +10,11 @@ module.exports = {
     usage: "<id | mention>",
     run: async (client, message, args) => {
         getCommandStatus(message, "ban").then(async function (res) {
-            if (res === false) message.reply("Command disabled").then(m => m.delete(5000))
-            if (res === true) {
+            if (!res) message.reply("Command disabled").then(m => m.delete(5000))
+            if (res) {
                 hasPermissions(message, "moderator").then(async function (res) {
-                    if (res === false) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
-                    if (res === true) {
+                    if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
+                    if (res) {
 
                         const logChannel = message.guild.channels.find(c => c.name === "logs") || message.channel;
 

@@ -10,8 +10,8 @@ module.exports = {
     usage: "<true|false>",
     run: (client, message, args) => {
         hasPermissions(message, "admin").then(async function (res) {
-            if (res === false) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
-            if (res === true) {
+            if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
+            if (res) {
 
                 let guildID = message.guild.id;
 
@@ -23,13 +23,8 @@ module.exports = {
 
                 if (args[0] === "true" || args[0] === "enable") {
                     client.commands.forEach((element, cmdIndex) => {
-                        db.updateOne({
-                            guildID: guildID,
-                            'commands.name': cmdIndex
-                        }, {
-                            $set: {
-                                'commands.$.status': true
-                            }
+                        db.updateOne({ guildID: guildID, 'commands.name': cmdIndex }, {
+                            $set: { 'commands.$.status': true }
                         }).catch(err => console.log(err))
                     });
                     if (message.deletable) message.delete();
@@ -38,13 +33,8 @@ module.exports = {
 
                 if (args[0] === "false" || args[0] === "disable") {
                     client.commands.forEach((element, cmdIndex) => {
-                        db.updateOne({
-                            guildID: guildID,
-                            'commands.name': cmdIndex
-                        }, {
-                            $set: {
-                                'commands.$.status': false
-                            }
+                        db.updateOne({ guildID: guildID, 'commands.name': cmdIndex }, {
+                            $set: { 'commands.$.status': false }
                         }).catch(err => console.log(err))
                     });
                     if (message.deletable) message.delete();

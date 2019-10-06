@@ -7,11 +7,11 @@ module.exports = {
     permissions: "member",
     run: async (client, message, args) => {
         getCommandStatus(message, "ping").then(async function (res) {
-            if (res === false) message.reply("Command disabled.").then(m => m.delete(5000))
-            if (res === true) {
+            if (!res) message.reply("Command disabled.").then(m => m.delete(5000))
+            if (res) {
                 hasPermissions(message, "member").then(async function (res) {
-                    if (res === false) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
-                    if (res === true) {
+                    if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
+                    if (res) {
                         if (message.deletable) message.delete();
                         const msg = await message.channel.send(`🏓 Pinging....`);
                         msg.edit(`🏓 Pong!

@@ -7,9 +7,8 @@ module.exports = {
         let userID = message.member.id;
 
         let hasPermissions = new Promise((resolve, reject) => {
-            if (message.member.hasPermission("ADMINISTRATOR")) {
-                resolve(true)
-            } else {
+            if (message.member.hasPermission("ADMINISTRATOR")) resolve(true)
+            else {
                 db.findOne({ guildID: guildID }, (err, exists) => {
                     if (err) console.log(err)
                     if (!exists) {
@@ -51,11 +50,8 @@ module.exports = {
                 if (err) console.log(err)
                 if (!exists) return message.reply("Error within database").then(m => m.delete(7500))
                 else {
-                    if (exists.commands[exists.commands.map(cmd => cmd.name).indexOf(command)].status === true) {
-                        resolve(true);
-                    } else {
-                        resolve(false)
-                    }
+                    if (exists.commands[exists.commands.map(cmd => cmd.name).indexOf(command)].status === true) resolve(true);
+                    else resolve(false)
                 }
             }).catch(err => console.log(err))
         });
@@ -68,16 +64,12 @@ module.exports = {
             db.findOne({
                 guildID: guildID,
                 channels: {
-                    $elemMatch: {
-                        command: command
-                    }
+                    $elemMatch: { command: command }
                 }
             }, (err, exists) => {
                 if (err) console.log(err)
                 if (!exists) return message.reply("Try setting channel first").then(m => m.delete(7500));
-                else {
-                    resolve(exists.channels[exists.channels.map(cmd => cmd.command).indexOf(command)].channelID)
-                }
+                else resolve(exists.channels[exists.channels.map(cmd => cmd.command).indexOf(command)].channelID)
             }).catch(err => console.log(err))
         });
         let status = await responseChannel;

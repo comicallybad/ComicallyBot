@@ -9,11 +9,11 @@ module.exports = {
     permissions: "moderator",
     run: (client, message, args) => {
         getCommandStatus(message, "totget").then(function (res) {
-            if (res === false) message.reply("Command disabled").then(m => m.delete(5000))
-            if (res === true) {
+            if (!res) message.reply("Command disabled").then(m => m.delete(5000))
+            if (res) {
                 hasPermissions(message, "moderator").then(async function (res) {
-                    if (res === false) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
-                    if (res === true) {
+                    if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
+                    if (res) {
 
                         if (message.deletable) message.delete();
 
@@ -22,9 +22,7 @@ module.exports = {
                         db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "tot" } } }, (err, exists) => {
                             if (err) console.log(err)
                             if (!exists) return message.reply("Channel has not been set.").then(m => m.delete(7500))
-                            else {
-                                return message.reply(`TOT's response channel is: <#${exists.channels[exists.channels.map(cmd => cmd.command).indexOf("tot")].channelID}>`).then(m => m.delete(7500))
-                            }
+                            else return message.reply(`TOT's response channel is: <#${exists.channels[exists.channels.map(cmd => cmd.command).indexOf("tot")].channelID}>`).then(m => m.delete(7500))
                         }).catch(err => console.log(err))
                     }
                 })

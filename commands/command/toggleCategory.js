@@ -10,8 +10,8 @@ module.exports = {
     usage: "<category><true|false>",
     run: (client, message, args) => {
         hasPermissions(message, "admin").then(async function (res) {
-            if (res === false) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
-            if (res === true) {
+            if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
+            if (res) {
 
                 let guildID = message.guild.id;
                 let categories = client.commands.map(command => command.category)

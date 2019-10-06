@@ -9,17 +9,15 @@ module.exports = {
     permissions: "moderator",
     run: (client, message) => {
         getCommandStatus(message, "tot").then(function (res) {
-            if (res === false) message.reply("Command disabled").then(m => m.delete(5000))
-            if (res === true) {
+            if (!res) message.reply("Command disabled").then(m => m.delete(5000))
+            if (res) {
                 hasPermissions(message, "moderator").then(async function (res) {
-                    if (res === false) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
-                    if (res === true) {
-
+                    if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
+                    if (res)
                         getResponseChannel(message, "tot").then(async function (res) {
                             if (message.deletable) message.delete();
                             tot(client, message, res);
                         });
-                    }
                 })
             }
         });
@@ -35,9 +33,9 @@ async function tot(client, message, responseChannel) {
 
         message.channel.awaitMessages(filter, { max: 1, time: 30000 }).then(collected => {
             if (collected.first()) {
-                if (collected.first().content === "cancel" || collected.first().content.startsWith(prefix)) {
+                if (collected.first().content === "cancel" || collected.first().content.startsWith(prefix))
                     return message.reply("Cancelled").then(r => r.delete(10000))
-                } else {
+                else {
                     const firstChoice = collected.first().content
 
                     collected.first().delete()

@@ -10,11 +10,11 @@ module.exports = {
     usage: "<channelID|#channel>",
     run: (client, message, args) => {
         getCommandStatus(message, "totset").then(function (res) {
-            if (res === false) message.reply("Command disabled").then(m => m.delete(5000))
-            if (res === true) {
+            if (!res) message.reply("Command disabled").then(m => m.delete(5000))
+            if (res) {
                 hasPermissions(message, "moderator").then(async function (res) {
-                    if (res === false) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
-                    if (res === true) {
+                    if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
+                    if (res) {
 
                         if (message.deletable) message.delete();
                         if (!args[0])
@@ -45,7 +45,7 @@ module.exports = {
                                             $push: { channels: { command: "tot", channelID: channelID, channelName: channelName } }
                                         }).catch(err => console.log(err))
                                 } else {
-                                    ///update channel if it doesn't exist
+                                    ///update channel if it does exist
                                     db.updateOne({ guildID: guildID, 'channels.command': "tot" }, {
                                         $set: { 'channels.$.channelID': channelID, 'channels.$.channelName': channelName }
                                     }).catch(err => console.log(err))

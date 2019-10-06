@@ -12,8 +12,8 @@ module.exports = {
     usage: prefix + "status",
     run: (client, message, args) => {
         hasPermissions(message, "moderator").then(async function (res) {
-            if (res === false) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
-            if (res === true) {
+            if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
+            if (res) {
                 let guildID = message.guild.id;
                 // let output = new RichEmbed()
                 //     .setColor("#0efefe")

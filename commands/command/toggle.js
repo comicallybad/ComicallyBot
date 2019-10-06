@@ -10,8 +10,8 @@ module.exports = {
     usage: "<command> <true|false>",
     run: (client, message, args) => {
         hasPermissions(message, "admin").then(async function (res) {
-            if (res === false) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
-            if (res === true) {
+            if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
+            if (res) {
 
                 let guildID = message.guild.id;
                 let commands = client.commands.map(cmd => cmd.name);
@@ -47,13 +47,8 @@ module.exports = {
                     if (args[1] === "true" || args[1] === "enable") bool = true
                     if (args[1] === "false" || args[1] === "disable") bool = false
 
-                    db.updateOne({
-                        guildID: guildID,
-                        'commands.name': command
-                    }, {
-                        $set: {
-                            'commands.$.status': bool
-                        }
+                    db.updateOne({ guildID: guildID, 'commands.name': command }, {
+                        $set: { 'commands.$.status': bool }
                     }).catch(err => console.log(err))
                     return message.reply("Toggling command... this may take a second...").then(m => m.delete(7500))
                 }

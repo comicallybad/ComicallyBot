@@ -10,11 +10,11 @@ module.exports = {
     usage: "<role name|@role|userID|@user>",
     run: (client, message, args) => {
         getCommandStatus(message, "addmember").then(function (res) {
-            if (res === false) message.reply("Command disabled").then(m => m.delete(7500));
-            if (res === true) {
+            if (!res) message.reply("Command disabled").then(m => m.delete(7500));
+            if (res) {
                 hasPermissions(message, "moderator").then(async function (res) {
-                    if (res === false) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
-                    if (res === true) {
+                    if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
+                    if (res) {
 
                         let guildID = message.guild.id;
                         if (message.deletable) message.delete();
