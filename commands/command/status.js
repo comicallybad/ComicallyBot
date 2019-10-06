@@ -29,7 +29,8 @@ module.exports = {
                             return exists.commands
                                 .filter(function (cmd) {
                                     if (clientCommandsName.includes(cmd.name)
-                                        && clientCommandsCategory[(clientCommandsName.indexOf(cmd.name))] === category)
+                                        && clientCommandsCategory[(clientCommandsName.indexOf(cmd.name))] === category
+                                        && category !== "command")
                                         return commands.name
                                 }).map(function (cmd) {
                                     if (cmd.status === false) return cmd.name + "❌";
@@ -38,6 +39,7 @@ module.exports = {
                         }
 
                         const info = client.categories
+                            .filter(cat => cat !== "command")
                             .map(cat => stripIndents`**${cat[0].toUpperCase() + cat.slice(1)}** \n${commands(cat)}`)
                             .reduce((string, category) => string + "\n" + category);
 
