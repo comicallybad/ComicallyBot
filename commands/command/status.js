@@ -33,8 +33,8 @@ module.exports = {
                                         && category !== "command")
                                         return commands.name
                                 }).map(function (cmd) {
-                                    if (cmd.status === false) return cmd.name + "❌";
-                                    if (cmd.status === true) return cmd.name + "✅";
+                                    if (cmd.status === false) return `- \`${cmd.name}\`❌`;
+                                    if (cmd.status === true) return `- \`${cmd.name}\`✅`;
                                 }).join("\n");
                         }
 
