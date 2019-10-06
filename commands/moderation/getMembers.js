@@ -5,7 +5,7 @@ const db = require('../../schemas/db.js');
 module.exports = {
     name: "getmembers",
     aliases: ["members", "listmembers"],
-    category: "administration",
+    category: "moderation",
     description: "Add permitted role for mod commands",
     permissions: "moderator",
     usage: "<role name|@role>",
