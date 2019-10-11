@@ -4,7 +4,7 @@ const db = require('../../schemas/db.js');
 
 module.exports = {
     name: "getmods",
-    aliases: ["mods", "listmods"],
+    aliases: ["mods", "listmods", "moderators"],
     category: "administration",
     description: "Add permitted role for mod commands",
     permissions: "admin",
@@ -14,7 +14,7 @@ module.exports = {
             if (!res) message.reply("Command disabled").then(m => m.delete(7500));
             if (res) {
                 hasPermissions(message, "admin").then(async function (res) {
-                    if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
+                    if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(7500))
                     if (res) {
 
                         let guildID = message.guild.id;
@@ -32,7 +32,7 @@ module.exports = {
                                 if (modRoles.length > 0) {
                                     output.addField("Mod Roles", modRoles)
                                     return message.channel.send(output).then(m => m.delete(7500))
-                                } else return message.reply("You have no bot mods set.")
+                                } else return message.reply("You have no bot mods set.").then(m => m.delete(7500))
                             }
                         }).catch(err => console.log(err))
                     }

@@ -10,10 +10,10 @@ module.exports = {
     usage: "<mention | id>",
     run: async (client, message, args) => {
         getCommandStatus(message, "kick").then(async function (res) {
-            if (!res) message.reply("Command disabled").then(m => m.delete(5000))
+            if (!res) message.reply("Command disabled").then(m => m.delete(7500))
             if (res) {
                 hasPermissions(message, "moderator").then(async function (res) {
-                    if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
+                    if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(7500))
                     if (res) {
 
                         const logChannel = message.guild.channels.find(c => c.name === "logs") || message.channel;
@@ -23,25 +23,25 @@ module.exports = {
                         // No args
                         if (!args[0]) {
                             return message.reply("Please provide a person to kick.")
-                                .then(m => m.delete(5000));
+                                .then(m => m.delete(7500));
                         }
 
                         // No reason
                         if (!args[1]) {
                             return message.reply("Please provide a reason to kick.")
-                                .then(m => m.delete(5000));
+                                .then(m => m.delete(7500));
                         }
 
                         // No author permissions
                         if (!message.member.hasPermission("KICK_MEMBERS")) {
                             return message.reply("❌ You do not have permissions to kick members. Please contact a staff member")
-                                .then(m => m.delete(5000));
+                                .then(m => m.delete(7500));
                         }
 
                         // No bot permissions
                         if (!message.guild.me.hasPermission("KICK_MEMBERS")) {
                             return message.reply("❌ I do not have permissions to kick members. Please contact a staff member")
-                                .then(m => m.delete(5000));
+                                .then(m => m.delete(7500));
                         }
 
                         const toKick = message.mentions.members.first() || message.guild.members.get(args[0]);
@@ -49,19 +49,19 @@ module.exports = {
                         // No member found
                         if (!toKick) {
                             return message.reply("Couldn't find that member, try again")
-                                .then(m => m.delete(5000));
+                                .then(m => m.delete(7500));
                         }
 
                         // Can't kick urself
                         if (toKick.id === message.author.id) {
                             return message.reply("You can't kick yourself...")
-                                .then(m => m.delete(5000));
+                                .then(m => m.delete(7500));
                         }
 
                         // Check if the user's kickable
                         if (!toKick.kickable) {
                             return message.reply("I can't kick that person due to role hierarchy, I suppose.")
-                                .then(m => m.delete(5000));
+                                .then(m => m.delete(7500));
                         }
 
                         const embed = new RichEmbed()

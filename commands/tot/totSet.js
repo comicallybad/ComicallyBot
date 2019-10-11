@@ -10,10 +10,10 @@ module.exports = {
     usage: "<channelID|#channel>",
     run: (client, message, args) => {
         getCommandStatus(message, "totset").then(function (res) {
-            if (!res) message.reply("Command disabled").then(m => m.delete(5000))
+            if (!res) message.reply("Command disabled").then(m => m.delete(7500))
             if (res) {
                 hasPermissions(message, "moderator").then(async function (res) {
-                    if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
+                    if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(7500))
                     if (res) {
 
                         if (message.deletable) message.delete();

@@ -10,10 +10,10 @@ module.exports = {
     usage: "<id | mention>",
     run: async (client, message, args) => {
         getCommandStatus(message, "ban").then(async function (res) {
-            if (!res) message.reply("Command disabled").then(m => m.delete(5000))
+            if (!res) message.reply("Command disabled").then(m => m.delete(7500))
             if (res) {
                 hasPermissions(message, "moderator").then(async function (res) {
-                    if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
+                    if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(7500))
                     if (res) {
 
                         const logChannel = message.guild.channels.find(c => c.name === "logs") || message.channel;
@@ -23,24 +23,24 @@ module.exports = {
                         // No author permissions
                         if (!message.member.hasPermission("BAN_MEMBERS")) {
                             return message.reply("❌ You do not have permissions to ban members. Please contact a staff member")
-                                .then(m => m.delete(5000));
+                                .then(m => m.delete(7500));
 
                         }
                         // No bot permissions
                         if (!message.guild.me.hasPermission("BAN_MEMBERS")) {
                             return message.reply("❌ I do not have permissions to ban members. Please contact a staff member")
-                                .then(m => m.delete(5000));
+                                .then(m => m.delete(7500));
                         }
                         // No args
                         if (!args[0]) {
                             return message.reply("Please provide a person to ban.")
-                                .then(m => m.delete(5000));
+                                .then(m => m.delete(7500));
                         }
 
                         // No reason
                         if (!args[1]) {
                             return message.reply("Please provide a reason to ban.")
-                                .then(m => m.delete(5000));
+                                .then(m => m.delete(7500));
                         }
 
 
@@ -49,19 +49,19 @@ module.exports = {
                         // No member found
                         if (!toBan) {
                             return message.reply("Couldn't find that member, try again")
-                                .then(m => m.delete(5000));
+                                .then(m => m.delete(7500));
                         }
 
                         // Can't ban urself
                         if (toBan.id === message.author.id) {
                             return message.reply("You can't ban yourself...")
-                                .then(m => m.delete(5000));
+                                .then(m => m.delete(7500));
                         }
 
                         // Check if the user's banable
                         if (!toBan.bannable) {
                             return message.reply("I can't ban that person due to role hierarchy, I suppose.")
-                                .then(m => m.delete(5000));
+                                .then(m => m.delete(7500));
                         }
 
                         const embed = new RichEmbed()

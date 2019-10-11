@@ -10,7 +10,7 @@ module.exports = {
     usage: "<category><true|false>",
     run: (client, message, args) => {
         hasPermissions(message, "admin").then(async function (res) {
-            if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
+            if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(7500))
             if (res) {
 
                 let guildID = message.guild.id;

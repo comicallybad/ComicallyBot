@@ -13,7 +13,7 @@ module.exports = {
             if (!res) message.reply("Command disabled").then(m => m.delete(7500));
             if (res) {
                 hasPermissions(message, "admin").then(async function (res) {
-                    if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(5000))
+                    if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(7500))
                     if (res) {
 
                         let guildID = message.guild.id;
@@ -28,7 +28,7 @@ module.exports = {
                         let userIDs = message.guild.members.map(role => role.user.id);
 
                         let channelMention = args[0].slice(3, args[0].length - 1);
-                        let userMention = args[0].slice(2, args[0].length - 1)
+                        let userMention = args[0].slice(2, args[0].length - 1);
 
                         if (!roleNames.includes(args[0].toLowerCase()) && !roleIDs.includes(channelMention) && !roleIDs.includes(args[0])
                             && !userIDs.includes(userMention) && !userIDs.includes(args[0]))
