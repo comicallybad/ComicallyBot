@@ -17,6 +17,7 @@ module.exports = {
                     if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(7500))
                     if (res) {
                         message.delete();
+                        let guildName = message.guild.name;
                         let guildID = message.guild.id;
                         let userIDs = message.guild.members.map(role => role.user.id);
 
@@ -45,8 +46,8 @@ module.exports = {
                                 if (!exists) {
                                     const newCoins = new coins({
                                         _id: mongoose.Types.ObjectId(),
-                                        guildID: guildID, userID: usrID,
-                                        userName: "USERNAME PLACEHOLDER", coins: coinsToAdd
+                                        guildID: guildID, guildName: guildName,
+                                        userID: usrID, userName: "USERNAME PLACEHOLDER", coins: coinsToAdd
                                     })
                                     newCoins.save().catch(err => console.log(err));
                                 } else {

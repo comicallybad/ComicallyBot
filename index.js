@@ -60,6 +60,7 @@ client.on("message", async message => {
 });
 
 function addCoins(message) {
+    let guildName = message.guild.name;
     let guildID = message.guild.id;
     let userID = message.member.id;
     let userName = message.author.username;
@@ -81,11 +82,12 @@ function addCoins(message) {
             if (!exists) {
                 const newCoins = new coins({
                     _id: mongoose.Types.ObjectId(),
-                    guildID: guildID, userID: userID,
-                    userName: userName, coins: coinsToAdd
+                    guildID: guildID, guildName: guildName,
+                    userID: userID, userName: userName, coins: coinsToAdd
                 })
                 newCoins.save().catch(err => console.log(err));
             } else {
+                exists.guildName = guildName;
                 exists.userName = userName;
                 exists.coins = exists.coins + coinsToAdd;
                 exists.save().catch(err => console.log(err))
