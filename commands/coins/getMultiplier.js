@@ -16,7 +16,7 @@ module.exports = {
                     if (res) {
                         let guildID = message.guild.id;
 
-                        message.delete();
+                        if (message.deletable) message.delete();
                         db.findOne({ guildID: guildID }, (err, exists) => {
                             if (!exists) console.log("Error in getMultiplier");
                             if (exists.coinsMultiplier) return message.reply("This server has a " + exists.coinsMultiplier + "x multiplier").then(m => m.delete(7500));

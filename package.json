@@ -13,6 +13,7 @@
     "common-tags": "^1.8.0",
     "discord.js": "^11.5.1",
     "dotenv": "^8.1.0",
-    "mongoose": "^5.7.3"
+    "mongoose": "^5.7.3",
+    "random-puppy": "^1.1.0"
   }
 }

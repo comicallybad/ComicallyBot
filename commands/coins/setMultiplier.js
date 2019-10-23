@@ -14,7 +14,7 @@ module.exports = {
                 hasPermissions(message, "moderator").then(async function (res) {
                     if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(7500))
                     if (res) {
-                        message.delete();
+                        if (message.deletable) message.delete();
 
                         let guildID = message.guild.id;
 
