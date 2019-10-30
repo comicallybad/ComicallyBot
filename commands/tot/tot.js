@@ -1,5 +1,5 @@
 const { RichEmbed } = require("discord.js");
-const { hasPermissions, getCommandStatus, getResponseChannel } = require("../../functions.js")
+const { getResponseChannel } = require("../../functions.js")
 
 module.exports = {
     name: "tot",
@@ -8,18 +8,9 @@ module.exports = {
     description: "This Or That Command",
     permissions: "moderator",
     run: (client, message) => {
-        getCommandStatus(message, "tot").then(function (res) {
-            if (!res) message.reply("Command disabled").then(m => m.delete(7500))
-            if (res) {
-                hasPermissions(message, "moderator").then(async function (res) {
-                    if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(7500))
-                    if (res)
-                        getResponseChannel(message, "tot").then(async function (res) {
-                            if (message.deletable) message.delete();
-                            tot(client, message, res);
-                        });
-                })
-            }
+        getResponseChannel(message, "tot").then(async function (res) {
+            if (message.deletable) message.delete();
+            tot(client, message, res);
         });
     }
 }

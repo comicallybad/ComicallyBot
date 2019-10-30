@@ -8,7 +8,8 @@ const dbSchema = mongoose.Schema({
     modRoles: [Object],
     commands: [Object],
     channels: [Object],
-    coinsMultiplier: Number
+    coinsMultiplier: Number,
+    buyableRanks: [Object]
 });
 
 module.exports = mongoose.model("db", dbSchema)

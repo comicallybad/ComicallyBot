@@ -2,10 +2,11 @@ const { Client, Collection } = require("discord.js");
 const { config } = require("dotenv");
 const fs = require("fs");
 const mongoose = require("mongoose");
+const { getCommandStatus, hasPermissions } = require("./functions.js");
 const db = require('./schemas/db.js');
 const coins = require('./schemas/coins.js')
 
-global.prefix = "_";
+global.prefix = "=";
 
 const client = new Client({
     disableEveryone: true
@@ -55,8 +56,34 @@ client.on("message", async message => {
     let command = client.commands.get(cmd);
     if (!command) command = client.commands.get(client.aliases.get(cmd));
 
-    if (command)
-        command.run(client, message, args);
+    if (command) {
+        if (command.category !== 'command') {
+            getCommandStatus(message, command.name).then(function (res) {
+                if (!res) {
+                    message.reply("Command disabled").then(m => m.delete(7500));
+                    if (message.deletable) message.delete();
+                } if (res) {
+                    hasPermissions(message, command.permissions).then(async function (res) {
+                        if (!res) {
+                            message.reply("You do not have permissions for this command.").then(m => m.delete(7500));
+                            if (message.deletable) message.delete();
+                        } if (res) {
+                            command.run(client, message, args);
+                        }
+                    })
+                }
+            })
+        } else {
+            hasPermissions(message, command.permissions).then(async function (res) {
+                if (!res) {
+                    message.reply("You do not have permissions for this command.").then(m => m.delete(7500));
+                    if (message.deletable) message.delete();
+                } if (res) {
+                    command.run(client, message, args);
+                }
+            })
+        }
+    }
 });
 
 function addCoins(message) {
