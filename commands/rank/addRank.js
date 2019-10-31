@@ -3,7 +3,7 @@ const db = require("../../schemas/db.js");
 module.exports = {
     name: "addrank",
     aliases: ["rankadd"],
-    category: "coins",
+    category: "rank",
     description: "Adds a rank that can be purchased with coins.",
     permissions: "moderator",
     usage: "<@role|roleID> <cost>",
@@ -25,8 +25,8 @@ module.exports = {
         if (!roleIDs.includes(roleMention) && !roleIDs.includes(args[0]))
             return message.reply("Role not found.").then(m => m.delete(7500));
 
-        if (isNaN(args[1]))
-            return message.reply("Please provide a number cost.")
+        if (isNaN(args[1]) || parseInt(args[1]) <= 0)
+            return message.reply("Please provide a valid cost.").then(m => m.delete(7500));
 
         if (roleIDs.includes(roleMention))
             addRank(roleNames[roleIDs.indexOf(roleMention)], roleMention, args[1]);

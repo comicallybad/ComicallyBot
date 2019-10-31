@@ -6,7 +6,7 @@ const { getCommandStatus, hasPermissions } = require("./functions.js");
 const db = require('./schemas/db.js');
 const coins = require('./schemas/coins.js')
 
-global.prefix = "=";
+global.prefix = "_";
 
 const client = new Client({
     disableEveryone: true

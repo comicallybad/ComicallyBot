@@ -22,11 +22,8 @@ module.exports = {
         if (!args[1])
             return message.reply("Please provide amount of coins.").then(m => m.delete(7500));
 
-        if (isNaN(args[1]))
-            return message.reply("Please provide a number amount of coins.").then(m => m.delete(7500));
-
-        if (parseInt(args[1]) < 0)
-            return message.reply("A user may not go below 0 coins.").then(m => m.delete(7500));
+        if (isNaN(args[1]) || parseInt(args[1]) <= 0)
+            return message.reply("Please provide a valid amount above 0.").then(m => m.delete(7500));
 
         if (userIDs.includes(args[0]))
             setCoins(args[0], parseInt(args[1]))
