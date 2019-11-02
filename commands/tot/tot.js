@@ -87,6 +87,8 @@ async function tot(client, message, responseChannel) {
             .setTitle('This or That')
             .setImage(image)
             .setDescription(firstChoice + " or " + secondChoice)
+            .setTimestamp();
+
         if (client.channels.get(responseChannel))
             client.channels.get(responseChannel).send(embed).then(function (msg) {
                 msg.react("⬅").then(() => msg.react("➡")).catch(err => console.log(err))

@@ -24,7 +24,8 @@ module.exports = {
         const embed = new RichEmbed()
             .setColor("#ffb6c1")
             .addField(`☁ **${person.displayName}** loves **${message.member.displayName}** this much:`,
-                `💟 ${Math.floor(love)}%\n\n${loveLevel}`);
+                `💟 ${Math.floor(love)}%\n\n${loveLevel}`)
+            .setTimestamp();
 
         if (message.deletable) message.delete();
         message.channel.send(embed);

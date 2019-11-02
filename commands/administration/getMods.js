@@ -12,6 +12,8 @@ module.exports = {
         let guildID = message.guild.id;
         let output = new RichEmbed()
             .setColor("#0efefe")
+            .setTimestamp()
+
         if (message.deletable) message.delete();
 
         db.findOne({

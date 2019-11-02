@@ -27,6 +27,7 @@ module.exports = {
 async function getAll(client, message) {
     const embed = new RichEmbed()
         .setColor("#0efefe")
+        .setTimestamp();
 
     // Map all the commands
     // with the specific category

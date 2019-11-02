@@ -16,7 +16,8 @@ module.exports = {
             .setColor("#0efefe")
             .setImage(img)
             .setTitle(`From /r/${random}`)
-            .setURL(`https://reddit.com/r/${random}`);
+            .setURL(`https://reddit.com/r/${random}`)
+            .setTimestamp();
 
         if (message.deletable) message.delete();
         message.channel.send(embed)

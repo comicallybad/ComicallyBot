@@ -17,6 +17,7 @@ module.exports = {
             if (exists) {
                 const embed = new RichEmbed()
                     .setColor("#0efefe")
+                    .setTimestamp()
 
                 let clientCommandsName = client.commands.map(cmd => cmd.name)
                 let clientCommandsCategory = client.commands.map(cmd => cmd.category)
