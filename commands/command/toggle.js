@@ -10,6 +10,7 @@ module.exports = {
     run: (client, message, args) => {
         let guildID = message.guild.id;
         let commands = client.commands.map(cmd => cmd.name);
+
         if (message.deletable) message.delete();
 
         if (!args[0])

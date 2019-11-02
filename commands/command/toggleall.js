@@ -22,7 +22,9 @@ module.exports = {
                     $set: { 'commands.$.status': true }
                 }).catch(err => console.log(err))
             });
+
             if (message.deletable) message.delete();
+
             return message.reply("Toggling all commands on... this may take a second...").then(m => m.delete(7500))
         }
 
@@ -32,7 +34,9 @@ module.exports = {
                     $set: { 'commands.$.status': false }
                 }).catch(err => console.log(err))
             });
+
             if (message.deletable) message.delete();
+
             return message.reply("Toggling all commands off... this may take a second...").then(m => m.delete(7500))
         }
     }
