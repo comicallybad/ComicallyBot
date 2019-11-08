@@ -35,7 +35,7 @@ module.exports = {
                     $set: { 'commands.$.status': true }
                 }).catch(err => console.log(err))
             })
-            return message.reply("Enabling category... this may take a second...");
+            return message.reply("Enabling category... this may take a second...").then(m => m.delete(7500));
         }
 
         if (args[1] === "false" || args[1] === "disable") {
@@ -47,7 +47,7 @@ module.exports = {
                     $set: { 'commands.$.status': false }
                 }).catch(err => console.log(err))
             })
-            return message.reply("Disabling category... this may take a second...");
+            return message.reply("Disabling category... this may take a second...").then(m => m.delete(7500));
         }
     }
 }
