@@ -6,7 +6,7 @@ module.exports = {
     category: "administration",
     description: "Remove permitted role/user for mod commands",
     permissions: "admin",
-    usage: "<role name|@role|userID|@user>",
+    usage: "<role ID|@role|userID|@user>",
     run: (client, message, args) => {
         let guildID = message.guild.id;
         if (message.deletable) message.delete();
@@ -24,29 +24,31 @@ module.exports = {
 
         if (!roleIDs.includes(channelMention) && !roleIDs.includes(args[0])
             && !userIDs.includes(userMention) && !userIDs.includes(args[0]))
-            return message.reply("user/role not found").then(m => m.delete(7500));
+            if (!isNaN(args[0]))
+                removeMod(args[0]);
+            else return message.reply("user/role not found. If you are trying to remove someone not in the server, use their ID from getmods.").then(m => m.delete(7500));
 
         if (roleIDs.includes(channelMention))
-            removeMod(roleNames[roleIDs.indexOf(channelMention)], channelMention);
+            removeMod(channelMention);
 
         if (roleIDs.includes(args[0]))
-            removeMod(roleNames[roleIDs.indexOf(args[0])], args[0])
+            removeMod(args[0])
 
         if (userIDs.includes(args[0]))
-            removeMod(userNames[userIDs.indexOf(args[0])], args[0])
+            removeMod(args[0])
 
         if (userIDs.includes(userMention))
-            removeMod(userNames[userIDs.indexOf(userMention)], userMention)
+            removeMod(userMention)
 
-        function removeMod(roleName, roleID) {
+        function removeMod(roleID) {
             db.findOne({
                 guildID: guildID,
-                modRoles: { $elemMatch: { roleName: roleName, roleID: roleID } }
+                modRoles: { $elemMatch: { roleID: roleID } }
             }, (err, exists) => {
                 if (err) console.log(err)
                 if (exists) {
                     db.updateOne({ guildID: guildID }, {
-                        $pull: { modRoles: { roleName: roleName, roleID: roleID } }
+                        $pull: { modRoles: { roleID: roleID } }
                     }).then(function () {
                         return message.reply("Removing mod... this may take a second...").then(m => m.delete(7500));
                     }).catch(err => console.log(err))

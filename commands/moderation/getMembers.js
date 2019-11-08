@@ -8,11 +8,16 @@ module.exports = {
     description: "Add permitted role for mod commands",
     permissions: "moderator",
     usage: "<role name|@role>",
-    run: (client, message, args) => {
+    run: async (client, message, args) => {
         let guildID = message.guild.id;
-        let output = new RichEmbed()
+        const embed = new RichEmbed()
             .setColor("#0efefe")
+            .setTitle("Server Bot Members")
+            .setFooter(message.guild.me.displayName, client.user.displayAvatarURL)
+            .setDescription("List of server bot members")
             .setTimestamp();
+
+        const m = await message.channel.send(embed);
 
         if (message.deletable) message.delete();
 
@@ -22,11 +27,14 @@ module.exports = {
             if (err) console.log(err)
             if (!exists) return message.reply("Error within database").then(m => m.delete(7500))
             else {
-                let memberRoles = exists.memberRoles.map(role => " Name: " + role.roleName + "  ID: " + role.roleID)
+                let memberRoles = exists.memberRoles.map(role => " Name: " + `\`${role.roleName}\`` + "  ID: " + `\`${role.roleID}\``)
                 if (memberRoles.length > 0) {
-                    output.addField("Member Roles", memberRoles)
-                    return message.channel.send(output).then(m => m.delete(7500))
-                } else return message.reply("You have no bot members set.").then(m => m.delete(7500))
+                    embed.setDescription("").addField("Member Roles", memberRoles);
+                    return m.edit(embed).then(m => m.delete(7500));
+                } else {
+                    embed.setDescription("").addField("Member Roles", "There have been no bot members set.");
+                    m.edit(embed).then(m => m.delete(7500));
+                }
             }
         }).catch(err => console.log(err))
     }
