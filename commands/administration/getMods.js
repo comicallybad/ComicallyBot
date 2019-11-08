@@ -21,19 +21,17 @@ module.exports = {
 
         if (message.deletable) message.delete();
 
-        db.findOne({
-            guildID: guildID,
-        }, (err, exists) => {
+        db.findOne({ guildID: guildID, }, (err, exists) => {
             if (err) console.log(err)
             if (!exists) return message.reply("Error within database").then(m => m.delete(7500))
             else {
                 let modRoles = exists.modRoles.map(role => " Name: " + `\`${role.roleName}\`` + "  ID: " + `\`${role.roleID}\``)
                 if (modRoles.length > 0) {
                     embed.setDescription("").addField("Mod Roles", modRoles)
-                    return m.edit(embed).then(m => m.delete(7500))
+                    return m.edit(embed).then(m => m.delete(30000));
                 } else {
                     embed.setDescription("").addField("Mod Roles", "There have been no bot mods set.")
-                    return m.edit(embed).then(m => m.delete(7500))
+                    return m.edit(embed).then(m => m.delete(30000));
                 }
             }
         }).catch(err => console.log(err))
