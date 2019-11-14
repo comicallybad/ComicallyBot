@@ -8,7 +8,6 @@ module.exports = {
     category: "command",
     description: "Enable or disable commands",
     permissions: "moderator",
-    usage: prefix + "status",
     run: (client, message, args) => {
         let guildID = message.guild.id;
         db.findOne({ guildID: guildID }, (err, exists) => {

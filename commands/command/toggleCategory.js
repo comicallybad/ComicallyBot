@@ -6,7 +6,7 @@ module.exports = {
     category: "command",
     description: "Enable or disable commands",
     permissions: "admin",
-    usage: "<category><true|false>",
+    usage: "<category> <true|false>",
     run: (client, message, args) => {
         let guildID = message.guild.id;
         let categories = client.commands.map(command => command.category)

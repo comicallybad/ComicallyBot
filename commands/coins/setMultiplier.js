@@ -6,6 +6,7 @@ module.exports = {
     category: "coins",
     description: "Get number of coins",
     permissions: "moderator",
+    usage: "<number 1-3>",
     run: (client, message, args) => {
         if (message.deletable) message.delete();
 

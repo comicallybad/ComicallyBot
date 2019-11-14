@@ -4,7 +4,7 @@ module.exports = {
     category: "moderation",
     description: "Clears the chat",
     permissions: "moderator",
-    usage: "(amount)",
+    usage: "[number of messages]",
     run: async (client, message, args) => {
         if (message.deletable) message.delete();
 
