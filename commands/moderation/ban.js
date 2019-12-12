@@ -17,13 +17,14 @@ module.exports = {
         if (!message.member.hasPermission("BAN_MEMBERS")) {
             return message.reply("❌ You do not have permissions to ban members. Please contact a staff member")
                 .then(m => m.delete(7500));
-
         }
+
         // No bot permissions
         if (!message.guild.me.hasPermission("BAN_MEMBERS")) {
             return message.reply("❌ I do not have permissions to ban members. Please contact a staff member")
                 .then(m => m.delete(7500));
         }
+
         // No args
         if (!args[0]) {
             return message.reply("Please provide a person to ban.")
@@ -35,7 +36,6 @@ module.exports = {
             return message.reply("Please provide a reason to ban.")
                 .then(m => m.delete(7500));
         }
-
 
         const toBan = message.mentions.members.first() || message.guild.members.get(args[0]);
 

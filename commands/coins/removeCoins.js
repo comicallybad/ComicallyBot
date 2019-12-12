@@ -32,13 +32,13 @@ module.exports = {
         if (!userIDs.includes(args[0]) && !userIDs.includes(userMention))
             return message.reply("User not found.").then(m => m.delete(7500));
 
-        function removeCoins(usrID, coinsToRemove) {
-            coins.findOne({ guildID: guildID, userID: usrID }, (err, exists) => {
+        function removeCoins(userID, coinsToRemove) {
+            coins.findOne({ guildID: guildID, userID: userID }, (err, exists) => {
                 if (!exists) return message.reply("This user has not yet been added to the database.").then(m => m.delete(7500))
                 else {
                     if (exists.coins - coinsToRemove < 0) return message.reply("A user may not go below 0 coins").then(m => m.delete(7500))
                     else {
-                        exists.coins -= coinsToRemove
+                        exists.coins -= coinsToRemove;
                         exists.save().catch(err => console.log(err));
                         return message.reply(coinsToRemove + " coins were removed to the user.").then(m => m.delete(7500))
                     }

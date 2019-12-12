@@ -34,21 +34,21 @@ module.exports = {
         if (!userIDs.includes(args[0]) && !userIDs.includes(userMention))
             return message.reply("User not found.").then(m => m.delete(7500));
 
-        function addCoins(usrID, coinsToAdd) {
-            coins.findOne({ guildID: guildID, userID: usrID }, (err, exists) => {
+        function addCoins(userID, coinsToAdd) {
+            coins.findOne({ guildID: guildID, userID: userID }, (err, exists) => {
                 if (!exists) {
                     const newCoins = new coins({
                         _id: mongoose.Types.ObjectId(),
                         guildID: guildID, guildName: guildName,
-                        userID: usrID, userName: "USERNAME PLACEHOLDER", coins: coinsToAdd
+                        userID: userID, userName: "USERNAME PLACEHOLDER", coins: coinsToAdd
                     })
                     newCoins.save().catch(err => console.log(err));
                 } else {
                     exists.coins += coinsToAdd
                     exists.save().catch(err => console.log(err));
+                    return message.reply(coinsToAdd + " coins were added to the user.").then(m => m.delete(7500))
                 }
             }).catch(err => console.log(err))
-            return message.reply(coinsToAdd + " coins were added to the user.").then(m => m.delete(7500))
         }
     }
 }

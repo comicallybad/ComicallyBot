@@ -41,11 +41,7 @@ module.exports = {
         let commandStatus = new Promise((resolve, reject) => {
             db.findOne({
                 guildID: guildID,
-                commands: {
-                    $elemMatch: {
-                        name: command
-                    }
-                }
+                commands: { $elemMatch: { name: command } }
             }, (err, exists) => {
                 if (err) console.log(err)
                 if (!exists) return message.reply("Error within database").then(m => m.delete(7500))
