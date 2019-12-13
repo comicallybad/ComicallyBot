@@ -19,7 +19,7 @@ module.exports = {
         if (!args[0])
             return message.reply("Please provide a multiplier.").then(m => m.delete(7500));
 
-        if (isNaN(args[1]) || parseInt(args[1]) <= 0)
+        if (isNaN(args[0]) || parseInt(args[0]) <= 0)
             return message.reply("Please provide a valid amount above 0.").then(m => m.delete(7500));
 
         if (!isNaN(args[0]))
@@ -35,7 +35,7 @@ module.exports = {
                     .setFooter(message.member.displayName, message.author.displayAvatarURL)
                     .setTimestamp()
                     .setDescription(stripIndents`**> Multiplier Set by:** ${message.member.user.username} (${message.member.id})
-                **> Multiplier Set to:** ${coinsMultiplier}`);
+                **> Multiplier Set to:** ${args[0]}`);
 
                 logChannel.send(embed);
 
