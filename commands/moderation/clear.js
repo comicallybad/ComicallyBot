@@ -20,7 +20,6 @@ module.exports = {
         else deleteAmount = parseInt(args[0])
 
         message.channel.bulkDelete(deleteAmount, true)
-            .then(deleted => message.channel.send(`Deleted \`${deleted.size}\` messages.`))
             .catch(err => message.reply(`Something went wrong ${err}`))
     }
 }
