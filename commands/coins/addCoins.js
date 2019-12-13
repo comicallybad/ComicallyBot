@@ -22,7 +22,7 @@ module.exports = {
         if (!args[0])
             return message.reply("Please provide a user.").then(m => m.delete(7500));
 
-        let userMention = args[0].slice(2, args[0].length - 1);
+        let userMention = args[0].slice(3, args[0].length - 1);
 
         if (!args[1])
             return message.reply("Please provide amount of coins.").then(m => m.delete(7500));

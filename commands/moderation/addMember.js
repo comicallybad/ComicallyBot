@@ -24,7 +24,7 @@ module.exports = {
         let userIDs = message.guild.members.map(user => user.user.id);
 
         let channelMention = args[0].slice(3, args[0].length - 1);
-        let userMention = args[0].slice(2, args[0].length - 1)
+        let userMention = args[0].slice(3, args[0].length - 1)
 
         if (!roleIDs.includes(channelMention) && !roleIDs.includes(args[0])
             && !userIDs.includes(userMention) && !userIDs.includes(args[0]))

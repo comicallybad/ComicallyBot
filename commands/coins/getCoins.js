@@ -1,4 +1,5 @@
 const coins = require('../../schemas/coins.js');
+const { getMember } = require("../../functions.js");
 
 module.exports = {
     name: "getcoins",
@@ -13,19 +14,19 @@ module.exports = {
         let userIDs = message.guild.members.map(role => role.user.id);
         let userMention;
 
-        if (!args[0])
-            addCoins(userID)
+        if (!args[0]) {
+            getCoins(userID)
+        } else {
+            userMention = args[0].slice(3, args[0].length - 1)
 
-        if (args[0])
-            userMention = args[0].slice(2, args[0].length - 1)
+            if (userIDs.includes(args[0]))
+                getCoins(args[0])
 
-        if (userIDs.includes(args[0]))
-            addCoins(args[0])
+            if (userIDs.includes(userMention))
+                getCoins(userMention)
+        }
 
-        if (userIDs.includes(userMention))
-            addCoins(userMention)
-
-        function addCoins(usrID) {
+        function getCoins(usrID) {
             if (message.deletable) message.delete();
             coins.findOne({ guildID: guildID, userID: usrID }, (err, exists) => {
                 if (!exists) return message.reply("User doesn't have coins yet.").then(m => m.delete(7500));
