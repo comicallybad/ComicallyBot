@@ -11,6 +11,7 @@ module.exports = {
     permissions: "member",
     usage: "<name>",
     run: async (client, message, args) => {
+        if (message.deletable) message.delete();
         const name = args.join(" ");
 
         if (!name) {
