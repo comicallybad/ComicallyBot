@@ -1,4 +1,5 @@
 const db = require('../../schemas/db.js');
+const { findID } = require("../../functions.js");
 
 const { stripIndents } = require("common-tags");
 const { RichEmbed } = require("discord.js");
@@ -23,24 +24,18 @@ module.exports = {
         let userNames = message.guild.members.map(user => user.user.username.toLowerCase());
         let userIDs = message.guild.members.map(user => user.user.id);
 
-        let roleMention = args[0].slice(3, args[0].length - 1);
-        let userMention = args[0].slice(3, args[0].length - 1);
+        let ID = findID(message, args[0])
 
-        if (!roleIDs.includes(roleMention) && !roleIDs.includes(args[0])
-            && !userIDs.includes(userMention) && !userIDs.includes(args[0]))
+        if (!ID)
             return message.reply("user/role not found").then(m => m.delete(7500));
 
-        if (roleIDs.includes(roleMention))
-            addMod(roleNames[roleIDs.indexOf(roleMention)], roleMention);
+        //if it is a role
+        if (roleIDs.includes(ID))
+            addMod(roleNames[roleIDs.indexOf(ID)], ID)
 
-        if (roleIDs.includes(args[0]))
-            addMod(roleNames[roleIDs.indexOf(args[0])], args[0])
-
-        if (userIDs.includes(args[0]))
-            addMod(userNames[userIDs.indexOf(args[0])], args[0])
-
-        if (userIDs.includes(userMention))
-            addMod(userNames[userIDs.indexOf(userMention)], userMention)
+        //if it is a user
+        if (userIDs.includes(ID))
+            addMod(userNames[userIDs.indexOf(ID)], ID)
 
         function addMod(roleName, roleID) {
             db.findOne({

@@ -1,4 +1,5 @@
 const db = require('../../schemas/db.js');
+const { findID } = require("../../functions.js");
 
 const { stripIndents } = require("common-tags");
 const { RichEmbed } = require("discord.js");
@@ -18,29 +19,11 @@ module.exports = {
         if (!args[0])
             return message.reply("Please provide a user/role.").then(m => m.delete(7500));
 
-        let roleIDs = message.guild.roles.map(role => role.id);
-        let userIDs = message.guild.members.map(user => user.user.id);
+        let ID = findID(message, args[0]);
 
-        let channelMention = args[0].slice(3, args[0].length - 1);
-        let userMention = args[0].slice(3, args[0].length - 1)
-
-        if (!roleIDs.includes(channelMention) && !roleIDs.includes(args[0])
-            && !userIDs.includes(userMention) && !userIDs.includes(args[0]))
-            if (!isNaN(args[0]))
-                removeMod(args[0]);
-            else return message.reply("user/role not found. If you are trying to remove someone not in the server, use their ID from getmods.").then(m => m.delete(7500));
-
-        if (roleIDs.includes(channelMention))
-            removeMod(channelMention);
-
-        if (roleIDs.includes(args[0]))
-            removeMod(args[0])
-
-        if (userIDs.includes(args[0]))
-            removeMod(args[0])
-
-        if (userIDs.includes(userMention))
-            removeMod(userMention)
+        if (!ID)
+            return message.reply("user/role not found").then(m => m.delete(7500));
+        else removeMod(ID);
 
         function removeMod(roleID) {
             db.findOne({

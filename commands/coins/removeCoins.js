@@ -1,4 +1,5 @@
 const coins = require('../../schemas/coins.js');
+const { findID } = require("../../functions.js");
 
 const { stripIndents } = require("common-tags");
 const { RichEmbed } = require("discord.js");
@@ -20,22 +21,16 @@ module.exports = {
         if (!args[0])
             return message.reply("Please provide a user.").then(m => m.delete(7500));
 
-        let userMention = args[0].slice(3, args[0].length - 1);
-
         if (!args[1])
             return message.reply("Please provide amount of coins.").then(m => m.delete(7500));
 
         if (isNaN(args[1]) || parseInt(args[1]) <= 0)
             return message.reply("Please provide a valid amount above 0.").then(m => m.delete(7500));
 
-        if (userIDs.includes(args[0]))
-            removeCoins(args[0], parseInt(args[1]))
+        let ID = findID(message, args[0], "user");
 
-        if (userIDs.includes(userMention))
-            removeCoins(userMention, parseInt(args[1]))
-
-        if (!userIDs.includes(args[0]) && !userIDs.includes(userMention))
-            return message.reply("User not found.").then(m => m.delete(7500));
+        if (!ID) return message.reply("User not found.").then(m => m.delete(7500));
+        else removeCoins(ID, parseInt(args[1]));
 
         function removeCoins(userID, coinsToRemove) {
             let userName = userNames[userIDs.indexOf(userID)];

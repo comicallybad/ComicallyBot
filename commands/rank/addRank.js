@@ -1,4 +1,5 @@
 const db = require("../../schemas/db.js");
+const { findID } = require("../../functions.js");
 
 const { stripIndents } = require("common-tags");
 const { RichEmbed } = require("discord.js");
@@ -24,22 +25,19 @@ module.exports = {
         let roleNames = message.guild.roles.map(role => role.name.toLowerCase());
         let roleIDs = message.guild.roles.map(role => role.id);
 
-        let roleMention = args[0].slice(3, args[0].length - 1);
+        let ID = findID(message, args[0], "role");
 
-        if (!roleIDs.includes(roleMention) && !roleIDs.includes(args[0]))
-            return message.reply("Role not found.").then(m => m.delete(7500));
+        if (!ID)
+            return message.reply("Role not found").then(m => m.delete(7500));
 
-        if (isNaN(args[1]) || parseInt(args[1]) <= 0)
-            return message.reply("Please provide a valid cost.").then(m => m.delete(7500));
+        if (ID)
+            if (isNaN(args[1]) || parseInt(args[1]) <= 0)
+                return message.reply("Please provide a valid cost.").then(m => m.delete(7500));
+            else addRank(roleNames[roleIDs.indexOf(ID)], ID, parseInt(args[1]));
 
-        if (roleIDs.includes(roleMention))
-            addRank(roleNames[roleIDs.indexOf(roleMention)], roleMention, args[1]);
-
-        if (roleIDs.includes(args[0]))
-            addRank(roleNames[roleIDs.indexOf(args[0])], args[0], args[1]);
 
         function addRank(roleName, roleID, coins) {
-            let cost = parseInt(coins)
+            let cost = parseInt(coins);
 
             db.findOne({
                 guildID: guildID, buyableRanks: { $elemMatch: { roleName: roleName, roleID: roleID } }

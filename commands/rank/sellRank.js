@@ -6,10 +6,10 @@ const { stripIndents } = require("common-tags");
 const { RichEmbed } = require("discord.js");
 
 module.exports = {
-    name: "buyrank",
-    aliases: ["rankbuy", "purchaserank", "rankpurchase", "redeemrank", "rankredeem"],
+    name: "sellrank",
+    aliases: ["ranksell",],
     category: "rank",
-    description: "Buys a rank with user coins.",
+    description: "Sells a rank for user coins.",
     permissions: "member",
     usage: "<@role|roleID>",
     run: (client, message, args) => {
@@ -35,8 +35,8 @@ module.exports = {
         //check if they already have rank first, if not check if rank exists in db, then check if they have enough coins, then assign rank.
         if (args[0]) {
             if (ID) {
-                if (message.member.roles.find(r => r.id === ID)) {
-                    return message.reply("You already have this role!").then(m => m.delete(7500));
+                if (!message.member.roles.find(r => r.id === ID)) {
+                    return message.reply("You don't have this role!").then(m => m.delete(7500));
                 } else findRole(ID)
             } else return message.reply("Please provide a valid role.").then(m => m.delete(7500));
         }
@@ -51,41 +51,35 @@ module.exports = {
                 if (exists) {
                     cost = (exists.buyableRanks[exists.buyableRanks.map(role => role.roleID).indexOf(roleID)].cost);
                     roleName = (exists.buyableRanks[exists.buyableRanks.map(role => role.roleID).indexOf(roleID)].roleName);
-                    purchase(cost, roleName, roleID)
-                } else return message.reply("This rank is not purchaseable").then(m => m.delete(7500))
+                    sell(cost, roleName, roleID)
+                } else return message.reply("This rank is not able to be bought or sold").then(m => m.delete(7500))
             })
         }
 
         //finds the user in coins db, then subtracts purchase cost then attempts to assign role.
-        function purchase(cost, roleName, roleID) {
-            let coinsHas;
-
+        function sell(cost, roleName, roleID) {
             coins.findOne({ guildID: guildID, userID: userID }, (err, exists) => {
                 if (err) console.log(err)
                 if (exists) {
-                    coinsHas = exists.coins;
 
-                    if (coinsHas <= cost) return message.reply("You do not have enough coins to purchase this rank!").then(m => m.delete(7500))
-                    else {
-                        author.addRole(roleID)
-                            .then(res => {
-                                exists.coins -= cost
-                                exists.save().catch(err => console.log(err));
-                                message.reply(`You ave successfully purchased the ${roleName} role. Click your avatar to check it out!`).then(m => m.delete(7500));
+                    author.removeRole(roleID)
+                        .then(res => {
+                            exists.coins += cost
+                            exists.save().catch(err => console.log(err));
+                            message.reply(`You ave successfully sold the ${roleName} role for ${cost} coins!`).then(m => m.delete(7500));
 
-                                const embed = new RichEmbed()
-                                    .setColor("#0efefe")
-                                    .setThumbnail(author.displayAvatarURL)
-                                    .setFooter(message.member.displayName, message.author.displayAvatarURL)
-                                    .setTimestamp()
-                                    .setDescription(stripIndents`**> User:** ${userName} (${userID})
-                                **> Rank Bought:** ${roleName} (${roleID})
-                                **> Cost:** ${cost}`);
+                            const embed = new RichEmbed()
+                                .setColor("#0efefe")
+                                .setThumbnail(author.displayAvatarURL)
+                                .setFooter(message.member.displayName, message.author.displayAvatarURL)
+                                .setTimestamp()
+                                .setDescription(stripIndents`**> User:** ${userName} (${userID})
+                                **> Rank Sold:** ${roleName} (${roleID})
+                                **> Coins Given:** ${cost}`);
 
-                                logChannel.send(embed);
-                            })
-                            .catch(err => message.reply("Could not assign role due to: " + err + ", no coins were removed from your balance."))
-                    }
+                            logChannel.send(embed);
+                        })
+                        .catch(err => message.reply("Could not remove role due to: " + err + ", no coins were added to your balance."))
                 } else return message.reply("You do not have coins yet or you are not in the database!").then(m => m.delete(7500))
             })
         }

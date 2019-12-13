@@ -1,4 +1,5 @@
 const db = require("../../schemas/db.js");
+const { findID } = require("../../functions.js");
 
 const { stripIndents } = require("common-tags");
 const { RichEmbed } = require("discord.js");
@@ -23,13 +24,12 @@ module.exports = {
         let roleMention = args[0].slice(3, args[0].length - 1);
 
 
-        if (roleIDs.includes(roleMention))
-            removeRank(roleMention);
+        let ID = findID(message, args[0], "role");
 
-        if (roleIDs.includes(args[0]))
-            removeRank(args[0]);
+        if (ID)
+            removeRank(ID);
 
-        if (!roleIDs.includes(roleMention) && !roleIDs.includes(args[0]))
+        if (!ID)
             if (!isNaN(args[0]))
                 removeRank(args[0]);
             else return message.reply("Please provide a valid role, if you are trying to remove a deleted role, attempt the command again with the role ID from the getroles command").then(m => m.delete(7500))

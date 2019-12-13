@@ -36,6 +36,7 @@ module.exports = {
         let bool = await hasPermissions;
         return bool;
     },
+
     getCommandStatus: async function (message, command) {
         let guildID = message.guild.id;
         let commandStatus = new Promise((resolve, reject) => {
@@ -54,6 +55,27 @@ module.exports = {
         let status = await commandStatus;
         return status;
     },
+
+    findID: function (message, input, type) {
+        let roleIDs = message.guild.roles.map(role => role.id);
+        let userIDs = message.guild.members.map(user => user.user.id);
+        let mention = input.slice(3, input.length - 1)
+
+        if (!type || type === "either") {
+            if (roleIDs.includes(input)) return input
+            if (roleIDs.includes(mention)) return mention;
+
+            if (userIDs.includes(input)) return input;
+            if (userIDs.includes(mention)) return mention;
+        } else if (type === "user") {
+            if (userIDs.includes(input)) return input;
+            if (userIDs.includes(mention)) return mention;
+        } else if (type === "role") {
+            if (roleIDs.includes(input)) return input
+            if (roleIDs.includes(mention)) return mention;
+        }
+    },
+
     getResponseChannel: async function (message, command) {
         let guildID = message.guild.id;
         let responseChannel = new Promise((resolve, reject) => {

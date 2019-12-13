@@ -1,5 +1,5 @@
 const coins = require('../../schemas/coins.js');
-const { getMember } = require("../../functions.js");
+const { findID } = require("../../functions.js");
 
 module.exports = {
     name: "getcoins",
@@ -11,19 +11,12 @@ module.exports = {
     run: (client, message, args) => {
         let guildID = message.guild.id;
         let userID = message.member.id;
-        let userIDs = message.guild.members.map(role => role.user.id);
-        let userMention;
 
-        if (!args[0]) {
-            getCoins(userID)
-        } else {
-            userMention = args[0].slice(3, args[0].length - 1)
-
-            if (userIDs.includes(args[0]))
-                getCoins(args[0])
-
-            if (userIDs.includes(userMention))
-                getCoins(userMention)
+        if (!args[0]) getCoins(userID);
+        else {
+            let ID = findID(message, args[0], "user");
+            if (!ID) return message.reply("User not found.").then(m => m.delete(7500));
+            else getCoins(ID);
         }
 
         function getCoins(usrID) {
