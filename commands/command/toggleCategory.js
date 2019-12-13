@@ -1,5 +1,8 @@
 const db = require('../../schemas/db.js');
 
+const { stripIndents } = require("common-tags");
+const { RichEmbed } = require("discord.js");
+
 module.exports = {
     name: "togglecategory",
     aliases: ["togglecat", "cattoggle"],
@@ -8,6 +11,7 @@ module.exports = {
     permissions: "admin",
     usage: "<category> <true|false>",
     run: (client, message, args) => {
+        const logChannel = message.guild.channels.find(c => c.name === "mods-log") || message.channel;
         let guildID = message.guild.id;
         let categories = client.commands.map(command => command.category)
         let commands = client.commands
@@ -35,6 +39,18 @@ module.exports = {
                     $set: { 'commands.$.status': true }
                 }).catch(err => console.log(err))
             })
+
+            const embed = new RichEmbed()
+                .setColor("#0efefe")
+                .setThumbnail(message.member.displayAvatarURL)
+                .setFooter(message.member.displayName, message.author.displayAvatarURL)
+                .setTimestamp()
+                .setDescription(stripIndents`**> Commands Toggled by:** ${message.member.user.username} (${message.member.id})
+            **> Commands Category:** ${args[0]}
+            **> Commands Toggled:** ON`);
+
+            logChannel.send(embed);
+
             return message.reply("Enabling category... this may take a second...").then(m => m.delete(7500));
         }
 
@@ -47,6 +63,18 @@ module.exports = {
                     $set: { 'commands.$.status': false }
                 }).catch(err => console.log(err))
             })
+
+            const embed = new RichEmbed()
+                .setColor("#0efefe")
+                .setThumbnail(message.member.displayAvatarURL)
+                .setFooter(message.member.displayName, message.author.displayAvatarURL)
+                .setTimestamp()
+                .setDescription(stripIndents`**> Commands Toggled by:** ${message.member.user.username} (${message.member.id})
+                **> Commands Category:** ${args[0]}
+                **> Commands Toggled:** OFF`);
+
+            logChannel.send(embed);
+
             return message.reply("Disabling category... this may take a second...").then(m => m.delete(7500));
         }
     }

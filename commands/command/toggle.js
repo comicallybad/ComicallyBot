@@ -1,5 +1,8 @@
 const db = require('../../schemas/db.js');
 
+const { stripIndents } = require("common-tags");
+const { RichEmbed } = require("discord.js");
+
 module.exports = {
     name: "toggle",
     aliases: ["command"],
@@ -8,6 +11,7 @@ module.exports = {
     permissions: "admin",
     usage: "<command> <true|false>",
     run: (client, message, args) => {
+        const logChannel = message.guild.channels.find(c => c.name === "mods-log") || message.channel;
         let guildID = message.guild.id;
         let commands = client.commands.map(cmd => cmd.name);
 
@@ -46,6 +50,17 @@ module.exports = {
             db.updateOne({ guildID: guildID, 'commands.name': command }, {
                 $set: { 'commands.$.status': bool }
             }).catch(err => console.log(err))
+
+            const embed = new RichEmbed()
+                .setColor("#0efefe")
+                .setThumbnail(message.member.displayAvatarURL)
+                .setFooter(message.member.displayName, message.author.displayAvatarURL)
+                .setTimestamp()
+                .setDescription(stripIndents`**> Command Toggled by:** ${message.member.user.username} (${message.member.id})
+             **> Command Toggled:** ${args[0]}`);
+
+            logChannel.send(embed);
+
             return message.reply("Toggling command... this may take a second...").then(m => m.delete(7500))
         }
     }

@@ -9,7 +9,7 @@ module.exports = {
     permissions: "moderator",
     usage: "<id | mention>",
     run: async (client, message, args) => {
-        const logChannel = message.guild.channels.find(c => c.name === "logs") || message.channel;
+        const logChannel = message.guild.channels.find(c => c.name === "mod-logs") || message.channel;
 
         if (message.deletable) message.delete();
 
@@ -62,7 +62,7 @@ module.exports = {
             .setThumbnail(toBan.user.displayAvatarURL)
             .setFooter(message.member.displayName, message.author.displayAvatarURL)
             .setTimestamp()
-            .setDescription(stripIndents`**> baned member:** ${toBan} (${toBan.id})
+            .setDescription(stripIndents`**> banned member:** ${toBan} (${toBan.id})
             **> baned by:** ${message.member} (${message.member.id})
             **> Reason:** ${args.slice(1).join(" ")}`);
 

@@ -1,5 +1,8 @@
 const db = require('../../schemas/db.js');
 
+const { stripIndents } = require("common-tags");
+const { RichEmbed } = require("discord.js");
+
 module.exports = {
     name: "toggleall",
     aliases: ["ta", "allcommands", "commandsall"],
@@ -8,6 +11,7 @@ module.exports = {
     permissions: "admin",
     usage: "<true|false>",
     run: (client, message, args) => {
+        const logChannel = message.guild.channels.find(c => c.name === "mods-log") || message.channel;
         let guildID = message.guild.id;
 
         if (!args[0])
@@ -25,6 +29,17 @@ module.exports = {
 
             if (message.deletable) message.delete();
 
+            const embed = new RichEmbed()
+                .setColor("#0efefe")
+                .setThumbnail(message.member.displayAvatarURL)
+                .setFooter(message.member.displayName, message.author.displayAvatarURL)
+                .setTimestamp()
+                .setDescription(stripIndents`**> Commands Toggled by:** ${message.member.user.username} (${message.member.id})
+         **> Commands Toggled:** ON`);
+
+            logChannel.send(embed);
+
+
             return message.reply("Toggling all commands on... this may take a second...").then(m => m.delete(7500))
         }
 
@@ -36,6 +51,16 @@ module.exports = {
             });
 
             if (message.deletable) message.delete();
+
+            const embed = new RichEmbed()
+                .setColor("#0efefe")
+                .setThumbnail(message.member.displayAvatarURL)
+                .setFooter(message.member.displayName, message.author.displayAvatarURL)
+                .setTimestamp()
+                .setDescription(stripIndents`**> Commands Toggled by:** ${message.member.user.username} (${message.member.id})
+         **> Commands Toggled:** OFF`);
+
+            logChannel.send(embed);
 
             return message.reply("Toggling all commands off... this may take a second...").then(m => m.delete(7500))
         }

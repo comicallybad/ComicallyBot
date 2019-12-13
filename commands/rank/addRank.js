@@ -1,5 +1,8 @@
 const db = require("../../schemas/db.js");
 
+const { stripIndents } = require("common-tags");
+const { RichEmbed } = require("discord.js");
+
 module.exports = {
     name: "addrank",
     aliases: ["rankadd"],
@@ -8,6 +11,7 @@ module.exports = {
     permissions: "moderator",
     usage: "<@role|roleID> <cost>",
     run: (client, message, args) => {
+        const logChannel = message.guild.channels.find(c => c.name === "mods-log") || message.channel;
         let guildID = message.guild.id;
         if (message.deletable) message.delete();
 
@@ -50,6 +54,17 @@ module.exports = {
                     db.updateOne({ guildID: guildID }, {
                         $push: { buyableRanks: { roleName: roleName, roleID: roleID, cost: cost } }
                     }).then(function () {
+                        const embed = new RichEmbed()
+                            .setColor("#0efefe")
+                            .setThumbnail(message.member.displayAvatarURL)
+                            .setFooter(message.member.displayName, message.author.displayAvatarURL)
+                            .setTimestamp()
+                            .setDescription(stripIndents`**> Role Added by:** ${message.member.user.username} (${message.member.id})
+                                **> Role Added:** ${roleName} (${roleID})
+                                **> Cost:** ${cost}`);
+
+                        logChannel.send(embed);
+
                         return message.reply("Adding buyable rank... this may take a second...").then(m => m.delete(7500));
                     }).catch(err => console.log(err))
                 }

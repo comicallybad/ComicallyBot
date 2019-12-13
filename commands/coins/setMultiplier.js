@@ -1,5 +1,8 @@
 const db = require('../../schemas/db.js');
 
+const { stripIndents } = require("common-tags");
+const { RichEmbed } = require("discord.js");
+
 module.exports = {
     name: "setmultiplier",
     aliases: ["multiplierset", "setcoinsmultiplier", "coinssetmultiplier"],
@@ -8,6 +11,7 @@ module.exports = {
     permissions: "moderator",
     usage: "<number 1-3>",
     run: (client, message, args) => {
+        const logChannel = message.guild.channels.find(c => c.name === "mods-log") || message.channel;
         if (message.deletable) message.delete();
 
         let guildID = message.guild.id;
@@ -24,6 +28,17 @@ module.exports = {
                 db.updateOne({ guildID: guildID }, {
                     coinsMultiplier: args[0]
                 }).catch(err => console.log(err))
+
+                const embed = new RichEmbed()
+                    .setColor("#0efefe")
+                    .setThumbnail(message.member.displayAvatarURL)
+                    .setFooter(message.member.displayName, message.author.displayAvatarURL)
+                    .setTimestamp()
+                    .setDescription(stripIndents`**> Multiplier Set by:** ${message.member.user.username} (${message.member.id})
+                **> Multiplier Set to:** ${coinsMultiplier}`);
+
+                logChannel.send(embed);
+
                 return message.reply("Server multiplier set to: " + args[0] + "x coins").then(m => m.delete(7500));
             }
     }

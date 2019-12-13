@@ -1,5 +1,8 @@
 const db = require('../../schemas/db.js');
 
+const { stripIndents } = require("common-tags");
+const { RichEmbed } = require("discord.js");
+
 module.exports = {
     name: "removemember",
     aliases: ["rmember", "memberremove"],
@@ -8,6 +11,7 @@ module.exports = {
     permissions: "moderator",
     usage: "<@role|role ID|@user|userID>",
     run: (client, message, args) => {
+        const logChannel = message.guild.channels.find(c => c.name === "mods-log") || message.channel;
         let guildID = message.guild.id;
         if (message.deletable) message.delete();
 
@@ -15,7 +19,7 @@ module.exports = {
             return message.reply("Please provide a user/role.").then(m => m.delete(7500));
 
         let roleIDs = message.guild.roles.map(role => role.id);
-        let userIDs = message.guild.members.map(role => role.user.id);
+        let userIDs = message.guild.members.map(user => user.user.id);
 
         let channelMention = args[0].slice(3, args[0].length - 1);
         let userMention = args[0].slice(2, args[0].length - 1)
@@ -48,6 +52,17 @@ module.exports = {
                     db.updateOne({ guildID: guildID }, {
                         $pull: { memberRoles: { roleID: roleID } }
                     }).then(function () {
+
+                        const embed = new RichEmbed()
+                            .setColor("#0efefe")
+                            .setThumbnail(message.member.displayAvatarURL)
+                            .setFooter(message.member.displayName, message.author.displayAvatarURL)
+                            .setTimestamp()
+                            .setDescription(stripIndents`**> Member Removed by:** ${message.member.user.username} (${message.member.id})
+                    **> Role/User ID Removed:** (${roleID})`);
+
+                        logChannel.send(embed);
+
                         return message.reply("Removing member... this may take a second...").then(m => m.delete(7500));
                     }).catch(err => console.log(err))
                 } else return message.reply("user/role was never added, or it was already removed.").then(m => m.delete(7500));

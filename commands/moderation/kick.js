@@ -9,7 +9,7 @@ module.exports = {
     permissions: "moderator",
     usage: "<mention | id>",
     run: async (client, message, args) => {
-        const logChannel = message.guild.channels.find(c => c.name === "logs") || message.channel;
+        const logChannel = message.guild.channels.find(c => c.name === "mod-logs") || message.channel;
 
         if (message.deletable) message.delete();
 
