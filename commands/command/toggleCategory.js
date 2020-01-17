@@ -61,8 +61,8 @@ module.exports = {
             commands.forEach((element) => {
                 db.updateOne({ guildID: guildID, 'commands.name': element }, {
                     $set: { 'commands.$.status': false }
-                }).catch(err => console.log(err))
-            })
+                }).catch(err => console.log(err));
+            });
 
             const embed = new RichEmbed()
                 .setColor("#0efefe")

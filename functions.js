@@ -33,12 +33,14 @@ module.exports = {
                 })
             }
         });
+
         let bool = await hasPermissions;
         return bool;
     },
 
     getCommandStatus: async function (message, command) {
         let guildID = message.guild.id;
+
         let commandStatus = new Promise((resolve, reject) => {
             db.findOne({
                 guildID: guildID,
@@ -52,6 +54,7 @@ module.exports = {
                 }
             }).catch(err => console.log(err))
         });
+
         let status = await commandStatus;
         return status;
     },
@@ -64,7 +67,6 @@ module.exports = {
         if (!type || type === "either") {
             if (roleIDs.includes(input)) return input
             if (roleIDs.includes(mention)) return mention;
-
             if (userIDs.includes(input)) return input;
             if (userIDs.includes(mention)) return mention;
         } else if (type === "user") {
@@ -78,18 +80,18 @@ module.exports = {
 
     getResponseChannel: async function (message, command) {
         let guildID = message.guild.id;
+
         let responseChannel = new Promise((resolve, reject) => {
             db.findOne({
                 guildID: guildID,
-                channels: {
-                    $elemMatch: { command: command }
-                }
+                channels: { $elemMatch: { command: command } }
             }, (err, exists) => {
                 if (err) console.log(err)
                 if (!exists) return message.reply("Try setting channel first").then(m => m.delete(7500));
                 else resolve(exists.channels[exists.channels.map(cmd => cmd.command).indexOf(command)].channelID)
             }).catch(err => console.log(err))
         });
+
         let status = await responseChannel;
         return status;
     },
