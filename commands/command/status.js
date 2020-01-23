@@ -31,7 +31,7 @@ module.exports = {
                         }).map(function (cmd) {
                             if (cmd.status === false) return `- \`${cmd.name}\`❌`;
                             if (cmd.status === true) return `- \`${cmd.name}\`✅`;
-                        }).join("\n");
+                        }).join(",");
                 }
 
                 const info = client.categories

@@ -6,7 +6,7 @@ const { RichEmbed } = require("discord.js");
 
 module.exports = {
     name: "removerank",
-    aliases: ["rankremove"],
+    aliases: ["rankremove", "delrank"],
     category: "rank",
     description: "Removes a buyable rank.",
     permissions: "moderator",
