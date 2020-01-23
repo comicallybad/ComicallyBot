@@ -26,7 +26,7 @@ module.exports = {
                         .filter(function (cmd) {
                             if (clientCommandsName.includes(cmd.name)
                                 && clientCommandsCategory[(clientCommandsName.indexOf(cmd.name))] === category
-                                && category !== "command")
+                                && category !== "command" && cmd.name !== "help")
                                 return commands.name
                         }).map(function (cmd) {
                             if (cmd.status === false) return `- \`${cmd.name}\`❌`;

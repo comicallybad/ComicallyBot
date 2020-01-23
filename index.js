@@ -157,9 +157,15 @@ function dbSetup() {
             }, (err, exists) => {
                 if (err) console.log(err)
                 if (!exists) {
-                    db.updateOne({ guildID: guildID }, {
-                        $push: { commands: { name: commands[cmdIndex], status: false } }
-                    }).catch(err => console.log(err))
+                    if (commands[cmdIndex] !== "help" && !commands[cmdIndex].includes("toggle") && commands[cmdIndex] !== "status") {
+                        db.updateOne({ guildID: guildID }, {
+                            $push: { commands: { name: commands[cmdIndex], status: false } }
+                        }).catch(err => console.log(err))
+                    } else {
+                        db.updateOne({ guildID: guildID }, {
+                            $push: { commands: { name: commands[cmdIndex], status: true } }
+                        }).catch(err => console.log(err))
+                    }
                 }
             })
         });
