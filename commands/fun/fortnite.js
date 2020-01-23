@@ -6,14 +6,16 @@ const ft = new Client(process.env.FORTNITE);
 
 module.exports = {
     name: "fortnite",
-    aliases: ["ft", "ftstats", "fortnitestats"],
+    aliases: ["ft", "ftstats", "fortnitestats", "fn", "ftn"],
     description: "Display someone's stats, the current store, and challenges!!",
     permissions: "member",
-    usage: "<username | store>",
+    usage: "<username | store> [pc, xb1, psn]",
     run: async (client, message, args) => {
+        if (message.deletable) message.delete();
         const platforms = ["pc", "xb1", "psn"];
 
-        if (args[0])
+        if (!args[0]) message.reply("Please provide a Fortnite username").then(m => m.delete(7500))
+        else
             if (args[0].toLowerCase() === "store" || args[0].toLowerCase() === "shop") {
                 const store = await ft.store();
 
