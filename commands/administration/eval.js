@@ -16,7 +16,7 @@ module.exports = {
             return message.reply("You need to provide code to evaluate").then(m => m.delete(7500));
 
         try {
-            if (args.join(" ").toLowerCase().includes("tokjen"))
+            if (args.join(" ").toLowerCase().includes("token"))
                 return message.reply("You cannot find my token :)").then(m => m.delete(7500));
 
             const toEval = args.join(" ");
