@@ -7,7 +7,7 @@ const ft = new Client(process.env.FORTNITE);
 module.exports = {
     name: "fortnite",
     aliases: ["ft", "ftstats", "fortnitestats", "fn", "ftn"],
-    description: "Display someone's stats, the current store, and challenges!!",
+    description: "Display someone's stats, the current store, and challenges.",
     permissions: "member",
     usage: "<username | store> [pc, xb1, psn]",
     run: async (client, message, args) => {

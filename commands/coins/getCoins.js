@@ -5,7 +5,7 @@ module.exports = {
     name: "getcoins",
     aliases: ["coins", "mycoins"],
     category: "coins",
-    description: "Get number of coins",
+    description: "Get number of coins.",
     permissions: "member",
     usage: "[@user|userID]",
     run: (client, message, args) => {

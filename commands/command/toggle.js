@@ -7,7 +7,7 @@ module.exports = {
     name: "toggle",
     aliases: ["command"],
     category: "command",
-    description: "Enable or disable commands",
+    description: "Enable or disable commands.",
     permissions: "admin",
     usage: "<command> <true|false>",
     run: (client, message, args) => {

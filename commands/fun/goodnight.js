@@ -5,7 +5,7 @@ module.exports = {
     name: "goodnight",
     aliases: ["gn"],
     category: "fun",
-    description: "Sends a cute goodnight message",
+    description: "Sends a cute goodnight message.",
     permissions: "member",
     run: (client, message, args) => {
         if (message.deletable) message.delete();

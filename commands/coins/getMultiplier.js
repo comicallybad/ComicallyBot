@@ -4,7 +4,7 @@ module.exports = {
     name: "getmultiplier",
     aliases: ["getcoinmultiplier", "getcoinsmultiplier", "coinsmultiplier"],
     category: "coins",
-    description: "Get number of coins",
+    description: "Get number of coins.",
     permissions: "member",
     run: (client, message, args) => {
         let guildID = message.guild.id;

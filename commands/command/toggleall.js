@@ -7,7 +7,7 @@ module.exports = {
     name: "toggleall",
     aliases: ["ta", "allcommands", "commandsall"],
     category: "command",
-    description: "Enable or disable commands",
+    description: "Enable or disable commands.",
     permissions: "admin",
     usage: "<true|false>",
     run: (client, message, args) => {

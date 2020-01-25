@@ -5,7 +5,7 @@ module.exports = {
     name: "tot",
     aliases: ["thisorthat", "wyr", "wouldyourather"],
     category: "tot",
-    description: "This Or That Command",
+    description: "This Or That Command.",
     permissions: "moderator",
     run: (client, message) => {
         getResponseChannel(message, "tot").then(async function (res) {

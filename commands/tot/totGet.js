@@ -4,7 +4,7 @@ module.exports = {
     name: "totget",
     aliases: ["gettot", "totchannel", "channeltot"],
     category: "tot",
-    description: "Get response channel for This Or That Command",
+    description: "Get response channel for This Or That Command.",
     permissions: "moderator",
     run: (client, message, args) => {
         if (message.deletable) message.delete();

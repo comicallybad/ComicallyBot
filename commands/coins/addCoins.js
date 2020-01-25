@@ -9,7 +9,7 @@ module.exports = {
     name: "addcoins",
     aliases: ["coinsadd"],
     category: "coins",
-    description: "Add coins to user",
+    description: "Add coins to user.",
     permissions: "moderator",
     usage: "<@user|userID> <amount>",
     run: (client, message, args) => {

@@ -7,7 +7,7 @@ module.exports = {
     name: "instagram",
     aliases: ["insta", "ig"],
     category: "info",
-    description: "Find out some nice instagram statistics",
+    description: "Find out some nice instagram statistics.",
     permissions: "member",
     usage: "<name>",
     run: async (client, message, args) => {

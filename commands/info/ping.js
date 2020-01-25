@@ -1,7 +1,7 @@
 module.exports = {
     name: "ping",
     category: "info",
-    description: "Returns latency and API ping",
+    description: "Returns latency and API ping.",
     permissions: "member",
     run: async (client, message, args) => {
         if (message.deletable) message.delete();

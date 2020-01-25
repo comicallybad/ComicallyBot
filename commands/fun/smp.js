@@ -4,7 +4,7 @@ module.exports = {
     name: "smp",
     aliases: ["shitmypants"],
     category: "fun",
-    description: "Sends a message explaining smp",
+    description: "Sends a message explaining smp.",
     permissions: "member",
     run: (client, message, args) => {
         if (message.deletable) message.delete();

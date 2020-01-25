@@ -8,7 +8,7 @@ module.exports = {
     name: "removecoins",
     aliases: ["coinsremove"],
     category: "coins",
-    description: "Remove coins to user",
+    description: "Remove coins to user.",
     permissions: "moderator",
     usage: "<@user|userID> <amount>",
     run: (client, message, args) => {

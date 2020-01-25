@@ -7,7 +7,7 @@ module.exports = {
     name: "togglecategory",
     aliases: ["togglecat", "cattoggle"],
     category: "command",
-    description: "Enable or disable commands",
+    description: "Enable or disable commands.",
     permissions: "admin",
     usage: "<category> <true|false>",
     run: (client, message, args) => {

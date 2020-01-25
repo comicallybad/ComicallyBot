@@ -4,7 +4,7 @@ module.exports = {
     name: "totset",
     aliases: ["settotchannel", "totsetchannel", "settot"],
     category: "tot",
-    description: "Set response channel for This Or That Command",
+    description: "Set response channel for This Or That Command.",
     permissions: "moderator",
     usage: "<channelID|#channel>",
     run: (client, message, args) => {

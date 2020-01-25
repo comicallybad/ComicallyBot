@@ -8,7 +8,7 @@ module.exports = {
     name: "addmember",
     aliases: ["amember", "memberadd"],
     category: "moderation",
-    description: "Add permitted role/user for member commands",
+    description: "Add permitted role/user for member commands.",
     permissions: "moderator",
     usage: "<role name|@role|userID|@user>",
     run: (client, message, args) => {

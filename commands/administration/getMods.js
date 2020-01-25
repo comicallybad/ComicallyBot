@@ -5,7 +5,7 @@ module.exports = {
     name: "getmods",
     aliases: ["mods", "listmods", "moderators"],
     category: "administration",
-    description: "Add permitted role for mod commands",
+    description: "Add permitted role for mod commands.",
     permissions: "admin",
     usage: "<role name|@role>",
     run: async (client, message, args) => {

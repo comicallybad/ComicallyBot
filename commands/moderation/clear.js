@@ -2,7 +2,7 @@ module.exports = {
     name: "clear",
     aliases: ["purge", "nuke"],
     category: "moderation",
-    description: "Clears the chat",
+    description: "Clears the chat.",
     permissions: "moderator",
     usage: "[number of messages]",
     run: async (client, message, args) => {

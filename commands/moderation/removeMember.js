@@ -8,7 +8,7 @@ module.exports = {
     name: "removemember",
     aliases: ["rmember", "memberremove"],
     category: "moderation",
-    description: "Add permitted role/user for member commands",
+    description: "Add permitted role/user for member commands.",
     permissions: "moderator",
     usage: "<@role|role ID|@user|userID>",
     run: (client, message, args) => {

@@ -7,7 +7,7 @@ module.exports = {
     name: "setmultiplier",
     aliases: ["multiplierset", "setcoinsmultiplier", "coinssetmultiplier"],
     category: "coins",
-    description: "Get number of coins",
+    description: "Get number of coins.",
     permissions: "moderator",
     usage: "<number 1-3>",
     run: (client, message, args) => {

@@ -5,7 +5,7 @@ module.exports = {
     name: "meme",
     aliases: ["memes", "plsmeme"],
     category: "fun",
-    description: "Get a random meme",
+    description: "Get a random meme.",
     permissions: "member",
     run: async (client, message, args) => {
         const subReddits = ["dankmeme", "meme", "me_irl", "AdviceAnimals", "PrequelMemes", "PewdiepieSubmissions", "funny"];

@@ -5,7 +5,7 @@ module.exports = {
     name: "report",
     aliases: ["moderation"],
     category: "moderation",
-    description: "Reports a member",
+    description: "Reports a member.",
     permissions: "member",
     usage: "<mention | id>",
     run: (client, message, args) => {

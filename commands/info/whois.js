@@ -6,7 +6,7 @@ module.exports = {
     name: "whois",
     aliases: ["who", "user", "info"],
     category: "info",
-    description: "Returns user information",
+    description: "Returns user information.",
     permissions: "member",
     usage: "[username | id | mention]",
     run: (client, message, args) => {

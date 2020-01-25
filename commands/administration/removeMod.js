@@ -8,7 +8,7 @@ module.exports = {
     name: "removemod",
     aliases: ["rmod", "modremove"],
     category: "administration",
-    description: "Remove permitted role/user for mod commands",
+    description: "Remove permitted role/user for mod commands.",
     permissions: "admin",
     usage: "<role ID|@role|userID|@user>",
     run: (client, message, args) => {

@@ -6,7 +6,7 @@ module.exports = {
     name: "status",
     aliases: ["commandstatus", "commands"],
     category: "command",
-    description: "Enable or disable commands",
+    description: "Show command status.",
     permissions: "moderator",
     run: (client, message, args) => {
         let guildID = message.guild.id;
