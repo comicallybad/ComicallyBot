@@ -32,7 +32,7 @@ module.exports = {
         let ID = findID(message, args[0], "user");
 
         if (!ID) return message.reply("User not found.").then(m => m.delete(7500));
-        else addCoins(ID, parseInt(args[1]))
+        else addCoins(ID, Math.floor(parseInt(args[1])));
 
         function addCoins(userID, coinsToAdd) {
             let userName = userNames[userIDs.indexOf(userID)];
@@ -54,8 +54,9 @@ module.exports = {
                         .setThumbnail(message.member.displayAvatarURL)
                         .setFooter(message.member.displayName, message.author.displayAvatarURL)
                         .setTimestamp()
-                        .setDescription(stripIndents`**> Coins Added by:** ${message.member.user.username} (${message.member.id})
-                        **> Coins Given to:** ${userName} (${userID})
+                        .setDescription(stripIndents`
+                        **> Coins Added by:** <@${message.member.id}> ${message.member.user.username} (${message.member.id})
+                        **> Coins Given to:** <@${userID}> ${userName} (${userID})
                         **> Coins Given:** ${coinsToAdd}`);
 
                     logChannel.send(embed);

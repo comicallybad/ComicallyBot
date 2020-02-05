@@ -34,8 +34,9 @@ module.exports = {
                     .setThumbnail(message.member.displayAvatarURL)
                     .setFooter(message.member.displayName, message.author.displayAvatarURL)
                     .setTimestamp()
-                    .setDescription(stripIndents`**> Multiplier Set by:** ${message.member.user.username} (${message.member.id})
-                **> Multiplier Set to:** ${args[0]}`);
+                    .setDescription(stripIndents`
+                    **> Multiplier Set by:** <${message.member.id}> ${message.member.user.username} (${message.member.id})
+                    **> Multiplier Set to:** ${args[0]}`);
 
                 logChannel.send(embed);
 

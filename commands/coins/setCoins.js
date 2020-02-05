@@ -26,13 +26,13 @@ module.exports = {
         if (!args[1])
             return message.reply("Please provide amount of coins.").then(m => m.delete(7500));
 
-        if (isNaN(args[1]) || parseInt(args[1]) <= 0)
-            return message.reply("Please provide a valid amount above 0.").then(m => m.delete(7500));
+        if (isNaN(args[1]) || parseInt(args[1]) < 0)
+            return message.reply("Please provide a valid amount greater than or equal to 0.").then(m => m.delete(7500));
 
         let ID = findID(message, args[0], "user");
 
         if (!ID) return message.reply("User not found.").then(m => m.delete(7500));
-        else setCoins(ID, parseInt(args[1]));
+        else setCoins(ID, Math.floor(parseInt(args[1])));
 
         function setCoins(userID, coinsToSet) {
             let userName = userNames[userIDs.indexOf(userID)];
@@ -54,15 +54,16 @@ module.exports = {
                         .setThumbnail(message.member.displayAvatarURL)
                         .setFooter(message.member.displayName, message.author.displayAvatarURL)
                         .setTimestamp()
-                        .setDescription(stripIndents`**> Coins Set by:** ${message.member.user.username} (${message.member.id})
-                        **> User's Coins Set:** ${userName} (${userID})
+                        .setDescription(stripIndents`
+                        **> Coins Set by:** <@${message.member.id}> ${message.member.user.username} (${message.member.id})
+                        **> User's Coins Set:** <@${userID}> ${userName} (${userID})
                         **> Coins Set to:** ${coinsToSet}`);
 
                     logChannel.send(embed);
 
                     return message.reply("User was set to: " + coinsToSet + " coins").then(m => m.delete(7500))
                 }
-            }).catch(err => console.log(err))
+            }).catch(err => console.log(err));
         }
     }
 }

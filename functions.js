@@ -121,6 +121,7 @@ module.exports = {
         return new Intl.DateTimeFormat('en-US').format(date)
     },
 
+    //Adds certain reactions, returns first user
     promptMessage: async function (message, author, time, validReactions) {
         time *= 1000;
 
@@ -131,5 +132,17 @@ module.exports = {
         return message
             .awaitReactions(filter, { max: 1, time: time })
             .then(collected => collected.first() && collected.first().emoji.name);
-    }
+    },
+
+    //Adds certain reactions, returns all user objects
+    awaitReaction: async function (message, time, validReactions) {
+        for (const reaction of validReactions) await message.react(reaction);
+
+        const filter = (reaction) => validReactions.includes(reaction.emoji.name);
+
+        return message
+            .awaitReactions(filter, { time: time })
+            .then(collected => collected.map(data => data)[0]
+                .users.map(usr => usr).filter(usr => !usr.bot));
+    },
 }

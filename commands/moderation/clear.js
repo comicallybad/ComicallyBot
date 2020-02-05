@@ -17,9 +17,9 @@ module.exports = {
         let deleteAmount;
 
         if (parseInt(args[0]) > 100) deleteAmount = 100;
-        else deleteAmount = parseInt(args[0])
+        else deleteAmount = parseInt(args[0]);
 
         message.channel.bulkDelete(deleteAmount, true)
-            .catch(err => message.reply(`Something went wrong ${err}`))
+            .catch(err => message.reply(`Something went wrong ${err}`).then(m => m.delete(7500)));
     }
 }
