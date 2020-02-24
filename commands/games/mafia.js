@@ -4,10 +4,10 @@ const { RichEmbed } = require("discord.js");
 module.exports = {
     name: "mafia",
     aliases: ["rlmafia", "mafiagame"],
-    category: "fun",
+    category: "games",
     description: "Setup a mafia game, must have at least 4 reactors.",
     permissions: "member",
-    usage: "<max players must be greater than 4>",
+    usage: "<max players must be greater than or equal to 4>",
     run: async (client, message, args) => {
         if (message.deletable) message.delete();
         let maxPlayers = 0;
