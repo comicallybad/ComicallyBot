@@ -29,8 +29,8 @@ module.exports = {
                                 && category !== "command" && cmd.name !== "help")
                                 return commands.name
                         }).map(function (cmd) {
-                            if (cmd.status === false) return `- \`${cmd.name}\`❌`;
-                            if (cmd.status === true) return `- \`${cmd.name}\`✅`;
+                            if (cmd.status === false) return `-\`${prefix}${cmd.name}\`❌`;
+                            if (cmd.status === true) return ` \`${prefix}${cmd.name}\`✅`;
                         }).join(",");
                 }
 
