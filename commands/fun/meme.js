@@ -19,7 +19,6 @@ module.exports = {
             .setURL(`https://reddit.com/r/${random}`)
             .setTimestamp();
 
-        if (message.deletable) message.delete();
         message.channel.send(embed)
     }
 }

@@ -27,7 +27,6 @@ module.exports = {
                 `💟 ${Math.floor(love)}%\n\n${loveLevel}`)
             .setTimestamp();
 
-        if (message.deletable) message.delete();
         message.channel.send(embed);
     }
 }

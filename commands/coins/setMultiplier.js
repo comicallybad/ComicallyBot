@@ -12,7 +12,6 @@ module.exports = {
     usage: "<number 1-3>",
     run: (client, message, args) => {
         const logChannel = message.guild.channels.find(c => c.name === "mods-log") || message.channel;
-        if (message.deletable) message.delete();
 
         let guildID = message.guild.id;
 

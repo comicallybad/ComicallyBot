@@ -9,8 +9,6 @@ module.exports = {
     permissions: "member",
     usage: "<mention | id>",
     run: (client, message, args) => {
-        if (message.deletable) message.delete();
-
         if (!args[0])
             return message.reply("Please provide a user").then(m => m.delete(7500))
 

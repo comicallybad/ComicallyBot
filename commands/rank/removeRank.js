@@ -14,7 +14,6 @@ module.exports = {
     run: (client, message, args) => {
         const logChannel = message.guild.channels.find(c => c.name === "mods-log") || message.channel;
         let guildID = message.guild.id;
-        if (message.deletable) message.delete();
 
         if (!args[0])
             return message.reply("Please provide a role.").then(m => m.delete(7500));

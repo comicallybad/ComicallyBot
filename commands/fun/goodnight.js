@@ -8,7 +8,6 @@ module.exports = {
     description: "Sends a cute goodnight message.",
     permissions: "member",
     run: (client, message, args) => {
-        if (message.deletable) message.delete();
         const member = getMember(message, args.join(" "));
 
         const embed = new RichEmbed()

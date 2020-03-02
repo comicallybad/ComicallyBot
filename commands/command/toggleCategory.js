@@ -16,8 +16,6 @@ module.exports = {
         let categories = client.commands.map(command => command.category)
         let commands = client.commands
 
-        if (message.deletable) message.delete();
-
         if (!args[0])
             return message.reply("Please provide a category.").then(m => m.delete(7500));
 

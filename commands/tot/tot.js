@@ -9,7 +9,6 @@ module.exports = {
     permissions: "moderator",
     run: (client, message) => {
         getResponseChannel(message, "tot").then(async function (res) {
-            if (message.deletable) message.delete();
             tot(client, message, res);
         });
     }
@@ -81,7 +80,6 @@ async function tot(client, message, responseChannel) {
     }
 
     function embedMessage(message, firstChoice, secondChoice, image) {
-        if (message.deletable) message.delete();
         const embed = new RichEmbed()
             .setColor('#ffff00')
             .setTitle('This or That')

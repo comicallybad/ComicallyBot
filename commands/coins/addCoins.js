@@ -14,7 +14,7 @@ module.exports = {
     usage: "<@user|userID> <amount>",
     run: (client, message, args) => {
         const logChannel = message.guild.channels.find(c => c.name === "mods-log") || message.channel;
-        if (message.deletable) message.delete();
+
         let guildName = message.guild.name;
         let guildID = message.guild.id;
         let userIDs = message.guild.members.map(user => user.user.id);

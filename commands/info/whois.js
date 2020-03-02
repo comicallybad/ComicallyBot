@@ -10,7 +10,6 @@ module.exports = {
     permissions: "member",
     usage: "[username | id | mention]",
     run: (client, message, args) => {
-        if (message.deletable) message.delete();
         const member = getMember(message, args.join(" "));
 
         // Member variables

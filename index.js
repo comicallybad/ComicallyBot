@@ -4,7 +4,7 @@ const fs = require("fs");
 const mongoose = require("mongoose");
 const { getCommandStatus, hasPermissions } = require("./functions.js");
 const db = require('./schemas/db.js');
-const coins = require('./schemas/coins.js')
+const coins = require('./schemas/coins.js');
 
 global.prefix = "_";
 
@@ -44,7 +44,9 @@ client.on("ready", () => {
 client.on("message", async message => {
     if (message.author.bot) return;
     if (!message.guild) return;
+
     addCoins(message)
+
     if (!message.content.startsWith(prefix)) return;
     if (!message.member) message.member = await message.guild.fetchMember(message);
 
@@ -57,31 +59,27 @@ client.on("message", async message => {
     if (!command) command = client.commands.get(client.aliases.get(cmd));
 
     if (command) {
+        if (message.deletable) message.delete();
+
         if (command.category !== 'command') {
             getCommandStatus(message, command.name).then(function (res) {
-                if (!res) {
+                if (!res)
                     message.reply("Command disabled").then(m => m.delete(7500));
-                    if (message.deletable) message.delete();
-                } if (res) {
+                if (res)
                     hasPermissions(message, command.permissions).then(async function (res) {
-                        if (!res) {
+                        if (!res)
                             message.reply("You do not have permissions for this command.").then(m => m.delete(7500));
-                            if (message.deletable) message.delete();
-                        } if (res) {
+                        if (res)
                             command.run(client, message, args);
-                        }
-                    })
-                }
-            })
+                    });
+            });
         } else {
             hasPermissions(message, command.permissions).then(async function (res) {
-                if (!res) {
+                if (!res)
                     message.reply("You do not have permissions for this command.").then(m => m.delete(7500));
-                    if (message.deletable) message.delete();
-                } if (res) {
+                if (res)
                     command.run(client, message, args);
-                }
-            })
+            });
         }
     }
 });
@@ -95,14 +93,13 @@ function addCoins(message) {
 
     db.findOne({ guildID: guildID }, (err, exists) => {
         if (!exists) console.log("Error finding coins multiplier in database")
-        if (exists) {
+        if (exists)
             if (exists.coinsMultiplier)
                 coinsToAdd = coinsToAdd * exists.coinsMultiplier;
             else {
                 exists.coinsMultiplier = 1
                 exists.save().catch(err => console.log(err));
             }
-        }
     }).catch(err => console.log(err)).then(function () {
         coins.findOne({ guildID: guildID, userID: userID }, (err, exists) => {
             if (err) console.log(err)
@@ -157,7 +154,8 @@ function dbSetup() {
             }, (err, exists) => {
                 if (err) console.log(err)
                 if (!exists) {
-                    if (commands[cmdIndex] !== "help" && !commands[cmdIndex].includes("toggle") && commands[cmdIndex] !== "status") {
+                    if (commands[cmdIndex] !== "help" && !commands[cmdIndex].includes("toggle")
+                        && commands[cmdIndex] !== "status") {
                         db.updateOne({ guildID: guildID }, {
                             $push: { commands: { name: commands[cmdIndex], status: false } }
                         }).catch(err => console.log(err))

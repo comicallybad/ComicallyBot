@@ -9,8 +9,6 @@ module.exports = {
     permissions: "moderator",
     usage: "<@role|roleID> <cost>",
     run: async (client, message, args) => {
-        if (message.deletable) message.delete()
-
         const guildID = message.guild.id;
 
         const embed = new RichEmbed()

@@ -41,7 +41,6 @@ module.exports = {
 
                 return message.channel.send(embed.setDescription(info)).then(m => m.delete(30000));
             }
-        })
-        if (message.deletable) message.delete();
+        });
     }
 }

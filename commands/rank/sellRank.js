@@ -20,8 +20,6 @@ module.exports = {
         let userName = message.member.user.username;
         let author = message.member;
 
-        if (message.deletable) message.delete();
-
         // No bot permissions
         if (!message.guild.me.hasPermission("MANAGE_ROLES"))
             return message.reply("I do not have permissions to manage roles. Please contact a moderator.").then(m => m.delete(7500));

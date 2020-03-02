@@ -16,7 +16,6 @@ module.exports = {
             .setDescription("Add a reaction to one of these emojis to play the game!")
             .setTimestamp();
 
-        if (message.deletable) message.delete();
         const m = await message.channel.send(embed);
         const reacted = await promptMessage(m, message.author, 30, chooseArr);
 

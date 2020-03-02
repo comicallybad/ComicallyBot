@@ -27,8 +27,6 @@ module.exports = {
                 }).catch(err => console.log(err));
             });
 
-            if (message.deletable) message.delete();
-
             const embed = new RichEmbed()
                 .setColor("#0efefe")
                 .setThumbnail(message.member.displayAvatarURL)
@@ -48,8 +46,6 @@ module.exports = {
                     $set: { 'commands.$.status': false }
                 }).catch(err => console.log(err));
             });
-
-            if (message.deletable) message.delete();
 
             const embed = new RichEmbed()
                 .setColor("#0efefe")

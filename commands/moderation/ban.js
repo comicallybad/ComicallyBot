@@ -11,8 +11,6 @@ module.exports = {
     run: async (client, message, args) => {
         const logChannel = message.guild.channels.find(c => c.name === "mod-logs") || message.channel;
 
-        if (message.deletable) message.delete();
-
         // No author permissions
         if (!message.member.hasPermission("BAN_MEMBERS")) {
             return message.reply("❌ You do not have permissions to ban members. Please contact a staff member")

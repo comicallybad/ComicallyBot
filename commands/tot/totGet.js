@@ -7,8 +7,6 @@ module.exports = {
     description: "Get response channel for This Or That Command.",
     permissions: "moderator",
     run: (client, message, args) => {
-        if (message.deletable) message.delete();
-
         let guildID = message.guild.id;
 
         db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "tot" } } }, (err, exists) => {

@@ -4,7 +4,6 @@ module.exports = {
     description: "Returns latency and API ping.",
     permissions: "member",
     run: async (client, message, args) => {
-        if (message.deletable) message.delete();
         const msg = await message.channel.send(`🏓 Pinging....`);
 
         msg.edit(`🏓 Pong!

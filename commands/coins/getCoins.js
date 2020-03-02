@@ -20,7 +20,6 @@ module.exports = {
         }
 
         function getCoins(usrID) {
-            if (message.deletable) message.delete();
             coins.findOne({ guildID: guildID, userID: usrID }, (err, exists) => {
                 if (!exists) return message.reply("User doesn't have coins yet.").then(m => m.delete(7500));
                 if (exists.coins) return message.reply("User has: " + exists.coins + " coins").then(m => m.delete(7500));

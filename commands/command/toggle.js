@@ -15,8 +15,6 @@ module.exports = {
         let guildID = message.guild.id;
         let commands = client.commands.map(cmd => cmd.name);
 
-        if (message.deletable) message.delete();
-
         if (!args[0])
             return message.reply("Please provide the command you wish to toggle.").then(m => m.delete(7500));
 

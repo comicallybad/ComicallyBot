@@ -13,7 +13,7 @@ module.exports = {
     usage: "<amount> <time>",
     run: async (client, message, args) => {
         const logChannel = message.guild.channels.find(c => c.name === "mods-log") || message.channel;
-        if (message.deletable) message.delete();
+
         let guildID = message.guild.id;
 
         if (!args[0])

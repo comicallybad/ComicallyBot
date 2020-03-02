@@ -10,8 +10,6 @@ module.exports = {
     permissions: "admin",
     usage: "<code to evaluate>",
     run: (client, message, args) => {
-        if (message.deletable) message.delete();
-
         if (!args[0])
             return message.reply("You need to provide code to evaluate").then(m => m.delete(7500));
 

@@ -7,8 +7,6 @@ module.exports = {
     description: "Rolls a dice for a number 1-6.",
     permissions: "member",
     run: (client, message, args) => {
-        if (message.deletable) message.delete();
-
         let embed = new RichEmbed()
             .setColor("#0efefe")
             .setTitle("A dice was rolled..")

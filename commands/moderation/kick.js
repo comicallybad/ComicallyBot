@@ -11,8 +11,6 @@ module.exports = {
     run: async (client, message, args) => {
         const logChannel = message.guild.channels.find(c => c.name === "mod-logs") || message.channel;
 
-        if (message.deletable) message.delete();
-
         // No args
         if (!args[0]) {
             return message.reply("Please provide a person to kick.")

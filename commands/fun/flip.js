@@ -7,8 +7,6 @@ module.exports = {
     description: "Flips a coin for heads or tails.",
     permissions: "member",
     run: (client, message, args) => {
-        if (message.deletable) message.delete();
-
         let embed = new RichEmbed()
             .setColor("#0efefe")
             .setTitle("A coin was flipped..")

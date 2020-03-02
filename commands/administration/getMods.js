@@ -19,8 +19,6 @@ module.exports = {
 
         const m = await message.channel.send(embed);
 
-        if (message.deletable) message.delete();
-
         db.findOne({ guildID: guildID, }, (err, exists) => {
             if (err) console.log(err)
             if (!exists) return message.reply("Error within database").then(m => m.delete(7500))

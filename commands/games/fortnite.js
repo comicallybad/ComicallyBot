@@ -12,7 +12,6 @@ module.exports = {
     permissions: "member",
     usage: "<username | store> [pc, xb1, psn]",
     run: async (client, message, args) => {
-        if (message.deletable) message.delete();
         const platforms = ["pc", "xb1", "psn"];
 
         if (!args[0]) message.reply("Please provide a Fortnite username").then(m => m.delete(7500))
