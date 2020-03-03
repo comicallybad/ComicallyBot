@@ -28,7 +28,7 @@ module.exports = {
             .setDescription("")
             .addField(result, `${reacted} vs ${botChoice}`);
 
-        m.edit(embed).then(m => m.delete(150000));
+        m.edit(embed)
         function getResult(me, clientChosen) {
             if ((me === "🗻" && clientChosen === "✂") ||
                 (me === "📰" && clientChosen === "🗻") ||
