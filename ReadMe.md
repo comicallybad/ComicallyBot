@@ -2,7 +2,7 @@ ComicallyBot2.0 is a bot that uses a permission and status structure. Commands c
 ________________________________________________________________________________
 To clone and use ComicallyBot2.0 you will have to do a few things:
 1. Install mongodb and compass for mongodb (needed for database storage)
-2. Create a .env file with a "TOKEN" for a discord token and "FORTNITE" for a fortnite API key
+2. Create a .env file with a "TOKEN" for a discord token, "FORTNITE" for a fortnite API key, and "STEAM" for steam API key
 3. npm install
 4. node .
 5. Commands will default to disabled, so in discord use _toggle, _togglecat, or _toggleall to toggle commands/categories. Use _help {command} for more information
