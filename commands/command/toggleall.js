@@ -53,11 +53,11 @@ module.exports = {
                 .setFooter(message.member.displayName, message.author.displayAvatarURL)
                 .setTimestamp()
                 .setDescription(stripIndents`**> Commands Toggled by:** ${message.member.user.username} (${message.member.id})
-         **> Commands Toggled:** OFF`);
+            **> Commands Toggled:** OFF`);
 
             logChannel.send(embed);
 
-            return message.reply("Toggling all commands off... this may take a second...").then(m => m.delete(7500))
+            return message.reply("Toggling all commands off... this may take a second...").then(m => m.delete(7500));
         }
     }
 }

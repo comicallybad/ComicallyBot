@@ -21,7 +21,7 @@ module.exports = {
 
         db.findOne({ guildID: guildID, }, (err, exists) => {
             if (err) console.log(err)
-            if (!exists) return message.reply("Error within database").then(m => m.delete(7500))
+            if (!exists) return message.reply("Error within database").then(m => m.delete(7500));
             else {
                 let memberRoles = exists.memberRoles.map(role => " Name: " + `\`${role.roleName}\`` + "  ID: " + `\`${role.roleID}\``)
                 if (memberRoles.length > 0) {

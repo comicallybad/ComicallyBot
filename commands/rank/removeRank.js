@@ -31,7 +31,8 @@ module.exports = {
         if (!ID)
             if (!isNaN(args[0]))
                 removeRank(args[0]);
-            else return message.reply("Please provide a valid role, if you are trying to remove a deleted role, attempt the command again with the role ID from the getroles command").then(m => m.delete(7500))
+            else
+                return message.reply("Please provide a valid role, if you are trying to remove a deleted role, attempt the command again with the role ID from the getroles command").then(m => m.delete(7500));
 
         function removeRank(roleID) {
             let roleName = roleNames[roleIDs.indexOf(roleID)]

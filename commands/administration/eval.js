@@ -29,7 +29,7 @@ module.exports = {
                 .addField("Evaluated: ", evaluated)
                 .addField("Type of: ", typeof (evaluated))
 
-            message.channel.send(embed)
+            message.channel.send(embed).then(m => m.delete(150000));
         } catch (err) {
             let embed = new RichEmbed()
                 .setColor("#FF0000")
@@ -37,7 +37,7 @@ module.exports = {
                 .setDescription(err)
                 .setFooter(client.user.username, client.user.displayAvatarURL)
 
-            message.channel.send(embed)
+            message.channel.send(embed).then(m => m.delete(150000));
         }
     }
 }

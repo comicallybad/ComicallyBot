@@ -55,7 +55,7 @@ module.exports = {
 
                         logChannel.send(embed);
 
-                        return message.reply(coinsToRemove + " coins were removed to the user.").then(m => m.delete(7500))
+                        return message.reply(coinsToRemove + " coins were removed to the user.").then(m => m.delete(7500));
                     }
                 }
             }).catch(err => console.log(err))

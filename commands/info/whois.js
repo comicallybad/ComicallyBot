@@ -37,6 +37,6 @@ module.exports = {
         if (member.user.presence.game)
             embed.addField('Currently playing', stripIndents`**> Name:** ${member.user.presence.game.name}`);
 
-        message.channel.send(embed);
+        message.channel.send(embed).then(m => m.delete(150000));
     }
 }

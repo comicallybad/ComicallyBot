@@ -14,8 +14,7 @@ module.exports = {
         const name = args.join(" ");
 
         if (!name) {
-            return message.reply("Maybe it's useful to actually search for someone...!")
-                .then(m => m.delete(5000));
+            return message.reply("Maybe it's useful to actually search for someone...!").then(m => m.delete(7500));
         }
 
         const url = `https://instagram.com/${name}/?__a=1`;
@@ -25,8 +24,7 @@ module.exports = {
         try {
             res = await fetch(url).then(url => url.json());
         } catch (e) {
-            return message.reply("I couldn't find that account... :(")
-                .then(m => m.delete(5000));
+            return message.reply("I couldn't find that account... :(").then(m => m.delete(7500));
         }
 
         const account = res.graphql.user;
@@ -44,6 +42,6 @@ module.exports = {
             **- Following:** ${account.edge_follow.count}
             **- Private account:** ${account.is_private ? "Yes 🔐" : "Nope 🔓"}`);
 
-        message.channel.send(embed);
+        message.channel.send(embed).then(m => m.delete(150000));
     }
 }

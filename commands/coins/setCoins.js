@@ -61,7 +61,7 @@ module.exports = {
 
                     logChannel.send(embed);
 
-                    return message.reply("User was set to: " + coinsToSet + " coins").then(m => m.delete(7500))
+                    return message.reply("User was set to: " + coinsToSet + " coins").then(m => m.delete(7500));
                 }
             }).catch(err => console.log(err));
         }

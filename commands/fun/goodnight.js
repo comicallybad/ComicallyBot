@@ -17,6 +17,6 @@ module.exports = {
             .addField('Goodnight Message:', `Goodnight ${member.displayName} sleep tight`)
             .setTimestamp();
 
-        message.channel.send(embed);
+        message.channel.send(embed).then(m => m.delete(150000));;
     }
 }

@@ -14,7 +14,7 @@ module.exports = {
     run: async (client, message, args) => {
         const platforms = ["pc", "xb1", "psn"];
 
-        if (!args[0]) message.reply("Please provide a Fortnite username").then(m => m.delete(7500))
+        if (!args[0]) message.reply("Please provide a Fortnite username").then(m => m.delete(7500));
         else
             if (args[0].toLowerCase() === "store" || args[0].toLowerCase() === "shop") {
                 const store = await ft.store();
@@ -51,8 +51,7 @@ module.exports = {
                 const search = await ft.user(username, platform);
 
                 if (!search.username) {
-                    return message.channel.send("Couldn't find that person, try again")
-                        .then(m => m.delete(5000));
+                    return message.channel.send("Couldn't find that person, try again").then(m => m.delete(7500));
                 }
 
                 const lifetime = search.stats.lifetime;
@@ -82,7 +81,7 @@ module.exports = {
                 **- KD:** ${lifetime.kd}
                 **- Kills:** ${lifetime.kills}`, false)
 
-                message.channel.send(embed)
+                message.channel.send(embed).then(m => m.delete(150000));
             }
     }
 }

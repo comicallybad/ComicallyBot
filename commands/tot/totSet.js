@@ -24,25 +24,25 @@ module.exports = {
             dbUpdate(args[0], channelNames[channelIDs.indexOf(args[0])]);
 
         if (channelIDs.includes(hashMention))
-            dbUpdate(hashMention, channelNames[channelIDs.indexOf(hashMention)])
+            dbUpdate(hashMention, channelNames[channelIDs.indexOf(hashMention)]);
 
         function dbUpdate(channelID, channelName) {
             db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "tot" } } }, (err, exists) => {
-                if (err) console.log(err)
+                if (err) console.log(err);
                 if (!exists) {
                     //push channel if it doesn't exist
                     db.updateOne({ guildID: guildID },
                         {
                             $push: { channels: { command: "tot", channelID: channelID, channelName: channelName } }
-                        }).catch(err => console.log(err))
+                        }).catch(err => console.log(err));
                 } else {
                     ///update channel if it does exist
                     db.updateOne({ guildID: guildID, 'channels.command': "tot" }, {
                         $set: { 'channels.$.channelID': channelID, 'channels.$.channelName': channelName }
-                    }).catch(err => console.log(err))
+                    }).catch(err => console.log(err));
                 }
-            }).catch(err => console.log(err))
-            return message.reply("Updating channel... this may take a second...").then(m => m.delete(7500))
+            }).catch(err => console.log(err));
+            return message.reply("Updating channel... this may take a second...").then(m => m.delete(7500));
         }
     }
 }

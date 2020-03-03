@@ -88,7 +88,7 @@ module.exports = {
                 msg.delete();
 
                 message.reply(`Kick canceled.`)
-                    .then(m => m.delete(10000));
+                    .then(m => m.delete(7500));
             }
         });
     }

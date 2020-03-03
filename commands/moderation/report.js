@@ -10,23 +10,23 @@ module.exports = {
     usage: "<mention | id>",
     run: (client, message, args) => {
         if (!args[0])
-            return message.reply("Please provide a user").then(m => m.delete(7500))
+            return message.reply("Please provide a user").then(m => m.delete(7500));
 
-        let rMember = message.mentions.members.first() || message.guild.members.get(args[0])
+        let rMember = message.mentions.members.first() || message.guild.members.get(args[0]);
 
         if (!rMember)
-            return message.reply("Couldn't find that user").then(m => m.delete(7500))
+            return message.reply("Couldn't find that user").then(m => m.delete(7500));
 
         if (rMember.hasPermission("BAN_MEMBERS") || rMember.user.bot)
-            return message.reply("Cannot report that user").then(m => m.delete(7500))
+            return message.reply("Cannot report that user").then(m => m.delete(7500));
 
         if (!args[1])
-            return message.channel.send("Please provide a reason for the report").then(m => m.delete(7500))
+            return message.channel.send("Please provide a reason for the report").then(m => m.delete(7500));
 
         const channel = message.guild.channels.find(channel => channel.name === "reports");
 
         if (!channel)
-            return message.channel.send("Couldn't find a \`#reports\` channel").then(m => m.delete(7500))
+            return message.channel.send("Couldn't find a \`#reports\` channel").then(m => m.delete(7500));
 
         const embed = new RichEmbed()
             .setColor("RED")
@@ -38,6 +38,6 @@ module.exports = {
         **>Reported in:** ${message.channel}
         **>Reason:** ${args.slice(1).join(" ")}`);
 
-        return channel.send(embed)
+        return channel.send(embed);
     }
 }  

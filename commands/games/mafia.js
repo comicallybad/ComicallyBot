@@ -34,12 +34,12 @@ module.exports = {
                 let civilianUsers = users.filter(usr => usr.id !== mafiaUserID)
 
                 client.fetchUser(mafiaUserID, false).then(user => {
-                    user.send(`You have been selected to be **mafia** for **${message.author.username}'s** mafia game.`).then(m => m.delete(150000))
+                    user.send(`You have been selected to be **mafia** for **${message.author.username}'s** mafia game.`).then(m => m.delete(150000));
                 });
 
                 for (let i = 0; i < maxPlayers - 1; i++) {
                     client.fetchUser(civilianUsers[i].id, false).then(user => {
-                        user.send(`You have been selected to be **civilian** for **${message.author.username}'s** mafia game.`).then(m => m.delete(150000))
+                        user.send(`You have been selected to be **civilian** for **${message.author.username}'s** mafia game.`).then(m => m.delete(150000));
                     });
                 };
 
@@ -51,7 +51,7 @@ module.exports = {
                     .setFooter('The game is on, have fun!')
                     .setTimestamp();
 
-                msg.edit(embed).then(m => m.delete(150000))
+                msg.edit(embed).then(m => m.delete(150000));
             } else {
                 msg.clearReactions();
 

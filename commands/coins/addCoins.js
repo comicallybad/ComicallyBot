@@ -61,9 +61,9 @@ module.exports = {
 
                     logChannel.send(embed);
 
-                    return message.reply(coinsToAdd + " coins were added to the user.").then(m => m.delete(7500))
+                    return message.reply(coinsToAdd + " coins were added to the user.").then(m => m.delete(7500));
                 }
-            }).catch(err => console.log(err))
+            }).catch(err => console.log(err));
         }
     }
 }
