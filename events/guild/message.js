@@ -19,7 +19,7 @@ module.exports = async (client, message) => {
     if (!command) command = client.commands.get(client.aliases.get(cmd));
 
     if (command) {
-        if (message.deletable) message.delete();
+        if (message.deletable) message.delete().catch(err => err);
 
         if (command.category !== 'command') {
             getCommandStatus(message, command.name).then(function (res) {

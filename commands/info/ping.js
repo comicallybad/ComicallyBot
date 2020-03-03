@@ -4,10 +4,12 @@ module.exports = {
     description: "Returns latency and API ping.",
     permissions: "member",
     run: async (client, message, args) => {
-        const msg = await message.channel.send(`🏓 Pinging....`);
+        message.channel.send("Pinging...").then(msg => {
+            let ping = msg.createdTimestamp - message.createdTimestamp
 
-        msg.edit(`🏓 Pong!
-                Latency is ${Math.floor(msg.createdTimestap - message.createdTimestap)}ms
-                API Latency is ${Math.round(client.ping)}ms`);
+            msg.edit(`🏓 Pong!
+                        Latency is ${ping}ms
+                        API Latency is ${Math.round(client.ping)}ms`);
+        })
     }
 }
