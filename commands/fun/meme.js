@@ -19,6 +19,6 @@ module.exports = {
             .setURL(`https://reddit.com/r/${random}`)
             .setTimestamp();
 
-        message.channel.send(embed).then(m => m.delete({ timeout: 150000 }));
+        message.channel.send(embed);
     }
 }

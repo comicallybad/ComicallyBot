@@ -27,6 +27,6 @@ module.exports = {
                 `💟 ${Math.floor(love)}%\n\n${loveLevel}`)
             .setTimestamp();
 
-        message.channel.send(embed).then(m => m.delete({ timeout: 150000 }));;
+        message.channel.send(embed);
     }
 }
