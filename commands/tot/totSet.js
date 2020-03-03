@@ -9,16 +9,16 @@ module.exports = {
     usage: "<channelID|#channel>",
     run: (client, message, args) => {
         if (!args[0])
-            return message.reply("Please provide a channel.").then(m => m.delete(7500))
+            return message.reply("Please provide a channel.").then(m => m.delete({ timeout: 7500 }))
 
         let guildID = message.guild.id;
-        let serverChannels = client.channels.map(channel => channel).filter(channel => channel.type === "text").filter(channel => channel.guild.id === guildID)
+        let serverChannels = client.channels.cache.map(channel => channel).filter(channel => channel.type === "text").filter(channel => channel.guild.id === guildID)
         let channelNames = serverChannels.map(channel => channel.name)
         let channelIDs = serverChannels.map(channel => channel.id)
         let hashMention = args[0].slice(2, args[0].length - 1)
 
         if (!channelIDs.includes(hashMention) && !channelIDs.includes(args[0]))
-            return message.reply("Channel not found in this server").then(m => m.delete(7500));
+            return message.reply("Channel not found in this server").then(m => m.delete({ timeout: 7500 }));
 
         if (channelIDs.includes(args[0]))
             dbUpdate(args[0], channelNames[channelIDs.indexOf(args[0])]);
@@ -42,7 +42,7 @@ module.exports = {
                     }).catch(err => console.log(err));
                 }
             }).catch(err => console.log(err));
-            return message.reply("Updating channel... this may take a second...").then(m => m.delete(7500));
+            return message.reply("Updating channel... this may take a second...").then(m => m.delete({ timeout: 7500 }));
         }
     }
 }

@@ -1,4 +1,4 @@
-const { RichEmbed } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "flip",
@@ -7,7 +7,7 @@ module.exports = {
     description: "Flips a coin for heads or tails.",
     permissions: "member",
     run: (client, message, args) => {
-        let embed = new RichEmbed()
+        let embed = new MessageEmbed()
             .setColor("#0efefe")
             .setTitle("A coin was flipped..")
             .setTimestamp()
@@ -17,6 +17,6 @@ module.exports = {
         if (number === 0) embed.addField("Result", "\`Heads\`")
         else embed.addField("Result", "\`Tails\`")
 
-        message.channel.send(embed).then(m => m.delete(150000));;
+        message.channel.send(embed).then(m => m.delete({ timeout: 150000 }));
     }
 }

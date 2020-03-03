@@ -23,15 +23,15 @@ module.exports = async (client, message) => {
 
         if (command.category !== 'command') {
             getCommandStatus(message, command.name).then(function (res) {
-                if (!res) message.reply("Command disabled").then(m => m.delete(7500));
+                if (!res) message.reply("Command disabled").then(m => m.delete({ timeout: 7500 }));
                 if (res) hasPermissions(message, command.permissions).then(async function (res) {
-                    if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(7500));
+                    if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete({ timeout: 7500 }));
                     if (res) command.run(client, message, args);
                 });
             });
         } else {
             hasPermissions(message, command.permissions).then(async function (res) {
-                if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete(7500));
+                if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete({ timeout: 7500 }));
                 if (res) command.run(client, message, args);
             });
         }

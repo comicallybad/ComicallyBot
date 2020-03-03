@@ -7,10 +7,10 @@ module.exports = {
     usage: "[number of messages]",
     run: async (client, message, args) => {
         if (isNaN(args[0]) || parseInt(args[0]) <= 0)
-            return message.reply("Please provide a valid number.").then(m => m.delete(7500));
+            return message.reply("Please provide a valid number.").then(m => m.delete({ timeout: 7500 }));
 
         if (!message.guild.me.hasPermission("MANAGE_MESSAGES"))
-            return message.reply("I do not have permissions to delete messages.").then(m => m.delete(7500));
+            return message.reply("I do not have permissions to delete messages.").then(m => m.delete({ timeout: 7500 }));
 
         let deleteAmount;
 
@@ -18,6 +18,6 @@ module.exports = {
         else deleteAmount = parseInt(args[0]);
 
         message.channel.bulkDelete(deleteAmount, true)
-            .catch(err => message.reply(`Something went wrong ${err}`).then(m => m.delete(7500)));
+            .catch(err => message.reply(`Something went wrong ${err}`).then(m => m.delete({ timeout: 7500 })));
     }
 }

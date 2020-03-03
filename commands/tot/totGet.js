@@ -11,8 +11,8 @@ module.exports = {
 
         db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "tot" } } }, (err, exists) => {
             if (err) console.log(err)
-            if (!exists) return message.reply("Channel has not been set.").then(m => m.delete(7500))
-            else return message.reply(`TOT's response channel is: <#${exists.channels[exists.channels.map(cmd => cmd.command).indexOf("tot")].channelID}>`).then(m => m.delete(7500))
+            if (!exists) return message.reply("Channel has not been set.").then(m => m.delete({ timeout: 7500 }))
+            else return message.reply(`TOT's response channel is: <#${exists.channels[exists.channels.map(cmd => cmd.command).indexOf("tot")].channelID}>`).then(m => m.delete({ timeout: 7500 }))
         }).catch(err => console.log(err))
     }
 }

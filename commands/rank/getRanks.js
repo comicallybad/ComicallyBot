@@ -1,5 +1,5 @@
 const db = require("../../schemas/db.js");
-const { RichEmbed } = require("discord.js")
+const { MessageEmbed } = require("discord.js")
 
 module.exports = {
     name: "getranks",
@@ -11,10 +11,10 @@ module.exports = {
     run: async (client, message, args) => {
         const guildID = message.guild.id;
 
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setColor("#0efefe")
             .setTitle("Buyable Ranks")
-            .setFooter(message.guild.me.displayName, client.user.displayAvatarURL)
+            .setFooter(message.guild.me.displayName, client.user.displayAvatarURL())
             .setDescription("List of buyable ranks")
             .setTimestamp();
 
@@ -25,10 +25,10 @@ module.exports = {
             if (exists.buyableRanks.length > 0) {
                 let rankList = exists.buyableRanks.map(rank => "Name: " + `\`${rank.roleName}\`` + ", ID: " + `\`${rank.roleID}\`` + ", Cost: " + `\`${rank.cost}\``);
                 embed.setDescription("").addField("Ranks: ", rankList);
-                m.edit(embed).then(m => m.delete(30000));
+                m.edit(embed).then(m => m.delete({ timeout: 30000 }));
             } else {
                 embed.setDescription("").addField("Ranks: ", "There have been no buyable ranks set");
-                m.edit(embed).then(m => m.delete(30000));
+                m.edit(embed).then(m => m.delete({ timeout: 30000 }));
             }
         }).catch(err => console.log(err))
     }

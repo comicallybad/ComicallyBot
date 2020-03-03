@@ -1,5 +1,5 @@
 const { getMember } = require("../../functions.js");
-const { RichEmbed } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "goodnight",
@@ -10,13 +10,13 @@ module.exports = {
     run: (client, message, args) => {
         const member = getMember(message, args.join(" "));
 
-        const embed = new RichEmbed()
-            .setFooter(member.displayName, member.user.displayAvatarURL)
-            .setThumbnail(member.user.displayAvatarURL)
+        const embed = new MessageEmbed()
+            .setFooter(member.displayName, member.user.displayAvatarURL())
+            .setThumbnail(member.user.displayAvatarURL())
             .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
             .addField('Goodnight Message:', `Goodnight ${member.displayName} sleep tight`)
             .setTimestamp();
 
-        message.channel.send(embed).then(m => m.delete(150000));;
+        message.channel.send(embed).then(m => m.delete({ timeout: 150000 }));;
     }
 }

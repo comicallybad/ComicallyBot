@@ -1,4 +1,4 @@
-const { RichEmbed } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 const { getMember, formatDate } = require("../../functions.js");
 
@@ -14,16 +14,16 @@ module.exports = {
 
         // Member variables
         const joined = formatDate(member.joinedAt);
-        const roles = member.roles
+        const roles = member.roles.cache
             .filter(r => r.id !== message.guild.id)
             .map(r => r).join(", ") || 'none';
 
         // User variables
         const created = formatDate(member.user.createdAt);
 
-        const embed = new RichEmbed()
-            .setFooter(member.displayName, member.user.displayAvatarURL)
-            .setThumbnail(member.user.displayAvatarURL)
+        const embed = new MessageEmbed()
+            .setFooter(member.displayName, member.user.displayAvatarURL())
+            .setThumbnail(member.user.displayAvatarURL())
             .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
             .addField('Member information:', stripIndents`**> Display name:** ${member.displayName}
             **> Joined at:** ${joined}
@@ -37,6 +37,6 @@ module.exports = {
         if (member.user.presence.game)
             embed.addField('Currently playing', stripIndents`**> Name:** ${member.user.presence.game.name}`);
 
-        message.channel.send(embed).then(m => m.delete(150000));
+        message.channel.send(embed).then(m => m.delete({ timeout: 150000 }));
     }
 }

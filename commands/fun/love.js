@@ -1,5 +1,5 @@
 const { getMember } = require("../../functions.js");
-const { RichEmbed } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "love",
@@ -12,7 +12,7 @@ module.exports = {
         let person = getMember(message, args[0]);
 
         if (!person || message.author.id === person.id) {
-            person = message.guild.members
+            person = message.guild.members.cache
                 .filter(m => m.id !== message.author.id)
                 .random();
         }
@@ -21,12 +21,12 @@ module.exports = {
         const loveIndex = Math.floor(love / 10);
         const loveLevel = "💖".repeat(loveIndex) + "💔".repeat(10 - loveIndex);
 
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setColor("#ffb6c1")
             .addField(`☁ **${person.displayName}** loves **${message.member.displayName}** this much:`,
                 `💟 ${Math.floor(love)}%\n\n${loveLevel}`)
             .setTimestamp();
 
-        message.channel.send(embed).then(m => m.delete(150000));;
+        message.channel.send(embed).then(m => m.delete({ timeout: 150000 }));;
     }
 }

@@ -4,8 +4,8 @@ const coins = require('./schemas/coins.js');
 
 module.exports = {
     dbSetup(client) {
-        let guildsID = (client.guilds.map(guild => guild.id));
-        let guildsName = (client.guilds.map(guild => guild.name));
+        let guildsID = (client.guilds.cache.map(guild => guild.id));
+        let guildsName = (client.guilds.cache.map(guild => guild.name));
         let commands = (client.commands.map(cmd => cmd.name));
 
         guildsID.forEach((element, guildIndex) => { //for each guild
