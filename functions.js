@@ -3,7 +3,7 @@ const db = require('./schemas/db.js');
 module.exports = {
     hasPermissions: async function (message, commandType) {
         let guildID = message.guild.id;
-        let roleIDs = message.member._roles.map(roles => roles.id);
+        let roleIDs = message.member.roles.cache.map(roles => roles.id);
         let userID = message.member.id;
 
         let hasPermissions = new Promise((resolve, reject) => {
