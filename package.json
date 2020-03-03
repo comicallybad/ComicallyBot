@@ -17,6 +17,7 @@
     "fortnite": "^4.3.2",
     "mongoose": "^5.9.3",
     "node-fetch": "^2.6.0",
-    "random-puppy": "^1.1.0"
+    "random-puppy": "^1.1.0",
+    "urban": "^0.3.2"
   }
 }
