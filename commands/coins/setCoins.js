@@ -1,5 +1,4 @@
 const coins = require('../../schemas/coins.js');
-const mongoose = require("mongoose");
 const { findID } = require("../../functions.js");
 
 const { stripIndents } = require("common-tags");
