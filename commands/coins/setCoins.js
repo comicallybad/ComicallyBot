@@ -15,7 +15,6 @@ module.exports = {
     run: (client, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name === "mods-log") || message.channel;
 
-        let guildName = message.guild.name;
         let guildID = message.guild.id;
         let userIDs = message.guild.members.cache.map(user => user.user.id);
         let userNames = message.guild.members.cache.map(user => user.user.username);
