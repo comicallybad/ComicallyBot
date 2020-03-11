@@ -23,6 +23,6 @@ module.exports = {
             .setThumbnail(player.queue[0].thumbnail)
             .setDescription(string);
 
-        return message.reply(embed).then(m => del(m, 30000));
+        return message.channel.send(embed).then(m => del(m, 30000));
     }
 }
