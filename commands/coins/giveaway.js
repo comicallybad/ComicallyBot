@@ -42,7 +42,7 @@ module.exports = {
             .setTimestamp();
 
         message.channel.send(embed).then(async msg => {
-            const users = await awaitReaction(msg, 7500, "💯");
+            const users = await awaitReaction(msg, time, "💯");
 
             if (users.length > 0) {
                 const random = Math.floor(Math.random() * users.length);
