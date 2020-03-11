@@ -65,8 +65,10 @@ module.exports = {
             return message.reply("Toggling command... this may take a second...").then(m => del(m, 7500));
         } else if (aliasList.includes(args[0])) {
             let command = client.commands.map(function (cmd) {
-                if (cmd.aliases == args[0] && cmd.category !== "command") return cmd.name
-            }).filter(cmd => cmd)[0];
+                if (cmd.aliases)
+                    if (cmd.aliases.includes(args[0]) && cmd.category !== "command")
+                        return cmd.name
+            }).filter(cmd => cmd)[0]
             let bool;
 
             if (!command)
