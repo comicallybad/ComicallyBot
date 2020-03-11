@@ -4,7 +4,7 @@ const { config } = require("dotenv");
 const client = new Client();
 
 config({ path: __dirname + "/.env" });
-global.prefix = "=";
+global.prefix = "_";
 
 ["aliases", "commands"].forEach(x => client[x] = new Collection());
 ["console", "command", "event"].forEach(x => require(`./handlers/${x}`)(client));
