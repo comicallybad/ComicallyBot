@@ -21,9 +21,9 @@ module.exports = client => {
         .on("nodeError", () => console.log("Error connecting Erela"))
         .on("nodeConnect", () => console.log("Successfully connected Erela."))
         .on("queueEnd", player => {
-            player.textChannel.send("Queue has ended.").then(m => m.delete({ time: 7500 }));
+            player.textChannel.send("Queue has ended.").then(m => m.delete({ time: 30000 }));
             return client.music.players.destroy(player.guild.id)
         })
         .on("trackStart", ({ textChannel }, { title, duration }) =>
-            textChannel.send(`Now playing: **${title}** \`${Utils.formatTime(duration, true)}\``).then(m => m.delete({ time: 15000 })));
+            textChannel.send(`Now playing: **${title}** \`${Utils.formatTime(duration, true)}\``).then(m => m.delete({ time: 30000 })));
 }
