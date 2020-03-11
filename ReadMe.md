@@ -12,7 +12,7 @@ To clone and use ComicallyBot2.0 you will have to do a few things:
 9. Use _addmember {@role | roleID | @user | userID} to add a role/user to access member commands
 10. Use _addmod {@role | roleID | @user | userID} to add a role/user to access mod commands
 11. Administrator commands can only be accessed by server administrators
---------------------------------------------------------------------------------------------------
+________________________________________________________________________________
 Differences for Mac/Linux users:
 1. Install Java v11 or higher https://www.azul.com/downloads/zulu-community/?&version=java-11-lts&os=&os=macos&architecture=x86-64-bit&package=jdk
 2. "Chmod u+x ./start.sh"
