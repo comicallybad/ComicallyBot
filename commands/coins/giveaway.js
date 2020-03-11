@@ -2,6 +2,7 @@ const { del, awaitReaction } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 const coins = require('../../schemas/coins.js');
+const mongoose = require("mongoose")
 
 module.exports = {
     name: "giveaway",
@@ -14,6 +15,7 @@ module.exports = {
         const logChannel = message.guild.channels.cache.find(c => c.name === "mods-log") || message.channel;
 
         let guildID = message.guild.id;
+        let guildName = message.guild.name;
 
         if (!args[0])
             return message.reply("Please provide an amount of coins.").then(m => del(m, 7500));
@@ -40,7 +42,7 @@ module.exports = {
             .setTimestamp();
 
         message.channel.send(embed).then(async msg => {
-            const users = await awaitReaction(msg, time, "💯");
+            const users = await awaitReaction(msg, 7500, "💯");
 
             if (users.length > 0) {
                 const random = Math.floor(Math.random() * users.length);

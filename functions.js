@@ -146,7 +146,8 @@ module.exports = {
 
         return message
             .awaitReactions(filter, { time: time })
-            .then(collected => collected.map(data => data)[0]
-                .users.cache.map(usr => usr).filter(usr => !usr.bot));
+            .then(collected => collected
+                .map(usr => usr.users.cache)[0].map(usr => usr)
+                .filter(usr => !usr.bot));
     },
 }
