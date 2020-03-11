@@ -53,8 +53,10 @@ module.exports = {
                     }, { time: 30000, max: 1 });
 
                     collector.on("collect", m => {
-                        if (/cancel/i.test(m.content)) return collector.stop("cancelled")
-
+                        if (/cancel/i.test(m.content)) {
+                            m.delete();
+                            return collector.stop("cancelled")
+                        }
                         const track = tracks[Number(m.content) - 1];
                         player.queue.add(track)
                         message.reply(`Queuing \`${track.title}\` \`${Utils.formatTime(track.duration, true)}\``).then(m => m.delete({ timeout: 7500 }));
