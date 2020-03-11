@@ -1,4 +1,4 @@
-const { RichEmbed } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const fetch = require("node-fetch");
 const { stripIndents } = require("common-tags");
 const { formatDate } = require("../../functions")
@@ -12,11 +12,11 @@ module.exports = {
     run: async (client, message, args) => {
         const token = process.env.STEAM;
         const date = new Date();
-        if (!args[0]) return message.reply("Please provide an account name!").then(m => m.delete(7500));
+        if (!args[0]) return message.reply("Please provide an account name!").then(m => m.delete({ timeout: 7500 }));
         const url = `http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${token}&vanityurl=${args.join(" ")}`;
 
         fetch(url).then(res => res.json()).then(body => {
-            if (body.response.success === 42) return message.reply("I was unable to find a steam profile with that name").then(m => m.delete(7500));
+            if (body.response.success === 42) return message.reply("I was unable to find a steam profile with that name").then(m => m.delete({ timeout: 7500 }));
 
             const id = body.response.steamid;
             const summaries = `http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${token}&steamids=${id}`;
@@ -24,14 +24,14 @@ module.exports = {
             const state = ["Offline", "Online", "Busy", "Away", "Snooze", "Looking to trade", "Looking to play"];
 
             fetch(summaries).then(res => res.json()).then(body => {
-                if (!body.response) return message.channel.send("I was unable to find a steam profile with that name").then(m => m.delete(7500));
+                if (!body.response) return message.channel.send("I was unable to find a steam profile with that name").then(m => m.delete({ timeout: 7500 }));
                 const { personaname, avatarfull, realname, personastate, loccountrycode, profileurl, timecreated } = body.response.players[0];
 
                 fetch(bans).then(res => res.json()).then(body => {
-                    if (!body.players) return message.channel.send("I was unable to find a steam profile with that name").then(m => m.delete(7500));
+                    if (!body.players) return message.channel.send("I was unable to find a steam profile with that name").then(m => m.delete({ timeout: 7500 }));
                     const { NumberOfVACBans, NumberOfGameBans } = body.players[0];
 
-                    const embed = new RichEmbed()
+                    const embed = new MessageEmbed()
                         .setColor("#0efefe")
                         .setAuthor(`Steam Services | ${personaname}`, avatarfull)
                         .setThumbnail(avatarfull)
@@ -43,7 +43,7 @@ module.exports = {
                 **Link:** [link to profile](${profileurl})`)
                         .setTimestamp();
 
-                    message.channel.send(embed).then(m => m.delete(150000));
+                    message.channel.send(embed).then(m => m.delete({ timeout: 150000 }));
                 })
             })
         })

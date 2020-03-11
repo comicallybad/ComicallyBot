@@ -3,7 +3,7 @@ const db = require('./schemas/db.js');
 module.exports = {
     hasPermissions: async function (message, commandType) {
         let guildID = message.guild.id;
-        let roleIDs = message.member.roles.map(roles => roles.id);
+        let roleIDs = message.member.roles.cache.map(roles => roles.id);
         let userID = message.member.id;
 
         let hasPermissions = new Promise((resolve, reject) => {
@@ -47,7 +47,7 @@ module.exports = {
                 commands: { $elemMatch: { name: command } }
             }, (err, exists) => {
                 if (err) console.log(err)
-                if (!exists) return message.reply("Error within database").then(m => m.delete(7500))
+                if (!exists) return message.reply("Error within database").then(m => m.delete({ timeout: 7500 }))
                 else {
                     if (exists.commands[exists.commands.map(cmd => cmd.name).indexOf(command)].status === true) resolve(true);
                     else resolve(false)
@@ -60,8 +60,8 @@ module.exports = {
     },
 
     findID: function (message, input, type) {
-        let roleIDs = message.guild.roles.map(role => role.id);
-        let userIDs = message.guild.members.map(user => user.user.id);
+        let roleIDs = message.guild.roles.cache.map(role => role.id);
+        let userIDs = message.guild.members.cache.map(user => user.user.id);
         let mention = input.slice(3, input.length - 1)
 
         if (!type || type === "either") {
@@ -87,7 +87,7 @@ module.exports = {
                 channels: { $elemMatch: { command: command } }
             }, (err, exists) => {
                 if (err) console.log(err)
-                if (!exists) return message.reply("Try setting channel first").then(m => m.delete(7500));
+                if (!exists) return message.reply("Try setting channel first").then(m => m.delete({ timeout: 7500 }));
                 else resolve(exists.channels[exists.channels.map(cmd => cmd.command).indexOf(command)].channelID)
             }).catch(err => console.log(err))
         });
@@ -99,13 +99,13 @@ module.exports = {
     getMember: function (message, toFind = '') {
         toFind = toFind.toLowerCase();
 
-        let target = message.guild.members.get(toFind);
+        let target = message.guild.members.cache.get(toFind);
 
         if (!target && message.mentions.members)
             target = message.mentions.members.first();
 
         if (!target && toFind) {
-            target = message.guild.members.find(member => {
+            target = message.guild.members.cache.find(member => {
                 return member.displayName.toLowerCase().includes(toFind) ||
                     member.user.tag.toLowerCase().includes(toFind)
             });
@@ -130,7 +130,7 @@ module.exports = {
         const filter = (reaction, user) => validReactions.includes(reaction.emoji.name) && user.id === author.id;
 
         return message
-            .awaitReactions(filter, { max: 2, time: time })
+            .awaitReactions(filter, { max: 1, time: time })
             .then(collected => collected.first() && collected.first().emoji.name);
     },
 
@@ -143,6 +143,6 @@ module.exports = {
         return message
             .awaitReactions(filter, { time: time })
             .then(collected => collected.map(data => data)[0]
-                .users.map(usr => usr).filter(usr => !usr.bot));
+                .users.cache.map(usr => usr).filter(usr => !usr.bot));
     },
 }

@@ -1,5 +1,5 @@
 const urban = require("urban");
-const { RichEmbed } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
     permissions: "member",
     description: "gets an urban dictionary definition",
     run: (client, message, args) => {
-        if (!args[0] || !["search", "random"].includes(args[0])) return message.reply("Please provide <search|random> (query).").then(m => m.delete(7500));
+        if (!args[0] || !["search", "random"].includes(args[0])) return message.reply("Please provide <search|random> (query).").then(m => m.delete({ timeout: 7500 }));
         let image = "http://cdn.marketplaceimages.windowsphone.com/v8/images/5c942bfe-6c90-45b0-8cd7-1f2129c6e319?imageType=ws_icon_medium";
         let search = args[1] ? urban(args.slice(1).join(" ")) : urban.random();
         try {
@@ -18,7 +18,7 @@ module.exports = {
                 if (!res) return message.reply("No results found for this topic, sorry!");
                 let { word, definition, example, thumbs_up, thumbs_down, permalink, author } = res;
 
-                let embed = new RichEmbed()
+                let embed = new MessageEmbed()
                     .setColor("#0efefe")
                     .setAuthor(`Urban Dictionary | ${word}`, image)
                     .setThumbnail(image)
@@ -30,10 +30,10 @@ module.exports = {
                     .setTimestamp()
                     .setFooter(`Written by ${author || "unknown"}`);
 
-                message.channel.send(embed).then(m => m.delete(150000));
+                message.channel.send(embed).then(m => m.delete({ timeout: 150000 }));
             })
         } catch (err) {
-            return message.channel.send(`Error while searching... ${err}`).then(m => m.delete(7500));
+            return message.channel.send(`Error while searching... ${err}`).then(m => m.delete({ timeout: 7500 }));
         }
     }
 }

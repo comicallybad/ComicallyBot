@@ -1,5 +1,5 @@
 const { promptMessage } = require("../../functions.js");
-const { RichEmbed } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 
 const chooseArr = ["🗻", "📰", "✂"];
 
@@ -10,9 +10,9 @@ module.exports = {
     description: "Rock Paper Scissors game. React to one of the emojis to play the game.",
     permissions: "member",
     run: async (client, message, args) => {
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setColor("#ffffff")
-            .setFooter(message.guild.me.displayName, client.user.displayAvatarURL)
+            .setFooter(message.guild.me.displayName, client.user.displayAvatarURL())
             .setDescription("Add a reaction to one of these emojis to play the game!")
             .setTimestamp();
 
@@ -22,7 +22,7 @@ module.exports = {
         const botChoice = chooseArr[Math.floor(Math.random() * chooseArr.length)];
 
         const result = await getResult(reacted, botChoice);
-        await m.clearReactions();
+        await m.reactions.removeAll();
 
         embed
             .setDescription("")

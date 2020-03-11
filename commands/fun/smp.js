@@ -1,4 +1,4 @@
-const { RichEmbed } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "smp",
@@ -7,11 +7,11 @@ module.exports = {
     description: "Sends a message explaining smp.",
     permissions: "member",
     run: (client, message, args) => {
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .addField('**SMP explaination:**', `**SMP**, is a commonly used acronym by ComicallyBad.
             **SMP**, standing for "**Shit my pants**", is often used in the context of; "I am going to **SMP**"`)
             .setTimestamp();
 
-        message.channel.send(embed).then(m => m.delete(150000));
+        message.channel.send(embed).then(m => m.delete({ timeout: 150000 }));
     }
 }

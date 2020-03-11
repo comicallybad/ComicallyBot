@@ -1,5 +1,5 @@
 const db = require('../../schemas/db.js');
-const { RichEmbed } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
             if (err) console.log(err)
             if (!exists) return message.reply("Error in database")
             if (exists) {
-                const embed = new RichEmbed()
+                const embed = new MessageEmbed()
                     .setColor("#0efefe")
                     .setTimestamp()
 
@@ -39,7 +39,7 @@ module.exports = {
                     .map(cat => stripIndents`**${cat[0].toUpperCase() + cat.slice(1)}** \n${commands(cat)}`)
                     .reduce((string, category) => string + "\n" + category);
 
-                return message.channel.send(embed.setDescription(info)).then(m => m.delete(30000));
+                return message.channel.send(embed.setDescription(info)).then(m => m.delete({ timeout: 30000 }));
             }
         });
     }

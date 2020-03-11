@@ -1,4 +1,4 @@
-const { RichEmbed } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
 const Client = require("fortnite");
@@ -14,14 +14,14 @@ module.exports = {
     run: async (client, message, args) => {
         const platforms = ["pc", "xb1", "psn"];
 
-        if (!args[0]) message.reply("Please provide a Fortnite username").then(m => m.delete(7500));
+        if (!args[0]) message.reply("Please provide a Fortnite username").then(m => m.delete({ timeout: 7500 }));
         else
             if (args[0].toLowerCase() === "store" || args[0].toLowerCase() === "shop") {
                 const store = await ft.store();
 
-                const embed = new RichEmbed()
+                const embed = new MessageEmbed()
                     .setColor("#9d4dbb")
-                    .setFooter("Fortnite store", message.author.displayAvatarURL)
+                    .setFooter("Fortnite store", message.author.displayAvatarURL())
                     .setTimestamp();
 
                 store.sort((a, b) => {
@@ -51,7 +51,7 @@ module.exports = {
                 const search = await ft.user(username, platform);
 
                 if (!search.username) {
-                    return message.channel.send("Couldn't find that person, try again").then(m => m.delete(7500));
+                    return message.channel.send("Couldn't find that person, try again").then(m => m.delete({ timeout: 7500 }));
                 }
 
                 const lifetime = search.stats.lifetime;
@@ -59,11 +59,11 @@ module.exports = {
                 const duo = search.stats.duo;
                 const squad = search.stats.squad;
 
-                const embed = new RichEmbed()
+                const embed = new MessageEmbed()
                     .setTitle(`${search.username} (${search.platform})`)
                     .setURL(search.url)
                     .setColor("#9d4dbb")
-                    .setFooter(`Fortnite stats`, message.author.displayAvatarURL)
+                    .setFooter(`Fortnite stats`, message.author.displayAvatarURL())
                     .setTimestamp()
                     .addField("Solo:", stripIndents`**- Wins:** ${solo.wins}
                 **- KD:** ${solo.kd}
@@ -81,7 +81,7 @@ module.exports = {
                 **- KD:** ${lifetime.kd}
                 **- Kills:** ${lifetime.kills}`, false)
 
-                message.channel.send(embed).then(m => m.delete(150000));
+                message.channel.send(embed).then(m => m.delete({ timeout: 150000 }));
             }
     }
 }

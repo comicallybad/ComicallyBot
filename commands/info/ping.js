@@ -9,7 +9,7 @@ module.exports = {
 
             msg.edit(`🏓 Pong!
                         Latency is ${ping}ms
-                        API Latency is ${Math.round(client.ping)}ms`);
+                        API Latency is ${Math.round(client.ws.ping)}ms`);
         })
     }
 }

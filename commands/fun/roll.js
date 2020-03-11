@@ -1,4 +1,4 @@
-const { RichEmbed } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "roll",
@@ -7,7 +7,7 @@ module.exports = {
     description: "Rolls a dice for a number 1-6.",
     permissions: "member",
     run: (client, message, args) => {
-        let embed = new RichEmbed()
+        let embed = new MessageEmbed()
             .setColor("#0efefe")
             .setTitle("A dice was rolled..")
             .setTimestamp()
@@ -16,6 +16,6 @@ module.exports = {
 
         embed.addField("Result", `\`${number}\``);
 
-        message.channel.send(embed).then(m => m.delete(150000));
+        message.channel.send(embed).then(m => m.delete({ timeout: 150000 }));
     }
 }
