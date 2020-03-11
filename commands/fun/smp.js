@@ -1,3 +1,4 @@
+const { del } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
@@ -12,6 +13,6 @@ module.exports = {
             **SMP**, standing for "**Shit my pants**", is often used in the context of; "I am going to **SMP**"`)
             .setTimestamp();
 
-        message.channel.send(embed).then(m => m.delete({ timeout: 150000 }));
+        message.channel.send(embed).then(m => del(m, 15000));
     }
 }

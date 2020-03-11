@@ -1,6 +1,6 @@
+const { del, getCommandStatus } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
-const { getCommandStatus } = require("../../functions");
 
 module.exports = {
     name: "help",
@@ -42,7 +42,7 @@ async function getAll(client, message) {
         .map(cat => stripIndents`**${cat[0].toUpperCase() + cat.slice(1)}** \n${commands(cat)}`)
         .reduce((string, category) => string + "\n" + category);
 
-    return message.channel.send(embed.setDescription(info)).then(m => m.delete({ timeout: 30000 }));
+    return message.channel.send(embed.setDescription(info)).then(m => del(m, 30000));
 }
 
 function getCMD(client, message, input) {
@@ -55,7 +55,7 @@ function getCMD(client, message, input) {
 
     // If no cmd is found, send not found embed
     if (!cmd) {
-        return message.channel.send(embed.setColor("#ff0000").setDescription(info)).then(m => m.delete({ timeout: 30000 }));
+        return message.channel.send(embed.setColor("#ff0000").setDescription(info)).then(m => del(m, 30000));
     }
 
     // Add all cmd info to the embed
@@ -71,6 +71,6 @@ function getCMD(client, message, input) {
         if (res === false) info += '\n**Status**: ❌';
         if (res === true) info += '\n**Status**: ✅';
 
-        return message.channel.send(embed.setColor("#0efefe").setDescription(info)).then(m => m.delete({ timeout: 30000 }));
+        return message.channel.send(embed.setColor("#0efefe").setDescription(info)).then(m => del(m, 30000));
     });
 }

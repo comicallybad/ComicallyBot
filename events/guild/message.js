@@ -1,4 +1,4 @@
-const { getCommandStatus, hasPermissions } = require("../../functions.js");
+const { del, getCommandStatus, hasPermissions } = require("../../functions.js");
 const { addCoins } = require("../../dbFunctions.js");
 
 module.exports = async (client, message) => {
@@ -19,19 +19,19 @@ module.exports = async (client, message) => {
     if (!command) command = client.commands.get(client.aliases.get(cmd));
 
     if (command) {
-        if (message.deletable) message.delete().catch(err => err);
+        del(message, 0)
 
         if (command.category !== 'command') {
             getCommandStatus(message, command.name).then(function (res) {
-                if (!res) message.reply("Command disabled").then(m => m.delete({ timeout: 7500 }));
+                if (!res) message.reply("Command disabled").then(m => del(m, 7500));
                 if (res) hasPermissions(message, command.permissions).then(async function (res) {
-                    if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete({ timeout: 7500 }));
+                    if (!res) message.reply("You do not have permissions for this command.").then(m => del(m, 7500));
                     if (res) command.run(client, message, args);
                 });
             });
         } else {
             hasPermissions(message, command.permissions).then(async function (res) {
-                if (!res) message.reply("You do not have permissions for this command.").then(m => m.delete({ timeout: 7500 }));
+                if (!res) message.reply("You do not have permissions for this command.").then(m => del(m, 7500));
                 if (res) command.run(client, message, args);
             });
         }

@@ -1,6 +1,5 @@
+const { del, findID } = require("../../functions.js");
 const db = require("../../schemas/db.js");
-const { findID } = require("../../functions.js");
-
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
 
@@ -16,7 +15,7 @@ module.exports = {
         let guildID = message.guild.id;
 
         if (!args[0])
-            return message.reply("Please provide a role.").then(m => m.delete({ timeout: 7500 }));
+            return message.reply("Please provide a role.").then(m => del(m, 7500));
 
         let roleIDs = message.guild.roles.cache.map(role => role.id);
         let roleNames = message.guild.roles.cache.map(role => role.name.toLowerCase());
@@ -31,7 +30,7 @@ module.exports = {
             if (!isNaN(args[0]))
                 removeRank(args[0]);
             else
-                return message.reply("Please provide a valid role, if you are trying to remove a deleted role, attempt the command again with the role ID from the getroles command").then(m => m.delete({ timeout: 7500 }));
+                return message.reply("Please provide a valid role, if you are trying to remove a deleted role, attempt the command again with the role ID from the getroles command").then(m => del(m, 7500));
 
         function removeRank(roleID) {
             let roleName = roleNames[roleIDs.indexOf(roleID)]
@@ -53,9 +52,9 @@ module.exports = {
 
                         logChannel.send(embed);
 
-                        return message.reply("Removing buyable rank... this may take a second...").then(m => m.delete({ timeout: 7500 }));
+                        return message.reply("Removing buyable rank... this may take a second...").then(m => del(m, 7500));
                     }).catch(err => console.log(err))
-                } if (!exists) return message.reply("This rank was never added, or it was removed already.").then(m => m.delete({ timeout: 7500 }));
+                } if (!exists) return message.reply("This rank was never added, or it was removed already.").then(m => del(m, 7500));
             }).catch(err => console.log(err))
         }
     }

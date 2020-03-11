@@ -1,6 +1,10 @@
 const db = require('./schemas/db.js');
 
 module.exports = {
+    del: async function (message, timeout) {
+        if (message.deletable) message.delete({ timeout: timeout })
+            .catch(err => err) //This gets rid of the annoying "Unknown Message" error.
+    },
     hasPermissions: async function (message, commandType) {
         let guildID = message.guild.id;
         let roleIDs = message.member.roles.cache.map(roles => roles.id);
@@ -47,7 +51,7 @@ module.exports = {
                 commands: { $elemMatch: { name: command } }
             }, (err, exists) => {
                 if (err) console.log(err)
-                if (!exists) return message.reply("Error within database").then(m => m.delete({ timeout: 7500 }))
+                if (!exists) return message.reply("Error within database").then(m => del(m, 7500));
                 else {
                     if (exists.commands[exists.commands.map(cmd => cmd.name).indexOf(command)].status === true) resolve(true);
                     else resolve(false)
@@ -87,7 +91,7 @@ module.exports = {
                 channels: { $elemMatch: { command: command } }
             }, (err, exists) => {
                 if (err) console.log(err)
-                if (!exists) return message.reply("Try setting channel first").then(m => m.delete({ timeout: 7500 }));
+                if (!exists) return message.reply("Try setting channel first").then(m => del(m, 7500));
                 else resolve(exists.channels[exists.channels.map(cmd => cmd.command).indexOf(command)].channelID)
             }).catch(err => console.log(err))
         });
@@ -142,7 +146,8 @@ module.exports = {
 
         return message
             .awaitReactions(filter, { time: time })
-            .then(collected => collected.map(data => data)[0]
-                .users.cache.map(usr => usr).filter(usr => !usr.bot));
+            .then(collected => collected
+                .map(usr => usr.users.cache)[0].map(usr => usr)
+                .filter(usr => !usr.bot));
     },
 }

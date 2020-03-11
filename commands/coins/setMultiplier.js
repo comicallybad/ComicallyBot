@@ -1,5 +1,5 @@
+const { del } = require("../../functions.js");
 const db = require('../../schemas/db.js');
-
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
 
@@ -16,13 +16,13 @@ module.exports = {
         let guildID = message.guild.id;
 
         if (!args[0])
-            return message.reply("Please provide a multiplier.").then(m => m.delete({ timeout: 7500 }));
+            return message.reply("Please provide a multiplier.").then(m => del(m, 7500));
 
         if (isNaN(args[0]) || parseInt(args[0]) <= 0)
-            return message.reply("Please provide a valid amount above 0.").then(m => m.delete({ timeout: 7500 }));
+            return message.reply("Please provide a valid amount above 0.").then(m => del(m, 7500));
 
         if (!isNaN(args[0]))
-            if (args[0] > 3) return message.reply("Please provide an amount between 1 and 3").then(m => m.delete({ timeout: 7500 }));
+            if (args[0] > 3) return message.reply("Please provide an amount between 1 and 3").then(m => del(m, 7500));
             else {
                 db.updateOne({ guildID: guildID }, {
                     coinsMultiplier: args[0]
@@ -39,7 +39,7 @@ module.exports = {
 
                 logChannel.send(embed);
 
-                return message.reply("Server multiplier set to: " + args[0] + "x coins").then(m => m.delete({ timeout: 7500 }));
+                return message.reply("Server multiplier set to: " + args[0] + "x coins").then(m => del(m, 7500));
             }
     }
 }

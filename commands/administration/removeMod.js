@@ -1,6 +1,5 @@
+const { del, findID } = require("../../functions.js");
 const db = require('../../schemas/db.js');
-const { findID } = require("../../functions.js");
-
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
 
@@ -16,12 +15,12 @@ module.exports = {
         let guildID = message.guild.id;
 
         if (!args[0])
-            return message.reply("Please provide a user/role.").then(m => m.delete({ timeout: 7500 }));
+            return message.reply("Please provide a user/role.").then(m => del(m, 7500));
 
         let ID = findID(message, args[0]);
 
         if (!ID)
-            return message.reply("user/role not found").then(m => m.delete({ timeout: 7500 }));
+            return message.reply("user/role not found").then(m => del(m, 7500));
         else removeMod(ID);
 
         function removeMod(roleID) {
@@ -45,9 +44,9 @@ module.exports = {
 
                         logChannel.send(embed);
 
-                        return message.reply("Removing mod... this may take a second...").then(m => m.delete({ timeout: 7500 }));
+                        return message.reply("Removing mod... this may take a second...").then(m => del(m, 7500));
                     }).catch(err => console.log(err))
-                } else return message.reply("user/role was never added, or it was already removed.").then(m => m.delete({ timeout: 7500 }));
+                } else return message.reply("user/role was never added, or it was already removed.").then(m => del(m, 7500));
             }).catch(err => console.log(err))
         }
     }

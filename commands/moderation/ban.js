@@ -1,6 +1,6 @@
+const { del, promptMessage } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
-const { promptMessage } = require("../../functions.js");
 
 module.exports = {
     name: "ban",
@@ -14,25 +14,25 @@ module.exports = {
         // No author permissions
         if (!message.member.hasPermission("BAN_MEMBERS")) {
             return message.reply("❌ You do not have permissions to ban members. Please contact a staff member")
-                .then(m => m.delete({ timeout: 7500 }));
+                .then(m => del(m, 7500));
         }
 
         // No bot permissions
         if (!message.guild.me.hasPermission("BAN_MEMBERS")) {
             return message.reply("❌ I do not have permissions to ban members. Please contact a staff member")
-                .then(m => m.delete({ timeout: 7500 }));
+                .then(m => del(m, 7500));
         }
 
         // No args
         if (!args[0]) {
             return message.reply("Please provide a person to ban.")
-                .then(m => m.delete({ timeout: 7500 }));
+                .then(m => del(m, 7500));
         }
 
         // No reason
         if (!args[1]) {
             return message.reply("Please provide a reason to ban.")
-                .then(m => m.delete({ timeout: 7500 }));
+                .then(m => del(m, 7500));
         }
 
         const toBan = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
@@ -40,19 +40,19 @@ module.exports = {
         // No member found
         if (!toBan) {
             return message.reply("Couldn't find that member, try again")
-                .then(m => m.delete({ timeout: 7500 }));
+                .then(m => del(m, 7500));
         }
 
         // Can't ban urself
         if (toBan.id === message.author.id) {
             return message.reply("You can't ban yourself...")
-                .then(m => m.delete({ timeout: 7500 }));
+                .then(m => del(m, 7500));
         }
 
         // Check if the user's banable
         if (!toBan.bannable) {
             return message.reply("I can't ban that person due to role hierarchy, I suppose.")
-                .then(m => m.delete({ timeout: 7500 }));
+                .then(m => del(m, 7500));
         }
 
         const embed = new MessageEmbed()
@@ -76,7 +76,7 @@ module.exports = {
 
             // Verification stuffs
             if (emoji === "✅") {
-                msg.delete();
+                del(msg, 0);
 
                 toBan.ban(args.slice(1).join(" "))
                     .catch(err => {
@@ -85,10 +85,9 @@ module.exports = {
 
                 logChannel.send(embed);
             } else if (emoji === "❌") {
-                msg.delete();
+                del(msg, 0);
 
-                message.reply(`ban canceled.`)
-                    .then(m => m.delete({ timeout: 10000 }));
+                message.reply(`ban canceled.`).then(m => del(m, 7500));
             }
         });
     }
