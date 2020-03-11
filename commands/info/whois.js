@@ -1,6 +1,6 @@
+const { del, getMember, formatDate } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
-const { getMember, formatDate } = require("../../functions.js");
 
 module.exports = {
     name: "whois",
@@ -37,6 +37,6 @@ module.exports = {
         if (member.user.presence.game)
             embed.addField('Currently playing', stripIndents`**> Name:** ${member.user.presence.game.name}`);
 
-        message.channel.send(embed).then(m => m.delete({ timeout: 150000 }));
+        message.channel.send(embed).then(m => del(m, 15000));
     }
 }

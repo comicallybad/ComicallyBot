@@ -1,3 +1,4 @@
+const { del } = require("../../functions.js");
 const db = require("../../schemas/db.js");
 const { MessageEmbed } = require("discord.js")
 
@@ -25,10 +26,10 @@ module.exports = {
             if (exists.buyableRanks.length > 0) {
                 let rankList = exists.buyableRanks.map(rank => "Name: " + `\`${rank.roleName}\`` + ", ID: " + `\`${rank.roleID}\`` + ", Cost: " + `\`${rank.cost}\``);
                 embed.setDescription("").addField("Ranks: ", rankList);
-                m.edit(embed).then(m => m.delete({ timeout: 30000 }));
+                m.edit(embed).then(m => del(m, 30000));
             } else {
                 embed.setDescription("").addField("Ranks: ", "There have been no buyable ranks set");
-                m.edit(embed).then(m => m.delete({ timeout: 30000 }));
+                m.edit(embed).then(m => del(m, 30000));
             }
         }).catch(err => console.log(err))
     }

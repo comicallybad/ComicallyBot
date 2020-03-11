@@ -1,3 +1,4 @@
+const { del } = require("../../functions.js");
 const { Utils } = require("erela.js");
 const { MessageEmbed } = require("discord.js");
 
@@ -11,18 +12,18 @@ module.exports = {
     run: (client, message, args) => {
         const voiceChannel = message.member.voice.channel;
         if (!voiceChannel)
-            return message.reply("You need to be in a voice channel to play music.").then(m => m.delete({ timeout: 7500 }));
+            return message.reply("You need to be in a voice channel to play music.").then(m => del(m, 7500));
 
         const permissions = voiceChannel.permissionsFor(client.user);
 
         if (!permissions.has("CONNECT"))
-            return message.reply("I cannot connect to your voice channel, make sure I have permission to!").then(m => m.delete({ timeout: 7500 }));
+            return message.reply("I cannot connect to your voice channel, make sure I have permission to!").then(m => del(m, 7500));
 
         if (!permissions.has("SPEAK"))
-            return message.reply("I cannot connect to your voice channel, make sure I have permission to!").then(m => m.delete({ timeout: 7500 }));
+            return message.reply("I cannot connect to your voice channel, make sure I have permission to!").then(m => del(m, 7500));
 
         if (!args[0])
-            return message.reply("Please provide a song name or link to search.").then(m => m.delete({ timeout: 7500 }));
+            return message.reply("Please provide a song name or link to search.").then(m => del(m, 7500));
 
         const player = client.music.players.spawn({
             guild: message.guild,
@@ -54,29 +55,29 @@ module.exports = {
 
                     collector.on("collect", m => {
                         if (/cancel/i.test(m.content)) {
-                            m.delete();
+                            del(m, 0)
                             return collector.stop("cancelled")
                         }
                         const track = tracks[Number(m.content) - 1];
                         player.queue.add(track)
-                        message.reply(`Queuing \`${track.title}\` \`${Utils.formatTime(track.duration, true)}\``).then(m => m.delete({ timeout: 7500 }));
+                        message.reply(`Queuing \`${track.title}\` \`${Utils.formatTime(track.duration, true)}\``).then(m => del(m, 7500));
                         if (!player.playing) player.play();
-                        m.delete();
-                        if (selector.deletable) selector.delete().catch(err => err);
+                        del(m, 0);
+                        if (selector.deletable) del(selector, 0);
                     });
 
                     collector.on("end", (_, reason) => {
-                        if (["time", "cancelled"].includes(reason)) return message.reply("Cancelled selection.").then(m => m.delete({ timeout: 7500 }));
-                        if (selector.deletable) selector.delete().catch(err => err);
+                        if (["time", "cancelled"].includes(reason)) return message.reply("Cancelled selection.").then(m => del(m, 7500));
+                        if (selector.deletable) del(selector, 0);
                     });
                     break;
 
                 case "PLAYLIST_LOADED":
                     res.playlist.tracks.forEach(track => player.queue.add(track));
                     const duration = Utils.formatTime(res.playlist.tracks.reduce((acc, cur) => ({ duration: acc.duration + cur.duration })).duration, true);
-                    message.reply(`Queuing \`${res.playlist.tracks.length}\` \`${duration}\` tracks in playlist \`${res.playlist.info.name}\``).then(m => m.delete({ timeout: 7500 }));
+                    message.reply(`Queuing \`${res.playlist.tracks.length}\` \`${duration}\` tracks in playlist \`${res.playlist.info.name}\``).then(m => del(m, 7500));
                     if (!player.playing) player.play();
-                    if (selector.deletable) selector.delete().catch(err => err);
+                    if (selector.deletable) del(selector, 0);
                     break;
             }
         }).catch(err => message.reply(err.message))

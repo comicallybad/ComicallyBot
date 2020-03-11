@@ -1,5 +1,5 @@
+const { del } = require("../../functions.js");
 const db = require('../../schemas/db.js');
-
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
 
@@ -15,10 +15,10 @@ module.exports = {
         let guildID = message.guild.id;
 
         if (!args[0])
-            return message.reply("Please provide a true or false/enable or disable.").then(m => m.delete({ timeout: 7500 }));
+            return message.reply("Please provide a true or false/enable or disable.").then(m => del(m, 7500));
 
         if (args[0] !== "true" && args[0] !== "false" && args[0] !== "enable" && args[0] !== "disable")
-            return message.reply("Please provide only true or false/enable or disable.").then(m => m.delete({ timeout: 7500 }));
+            return message.reply("Please provide only true or false/enable or disable.").then(m => del(m, 7500));
 
         if (args[0] === "true" || args[0] === "enable") {
             client.commands.forEach((element, cmdIndex) => {
@@ -37,7 +37,7 @@ module.exports = {
 
             logChannel.send(embed);
 
-            return message.reply("Toggling all commands on... this may take a second...").then(m => m.delete({ timeout: 7500 }))
+            return message.reply("Toggling all commands on... this may take a second...").then(m => del(m, 7500));
         }
 
         if (args[0] === "false" || args[0] === "disable") {
@@ -57,7 +57,7 @@ module.exports = {
 
             logChannel.send(embed);
 
-            return message.reply("Toggling all commands off... this may take a second...").then(m => m.delete({ timeout: 7500 }));
+            return message.reply("Toggling all commands off... this may take a second...").then(m => del(m, 7500));
         }
     }
 }

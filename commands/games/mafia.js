@@ -1,4 +1,4 @@
-const { awaitReaction } = require("../../functions.js");
+const { del, awaitReaction } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
@@ -12,10 +12,10 @@ module.exports = {
         let maxPlayers = 0;
 
         if (!args[0])
-            return message.reply('Please provide the maximum users you wish to have.').then(m => m.delete({ timeout: 7500 }));
+            return message.reply('Please provide the maximum users you wish to have.').then(m => del(m, 7500));
 
         if (isNaN(args[0]) || parseInt(args[0]) < 4)
-            return message.reply("Please provide a number greater than or equal to 4.").then(m => m.delete({ timeout: 7500 }));
+            return message.reply("Please provide a number greater than or equal to 4.").then(m => del(m, 7500));
         else
             maxPlayers = Math.floor(parseInt(args[0]));
 
@@ -34,12 +34,12 @@ module.exports = {
                 let civilianUsers = users.filter(usr => usr.id !== mafiaUserID)
 
                 client.users.fetch(mafiaUserID, false).then(user => {
-                    user.send(`You have been selected to be **mafia** for **${message.author.username}'s** mafia game.`).then(m => m.delete({ timeout: 150000 }));
+                    user.send(`You have been selected to be **mafia** for **${message.author.username}'s** mafia game.`).then(m => del(m, 15000));
                 });
 
                 for (let i = 0; i < maxPlayers - 1; i++) {
                     client.users.fetch(civilianUsers[i].id, false).then(user => {
-                        user.send(`You have been selected to be **civilian** for **${message.author.username}'s** mafia game.`).then(m => m.delete({ timeout: 150000 }));
+                        user.send(`You have been selected to be **civilian** for **${message.author.username}'s** mafia game.`).then(m => del(m, 15000));
                     });
                 };
 
@@ -51,7 +51,7 @@ module.exports = {
                     .setFooter('The game is on, have fun!', message.author.displayAvatarURL())
                     .setTimestamp();
 
-                msg.edit(embed).then(m => m.delete({ timeout: 150000 }));
+                msg.edit(embed).then(m => del(m, 15000));
             } else {
                 msg.reactions.removeAll();
 
@@ -61,7 +61,7 @@ module.exports = {
                     .setFooter(message.author.displayAvatarURL())
                     .setTimestamp();
 
-                msg.edit(embed).then(m => m.delete({ timeout: 150000 }));
+                msg.edit(embed).then(m => del(m, 15000));
             }
         });
     }

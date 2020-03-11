@@ -1,3 +1,4 @@
+const { del } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
@@ -16,6 +17,6 @@ module.exports = {
 
         embed.addField("Result", `\`${number}\``);
 
-        message.channel.send(embed).then(m => m.delete({ timeout: 150000 }));
+        message.channel.send(embed).then(m => del(m, 15000));
     }
 }
