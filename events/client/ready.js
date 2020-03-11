@@ -25,5 +25,5 @@ module.exports = client => {
             return client.music.players.destroy(player.guild.id)
         })
         .on("trackStart", ({ textChannel }, { title, duration }) =>
-            textChannel.send(`Now playing: **${title}** \`${Utils.formatTime(duration, true)}\``).then(m => m.delete({ time: 7500 })));
+            textChannel.send(`Now playing: **${title}** \`${Utils.formatTime(duration, true)}\``).then(m => m.delete({ time: 15000 })));
 }
