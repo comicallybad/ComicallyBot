@@ -16,5 +16,4 @@ ________________________________________________________________________________
 Differences for Mac/Linux users:
 1. Install Java v11 or higher https://www.azul.com/downloads/zulu-community/?&version=java-11-lts&os=&os=macos&architecture=x86-64-bit&package=jdk
 2. "Chmod u+x ./start.sh"
-3. Follow the rest of the windows insturctions as normal
-4. To start the bot correctly use "./start.sh" then add a new terminal to use "node ."
+3. To start the bot correctly use "./start.sh" then add a new terminal to use "node ."
