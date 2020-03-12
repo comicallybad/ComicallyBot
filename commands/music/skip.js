@@ -12,7 +12,7 @@ module.exports = {
 
         const voiceChannel = message.member.voice.channel;
         if (!voiceChannel || voiceChannel.id !== player.voiceChannel.id)
-            return message.reply("You need to be in a voice channel to use the skip command.").then(m => del(m, 7500));
+            return message.reply("You need to be in the voice channel to use the skip command.").then(m => del(m, 7500));
 
         player.stop();
         return message.reply("Skipped the current song!").then(m => del(m, 7500));
