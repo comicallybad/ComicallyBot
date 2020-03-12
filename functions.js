@@ -27,7 +27,8 @@ module.exports = {
                                 if (memberRolesIDs.includes(element)) resolve(true);
                             });
                         } else if (commandType === "member" && roleIDs.forEach((element) => {
-                            if (memberRolesIDs.includes(element) || memberRolesIDs.includes(userID)) resolve(true)
+                            if (memberRolesIDs.includes(element) || memberRolesIDs.includes(userID)
+                                || modRolesIDs.includes(element) || modRolesIDs.includes(userID)) resolve(true)
                         })) {
                             roleIDs.forEach((element) => {
                                 if (memberRolesIDs.includes(element)) resolve(true);
