@@ -5,7 +5,7 @@ module.exports = async (client, message) => {
     if (message.author.bot) return;
     if (!message.guild) return;
 
-    addCoins(message)
+    addCoins(message, client)
 
     if (!message.content.startsWith(prefix)) return;
     if (!message.member) message.member = await message.guild.fetchMember(message);

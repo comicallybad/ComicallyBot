@@ -32,16 +32,9 @@ module.exports = {
                     }, (err, exists) => {
                         if (err) console.log(err)
                         if (!exists) {
-                            if (commands[cmdIndex] !== "help" && !commands[cmdIndex].includes("toggle")
-                                && commands[cmdIndex] !== "status") {
-                                db.updateOne({ guildID: guildsID[guildIndex] }, {
-                                    $push: { commands: { name: commands[cmdIndex], status: false } }
-                                }).catch(err => console.log(err))
-                            } else {
-                                db.updateOne({ guildID: guildsID[guildIndex] }, {
-                                    $push: { commands: { name: commands[cmdIndex], status: true } }
-                                }).catch(err => console.log(err))
-                            }
+                            db.updateOne({ guildID: guildsID[guildIndex] }, {
+                                $push: { commands: { name: commands[cmdIndex], status: true } }
+                            }).catch(err => console.log(err))
                         }
                     })
                 });
@@ -49,7 +42,7 @@ module.exports = {
         });
     },
 
-    addCoins(message) {
+    addCoins(message, client) {
         let guildName = message.guild.name;
         let guildID = message.guild.id;
         let userID = message.member.id;
@@ -57,7 +50,7 @@ module.exports = {
         let coinsToAdd = Math.floor(Math.random() * 25) + 1;
 
         db.findOne({ guildID: guildID }, (err, exists) => {
-            if (!exists) console.log("Error finding coins multiplier in database")
+            if (!exists) module.exports.dbSetup(client)
             if (exists)
                 if (exists.coinsMultiplier)
                     coinsToAdd = coinsToAdd * exists.coinsMultiplier;
