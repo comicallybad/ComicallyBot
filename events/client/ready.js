@@ -7,7 +7,7 @@ module.exports = client => {
     console.log(`${client.user.username} online.`);
 
     let activities = [`${client.guilds.cache.size} servers!`, `${client.channels.cache.size} channels!`, `${client.users.cache.size} users!`], i = 0;
-    setInterval(() => client.user.setActivity(`${prefix}help | ${activities[i++ % activities.length]}`, { type: "WATCHING" }), 15000)
+    setInterval(() => client.user.setActivity(`${prefix}help | ${activities[i++ % activities.length]}`, { type: "PLAYING" }), 15000)
 
     mongoose.connect("mongodb://localhost/ComicallyBOT2", {
         useUnifiedTopology: true,
