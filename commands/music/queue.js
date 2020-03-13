@@ -16,7 +16,7 @@ module.exports = {
         let string = "";
 
         if (player.queue[0]) string += `__**Currently Playing**__\n ${player.queue[0].title} - **Requested by ${player.queue[0].requester.username}**. \n`;
-        if (player.queue[1]) string += `__**Rest of queue:**__\n ${player.queue.slice(1, 10).map(x => `**${index++})** ${x.title} - **Requested by ${x.requester.username}**.`).join("\n")}`;
+        if (player.queue[1]) string += `__**Rest of queue:**__\n ${player.queue.slice(1, 11).map(x => `**${index++})** ${x.title} - **Requested by ${x.requester.username}**.`).join("\n")}`;
 
         const embed = new MessageEmbed()
             .setAuthor(`Current Queue for ${message.guild.name}`, message.guild.iconURL)
