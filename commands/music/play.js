@@ -56,7 +56,7 @@ module.exports = {
             switch (res.loadType) {
                 case "TRACK_LOADED":
                     player.queue.add(res.tracks[0]);
-                    message.reply(`Queuing \`${res.tracks[0].title}\` \`${Utils.formatTime(res.tracks[0].duration, true)}\``);
+                    message.reply(`Queuing \`${res.tracks[0].title}\` \`${Utils.formatTime(res.tracks[0].duration, true)}\``).then(m => del(m, 15000));
                     if (!player.playing) player.play();
                     break;
 
