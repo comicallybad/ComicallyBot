@@ -46,12 +46,14 @@ module.exports = {
             voiceChannel
         });
 
+        player.setVoiceChannel(voiceChannel);
+
         client.music.search(args.join(" "), message.author).then(async res => {
             switch (res.loadType) {
                 case "TRACK_LOADED":
                     player.queue.add(res.tracks[0]);
                     message.reply(`Queuing \`${res.tracks[0].title}\` \`${Utils.formatTime(res.tracks[0].duration, true)}\``);
-                    if (!player.playing) player.play()
+                    if (!player.playing) player.play();
                     break;
 
                 case "SEARCH_RESULT":
