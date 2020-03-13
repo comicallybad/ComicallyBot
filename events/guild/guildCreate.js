@@ -26,16 +26,9 @@ module.exports = (client, guild) => {
             }, (err, exists) => {
                 if (err) console.log(err)
                 if (!exists) {
-                    if (commands[cmdIndex] !== "help" && !commands[cmdIndex].includes("toggle")
-                        && commands[cmdIndex] !== "status") {
-                        db.updateOne({ guildID: guild.id }, {
-                            $push: { commands: { name: commands[cmdIndex], status: false } }
-                        }).catch(err => console.log(err))
-                    } else {
-                        db.updateOne({ guildID: guild.id }, {
-                            $push: { commands: { name: commands[cmdIndex], status: true } }
-                        }).catch(err => console.log(err))
-                    }
+                    db.updateOne({ guildID: guild.id }, {
+                        $push: { commands: { name: commands[cmdIndex], status: true } }
+                    }).catch(err => console.log(err))
                 }
             })
         });
