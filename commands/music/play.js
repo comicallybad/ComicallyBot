@@ -84,12 +84,14 @@ module.exports = {
                         message.reply(`Queuing \`${track.title}\` \`${Utils.formatTime(track.duration, true)}\``).then(m => del(m, 15000));
                         if (!player.playing) player.play();
                         del(m, 0);
-                        if (selector.deletable) del(selector, 0);
+                        del(selector, 0);
                     });
 
                     collector.on("end", (_, reason) => {
-                        if (["time", "cancelled"].includes(reason)) return message.reply("Cancelled selection.").then(m => del(m, 15000));
-                        if (selector.deletable) del(selector, 0);
+                        if (["time", "cancelled"].includes(reason)) {
+                            del(selector, 0);
+                            return message.reply("Cancelled selection.").then(m => del(m, 15000));
+                        }
                     });
                     break;
 
@@ -98,7 +100,6 @@ module.exports = {
                     const duration = Utils.formatTime(res.playlist.tracks.reduce((acc, cur) => ({ duration: acc.duration + cur.duration })).duration, true);
                     message.reply(`Queuing \`${res.playlist.tracks.length}\` \`${duration}\` tracks in playlist \`${res.playlist.info.name}\``).then(m => del(m, 15000));
                     if (!player.playing) player.play();
-                    if (selector.deletable) del(selector, 0);
                     break;
             }
         }).catch(err => message.reply(err.message))
