@@ -10,12 +10,7 @@ module.exports = async (client, message) => {
     if (!message.content.startsWith(prefix) && !message.content.startsWith("<@!492495421822730250>")) return;
     if (!message.member) message.member = await message.guild.fetchMember(message);
 
-    function getArgs() {
-        return message.content.startsWith(prefix)
-            ? message.content.slice(prefix.length).trim().split(/ +/g) : message.content.slice("<@!492495421822730250>".length).trim().split(/ +/g);
-    }
-
-    const args = getArgs();
+    const args = message.content.startsWith(prefix) ? message.content.slice(prefix.length).trim().split(/ +/g) : message.content.slice("<@!492495421822730250>".length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
 
     if (cmd.length === 0) return;
