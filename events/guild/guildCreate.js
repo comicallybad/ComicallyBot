@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const db = require("../../schemas/db.js");
 
 module.exports = (client, guild) => {
+    activities = [`${client.guilds.cache.size} servers!`, `${client.channels.cache.size} channels!`, `${client.users.cache.size} users!`], i = 0;
     let commands = (client.commands.map(cmd => cmd.name));
     db.findOne({ guildID: guild.id }, (err, exists) => {
         if (err) console.log(err)
