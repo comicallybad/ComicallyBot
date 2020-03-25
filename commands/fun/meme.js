@@ -8,6 +8,9 @@ module.exports = {
     description: "Get a random meme.",
     permissions: "member",
     run: async (client, message, args) => {
+        if (!message.channel.nsfw)
+            return message.reply("Please run this command in a `NSFW` channel.").then(m => del(m, 7500));
+
         const subReddits = ["dankmeme", "meme", "PrequelMemes", "EdgelordMemes", "ProgrammerHumor"];
         const random = subReddits[Math.floor(Math.random() * subReddits.length)];
 
