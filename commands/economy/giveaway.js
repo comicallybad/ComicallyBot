@@ -7,7 +7,7 @@ const mongoose = require("mongoose")
 module.exports = {
     name: "giveaway",
     aliases: ["coinsgiveaway"],
-    category: "coins",
+    category: "economy",
     description: "Giveaway for coins",
     permissions: "moderator",
     usage: "<amount> <time>",

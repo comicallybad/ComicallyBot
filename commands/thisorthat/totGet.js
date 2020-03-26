@@ -4,7 +4,7 @@ const db = require('../../schemas/db.js');
 module.exports = {
     name: "totget",
     aliases: ["gettot", "totchannel", "channeltot"],
-    category: "tot",
+    category: "thisorthat",
     description: "Get response channel for This Or That Command.",
     permissions: "moderator",
     run: (client, message, args) => {

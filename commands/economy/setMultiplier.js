@@ -6,7 +6,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "setmultiplier",
     aliases: ["multiplierset", "setcoinsmultiplier", "coinssetmultiplier"],
-    category: "coins",
+    category: "economy",
     description: "Get number of coins.",
     permissions: "moderator",
     usage: "<number 1-3>",

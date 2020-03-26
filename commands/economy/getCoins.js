@@ -4,7 +4,7 @@ const coins = require('../../schemas/coins.js');
 module.exports = {
     name: "getcoins",
     aliases: ["coins", "mycoins"],
-    category: "coins",
+    category: "economy",
     description: "Get number of coins.",
     permissions: "member",
     usage: "[@user|userID]",

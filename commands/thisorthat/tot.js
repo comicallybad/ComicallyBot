@@ -3,8 +3,8 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "tot",
-    aliases: ["thisorthat", "wyr", "wouldyourather"],
-    category: "tot",
+    aliases: ["wyr", "wouldyourather"],
+    category: "thisorthat",
     description: "This Or That Command.",
     permissions: "moderator",
     run: (client, message) => {

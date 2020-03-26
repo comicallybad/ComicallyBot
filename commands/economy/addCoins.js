@@ -7,7 +7,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "addcoins",
     aliases: ["coinsadd"],
-    category: "coins",
+    category: "economy",
     description: "Add coins to user.",
     permissions: "moderator",
     usage: "<@user|userID> <amount>",

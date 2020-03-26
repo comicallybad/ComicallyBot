@@ -14,7 +14,7 @@ module.exports = {
         // Send the info of that command found
         // If no info found, return not found embed.
         if (args[0]) {
-            return getCMD(client, message, args[0]);
+            return getSpecific(client, message, args[0]);
         } else {
             // Otherwise send all the commands available
             // Without the cmd info
@@ -46,32 +46,42 @@ async function getAll(client, message) {
     return message.channel.send(embed.setDescription(info)).then(m => del(m, 30000));
 }
 
-function getCMD(client, message, input) {
+function getSpecific(client, message, input) {
     const embed = new MessageEmbed()
 
     // Get the cmd by the name or alias
     const cmd = client.commands.get(input.toLowerCase()) || client.commands.get(client.aliases.get(input.toLowerCase()));
+    const cat = client.categories;
 
     let info = `No information found for command **${input.toLowerCase()}**`;
 
-    // If no cmd is found, send not found embed
-    if (!cmd) {
-        return message.channel.send(embed.setColor("#ff0000").setDescription(info)).then(m => del(m, 30000));
-    }
+    if (cmd) {
+        // Add all cmd info to the embed
+        if (cmd.name) info = `**Command name**: ${cmd.name}`;
+        if (cmd.aliases) info += `\n**Aliases**: ${cmd.aliases.map(a => `\`${a}\``).join(", ")}`;
+        if (cmd.description) info += `\n**Description**: ${cmd.description}`;
+        if (cmd.permissions) info += `\n**Permissions**: ${cmd.permissions}`
+        if (cmd.usage) {
+            info += `\n**Usage**: ${cmd.usage}`;
+            embed.setFooter(`Syntax: <> = required, [] = optional`);
+        }
+        getCommandStatus(message, cmd.name).then(async function (res) {
+            if (res === false) info += '\n**Status**: ❌';
+            if (res === true) info += '\n**Status**: ✅';
 
-    // Add all cmd info to the embed
-    if (cmd.name) info = `**Command name**: ${cmd.name}`;
-    if (cmd.aliases) info += `\n**Aliases**: ${cmd.aliases.map(a => `\`${a}\``).join(", ")}`;
-    if (cmd.description) info += `\n**Description**: ${cmd.description}`;
-    if (cmd.permissions) info += `\n**Permissions**: ${cmd.permissions}`
-    if (cmd.usage) {
-        info += `\n**Usage**: ${cmd.usage}`;
-        embed.setFooter(`Syntax: <> = required, [] = optional`);
-    }
-    getCommandStatus(message, cmd.name).then(async function (res) {
-        if (res === false) info += '\n**Status**: ❌';
-        if (res === true) info += '\n**Status**: ✅';
+            return message.channel.send(embed.setColor("#0efefe").setDescription(info)).then(m => del(m, 30000));
+        });
+    } else if (cat.includes(input)) {
+        const cmds = client.commands
+            .filter(cmd => cmd.category === input)
+            .map(cmd => ` \`${prefix}${cmd.name}\``)
+            .join(",");
+
+        info = `**${input[0].toUpperCase() + input.slice(1)}** \n ${cmds}`;
 
         return message.channel.send(embed.setColor("#0efefe").setDescription(info)).then(m => del(m, 30000));
-    });
+    } else {
+        // If no cmd is found, send not found embed
+        return message.channel.send(embed.setColor("#ff0000").setDescription(info)).then(m => del(m, 30000));
+    }
 }

@@ -6,7 +6,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "removecoins",
     aliases: ["coinsremove"],
-    category: "coins",
+    category: "economy",
     description: "Remove coins to user.",
     permissions: "moderator",
     usage: "<@user|userID> <amount>",

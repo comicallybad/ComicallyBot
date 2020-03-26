@@ -4,7 +4,7 @@ const db = require('../../schemas/db.js');
 module.exports = {
     name: "totset",
     aliases: ["settotchannel", "totsetchannel", "settot"],
-    category: "tot",
+    category: "thisorthat",
     description: "Set response channel for This Or That Command.",
     permissions: "moderator",
     usage: "<channelID|#channel>",
