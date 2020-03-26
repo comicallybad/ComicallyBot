@@ -12,10 +12,10 @@ module.exports = {
         const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
 
         // check if the command caller has permission to use the command
-        if (!message.member.hasPermission("MANAGE_ROLES") || !message.guild.owner)
+        if (!message.member.hasPermission("MANAGE_ROLES"))
             return message.reply("You dont have the manage roles permission to use this command.").then(m => del(m, 7500));
 
-        if (!message.guild.me.hasPermission("MANAGE_ROLES") && !message.guild.me.hasPermission("ADMINISTRATOR"))
+        if (!message.guild.me.hasPermission("MANAGE_ROLES"))
             return message.reply("I don't have permission to manage roles!").then(m => del(m, 7500));
 
         //define the reason and unmutee
@@ -65,7 +65,7 @@ module.exports = {
                 logChannel.send(embed);
             } else if (emoji === "❌") {
                 del(msg, 0);
-                message.reply(`Unmute canceled.`).then(m => del(m, 7500));
+                message.reply(`Unmute cancelled.`).then(m => del(m, 7500));
             }
         });
     }

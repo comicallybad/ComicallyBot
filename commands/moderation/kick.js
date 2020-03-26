@@ -11,49 +11,28 @@ module.exports = {
     run: async (client, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
 
-        // No args
-        if (!args[0]) {
-            return message.reply("Please provide a person to kick.")
-                .then(m => del(m, 7500));
-        }
+        if (!message.member.hasPermission("KICK_MEMBERS"))
+            return message.reply("You do not have the ban members permission to use this command.").then(m => del(m, 7500));
 
-        // No reason
-        if (!args[1]) {
-            return message.reply("Please provide a reason to kick.")
-                .then(m => del(m, 7500));
-        }
+        if (!message.guild.me.hasPermission("KICK_MEMBERS"))
+            return message.reply("I don't have permission to kick members!").then(m => del(m, 7500));
 
-        // No author permissions
-        if (!message.member.hasPermission("KICK_MEMBERS")) {
-            return message.reply("❌ You do not have permissions to kick members. Please contact a staff member")
-                .then(m => del(m, 7500));
-        }
-
-        // No bot permissions
-        if (!message.guild.me.hasPermission("KICK_MEMBERS")) {
-            return message.reply("❌ I do not have permissions to kick members. Please contact a staff member")
-                .then(m => del(m, 7500));
-        }
+        if (!args[0])
+            return message.reply("Please provide a person to kick.").then(m => del(m, 7500));
 
         const toKick = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
 
-        // No member found
-        if (!toKick) {
-            return message.reply("Couldn't find that member, try again")
-                .then(m => del(m, 7500));
-        }
+        if (!toKick)
+            return message.reply("Couldn't find that member, try again").then(m => del(m, 7500));
 
-        // Can't kick urself
-        if (toKick.id === message.author.id) {
-            return message.reply("You can't kick yourself...")
-                .then(m => del(m, 7500));
-        }
+        if (toKick.id === message.author.id)
+            return message.reply("You can't kick yourself...").then(m => del(m, 7500));
 
-        // Check if the user's kickable
-        if (!toKick.kickable) {
-            return message.reply("I can't kick that person due to role hierarchy, I suppose.")
-                .then(m => del(m, 7500));
-        }
+        if (!toKick.kickable)
+            return message.reply("I can't kick that person due to role hierarchy, I suppose.").then(m => del(m, 7500));
+
+        let reason = args.slice(1).join(" ")
+        if (!reason) reason = "No reason given!"
 
         const embed = new MessageEmbed()
             .setColor("#ff0000")
@@ -62,7 +41,7 @@ module.exports = {
             .setTimestamp()
             .setDescription(stripIndents`**> Kicked member:** ${toKick} (${toKick.id})
             **> Kicked by:** ${message.member} (${message.member.id})
-            **> Reason:** ${args.slice(1).join(" ")}`);
+            **> Reason:** ${reason}`);
 
         const promptEmbed = new MessageEmbed()
             .setColor("GREEN")
@@ -78,17 +57,17 @@ module.exports = {
             if (emoji === "✅") {
                 del(msg, 0);
 
-                toKick.kick(args.slice(1).join(" "))
+                toKick.send(`Hello, you have been **kicked** in ${message.guild.name} for: **${reason}**`).catch(err => console.log(err));
+                toKick.kick(reason)
                     .catch(err => {
-                        if (err) return message.channel.send(`Well.... the kick didn't work out. Here's the error ${err}`)
+                        if (err) return message.channel.send(`Well.... the kick didn't work out. Here's the error ${err}`).then(m => del(m, 7500));
                     });
 
                 logChannel.send(embed);
             } else if (emoji === "❌") {
                 del(msg, 0);
 
-                message.reply(`Kick canceled.`)
-                    .then(m => del(m, 7500));
+                message.reply(`Kick cancelled.`).then(m => del(m, 7500));
             }
         });
     }
