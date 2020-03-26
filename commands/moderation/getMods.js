@@ -5,9 +5,9 @@ const db = require('../../schemas/db.js');
 module.exports = {
     name: "getmods",
     aliases: ["mods", "listmods", "moderators"],
-    category: "administration",
+    category: "moderation",
     description: "Add permitted role for mod commands.",
-    permissions: "admin",
+    permissions: "moderator",
     usage: "<role name|@role>",
     run: async (client, message, args) => {
         let guildID = message.guild.id;
