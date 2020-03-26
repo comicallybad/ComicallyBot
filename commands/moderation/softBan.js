@@ -12,11 +12,9 @@ module.exports = {
     run: async (client, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
 
-        //User has permissions
         if (!message.member.hasPermission("BAN_MEMBERS"))
             return message.reply("You dont have the ban members permission to perform this command!").then(m => del(m, 7500));
 
-        //Bot has permissions
         if (!message.guild.me.hasPermission("BAN_MEMBERS"))
             return message.reply("I dont have the permission to perform this command!").then(m => del(m, 7500));
 

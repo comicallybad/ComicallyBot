@@ -11,14 +11,12 @@ module.exports = {
     run: async (client, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
 
-        // check if the command caller has permission to use the command
         if (!message.member.hasPermission("MANAGE_ROLES"))
             return message.reply("You dont have the manage roles permission to use this command.").then(m => del(m, 7500));
 
         if (!message.guild.me.hasPermission("MANAGE_ROLES"))
             return message.reply("I don't have permission to manage roles!").then(m => del(m, 7500));
 
-        //define the reason and unmutee
         let mutee = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         if (!mutee) return message.reply("Please supply a user to be muted!").then(m => del(m, 7500));
 
@@ -28,7 +26,6 @@ module.exports = {
         let reason = args.slice(1).join(" ");
         if (!reason) reason = "No reason given"
 
-        //define mute role and if the mute role doesnt exist then send a message
         let muterole = message.guild.roles.cache.find(r => r.name === "Muted")
         if (!muterole) return message.reply("There is no mute role to remove!").then(m => del(m, 7500));
 
