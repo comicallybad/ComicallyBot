@@ -71,13 +71,13 @@ function getSpecific(client, message, input) {
 
             return message.channel.send(embed.setColor("#0efefe").setDescription(info)).then(m => del(m, 30000));
         });
-    } else if (cat.includes(input)) {
+    } else if (cat.includes(input.toLowerCase())) {
         const cmds = client.commands
-            .filter(cmd => cmd.category === input)
+            .filter(cmd => cmd.category === input.toLowerCase())
             .map(cmd => ` \`${prefix}${cmd.name}\``)
             .join(",");
 
-        info = `**${input[0].toUpperCase() + input.slice(1)}** \n ${cmds}`;
+        info = `**${input[0].toUpperCase() + input.slice(1).toLowerCase()}** \n ${cmds}`;
 
         return message.channel.send(embed.setColor("#0efefe").setDescription(info)).then(m => del(m, 30000));
     } else {
