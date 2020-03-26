@@ -60,8 +60,8 @@ module.exports = {
             .setThumbnail(toBan.user.displayAvatarURL())
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()
-            .setDescription(stripIndents`**> banned member:** ${toBan} (${toBan.id})
-            **> baned by:** ${message.member} (${message.member.id})
+            .setDescription(stripIndents`**> Banned member:** ${toBan} (${toBan.id})
+            **> Banned by:** ${message.member} (${message.member.id})
             **> Reason:** ${args.slice(1).join(" ")}`);
 
         const promptEmbed = new MessageEmbed()
@@ -80,14 +80,13 @@ module.exports = {
 
                 toBan.ban(args.slice(1).join(" "))
                     .catch(err => {
-                        if (err) return message.channel.send(`Well.... the ban didn't work out. Here's the error ${err}`)
+                        if (err) return message.reply(`Well.... the ban didn't work out. Here's the error ${err}`)
                     });
 
                 logChannel.send(embed);
             } else if (emoji === "❌") {
                 del(msg, 0);
-
-                message.reply(`ban canceled.`).then(m => del(m, 7500));
+                message.reply(`Ban canceled.`).then(m => del(m, 7500));
             }
         });
     }

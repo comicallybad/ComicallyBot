@@ -11,7 +11,7 @@ module.exports = {
     permissions: "moderator",
     usage: "<@role|role ID|@user|userID>",
     run: (client, message, args) => {
-        const logChannel = message.guild.channels.cache.find(c => c.name === "mods-log") || message.channel;
+        const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
         let guildID = message.guild.id;
 
         if (!args[0])

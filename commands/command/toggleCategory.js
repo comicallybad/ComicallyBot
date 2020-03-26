@@ -11,7 +11,7 @@ module.exports = {
     permissions: "admin",
     usage: "<category> <true|false>",
     run: (client, message, args) => {
-        const logChannel = message.guild.channels.cache.find(c => c.name === "mods-log") || message.channel;
+        const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
         let guildID = message.guild.id;
         let categories = client.commands.map(command => command.category)
         let commands = client.commands
