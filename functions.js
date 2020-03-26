@@ -141,15 +141,13 @@ module.exports = {
     },
 
     //Adds certain reactions, returns all user objects
-    awaitReaction: async function (message, time, validReactions) {
-        for (const reaction of validReactions) await message.react(reaction);
+    awaitReaction: async function (message, time, emoji) {
+        message.react(emoji);
 
-        const filter = (reaction) => validReactions.includes(reaction.emoji.name);
+        const filter = reaction => emoji == reaction.emoji.name;
 
         return message
             .awaitReactions(filter, { time: time })
-            .then(collected => collected
-                .map(usr => usr.users.cache)[0].map(usr => usr)
-                .filter(usr => !usr.bot));
+            .then(collected => collected.first().users.cache.map(usr => usr).filter(usr => !usr.bot))
     },
 }
