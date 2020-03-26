@@ -39,6 +39,7 @@ async function getAll(client, message) {
 
     // Map all the categories
     const info = client.categories
+        .filter(cat => cat !== "owner")
         .map(cat => stripIndents`**${cat[0].toUpperCase() + cat.slice(1)}** \n${commands(cat)}`)
         .reduce((string, category) => string + "\n" + category);
 

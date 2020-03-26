@@ -27,7 +27,7 @@ module.exports = {
                         .filter(function (cmd) {
                             if (clientCommandsName.includes(cmd.name)
                                 && clientCommandsCategory[(clientCommandsName.indexOf(cmd.name))] === category
-                                && category !== "command" && cmd.name !== "help")
+                                && category !== "command" && category !== "owner" && cmd.name !== "help")
                                 return commands.name
                         }).map(function (cmd) {
                             if (cmd.status === false) return `-\`${prefix}${cmd.name}\`❌`;
@@ -36,7 +36,7 @@ module.exports = {
                 }
 
                 const info = client.categories
-                    .filter(cat => cat !== "command")
+                    .filter(cat => cat !== "command" && cat !== "owner")
                     .map(cat => stripIndents`**${cat[0].toUpperCase() + cat.slice(1)}** \n${commands(cat)}`)
                     .reduce((string, category) => string + "\n" + category);
 

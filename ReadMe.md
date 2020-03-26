@@ -2,7 +2,7 @@ ComicallyBot2.0 is a bot that uses a permission and status structure. Commands c
 ________________________________________________________________________________
 To clone and use ComicallyBot2.0 you will have to do a few things:
 1. Install mongodb and compass for mongodb. Install Java v11 https://www.azul.com/downloads/zulu-community/?version=java-11-lts&os=&os=windows&architecture=x86-64-bit&package=jdk
-2. Create a .env file with a "TOKEN" for a discord token, "FORTNITE" for a fortnite API key, and "STEAM" for steam API key, "ERELA" for erela password
+2. Create a .env file with a "TOKEN" for a discord token, "FORTNITE" for a fortnite API key, and "STEAM" for steam API key, "ERELA" for erela password, and "USERID" for discord User ID for owner commands
 3. Create a application.yml file inside lavalink ex: https://github.com/Frederikam/Lavalink/blob/master/LavalinkServer/application.yml.example
 4. npm i --save
 5. To start the bot correctly use: "start.bat" or open /lavalink/start.bat and then "node ." in project directory
