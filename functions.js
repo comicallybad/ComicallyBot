@@ -140,14 +140,14 @@ module.exports = {
             .then(collected => collected.first() && collected.first().emoji.name);
     },
 
-    //Adds certain reactions, returns all user objects
-    awaitReaction: async function (message, time, emoji) {
+    //Adds certain reaction, waits for certain amount of reactions, waits certain amount of time, returns all user objects
+    awaitReaction: async function (message, max, time, emoji) {
         message.react(emoji);
 
-        const filter = reaction => emoji == reaction.emoji.name;
+        const filter = (reaction, user) => emoji == reaction.emoji.name && user.id !== message.author.id;
 
         return message
-            .awaitReactions(filter, { time: time })
+            .awaitReactions(filter, { max: max, time: time })
             .then(collected => collected.first().users.cache.map(usr => usr).filter(usr => !usr.bot))
     },
 }

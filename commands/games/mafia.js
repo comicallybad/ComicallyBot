@@ -26,7 +26,7 @@ module.exports = {
             .setTimestamp();
 
         message.channel.send(embed).then(async msg => {
-            const users = await awaitReaction(msg, 300000, "💯");
+            const users = await awaitReaction(msg, maxPlayers, 300000, "💯");
 
             if (users.length >= maxPlayers) {
                 const random = Math.floor(Math.random() * maxPlayers);
@@ -58,7 +58,7 @@ module.exports = {
                 embed
                     .setTitle('Mafia Game: ')
                     .setDescription(`There were not at least ${maxPlayers} reactors to start the game!`)
-                    .setFooter(message.author.displayAvatarURL())
+                    .setFooter("Cancelled.", message.author.displayAvatarURL())
                     .setTimestamp();
 
                 msg.edit(embed).then(m => del(m, 15000));
