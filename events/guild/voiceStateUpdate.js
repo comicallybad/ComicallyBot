@@ -1,6 +1,5 @@
 module.exports = (client, voiceStateStart, voiceStateEnd) => {
     if (!voiceStateStart.channelID && voiceStateEnd.channelID) { //If user joins a channel
-        console.log("User join")
         if (voiceStateEnd.id == client.user.id) { //If the user is the bot
             if (!voiceChannels.some(channel => channel.channelID === voiceStateStart.channelID))
                 voiceChannels.push({ channelID: voiceStateEnd.channelID, users: client.channels.cache.get(voiceStateEnd.channelID).members.size })
@@ -9,7 +8,6 @@ module.exports = (client, voiceStateStart, voiceStateEnd) => {
                 voiceChannels.find(channel => channel.channelID == voiceStateEnd.channelID).users += 1;
         }
     } else if (voiceStateStart.channelID && !voiceStateEnd.channelID) { //If user disconnects
-        console.log("User disconnect")
         if (voiceStateStart.id == client.user.id) { //If the user is the bot
             const guildID = voiceStateEnd.guild.id;
             const player = client.music.players.get(guildID);
@@ -18,12 +16,10 @@ module.exports = (client, voiceStateStart, voiceStateEnd) => {
                 voiceChannels.splice(voiceChannels.findIndex(channel => channel.channelID === voiceStateStart.channelID), 1)
         } else {//Update user count
             if (voiceChannels.find(channel => channel.channelID == voiceStateStart.channelID)) {
-                console.log("Inside disconnect user: " + voiceChannels.find(channel => channel.channelID == voiceStateStart.channelID).users)
                 voiceChannels.find(channel => channel.channelID == voiceStateStart.channelID).users -= 1;
             }
         }
     } else if (voiceStateStart.channelID && voiceStateEnd.channelID) {//If user moves
-        console.log("User move")
         if (voiceStateStart.id == client.user.id && voiceStateStart.channelID) { //If the user is the bot
             if (voiceChannels.some(channel => channel.channelID === voiceStateStart.channelID))
                 voiceChannels.splice(voiceChannels.findIndex(channel => channel.channelID === voiceStateStart.channelID), 1)
@@ -36,7 +32,6 @@ module.exports = (client, voiceStateStart, voiceStateEnd) => {
             }
         }
     }
-    console.log(voiceChannels)
     checkUsers(client);
 }
 
