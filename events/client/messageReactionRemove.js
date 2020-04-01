@@ -1,5 +1,5 @@
 const db = require("../../schemas/db.js");
-const { userCooldown, userCooldownMessage } = require('../../functions.js');
+const { del, userCooldownMessage } = require('../../functions.js');
 const { MessageEmbed } = require("discord.js");
 
 module.exports = async (client, message, user) => {
@@ -58,14 +58,19 @@ function checkReactionRole(message, user) {
                     guildUser.roles.remove(role.roleID).then(() => {
                         embed.setDescription(`**${user}**left the **${role.roleName}**(${role.roleID}) via Reaction Role`)
                         if (logChannel) logChannel.send(embed)
-                        guildUser.send(`Hello, you have been removed from the **${role.roleName}** role in **${guildUser.guild.name}**`).catch(err => console.log(err));
+                        guildUser.send(`Hello, you have been removed from the **${role.roleName}** role in **${guildUser.guild.name}**`).catch(err => {
+                            console.log("inside remove catch")
+                            message.message.channel.send(`${user} was added to the **${role.roleName}** role`).then(m => del(m, 7500))
+                        });
                     }).catch(err => {
-                        if (err) guildUser.send(`Hello, there was an issue removing you from the **${role.roleName}** in **${guildUser.guild.name}**, possibly due to role heirarchy: \`${err}\``).catch(e => console.log(e));
+                        if (err) guildUser.send(`Hello, there was an issue removing you from the **${role.roleName}** in **${guildUser.guild.name}**, possibly due to role heirarchy: \`${err}\``).catch(e => {
+                            message.message.channel.send(`${user}there was an issue removing you fromthe **${role.roleName}**`).then(m => del(m, 7500));
+                        });
                     });
                 });
             }
         });
     } else {
-        userCooldownMessage(guildID, guildUser, "reaction roles");
+        userCooldownMessage(message.message, guildID, guildUser, "reaction roles");
     }
 }
