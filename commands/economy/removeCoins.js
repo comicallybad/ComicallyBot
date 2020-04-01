@@ -48,7 +48,7 @@ module.exports = {
                             .setFooter(message.member.displayName, message.author.displayAvatarURL())
                             .setTimestamp()
                             .setDescription(stripIndents`
-                            **> Coins Removed by:** <@${message.member.id}> ${message.member.user.username} (${message.member.id})
+                            **> Coins Removed by:** ${message.member.user}
                             **> User's Coins Removed:** <@${userID}> ${userName} (${userID})
                             **> Coins Removed:** ${coinsToRemove}`);
 

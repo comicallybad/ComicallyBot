@@ -58,8 +58,8 @@ module.exports = {
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()
             .setDescription(stripIndents`**> Muted member:** ${mutee} (${mutee.id})
-**> Muted by:** ${message.member} (${message.member.id})
-**> Reason:** ${reason}`);
+            **> Muted by:** ${message.member}
+            **> Reason:** ${reason}`);
 
         const promptEmbed = new MessageEmbed()
             .setColor("GREEN")

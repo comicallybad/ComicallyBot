@@ -21,7 +21,7 @@ module.exports = {
 
         let embed = new MessageEmbed()
             .setTitle("**React below to play mafia!**")
-            .setDescription(`${message.author.username} is hosting a mafia lobby for ${maxPlayers} players`)
+            .setDescription(`${message.author} is hosting a mafia lobby for ${maxPlayers} players`)
             .setFooter(`Lobby requires at least ${maxPlayers} reactors within 5 minutes`, message.author.displayAvatarURL())
             .setTimestamp();
 

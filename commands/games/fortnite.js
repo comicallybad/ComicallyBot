@@ -66,20 +66,20 @@ module.exports = {
                     .setFooter(`Fortnite stats`, message.author.displayAvatarURL())
                     .setTimestamp()
                     .addField("Solo:", stripIndents`**- Wins:** ${solo.wins}
-                **- KD:** ${solo.kd}
-                **- Kills:** ${solo.kills}
-                **- Kills per match:** ${solo.kills_per_match}`, true)
+                    **- KD:** ${solo.kd}
+                    **- Kills:** ${solo.kills}
+                    **- Kills per match:** ${solo.kills_per_match}`, true)
                     .addField("Duo:", stripIndents`**- Wins:** ${duo.wins}
-                **- KD:** ${duo.kd}
-                **- Kills:** ${duo.kills}
-                **- Kills per match:** ${duo.kills_per_match}`, true)
+                    **- KD:** ${duo.kd}
+                    **- Kills:** ${duo.kills}
+                    **- Kills per match:** ${duo.kills_per_match}`, true)
                     .addField("Squad:", stripIndents`**- Wins:** ${squad.wins}
-                **- KD:** ${squad.kd}
-                **- Kills:** ${squad.kills}
-                **- Kills per match:** ${squad.kills_per_match}`, true)
+                    **- KD:** ${squad.kd}
+                    **- Kills:** ${squad.kills}
+                    **- Kills per match:** ${squad.kills_per_match}`, true)
                     .addField("Lifetime:", stripIndents`**- Wins:** ${lifetime.wins}
-                **- KD:** ${lifetime.kd}
-                **- Kills:** ${lifetime.kills}`, false)
+                    **- KD:** ${lifetime.kd}
+                    **- Kills:** ${lifetime.kills}`, false)
 
                 message.channel.send(embed).then(m => del(m, 15000));
             }

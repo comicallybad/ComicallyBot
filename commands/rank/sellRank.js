@@ -16,7 +16,6 @@ module.exports = {
 
         let guildID = message.guild.id;
         let userID = message.member.id;
-        let userName = message.member.user.username;
         let author = message.member;
 
         // No bot permissions
@@ -69,7 +68,7 @@ module.exports = {
                                 .setThumbnail(message.author.displayAvatarURL())
                                 .setFooter(message.member.displayName, message.author.displayAvatarURL())
                                 .setTimestamp()
-                                .setDescription(stripIndents`**> User:** ${userName} (${userID})
+                                .setDescription(stripIndents`**> User:** ${message.member.user}
                                 **> Rank Sold:** ${roleName} (${roleID})
                                 **> Coins Given:** ${cost}`);
 

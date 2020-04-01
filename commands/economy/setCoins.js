@@ -43,9 +43,9 @@ module.exports = {
                     .setFooter(message.member.displayName, message.author.displayAvatarURL())
                     .setTimestamp()
                     .setDescription(stripIndents`
-                **> Coins Set by:** <@${message.member.id}> ${message.member.user.username} (${message.member.id})
-                **> User's Coins Set:** <@${userID}> ${userName} (${userID})
-                **> Coins Set to:** ${coinsToSet}`);
+                    **> Coins Set by:** ${message.member.user}
+                    **> User's Coins Set:** <@${userID}> ${userName} (${userID})
+                    **> Coins Set to:** ${coinsToSet}`);
 
                 logChannel.send(embed);
 

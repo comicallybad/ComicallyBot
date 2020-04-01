@@ -47,7 +47,7 @@ module.exports = {
                             .setThumbnail(message.author.displayAvatarURL())
                             .setFooter(message.member.displayName, message.author.displayAvatarURL())
                             .setTimestamp()
-                            .setDescription(stripIndents`**> Role Removed by:** ${message.member.user.username} (${message.member.id})
+                            .setDescription(stripIndents`**> Role Removed by:** ${message.member.user}
                             **> Role Removed:** ${roleName} (${roleID})`);
 
                         logChannel.send(embed);

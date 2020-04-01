@@ -39,8 +39,8 @@ module.exports = {
                             .setThumbnail(message.author.displayAvatarURL())
                             .setFooter(message.member.displayName, message.author.displayAvatarURL())
                             .setTimestamp()
-                            .setDescription(stripIndents`**> Mod Removed by:** ${message.member.user.username} (${message.member.id})
-                    **> Role/User ID Removed:**  (${roleID})`);
+                            .setDescription(stripIndents`**> Mod Removed by:** ${message.member.user}
+                             **> Role/User ID Removed:**  (${roleID})`);
 
                         logChannel.send(embed);
 

@@ -32,8 +32,8 @@ module.exports = {
                 .setThumbnail(message.author.displayAvatarURL())
                 .setFooter(message.member.displayName, message.author.displayAvatarURL())
                 .setTimestamp()
-                .setDescription(stripIndents`**> Commands Toggled by:** ${message.member.user.username} (${message.member.id})
-         **> Commands Toggled:** ON`);
+                .setDescription(stripIndents`**> Commands Toggled by:** ${message.member.user}
+                 **> Commands Toggled:** ON`);
 
             logChannel.send(embed);
 
@@ -52,8 +52,8 @@ module.exports = {
                 .setThumbnail(message.author.displayAvatarURL())
                 .setFooter(message.member.displayName, message.author.displayAvatarURL())
                 .setTimestamp()
-                .setDescription(stripIndents`**> Commands Toggled by:** ${message.member.user.username} (${message.member.id})
-            **> Commands Toggled:** OFF`);
+                .setDescription(stripIndents`**> Commands Toggled by:** ${message.member.user}
+                 **> Commands Toggled:** OFF`);
 
             logChannel.send(embed);
 

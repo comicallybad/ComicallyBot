@@ -55,9 +55,9 @@ module.exports = {
                             .setThumbnail(message.author.displayAvatarURL())
                             .setFooter(message.member.displayName, message.author.displayAvatarURL())
                             .setTimestamp()
-                            .setDescription(stripIndents`**> Role Added by:** ${message.member.user.username} (${message.member.id})
-                                **> Role Added:** ${roleName} (${roleID})
-                                **> Cost:** ${cost}`);
+                            .setDescription(stripIndents`**> Role Added by:** ${message.member.user}
+                            **> Role Added:** ${roleName} (${roleID})
+                            **> Cost:** ${cost}`);
 
                         logChannel.send(embed);
 

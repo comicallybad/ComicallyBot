@@ -36,11 +36,11 @@ module.exports = {
                         .setAuthor(`Steam Services | ${personaname}`, avatarfull)
                         .setThumbnail(avatarfull)
                         .setDescription(stripIndents`**Real Name:** ${realname || "Unknown"}
-                **Status:** ${state[personastate]}
-                **Country:** :flag_${loccountrycode ? loccountrycode.toLowerCase() : "white"}:
-                **Account Created:** ${formatDate(date)}
-                **Bans:** Vac: ${NumberOfVACBans}, Game: ${NumberOfGameBans}
-                **Link:** [link to profile](${profileurl})`)
+                        **Status:** ${state[personastate]}
+                        **Country:** :flag_${loccountrycode ? loccountrycode.toLowerCase() : "white"}:
+                        **Account Created:** ${formatDate(date)}
+                        **Bans:** Vac: ${NumberOfVACBans}, Game: ${NumberOfGameBans}
+                        **Link:** [link to profile](${profileurl})`)
                         .setTimestamp();
 
                     message.channel.send(embed).then(m => del(m, 15000));

@@ -40,7 +40,7 @@ module.exports = {
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()
             .setDescription(stripIndents`**> Banned member:** ${toBan} (${toBan.id})
-            **> Banned by:** ${message.member} (${message.member.id})
+            **> Banned by:** ${message.member}
             **> Reason:** ${reason}`);
 
         const promptEmbed = new MessageEmbed()

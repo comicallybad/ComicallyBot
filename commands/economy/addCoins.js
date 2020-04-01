@@ -54,7 +54,7 @@ module.exports = {
                         .setFooter(message.member.displayName, message.author.displayAvatarURL())
                         .setTimestamp()
                         .setDescription(stripIndents`
-                        **> Coins Added by:** <@${message.member.id}> ${message.member.user.username} (${message.member.id})
+                        **> Coins Added by:** ${message.member.user}
                         **> Coins Given to:** <@${userID}> ${userName} (${userID})
                         **> Coins Given:** ${coinsToAdd}`);
 
