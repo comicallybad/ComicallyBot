@@ -150,4 +150,28 @@ module.exports = {
             .awaitReactions(filter, { max: max, time: time })
             .then(collected => collected.first().users.cache.map(usr => usr).filter(usr => !usr.bot))
     },
+
+    userCooldown: function (guildID, userID, userName, offences) {
+        if (!offences) userCooldowns.push({ guildID: guildID, userID: userID, userName: userName, offences: 1 });
+        else userCooldowns.push({ guildID: guildID, userID: userID, userName: userName, offences: offences });
+        let currentOffences = userCooldowns[userCooldowns.findIndex(usr => usr.userID == userID && usr.guildID == guildID)].offences;
+        let cooldown = setTimeout(function () {
+            if (userCooldowns[userCooldowns.findIndex(usr => usr.userID == userID && usr.guildID == guildID)].offences > 1)
+                userCooldowns[userCooldowns.findIndex(usr => usr.userID == userID && usr.guildID == guildID)].offences--;
+            else
+                userCooldowns.splice(userCooldowns.findIndex(usr => usr.userID === userID), 1)
+        }, 5000 * currentOffences)
+    },
+
+    userCooldownMessage: function (guildID, user, reason) {
+        let userID = user.id;
+        let offences = userCooldowns[userCooldowns.findIndex(usr => usr.userID == userID && usr.guildID == guildID)].offences;
+        if (offences <= 3)
+            userCooldowns[userCooldowns.findIndex(usr => usr.userID == userID && usr.guildID == guildID)].offences++;
+        if (parseInt(offences) > 0 && parseInt(offences) < 3) {
+            if (Math.pow(5, offences) < 120)
+                user.send("You are currently on cooldown for: \`" + Math.pow(5, offences) + "\` seconds, for: \`" + reason + "\`");
+            else user.send("You are currently on cooldown for: \`" + Math.floor(Math.pow(5, offences) / 60) + "\` minutes, for: \`" + reason + "\`");
+        }
+    },
 }

@@ -9,7 +9,9 @@ const dbSchema = mongoose.Schema({
     commands: [Object],
     channels: [Object],
     coinsMultiplier: Number,
-    buyableRanks: [Object]
+    buyableRanks: [Object],
+    reactionRoles: [Object],
+    reactionCommands: [Object],
 });
 
 module.exports = mongoose.model("db", dbSchema)
