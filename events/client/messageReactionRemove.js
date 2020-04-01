@@ -53,7 +53,7 @@ function checkReactionRole(message, user) {
             reactionRoles: { $elemMatch: { messageID: messageID, reaction: reaction, type: "add/remove" } }
         }, (err, exists) => {
             if (exists) {
-                const roles = exists.reactionRoles.filter(rr => rr.messageID == messageID && rr.reaction == reaction);
+                const roles = exists.reactionRoles.filter(rr => rr.messageID == messageID && rr.reaction == reaction && rr.type == "add/remove");
                 roles.forEach(role => {
                     guildUser.roles.remove(role.roleID).then(() => {
                         embed.setDescription(`**${user}**left the **${role.roleName}**(${role.roleID}) via Reaction Role`)
