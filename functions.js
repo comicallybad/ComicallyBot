@@ -166,7 +166,7 @@ module.exports = {
     userCooldownMessage: function (message, guildID, user, reason) {
         let userID = user.id;
         let offences = userCooldowns[userCooldowns.findIndex(usr => usr.userID == userID && usr.guildID == guildID)].offences;
-        if (offences <= 3)
+        if (offences < 3)
             userCooldowns[userCooldowns.findIndex(usr => usr.userID == userID && usr.guildID == guildID)].offences++;
         if (parseInt(offences) > 0 && parseInt(offences) < 4) {
             if (Math.pow(5, offences) < 120)

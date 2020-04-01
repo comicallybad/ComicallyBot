@@ -59,7 +59,6 @@ function checkReactionRole(message, user) {
                         embed.setDescription(`**${user}**left the **${role.roleName}**(${role.roleID}) via Reaction Role`)
                         if (logChannel) logChannel.send(embed)
                         guildUser.send(`Hello, you have been removed from the **${role.roleName}** role in **${guildUser.guild.name}**`).catch(err => {
-                            console.log("inside remove catch")
                             message.message.channel.send(`${user} was added to the **${role.roleName}** role`).then(m => del(m, 7500))
                         });
                     }).catch(err => {
