@@ -93,7 +93,8 @@ function addReactionRole(message, reaction, role, type) {
             embed.setDescription(stripIndents`**> Reaction role updated by:** ${message.member.user}
             **> Reaction role:** ${role}(${role.id})
             **> Reaction emoji/ID:** ${reaction}
-            **> Reaction role messasge ID:** ${messageID}`);
+            **> Reaction role messasge ID:** ${messageID}
+            **> Reaction role type:** ${type}`);
 
             logChannel.send(embed);
         }

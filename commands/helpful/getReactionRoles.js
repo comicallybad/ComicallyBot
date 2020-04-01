@@ -27,7 +27,7 @@ module.exports = {
             if (err) console.log(err)
             if (exists) {
                 let reactionRoles = exists.reactionRoles
-                    .map(rr => `MessageID: \`${rr.messageID}\`  Reaction: \`${rr.reaction}\` Role: \`${rr.roleName}(${rr.roleID})\` Type: \`${rr.type}\``)
+                    .map(rr => `MessageID: \`${rr.messageID}\`  Reaction: \`${rr.reaction}\` Role: \`${rr.roleName}(${rr.roleID})\` Type: \`${rr.type}\`, `)
                 if (reactionRoles.length > 0) {
                     embed.setDescription("").addField("Reaction Roles", reactionRoles)
                     return m.edit(embed).then(m => del(m, 30000));
