@@ -11,7 +11,7 @@ module.exports = {
     permissions: "moderator",
     run: async (client, message, args) => {
         let guildID = message.guild.id;
-        console.log("inside command")
+
         const embed = new MessageEmbed()
             .setColor("#0efefe")
             .setTitle("Reaction Roles")
