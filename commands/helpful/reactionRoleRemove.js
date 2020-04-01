@@ -7,16 +7,19 @@ module.exports = {
     category: "helpful",
     description: "Removes a reaction role.",
     permissions: "moderator",
-    usage: "<messageID> <emote> <roleID|@role>",
+    usage: "<messageID> <roleID|@role>",
     run: async (client, message, args) => {
         if (!args[0])
-            return message.reply("Please provide a messageID.").then(m => del(m, 7500));
+            return message.reply("Please provide a message ID.").then(m => del(m, 7500));
+
+        if (isNaN(args[0]))
+            return message.reply("Please provide a valid message ID.").then(m => del(m, 7500));
 
         if (!args[1])
             return message.reply("Please provide a role ID or at mention of the role..").then(m => del(m, 7500));
 
         let guildID = message.guild.id;
-        let messageID = message.id;
+        let messageID = args[0];
         let roleID = findID(message, args[1], "role");
 
         db.updateOne({ guildID: guildID }, {
