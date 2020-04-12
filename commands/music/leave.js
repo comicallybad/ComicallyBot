@@ -2,7 +2,7 @@ const { del } = require("../../functions.js");
 
 module.exports = {
     name: "leave",
-    aliases: ["quit", "stop"],
+    aliases: ["quit", "stop", "disconnect"],
     category: "music",
     description: "Disconnects the bot from the voice channel.",
     permissions: "member",

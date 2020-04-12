@@ -2,7 +2,7 @@ const { del } = require("../../functions.js");
 
 module.exports = {
     name: "trackrepeat",
-    aliases: ["trepeat", "repeattrack"],
+    aliases: ["trepeat", "repeatt", "songrepeat", "repeatsong", "srepeat"],
     category: "music",
     description: "Makes the bot repeat the song currently playing.",
     permissions: "member",
