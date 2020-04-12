@@ -25,6 +25,9 @@ module.exports = {
 
 async function getAll(client, message) {
     const embed = new MessageEmbed()
+        .addField("Additional information", "Members must be added to gain access to \`member\` commands, and " +
+            `Moderators must be added to gain access to \`moderator\` commands via \`${prefix}addmember\` and \`${prefix}addmod\`. ` +
+            `Use \`${prefix}help <command name | alias>\` to view additional help and permissions for a certain command.`)
         .setColor("#0efefe")
         .setTimestamp();
 
