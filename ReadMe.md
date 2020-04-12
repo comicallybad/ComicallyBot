@@ -7,7 +7,7 @@ To clone and use ComicallyBot2.0 you will have to do a few things:
 4. npm i --save
 5. To start the bot correctly use: "start.bat" or open /lavalink/start.bat and then "node ." in project directory
 6. Commands will default to disabled, so in discord use _toggle, _togglecat, or _toggleall to toggle commands/categories. Use _help {command} for more information
-7. Create a discord text channel named "mod-logs" for logging moderator command uses
+7. Create a discord text channel named "mod-logs" for logging moderator command uses and "reports" for report command
 8. Use _help {command} to view information on a command. Use _status to show the status of commands
 9. Use _addmember {@role | roleID | @user | userID} to add a role/user to access member commands
 10. Use _addmod {@role | roleID | @user | userID} to add a role/user to access mod commands
