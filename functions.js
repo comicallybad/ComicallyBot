@@ -2,8 +2,12 @@ const db = require('./schemas/db.js');
 
 module.exports = {
     del: async function (message, timeout) {
-        if (message.deletable) message.delete({ timeout: timeout })
-            .catch(err => err) //This gets rid of the annoying "Unknown Message" error.
+        if (message) { //Fix in case bad message
+            if (message.id) { //Fix cannot read ID 
+                if (message.deletable) message.delete({ timeout: timeout })
+                    .catch(err => err) //This gets rid of the annoying "Unknown Message" error.
+            } else return;
+        } else return;
     },
 
     hasPermissions: async function (message, commandType) {

@@ -32,7 +32,9 @@ function removeReactionRole(message) {
 }
 
 function checkReactionRole(message, user) {
-    const logChannel = message.message.guild.channels.cache.find(c => c.name === "mod-logs" || undefined);
+    let logChannel;
+    if (message.message.guild.channels)
+        logChannel = message.message.guild.channels.cache.find(c => c.name === "mod-logs" || undefined);
     let guildUser = message.message.guild.members.cache.get(user.id);
     let guildID = message.message.guild.id;
 
