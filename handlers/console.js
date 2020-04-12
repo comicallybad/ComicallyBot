@@ -1,8 +1,15 @@
 module.exports = (client) => {
     let prompt = process.openStdin()
-    prompt.addListener("data", res => {
+    prompt.addListener("DiscordAPIError", res => {
         let x = res.toString().trim().split(/ +/g)
-        client.fetchUser("177578480899325952", false).then(user => {
+        client.fetchUser(`${process.env.USERID}`, false).then(user => {
+            user.send(x.join(" "));
+        });
+    });
+
+    prompt.addListener("TypeError", res => {
+        let x = res.toString().trim().split(/ +/g)
+        client.fetchUser(`${process.env.USERID}`, false).then(user => {
             user.send(x.join(" "));
         });
     });
