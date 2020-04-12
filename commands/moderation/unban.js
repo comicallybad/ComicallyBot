@@ -47,11 +47,12 @@ module.exports = {
                 del(msg, 0);
 
                 //attempt unban and send message
-                bannedMember.send(`Hello, you have been **unbanned** in ${message.guild.name} for: **${reason}**`).catch(err => console.log(err));
                 message.guild.members.unban(bannedMember, reason)
                     .catch(err => {
                         if (err) return message.reply(`Well.... the unban didn't work out. Here's the error ${err}`).then(m => del(m, 7500));
                     });
+
+                bannedMember.send(`Hello, you have been **unbanned** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
 
                 logChannel.send(embed);
             } else if (emoji === "❌") {
