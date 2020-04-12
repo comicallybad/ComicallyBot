@@ -51,7 +51,7 @@ module.exports = {
 
                 //remove role to the mentioned user and also send the user a dm explaing where and why they were unmuted
                 mutee.roles.remove(muterole.id).then(() => {
-                    mutee.send(`Hello, you have been **unmuted** in ${message.guild.name} for: **${reason}**`).catch(err => console.log(err));
+                    mutee.send(`Hello, you have been **unmuted** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                     message.reply(`${mutee.user.username} was successfully unmuted.`).then(m => del(m, 7500));
                 }).catch(err => {
                     if (err) return message.reply(`Well.... the unmute didn't work out. Here's the error ${err}`).then(m => del(m, 7500));

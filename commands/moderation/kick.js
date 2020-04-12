@@ -54,11 +54,12 @@ module.exports = {
             if (emoji === "✅") {
                 del(msg, 0);
 
-                toKick.send(`Hello, you have been **kicked** in ${message.guild.name} for: **${reason}**`).catch(err => console.log(err));
                 toKick.kick(reason)
                     .catch(err => {
                         if (err) return message.channel.send(`Well.... the kick didn't work out. Here's the error ${err}`).then(m => del(m, 7500));
                     });
+
+                toKick.send(`Hello, you have been **kicked** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
 
                 logChannel.send(embed);
             } else if (emoji === "❌") {

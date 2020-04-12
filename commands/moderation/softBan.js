@@ -54,9 +54,10 @@ module.exports = {
                 del(msg, 0);
 
                 //attempt ban and send message
-                banMember.send(`Hello, you have been **soft banned** in ${message.guild.name} for: **${reason}**`).catch(err => console.log(err));
                 message.guild.members.ban(banMember, { days: 1, reason: reason }).then(() =>
                     message.guild.members.unban(banMember.id, { reason: "Softban" })).catch(err => console.log(err))
+
+                banMember.send(`Hello, you have been **soft banned** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
 
                 logChannel.send(embed);
             } else if (emoji === "❌") {

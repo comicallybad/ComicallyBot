@@ -23,10 +23,10 @@ module.exports = {
         if (!args[1])
             return message.channel.send("Please provide a reason for the report").then(m => del(m, 7500));
 
-        const channel = message.guild.channels.cache.find(channel => channel.name === "reports");
+        let channel = message.guild.channels.cache.find(channel => channel.name === "reports") || message.guild.channels.cache.find(channel => channel.name === "mod-logs");
 
         if (!channel)
-            return message.channel.send("Couldn't find a \`#reports\` channel").then(m => del(m, 7500));
+            return message.channel.send("Couldn't find a \`#reports\` or \`#mod-logs\` channel").then(m => del(m, 7500));
 
         const embed = new MessageEmbed()
             .setColor("RED")
