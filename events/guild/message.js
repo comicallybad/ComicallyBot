@@ -13,7 +13,7 @@ module.exports = async (client, message) => {
     const channelPermissions = message.channel.permissionsFor(message.guild.me);
 
     if (!channelPermissions.has("SEND_MESSAGES") || !channelPermissions.has("MANAGE_MESSAGES") || !channelPermissions.has("ADD_REACTIONS"))
-        return message.author.send("I am missing permissions to either `SEND_MESSAGES`, `MANAGE_MESSAGES` or `ADD_REACTIONS`.").then(m => del(m, 60000));
+        return message.author.send("I am missing permissions to either `SEND_MESSAGES`, `MANAGE_MESSAGES` or `ADD_REACTIONS`.").then(m => del(m, 60000)).catch(err => err);
 
     const args = message.content.startsWith(prefix) ? message.content.slice(prefix.length).trim().split(/ +/g) : message.content.slice(`<@!${client.user.id}>`.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();

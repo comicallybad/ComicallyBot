@@ -34,12 +34,14 @@ module.exports = {
                 let civilianUsers = users.filter(usr => usr.id !== mafiaUserID)
 
                 client.users.fetch(mafiaUserID, false).then(user => {
-                    user.send(`You have been selected to be **mafia** for **${message.author.username}'s** mafia game.`).then(m => del(m, 15000));
+                    user.send(`You have been selected to be **mafia** for **${message.author.username}'s** mafia game.`).then(m => del(m, 15000))
+                        .catch(err => message.channel.send(`${user} you must have DM's opened to be part of the mafia`));
                 });
 
                 for (let i = 0; i < maxPlayers - 1; i++) {
                     client.users.fetch(civilianUsers[i].id, false).then(user => {
-                        user.send(`You have been selected to be **civilian** for **${message.author.username}'s** mafia game.`).then(m => del(m, 15000));
+                        user.send(`You have been selected to be **civilian** for **${message.author.username}'s** mafia game.`).then(m => del(m, 15000))
+                            .catch(err => message.channel.send(`${user} you must have DM's opened to be part of the mafia`));
                     });
                 };
 
