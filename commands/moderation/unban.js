@@ -48,7 +48,6 @@ module.exports = {
             if (emoji === "✅") {
                 del(msg, 0);
 
-                console.log(bannedMember)
                 //attempt unban and send message
                 message.guild.members.unban(bannedMember, reason).then(() => {
                     bannedMember.send(`Hello, you have been **unbanned** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
