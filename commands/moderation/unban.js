@@ -17,7 +17,9 @@ module.exports = {
         if (!message.guild.me.hasPermission("BAN_MEMBERS"))
             return message.reply("I dont have the permission to perform this command!").then(m => del(m, 7500));
 
-        if (isNaN(args[0])) return message.reply("You need to provide an ID.").then(m => del(m, 7500));
+        if (isNaN(args[0]))
+            return message.reply("You need to provide an ID.").then(m => del(m, 7500));
+
         let bannedMember = await client.users.fetch(args[0])
         if (!bannedMember) return message.channel.send("Please provide a user id to unban someone!").then(m => del(m, 7500));
 
@@ -46,13 +48,14 @@ module.exports = {
             if (emoji === "✅") {
                 del(msg, 0);
 
+                console.log(bannedMember)
                 //attempt unban and send message
-                message.guild.members.unban(bannedMember, reason)
-                    .catch(err => {
-                        if (err) return message.reply(`Well.... the unban didn't work out. Here's the error ${err}`).then(m => del(m, 7500));
-                    });
-
-                bannedMember.send(`Hello, you have been **unbanned** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
+                message.guild.members.unban(bannedMember, reason).then(() => {
+                    bannedMember.send(`Hello, you have been **unbanned** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
+                    message.reply(`${bannedMember.username} (${bannedMember.id}) was successfully unbanned.`).then(m => del(m, 7500));
+                }).catch(err => {
+                    if (err) return message.reply(`There was an error attempting to unban ${bannedMember} ${err}`).then(m => del(m, 7500));
+                });
 
                 logChannel.send(embed);
             } else if (emoji === "❌") {

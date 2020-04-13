@@ -33,7 +33,7 @@ async function tot(client, message, responseChannel) {
                     awaitSecondChoice(message, firstChoice);
                 }
             } else return message.reply("Expired").then(m => del(m, 10000));
-        }).catch(err => console.log(err));
+        }).catch(err => err);
     }
 
     async function awaitSecondChoice(message, firstChoice) {
@@ -53,7 +53,7 @@ async function tot(client, message, responseChannel) {
                     awaitImage(message, firstChoice, secondChoice);
                 }
             } else return message.reply("Expired").then(m => del(m, 10000));
-        }).catch(err => console.log(err))
+        }).catch(err => err)
     }
 
     async function awaitImage(message, firstChoice, secondChoice) {
@@ -76,7 +76,7 @@ async function tot(client, message, responseChannel) {
                     } else return message.reply("Please add an image").then(m => del(m, 10000));
                 }
             } else return message.reply("Expired").then(m => del(m, 10000));
-        }).catch(err => console.log(err));
+        }).catch(err => err);
     }
 
     function embedMessage(message, firstChoice, secondChoice, image) {
@@ -89,8 +89,8 @@ async function tot(client, message, responseChannel) {
 
         if (client.channels.cache.get(responseChannel))
             client.channels.cache.get(responseChannel).send(embed).then(function (msg) {
-                msg.react("⬅").then(() => msg.react("➡")).catch(err => console.log(err))
-            }).catch(err => console.log(err));
+                msg.react("⬅").then(() => msg.react("➡")).catch(err => err)
+            }).catch(err => err);
         else return message.reply("Channel has been deleted?").then(m => del(m, 7500));
     }
 }

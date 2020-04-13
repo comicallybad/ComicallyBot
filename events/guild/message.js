@@ -25,8 +25,8 @@ module.exports = async (client, message) => {
             return message.author.send("I am missing permissions to `SEND_MESSAGES`").then(m => del(m, 60000)).catch(err => err);
 
         if (!channelPermissions.has("MANAGE_MESSAGES") || !channelPermissions.has("ADD_REACTIONS"))
-            return message.channel.send("I am missing permissions to `MANAGE_MESSAGES` for a clean command experience"
-                + " and/or permissions for `ADD_REACTIONS` for essential commands.").then(m => del(m, 60000)).catch(err => err);
+            return message.reply("I am missing permissions to `MANAGE_MESSAGES` for a clean command experience"
+                + " and/or permissions for `ADD_REACTIONS` for essential commands.").then(m => del(m, 30000));
 
         del(message, 0);
 

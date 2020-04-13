@@ -54,10 +54,13 @@ module.exports = {
                 del(msg, 0);
 
                 //attempt ban and send message
-                message.guild.members.ban(banMember, { days: 1, reason: reason }).then(() =>
-                    message.guild.members.unban(banMember.id, { reason: "Softban" })).catch(err => console.log(err))
-
-                banMember.send(`Hello, you have been **soft banned** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
+                message.guild.members.ban(banMember, { days: 1, reason: reason }).then(() => {
+                    message.guild.members.unban(banMember.id, { reason: "Softban" })
+                    banMember.send(`Hello, you have been **soft banned** in ${message.guild.name} for: **${reason}**`).catch(err => err) //in case DM's are closed
+                    message.reply(`${banMember.user.username}(${banMember.user.id}) was successfully soft banned.`).then(m => del(m, 7500));
+                }).catch(err => {
+                    if (err) return message.reply(`There was an error attempting to softban ${toBan} ${err}`).then(m => del(m, 7500));
+                });
 
                 logChannel.send(embed);
             } else if (emoji === "❌") {

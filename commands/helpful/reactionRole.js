@@ -85,7 +85,8 @@ function addReactionRole(message, reaction, role, type) {
         } else {
             const currentReaction = exists.reactionRoles.filter(rr => rr.messageID == messageID && rr.roleID == roleID)[0].reaction
             if (reaction !== currentReaction)
-                message.reactions.cache.get(currentReaction).remove().catch(err => console.log(err)); //remove old reaction if emote changes
+                message.reactions.cache.get(currentReaction).remove().catch(err => err); //remove old reaction if emote changes
+
             db.updateOne({ guildID: guildID, 'reactionRoles.messageID': messageID, 'reactionRoles.roleID': roleID }, {
                 $set: { 'reactionRoles.$.roleName': roleName, 'reactionRoles.$.reaction': reaction, 'reactionRoles.$.type': type }
             }).catch(err => console.log(err));

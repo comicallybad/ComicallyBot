@@ -77,8 +77,9 @@ module.exports = {
                     mutee.send(`Hello, you have been **muted** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                     message.reply(`${mutee.user.username} was successfully muted.`).then(m => del(m, 7500));
                 }).catch(err => {
-                    if (err) return message.reply(`Well.... the mute didn't work out. Here's the error ${err}`).then(m => del(m, 7500));
+                    if (err) return message.reply(`There was an error attempting to mute ${mutee} ${err}`).then(m => del(m, 7500));
                 });
+
                 logChannel.send(embed);
             } else if (emoji === "❌") {
                 del(msg, 0);

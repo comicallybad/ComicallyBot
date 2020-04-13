@@ -32,10 +32,9 @@ module.exports = {
                 if (err) console.log(err);
                 if (!exists) {
                     //push channel if it doesn't exist
-                    db.updateOne({ guildID: guildID },
-                        {
-                            $push: { channels: { command: "tot", channelID: channelID, channelName: channelName } }
-                        }).catch(err => console.log(err));
+                    db.updateOne({ guildID: guildID }, {
+                        $push: { channels: { command: "tot", channelID: channelID, channelName: channelName } }
+                    }).catch(err => console.log(err));
                 } else {
                     ///update channel if it does exist
                     db.updateOne({ guildID: guildID, 'channels.command': "tot" }, {

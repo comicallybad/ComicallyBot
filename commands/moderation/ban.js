@@ -14,13 +14,8 @@ module.exports = {
         if (!message.guild.me.hasPermission("BAN_MEMBERS"))
             return message.reply("I don't have permission to ban members!").then(m => del(m, 7500));
 
-        if (!args[0])
-            return message.reply("Please provide a person to ban.").then(m => del(m, 7500));
-
-        const toBan = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-
-        if (!toBan)
-            return message.reply("Couldn't find that member, try again").then(m => del(m, 7500));
+        let toBan = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
+        if (!toBan) return message.reply("Please supply a user to be banned!").then(m => del(m, 7500));
 
         if (toBan.id === message.author.id)
             return message.reply("You can't ban yourself...").then(m => del(m, 7500));
@@ -55,12 +50,12 @@ module.exports = {
                 del(msg, 0);
 
                 //attempt ban and send message
-                toBan.ban(reason)
-                    .catch(err => {
-                        if (err) return message.reply(`Well.... the ban didn't work out. Here's the error ${err}`).then(m => del(m, 7500));
-                    });
-
-                toBan.send(`Hello, you have been **banned** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
+                toBan.ban(reason).then(() => {
+                    toBan.send(`Hello, you have been **banned** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
+                    message.reply(`${toBan.user.username} (${toBan.user.id}) was successfully banned.`).then(m => del(m, 7500));
+                }).catch(err => {
+                    if (err) return message.reply(`There was an error attempting to ban ${toBan} ${err}`).then(m => del(m, 7500));
+                });
 
                 logChannel.send(embed);
             } else if (emoji === "❌") {
