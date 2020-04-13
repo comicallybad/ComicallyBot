@@ -19,7 +19,7 @@ module.exports = {
             return message.reply("I dont have the permission to perform this command!").then(m => del(m, 7500));
 
         let banMember = message.mentions.members.first() || message.guild.members.cache.get(args[0])
-        if (!banMember) return message.channel.send("Please provide a user to ban!")
+        if (!banMember) return message.reply("Please provide a user to ban!").then(m => del(m, 7500));
 
         if (banMember.id === message.author.id)
             return message.reply("You can't ban yourself...").then(m => del(m, 7500));
