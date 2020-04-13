@@ -10,11 +10,6 @@ module.exports = async (client, message) => {
     if (!message.content.startsWith(prefix) && !message.content.startsWith(`<@!${client.user.id}>`)) return;
     if (!message.member) message.member = await message.guild.fetchMember(message);
 
-    const channelPermissions = message.channel.permissionsFor(message.guild.me);
-
-    if (!channelPermissions.has("SEND_MESSAGES") || !channelPermissions.has("MANAGE_MESSAGES") || !channelPermissions.has("ADD_REACTIONS"))
-        return message.author.send("I am missing permissions to either `SEND_MESSAGES`, `MANAGE_MESSAGES` or `ADD_REACTIONS`.").then(m => del(m, 60000)).catch(err => err);
-
     const args = message.content.startsWith(prefix) ? message.content.slice(prefix.length).trim().split(/ +/g) : message.content.slice(`<@!${client.user.id}>`.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
 
@@ -24,7 +19,16 @@ module.exports = async (client, message) => {
     if (!command) command = client.commands.get(client.aliases.get(cmd));
 
     if (command) {
-        del(message, 0)
+        const channelPermissions = message.channel.permissionsFor(message.guild.me);
+
+        if (!channelPermissions.has("SEND_MESSAGES"))
+            return message.author.send("I am missing permissions to `SEND_MESSAGES`").then(m => del(m, 60000)).catch(err => err);
+
+        if (!channelPermissions.has("MANAGE_MESSAGES") || !channelPermissions.has("ADD_REACTIONS"))
+            return message.channel.send("I am missing permissions to `MANAGE_MESSAGES` for a clean command experience"
+                + " and/or permissions for `ADD_REACTIONS` for essential commands.").then(m => del(m, 60000)).catch(err => err);
+
+        del(message, 0);
 
         if (command.category !== 'command') {
             getCommandStatus(message, command.name).then(function (res) {
