@@ -8,7 +8,7 @@ module.exports = async (client, message) => {
         if (message.id) {
             messageID = message.id;
         } else return;
-        if (message.guild.id) {
+        if (message.guild) {
             guildID = message.guild.id
         } else return;
     } else return;
