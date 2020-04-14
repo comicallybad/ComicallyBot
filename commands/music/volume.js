@@ -19,6 +19,9 @@ module.exports = {
         if (!args[0])
             return message.reply(`Current Volume: ${player.volume}`).then(m => del(m, 7500));
 
+        if (isNaN(args[0]))
+            return message.reply("Please provide a number 1-100").then(m => del(m, 7500));
+
         if (Number(args[0]) <= 0 || Number(args[0]) > 100)
             return message.reply("You may only set the volume to 1-100").then(m => del(m, 7500));
 
