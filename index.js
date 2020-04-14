@@ -8,7 +8,7 @@ global.prefix = "_";
 global.voiceChannels = [];
 
 ["aliases", "commands"].forEach(x => client[x] = new Collection());
-["console", "command", "event"].forEach(x => require(`./handlers/${x}`)(client));
+["command", "event"].forEach(x => require(`./handlers/${x}`)(client));
 client.categories = new fs.readdirSync("./commands/");
 
 client.login(process.env.TOKEN);
