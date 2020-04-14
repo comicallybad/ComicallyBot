@@ -8,7 +8,7 @@ module.exports = async (client, message, user) => {
             message.fetch()
                 .then(fullMessage => {
                     checkReactionRole(fullMessage, user);
-                });
+                }).catch(err => err); //Error handling for not being able to fetch message
         } else {
             checkReactionRole(message, user);
         }

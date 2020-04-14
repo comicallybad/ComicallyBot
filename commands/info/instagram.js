@@ -24,7 +24,7 @@ module.exports = {
         try {
             res = await fetch(url).then(url => url.json());
         } catch (e) {
-            return message.reply("I couldn't find that account... :(").then(m => del(m, 7500));
+            return message.reply("I couldn't find that account...").then(m => del(m, 7500));
         }
 
         const account = res.graphql.user;

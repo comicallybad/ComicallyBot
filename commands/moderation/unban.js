@@ -21,6 +21,8 @@ module.exports = {
             return message.reply("You need to provide an ID.").then(m => del(m, 7500));
 
         let bannedMember = await client.users.fetch(args[0])
+            .catch(err => message.channel.send(`There was a problem fetching that user. ${err}`).then(m => del(m, 7500)));
+
         if (!bannedMember) return message.channel.send("Please provide a user id to unban someone!").then(m => del(m, 7500));
 
         let reason = args.slice(1).join(" ")
