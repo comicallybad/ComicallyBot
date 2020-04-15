@@ -47,7 +47,8 @@ module.exports = {
         const player = client.music.players.spawn({
             guild: message.guild,
             textChannel: message.channel,
-            voiceChannel
+            voiceChannel,
+            volume: 10
         });
 
         player.setVoiceChannel(voiceChannel);
