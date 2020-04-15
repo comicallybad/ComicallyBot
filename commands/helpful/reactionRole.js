@@ -24,8 +24,7 @@ module.exports = {
             return message.reply("Please provide a role ID or at mention the role.").then(m => del(m, 7500));
 
         if (args[0] && args[1] && args[2]) {
-            const msg = await message.channel.messages.fetch(args[0])
-                .catch(err => message.channel.send(`There was a problem fetching that message. ${err}`).then(m => del(m, 7500)));
+            const msg = await message.channel.messages.fetch(args[0]).catch(err => err);
 
             if (!msg) return message.reply("Could not find message.").then(m => del(m, 7500));
 

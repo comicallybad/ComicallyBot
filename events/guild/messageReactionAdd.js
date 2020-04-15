@@ -5,10 +5,9 @@ const { MessageEmbed } = require("discord.js");
 module.exports = async (client, message, user) => {
     if (user.id !== client.user.id) {
         if (message.partial) {
-            message.fetch()
-                .then(fullMessage => {
-                    checkReactionRole(fullMessage, user);
-                }).catch(err => err); //Error handling for not being able to fetch message
+            message.fetch().then(fullMessage => {
+                checkReactionRole(fullMessage, user);
+            }).catch(err => err); //Error handling for not being able to fetch message
         } else {
             checkReactionRole(message, user);
         }
