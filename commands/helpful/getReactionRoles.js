@@ -29,7 +29,7 @@ module.exports = {
                 let reactionRoles = exists.reactionRoles
                     .map(rr => `MessageID: \`${rr.messageID}\`  Reaction: \`${rr.reaction}\` Role: \`${rr.roleName}(${rr.roleID})\` Type: \`${rr.type}\`, `)
                 if (reactionRoles.length > 0) {
-                    embed.setDescription("").addField("Reaction Roles", reactionRoles)
+                    embed.setDescription(reactionRoles);
                     return m.edit(embed).then(m => del(m, 30000));
                 } else {
                     embed.setDescription("").addField("Reaction Roles", "There have been no reaction roles set.")
