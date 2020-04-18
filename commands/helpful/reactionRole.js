@@ -48,7 +48,7 @@ module.exports = {
                     let customEmoji = reaction.replace("<:", "").slice(reaction.replace("<:", "").indexOf(":") + 1, reaction.replace("<:", "").length - 1); //gross code yes...
                     msg.react(customEmoji)
                         .then(() => {//attempt custom emoji
-                            addReactionRole(msg, reaction.replace(customEmoji, ''), role, type);
+                            addReactionRole(msg, customEmoji, role, type);
                         }).catch(err => message.reply("Invalid emoji. I must have access to the emoji.").then(m => del(m, 7500)))
                 });
         }
