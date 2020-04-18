@@ -9,7 +9,7 @@ module.exports = {
     category: "helpful",
     description: "Adds an emote users can react to to be given a role.",
     permissions: "moderator",
-    usage: "<messageID> <emote> <roleID|@role> [type] Types: 'addonly', 'add/remove'. Type will default to addremove if not supplied.",
+    usage: "<messageID> <emote|emoteID> <roleID|@role> [type] Types: 'addonly', 'add/remove'. Type will default to addremove if not supplied.",
     run: async (client, message, args) => {
         if (!message.guild.me.hasPermission("MANAGE_ROLES"))
             return message.reply("I don't have permission to manage roles!").then(m => del(m, 7500));
@@ -26,7 +26,8 @@ module.exports = {
         if (args[0] && args[1] && args[2]) {
             const msg = await message.channel.messages.fetch(args[0]).catch(err => err);
 
-            if (!msg) return message.reply("Could not find message.").then(m => del(m, 7500));
+            if (!msg || msg.message == "Unknown Message")
+                return message.reply("Could not find message.").then(m => del(m, 7500));
 
             let reaction = await args[1];
 
@@ -44,9 +45,10 @@ module.exports = {
                 .then(() => {//attempt unicode emoji
                     addReactionRole(msg, reaction, role, type);
                 }).catch(() => {
-                    msg.react(reaction.replace(/[^0-9]/g, ''))
+                    let customEmoji = reaction.replace("<:", "").slice(reaction.replace("<:", "").indexOf(":") + 1, reaction.replace("<:", "").length - 1); //gross code yes...
+                    msg.react(customEmoji)
                         .then(() => {//attempt custom emoji
-                            addReactionRole(msg, reaction.replace(/[^0-9]/g, ''), role, type);
+                            addReactionRole(msg, reaction.replace(customEmoji, ''), role, type);
                         }).catch(err => message.reply("Invalid emoji. I must have access to the emoji.").then(m => del(m, 7500)))
                 });
         }
