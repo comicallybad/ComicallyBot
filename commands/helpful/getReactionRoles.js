@@ -27,12 +27,10 @@ module.exports = {
             if (err) console.log(err)
             if (exists) {
                 let reactionRoles = exists.reactionRoles
-                // .map(rr => `MessageID: \`${rr.messageID}\`  Reaction: \`${rr.reaction}\` Role: \`${rr.roleName}(${rr.roleID})\` Type: \`${rr.type}\`, `)
                 if (reactionRoles.length > 0) {
                     reactionRoles.forEach((rr, index) => {
                         embed.addField(`Reaction Role ${index + 1}:`, `MessageID: \`${rr.messageID}\`  Reaction: \`${rr.reaction}\` Role: \`${rr.roleName}(${rr.roleID})\` Type: \`${rr.type}\`,`)
                     });
-                    // embed.setDescription(reactionRoles);
                     return m.edit(embed).then(m => del(m, 30000));
                 } else {
                     embed.setDescription("").addField("Reaction Roles", "There have been no reaction roles set.")
