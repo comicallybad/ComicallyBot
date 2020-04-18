@@ -17,7 +17,8 @@ module.exports = {
         if (!args[0]) message.reply("Please provide a Fortnite username").then(m => del(m, 7500));
         else
             if (args[0].toLowerCase() === "store" || args[0].toLowerCase() === "shop") {
-                const store = await ft.store();
+                const store = await ft.store()
+                    .catch(err => message.reply(`Something went wrong ${err}`).then(m => del(m, 7500)));;
 
                 const embed = new MessageEmbed()
                     .setColor("#9d4dbb")
@@ -48,7 +49,8 @@ module.exports = {
                     platform = "pc";
                 }
 
-                const search = await ft.user(username, platform);
+                const search = await ft.user(username, platform)
+                    .catch(err => message.reply(`Something went wrong ${err}`).then(m => del(m, 7500)));
 
                 if (!search.username) {
                     return message.channel.send("Couldn't find that person, try again").then(m => del(m, 7500));
