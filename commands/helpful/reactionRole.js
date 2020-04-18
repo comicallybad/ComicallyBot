@@ -27,7 +27,7 @@ module.exports = {
             const msg = await message.channel.messages.fetch(args[0]).catch(err => err);
 
             if (!msg || msg.message == "Unknown Message")
-                return message.reply("Could not find message.").then(m => del(m, 7500));
+                return message.reply("Could not find message in current channel.").then(m => del(m, 7500));
 
             let reaction = await args[1];
 
