@@ -7,7 +7,7 @@ module.exports = {
     aliases: ["h"],
     category: "info",
     description: "Returns all commands, returns all commands in a category, or returns a specific command's information.",
-    permissions: "member",
+    permissions: "everyone",
     usage: "[command | alias | category]",
     run: async (client, message, args) => {
         // If there's an arg found

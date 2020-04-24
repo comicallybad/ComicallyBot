@@ -15,7 +15,9 @@ module.exports = {
         let roleIDs = message.member.roles.cache.map(roles => roles.id);
         let userID = message.member.id;
 
+
         let hasPermissions = new Promise((resolve, reject) => {
+            if (commandType == "everyone") resolve(true)
             if (message.member.hasPermission("ADMINISTRATOR"
                 || message.author.id == process.env.USERID)) resolve(true)
             else {
