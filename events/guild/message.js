@@ -4,6 +4,7 @@ const { addCoins } = require("../../dbFunctions.js");
 module.exports = async (client, message) => {
     if (message.author.bot) return;
     if (!message.guild) return;
+    if (!message.member) return;
 
     addCoins(message, client)
 
