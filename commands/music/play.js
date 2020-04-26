@@ -103,6 +103,6 @@ module.exports = {
                     if (!player.playing) player.play();
                     break;
             }
-        }).catch(err => message.reply(err.message))
+        }).catch(err => message.reply(err.message).then(m => del(m, 7500)));
     }
 }
