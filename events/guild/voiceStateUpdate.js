@@ -44,7 +44,9 @@ module.exports = (client, voiceStateStart, voiceStateEnd) => {
 }
 
 function getSize(client, channel) {
-    return client.channels.cache.get(channel).members.size;
+    if (client.channels.cache.get(channel)) {
+        return client.channels.cache.get(channel).members.size;
+    } else return 0;
 }
 
 function channelsFind(channelID) {
@@ -70,7 +72,7 @@ function checkDisconnect(client, channelID) {
     let disconnectChannel = setTimeout(function () {
         clearInterval(intervalCheck);
         disconnect(client, channelID);
-    }, 300000); //5 minutes == 300000
+    }, 5000); //5 minutes == 300000
     let intervalCheck = setInterval(function () {
         var size = getSize(client, channelID)
         if (size > 1) {
