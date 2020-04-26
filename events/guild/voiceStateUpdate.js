@@ -72,7 +72,7 @@ function checkDisconnect(client, channelID) {
     let disconnectChannel = setTimeout(function () {
         clearInterval(intervalCheck);
         disconnect(client, channelID);
-    }, 30000); //5 minutes == 300000
+    }, 300000); //5 minutes == 300000
     let intervalCheck = setInterval(function () {
         var size = getSize(client, channelID)
         if (size > 1) {
