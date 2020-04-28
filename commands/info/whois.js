@@ -29,9 +29,9 @@ module.exports = {
             **> Joined at:** ${joined}
             **> Roles:** ${roles}`, true)
             .addField('User information:', stripIndents`**> ID:** ${member.user.id}
-            **> Username**: ${member.user.username}
-            **> Tag**: ${member.user.tag}
-            **> Created at**: ${created}`)
+            **> Username:** ${member.user.username}
+            **> Tag:** ${member.user.tag}
+            **> Created at:** ${created}`)
             .setTimestamp()
 
         if (member.user.presence.game)
