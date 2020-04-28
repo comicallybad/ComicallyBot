@@ -79,15 +79,18 @@ module.exports = {
 
         if (!type || type === "either") {
             if (roleIDs.includes(input)) return input
-            if (roleIDs.includes(mention)) return mention;
-            if (userIDs.includes(input)) return input;
-            if (userIDs.includes(mention)) return mention;
+            else if (roleIDs.includes(mention)) return mention;
+            else if (userIDs.includes(input)) return input;
+            else if (userIDs.includes(mention)) return mention;
+            else return undefined;
         } else if (type === "user") {
             if (userIDs.includes(input)) return input;
-            if (userIDs.includes(mention)) return mention;
+            else if (userIDs.includes(mention)) return mention;
+            else return undefined;
         } else if (type === "role") {
             if (roleIDs.includes(input)) return input
-            if (roleIDs.includes(mention)) return mention;
+            else if (roleIDs.includes(mention)) return mention;
+            else return undefined;
         }
     },
 
