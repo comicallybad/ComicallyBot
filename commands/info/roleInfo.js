@@ -22,15 +22,13 @@ module.exports = {
             roleID = message.mentions.roles.first().id;
         } else if (findID(message, args[0], "role")) {
             roleID = findID(message, args[0], "role");
-        } else if (roleNames.includes(args[0])) {
-            roleID = roleIDs[roleNames.indexOf(args[0])];
+        } else if (roleNames.includes(args.join(" "))) {
+            roleID = roleIDs[roleNames.indexOf(args.join(" "))];
         } else {
             return message.reply("Sorry, I could not find that role.")
         }
 
         let role = roles.filter(role => role.id == roleID).map(role => role)[0];
-
-        console.log(role.hexColor)
 
         const embed = new MessageEmbed()
             .setColor(`${role.hexColor}`)
