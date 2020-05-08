@@ -1,7 +1,8 @@
 const mongoose = require("mongoose")
 const db = require('./schemas/db.js');
 const xp = require('./schemas/xp.js');
-const { del } = require("./functions.js")
+const { del } = require("./functions.js");
+const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     dbSetup(client) {
@@ -144,14 +145,20 @@ module.exports = {
     },
 
     async checkXPRankup(message, userID, level) {
+        const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
         let guildID = message.guild.id;
         let user = await message.guild.members.fetch(userID)
+        const embed = new MessageEmbed()
+            .setColor("#0efefe")
+            .setTimestamp()
 
         db.findOne({ guildID: guildID, xpRoles: { $elemMatch: { level: level } } }, (err, exists) => {
             if (err) console.log(err)
             if (exists) {
                 roles = exists.xpRoles.filter(role => role.level == level)
                 roles.forEach(role => {
+                    embed.setDescription(`**${user}** joined the **${role.roleName}**(${role.roleID}) via Leveling up`);
+                    if (logChannel) logChannel.send(embed);
                     user.roles.add(role.roleID).then(() => {
                         user.send(`Hello, you have been given the **${role.roleName}** role in ${message.guild.name} for: **Ranking up to level ${level}!**`).catch(err => err);
                     }).catch(err => {
