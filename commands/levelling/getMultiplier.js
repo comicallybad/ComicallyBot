@@ -4,7 +4,7 @@ const db = require('../../schemas/db.js');
 module.exports = {
     name: "getmultiplier",
     aliases: ["getcoinmultiplier", "getxpmultiplier", "xpmultiplier"],
-    category: "levelling",
+    category: "leveling",
     description: "Get XP multiplier.",
     permissions: "member",
     run: (client, message, args) => {

@@ -6,7 +6,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "setmultiplier",
     aliases: ["multiplierset", "setxpmultiplier", "xpsetmultiplier"],
-    category: "levelling",
+    category: "leveling",
     description: "Set XP multiplier.",
     permissions: "moderator",
     usage: "<number 1-3>",

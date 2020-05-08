@@ -4,8 +4,8 @@ const db = require('../../schemas/db.js');
 module.exports = {
     name: "setrankchannel",
     aliases: ["setrankch", "rankchannelset"],
-    category: "levelling",
-    description: "Set response channel for levelling.",
+    category: "leveling",
+    description: "Set response channel for leveling.",
     permissions: "moderator",
     usage: "<channelID|#channel>",
     run: (client, message, args) => {

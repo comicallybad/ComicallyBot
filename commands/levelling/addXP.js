@@ -6,7 +6,7 @@ const { addXP } = require("../../dbFunctions");
 module.exports = {
     name: "addxp",
     aliases: ["xpadd"],
-    category: "levelling",
+    category: "leveling",
     description: "Add XP to user.",
     permissions: "moderator",
     usage: "<@user|userID> <amount>",

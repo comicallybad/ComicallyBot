@@ -4,8 +4,8 @@ const db = require('../../schemas/db.js');
 module.exports = {
     name: "getrankchannel",
     aliases: ["getrankch", "rankchannelget"],
-    category: "levelling",
-    description: "Get response channel for levelling.",
+    category: "leveling",
+    description: "Get response channel for leveling.",
     permissions: "moderator",
     run: (client, message, args) => {
         let guildID = message.guild.id;

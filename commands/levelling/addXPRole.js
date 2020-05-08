@@ -6,7 +6,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "addxprole",
     aliases: ["xproleadd"],
-    category: "levelling",
+    category: "leveling",
     description: "Adds a role that can be assigned with XP levels.",
     permissions: "moderator",
     usage: "<@role|roleID> <level>",

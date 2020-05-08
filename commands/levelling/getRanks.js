@@ -5,7 +5,7 @@ const { MessageEmbed } = require("discord.js")
 module.exports = {
     name: "getranks",
     aliases: ["ranks", "listranks"],
-    category: "levelling",
+    category: "leveling",
     description: "Lists of ranks that can be purchased with coins.",
     permissions: "member",
     run: async (client, message, args) => {

@@ -6,7 +6,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "removexp",
     aliases: ["xpremove"],
-    category: "levelling",
+    category: "leveling",
     description: "Remove XP from user.",
     permissions: "moderator",
     usage: "<@user|userID> <amount>",
