@@ -5,6 +5,7 @@ module.exports = {
     category: "owner",
     description: "Reloads a command.",
     permissions: "admin",
+    usage: "<category> <command>",
     run: (client, message, args) => {
         if (message.author.id != process.env.USERID)
             return message.reply("You're the bot the owner!").then(m => del(m, 7500));
