@@ -1,12 +1,21 @@
 const { del, getCommandStatus, hasPermissions } = require("../../functions.js");
-const { addCoins } = require("../../dbFunctions.js");
+const { messageXP } = require("../../dbFunctions.js");
+let cooldown = new Set();
+let cdseconds = 5;
 
 module.exports = async (client, message) => {
     if (message.author.bot) return;
     if (!message.guild) return;
     if (!message.member) return;
 
-    addCoins(message, client)
+    if (!cooldown.has(message.author.id))
+        messageXP(message, client);
+
+    cooldown.add(message.author.id);
+
+    setTimeout(() => {
+        cooldown.delete(message.author.id);
+    }, cdseconds * 1000);
 
     if (!message.content.startsWith(prefix) && !message.content.replace(/\D/g, '').startsWith(`${client.user.id}`)) return;
     if (!message.member) message.member = await message.guild.fetchMember(message).catch(err => err);

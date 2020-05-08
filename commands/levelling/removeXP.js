@@ -1,13 +1,13 @@
 const { del, findID } = require("../../functions.js");
-const coins = require('../../schemas/coins.js');
+const xp = require('../../schemas/xp.js');
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-    name: "removecoins",
-    aliases: ["coinsremove"],
-    category: "economy",
-    description: "Remove coins to user.",
+    name: "removexp",
+    aliases: ["xpremove"],
+    category: "levelling",
+    description: "Remove XP from user.",
     permissions: "moderator",
     usage: "<@user|userID> <amount>",
     run: (client, message, args) => {
@@ -21,7 +21,7 @@ module.exports = {
             return message.reply("Please provide a user.").then(m => del(m, 7500));
 
         if (!args[1])
-            return message.reply("Please provide amount of coins.").then(m => del(m, 7500));
+            return message.reply("Please provide amount of XP.").then(m => del(m, 7500));
 
         if (isNaN(args[1]) || parseInt(args[1]) <= 0)
             return message.reply("Please provide a valid amount above 0.").then(m => del(m, 7500));
@@ -29,17 +29,17 @@ module.exports = {
         let ID = findID(message, args[0], "user");
 
         if (!ID) return message.reply("User not found.").then(m => del(m, 7500));
-        else removeCoins(ID, Math.floor(parseInt(args[1])));
+        else removeXP(ID, Math.floor(parseInt(args[1])));
 
-        function removeCoins(userID, coinsToRemove) {
+        function removeXP(userID, xpToRemove) {
             let userName = userNames[userIDs.indexOf(userID)];
 
-            coins.findOne({ guildID: guildID, userID: userID }, (err, exists) => {
+            xp.findOne({ guildID: guildID, userID: userID }, (err, exists) => {
                 if (!exists) return message.reply("This user has not yet been added to the database.").then(m => del(m, 7500));
                 else {
-                    if (exists.coins - coinsToRemove < 0) return message.reply("A user may not go below 0 coins").then(m => del(m, 7500));
+                    if (exists.xp - xpToRemove < 0) return message.reply("A user may not go below 0 XP").then(m => del(m, 7500));
                     else {
-                        exists.coins -= coinsToRemove;
+                        exists.xp -= xpToRemove;
                         exists.save().catch(err => console.log(err));
 
                         const embed = new MessageEmbed()
@@ -48,13 +48,13 @@ module.exports = {
                             .setFooter(message.member.displayName, message.author.displayAvatarURL())
                             .setTimestamp()
                             .setDescription(stripIndents`
-                            **> Coins Removed by:** ${message.member.user}
-                            **> User's Coins Removed:** <@${userID}> ${userName} (${userID})
-                            **> Coins Removed:** ${coinsToRemove}`);
+                            **> XP Removed by: ${message.member.user}**
+                            **> User's XP Removed: <@${userID}> ${userName} (${userID})**
+                            **> XP Removed: ${xpToRemove}**`);
 
                         logChannel.send(embed);
 
-                        return message.reply(coinsToRemove + " coins were removed to the user.").then(m => del(m, 7500));
+                        return message.reply(xpToRemove + " XP was removed to the user.").then(m => del(m, 7500));
                     }
                 }
             }).catch(err => console.log(err))

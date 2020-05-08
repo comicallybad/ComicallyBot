@@ -8,8 +8,8 @@ const dbSchema = mongoose.Schema({
     modRoles: [Object],
     commands: [Object],
     channels: [Object],
-    coinsMultiplier: Number,
-    buyableRanks: [Object],
+    xpMultiplier: Number,
+    xpRoles: [Object],
     reactionRoles: [Object],
     reactionCommands: [Object],
 });
