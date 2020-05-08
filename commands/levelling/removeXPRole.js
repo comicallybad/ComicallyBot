@@ -4,10 +4,10 @@ const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-    name: "removerank",
-    aliases: ["rankremove", "delrank"],
-    category: "rank",
-    description: "Removes a buyable rank.",
+    name: "removexprole",
+    aliases: ["xproleremove"],
+    category: "levelling",
+    description: "Removes an assignable XP level role.",
     permissions: "moderator",
     usage: "<@role|roleID>",
     run: (client, message, args) => {
@@ -24,37 +24,38 @@ module.exports = {
         let ID = findID(message, args[0], "role");
 
         if (ID)
-            removeRank(ID);
+            removeRole(ID);
 
         if (!ID)
             if (!isNaN(args[0]))
-                removeRank(args[0]);
+                removeRole(args[0]);
             else
                 return message.reply("Please provide a valid role, if you are trying to remove a deleted role, attempt the command again with the role ID from the getroles command").then(m => del(m, 7500));
 
-        function removeRank(roleID) {
+        function removeRole(roleID) {
             let roleName = roleNames[roleIDs.indexOf(roleID)]
             db.findOne({
-                guildID: guildID, buyableRanks: { $elemMatch: { roleID: roleID } }
+                guildID: guildID, xpRoles: { $elemMatch: { roleID: roleID } }
             }, (err, exists) => {
                 if (err) console.log(err)
                 if (exists) {
                     db.updateOne({ guildID: guildID }, {
-                        $pull: { buyableRanks: { roleID: roleID } }
+                        $pull: { xpRoles: { roleID: roleID } }
                     }).then(function () {
                         const embed = new MessageEmbed()
                             .setColor("#0efefe")
                             .setThumbnail(message.author.displayAvatarURL())
                             .setFooter(message.member.displayName, message.author.displayAvatarURL())
                             .setTimestamp()
-                            .setDescription(stripIndents`**> Role Removed by:** ${message.member.user}
-                            **> Role Removed:** ${roleName} (${roleID})`);
+                            .setDescription(stripIndents`
+                            **> XP Role Removed by: ${message.member.user}**
+                            **> XP Role Removed: ${roleName} (${roleID})**`);
 
                         logChannel.send(embed);
 
-                        return message.reply("Removing buyable rank... this may take a second...").then(m => del(m, 7500));
+                        return message.reply("Removing XP level role.").then(m => del(m, 7500));
                     }).catch(err => console.log(err))
-                } if (!exists) return message.reply("This rank was never added, or it was removed already.").then(m => del(m, 7500));
+                } if (!exists) return message.reply("This role was never added, or it was removed already.").then(m => del(m, 7500));
             }).catch(err => console.log(err))
         }
     }

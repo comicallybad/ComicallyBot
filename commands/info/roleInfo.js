@@ -33,11 +33,12 @@ module.exports = {
         const embed = new MessageEmbed()
             .setColor(`${role.hexColor}`)
             .setTitle(role.name)
-            .addField("Role information:", stripIndents`**> Role name:** ${role.name}
-            **> Role ID:** ${role.id}
-            **> Mentionable:** ${role.mentionable}
-            **> Hierarchy position:** ${role.rawPosition + 1} (from bottom up)
-            **> Number of users in role:** ${role.members.size}`)
+            .addField("Role information:", stripIndents`
+            **> Role name: ${role.name}**
+            **> Role ID: ${role.id}**
+            **> Mentionable: ${role.mentionable}**
+            **> Hierarchy position: ${role.rawPosition + 1} (from bottom up)**
+            **> Number of users in role: ${role.members.size}**`)
             .setTimestamp()
 
         return message.reply(embed).then(m => del(m, 30000));

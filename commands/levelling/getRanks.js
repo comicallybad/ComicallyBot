@@ -5,10 +5,9 @@ const { MessageEmbed } = require("discord.js")
 module.exports = {
     name: "getranks",
     aliases: ["ranks", "listranks"],
-    category: "rank",
+    category: "levelling",
     description: "Lists of ranks that can be purchased with coins.",
     permissions: "member",
-    usage: "<@role|roleID> <cost>",
     run: async (client, message, args) => {
         const guildID = message.guild.id;
 
@@ -23,12 +22,12 @@ module.exports = {
 
         db.findOne({ guildID: guildID }, (err, exists) => {
             if (err) console.log(err);
-            if (exists.buyableRanks.length > 0) {
-                let rankList = exists.buyableRanks.map(rank => "Name: " + `\`${rank.roleName}\`` + ", ID: " + `\`${rank.roleID}\`` + ", Cost: " + `\`${rank.cost}\``);
+            if (exists.xpRoles.length > 0) {
+                let rankList = exists.xpRoles.map(rank => "Name: " + `\`${rank.roleName}\`` + ", ID: " + `\`${rank.roleID}\`` + ", level: " + `\`${rank.level}\``);
                 embed.setDescription("").addField("Ranks: ", rankList);
                 m.edit(embed).then(m => del(m, 30000));
             } else {
-                embed.setDescription("").addField("Ranks: ", "There have been no buyable ranks set");
+                embed.setDescription("").addField("Ranks: ", "There have been no level ranks set");
                 m.edit(embed).then(m => del(m, 30000));
             }
         }).catch(err => console.log(err))
