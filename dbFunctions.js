@@ -88,7 +88,7 @@ module.exports = {
                     if (nextLevelXP <= currentXP) {
                         currentLevel++;
                         module.exports.checkXPRankup(message, userID, currentLevel)
-                        logChannel.send(`${message.author} You leveled up! You are now level: ${currentLevel}`);
+                        logChannel.send(`${message.author} You leveled up! You are now level: ${currentLevel}`).catch(err => err);
                     }
 
                     exists.xp = currentXP;
