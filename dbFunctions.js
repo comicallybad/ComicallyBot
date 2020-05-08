@@ -102,6 +102,7 @@ module.exports = {
     },
     async addXP(message, userID, xpToAdd) {
         let guildID = message.guild.id;
+        let guildName = message.guild.name;
         let userNames = message.guild.members.cache.map(user => user.user.username);
         let userIDs = message.guild.members.cache.map(user => user.user.id);
         let userName = userNames[userIDs.indexOf(userID)];
