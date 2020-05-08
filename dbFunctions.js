@@ -136,7 +136,7 @@ module.exports = {
                     else rankupXP = 50 + Math.pow(10, exists.level) - exists.xp;
                     exists.level++;
                     module.exports.checkXPRankup(message, userID, exists.level)
-                    rankChannel.send(`${user}You leveled up! You are now level: ${exists.level}`)
+                    rankChannel.send(`${user}You leveled up! You are now level: ${exists.level}`).catch(err => err);
                 }
                 exists.save().catch(err => console.log(err));
             }
