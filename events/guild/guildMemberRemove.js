@@ -1,10 +1,10 @@
-const coins = require("../../schemas/coins.js")
+const xp = require("../../schemas/xp.js")
 
 module.exports = (client, data) => {
     activities = [`${client.guilds.cache.size} servers!`, `${client.channels.cache.size} channels!`, `${client.users.cache.size} users!`], i = 0;
-    let user = data.user;
-    let guild = data.guild;
+    let userID = data.user.id;
+    let guildID = data.guild.id;
 
-    coins.deleteOne({ guildID: guild.id, userID: user.id }, {
+    xp.deleteOne({ guildID: guildID, userID: userID }, {
     }).catch(err => console.log(err))
 }

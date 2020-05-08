@@ -1,19 +1,21 @@
-const coins = require('../../schemas/coins.js');
+const xp = require('../../schemas/xp.js');
 const mongoose = require("mongoose");
 
 module.exports = (client, data) => {
     activities = [`${client.guilds.cache.size} servers!`, `${client.channels.cache.size} channels!`, `${client.users.cache.size} users!`], i = 0;
-    let user = data.user;
-    let guild = data.guild;
+    let guildID = data.guild.id;
+    let guildName = data.guild.name;
+    let userID = data.user.id;
+    let userName = data.user.username;
 
-    coins.findOne({ guildID: guild.id, userID: user.id }, (err, exists) => {
+    xp.findOne({ guildID: guildID, userID: userID }, (err, exists) => {
         if (!exists) {
-            const newCoins = new coins({
+            const newXP = new xp({
                 _id: mongoose.Types.ObjectId(),
-                guildID: guild.id, guildName: guild.name,
-                userID: user.id, userName: user.username, coins: 0
+                guildID: guildID, guildName: guildName,
+                userID: userID, userName: userName, xp: 0, level: 0
             })
-            newCoins.save().catch(err => console.log(err));
+            newXP.save().catch(err => console.log(err));
         }
     });
 }

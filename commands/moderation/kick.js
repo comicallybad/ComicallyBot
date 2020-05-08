@@ -31,9 +31,10 @@ module.exports = {
             .setThumbnail(toKick.user.displayAvatarURL())
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()
-            .setDescription(stripIndents`**> Kicked member:** ${toKick} (${toKick.id})
-            **> Kicked by:** ${message.member}
-            **> Reason:** ${reason}`);
+            .setDescription(stripIndents`
+            **> Kicked member: ${toKick} (${toKick.id})**
+            **> Kicked by: ${message.member}**
+            **> Reason: ${reason}**`);
 
         const promptEmbed = new MessageEmbed()
             .setColor("GREEN")
