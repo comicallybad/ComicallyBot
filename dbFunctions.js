@@ -120,9 +120,26 @@ module.exports = {
                 const newXP = new xp({
                     _id: mongoose.Types.ObjectId(),
                     guildID: guildID, guildName: guildName,
-                    userID: userID, userName: userName, xp: xpToAdd
+                    userID: userID, userName: userName, xp: xpToAdd, level: 0
                 })
-                newXP.save().catch(err => console.log(err));
+                newXP.save().then((exists) => {
+                    let rankupXP = Number;
+
+                    if (exists.level == 0) rankupXP = 10 - exists.xp;
+                    else if (exists.level == 1) rankupXP = 50 - exists.xp;
+                    else rankupXP = 50 + Math.pow(10, exists.level) - exists.xp;
+
+                    while (rankupXP < 0) {
+                        exists.username = userName;
+                        if (exists.level == 0) rankupXP = 10 - exists.xp;
+                        else if (exists.level == 1) rankupXP = 50 - exists.xp;
+                        else rankupXP = 50 + Math.pow(10, exists.level) - exists.xp;
+                        exists.level++;
+                        module.exports.checkXPRankup(message, userID, exists.level)
+                        rankChannel.send(`${user}You leveled up! You are now level: ${exists.level}`).catch(err => err);
+                    }
+                    exists.save().catch(err => console.log(err));
+                }).catch(err => console.log(err));
             } else {
                 exists.xp += xpToAdd
                 let rankupXP = Number;
