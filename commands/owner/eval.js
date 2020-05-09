@@ -22,7 +22,7 @@ module.exports = {
                 return message.reply("You cannot find my token :)").then(m => del(m, 7500));
 
             const toEval = args.join(" ");
-            const evaluated = eval(toEval);
+            const evaluated = eval(toEval).catch(err => message.reply(`There was an error ${err}`).then(m => del(m, 7500)));
 
             let embed = new MessageEmbed()
                 .setColor("#00FF00")
