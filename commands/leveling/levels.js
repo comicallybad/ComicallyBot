@@ -26,7 +26,7 @@ module.exports = {
         } else {
             for (let i = 0; i < 10; i++) {
                 if (i == 0) embed.addField(`XP for level ${i + 1}`, `10 XP`)
-                else embed.addField(`XP for level ${i + 1}`, `${10 * Math.pow(i, 3) / 5}XP`)
+                else embed.addField(`XP for level ${i + 1}`, `${10 * Math.pow(i + 1, 3) / 5}XP`)
             }
             message.channel.send(embed).then(m => del(m, 30000));
         }
