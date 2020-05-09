@@ -5,7 +5,7 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "getxp",
-    aliases: ["rank", "getrank", "xp", "level"],
+    aliases: ["rank", "getrank", "xp"],
     category: "leveling",
     description: "Get members rank.",
     permissions: "member",
