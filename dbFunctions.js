@@ -83,7 +83,6 @@ module.exports = {
                     let currentLevel = exists.level;
                     let nextLevelXP = Number;
                     if (currentLevel == 0) nextLevelXP = 10;
-                    else if (currentLevel == 1) nextLevelXP = 25;
                     else nextLevelXP = 10 * Math.pow(currentLevel, 3) / 5;
 
                     if (nextLevelXP <= currentXP) {
