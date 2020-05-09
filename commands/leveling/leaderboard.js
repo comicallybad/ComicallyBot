@@ -18,7 +18,19 @@ module.exports = {
                     .setColor("#0efefe")
                     .setTimestamp()
 
-                let sorted = exists.sort(user => user.xp)
+                let sorted = exists;
+                let temp;
+
+                for (var i = 0; i < sorted.length; i++) {
+                    for (var j = 0; j < sorted.length - 1 - i; j++) {
+                        if (sorted[j].xp > sorted[j + 1].xp) {
+                            temp = sorted[j]
+                            sorted[j] = sorted[j + 1];
+                            sorted[j + 1] = temp;
+                        }
+                    }
+                }
+
                 let count = 1;
                 if (sorted.length >= 10) {
                     for (i = sorted.length - 1; i > sorted.length - 11; i--) {
