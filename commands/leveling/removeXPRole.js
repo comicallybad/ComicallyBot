@@ -5,7 +5,7 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "removexprole",
-    aliases: ["xproleremove"],
+    aliases: ["xproleremove", "removerank"],
     category: "leveling",
     description: "Removes an assignable XP level role.",
     permissions: "moderator",

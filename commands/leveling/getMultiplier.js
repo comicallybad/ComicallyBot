@@ -3,7 +3,7 @@ const db = require('../../schemas/db.js');
 
 module.exports = {
     name: "getmultiplier",
-    aliases: ["getcoinmultiplier", "getxpmultiplier", "xpmultiplier"],
+    aliases: ["xpmultiplier", "getxpmultiplier", "multiplierget"],
     category: "leveling",
     description: "Get XP multiplier.",
     permissions: "member",

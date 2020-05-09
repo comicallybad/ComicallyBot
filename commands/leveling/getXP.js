@@ -4,8 +4,8 @@ const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-    name: "getrank",
-    aliases: ["rank", "myrank"],
+    name: "getxp",
+    aliases: ["rank", "getrank", "xp", "level"],
     category: "leveling",
     description: "Get members rank.",
     permissions: "member",
