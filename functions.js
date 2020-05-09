@@ -18,8 +18,8 @@ module.exports = {
 
         let hasPermissions = new Promise((resolve, reject) => {
             if (commandType == "everyone") resolve(true)
-            if (message.member.hasPermission("ADMINISTRATOR"
-                || message.author.id == process.env.USERID)) resolve(true)
+            else if (message.member.hasPermission("ADMINISTRATOR")
+                || message.author.id == process.env.USERID) resolve(true)
             else {
                 db.findOne({ guildID: guildID }, (err, exists) => {
                     if (err) console.log(err)
