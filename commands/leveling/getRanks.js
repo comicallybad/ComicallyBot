@@ -13,7 +13,7 @@ module.exports = {
 
         const embed = new MessageEmbed()
             .setColor("#0efefe")
-            .setTitle("Buyable Ranks")
+            .setTitle("XP Level Ranks")
             .setFooter(message.guild.me.displayName, client.user.displayAvatarURL())
             .setDescription("List of buyable ranks")
             .setTimestamp();
