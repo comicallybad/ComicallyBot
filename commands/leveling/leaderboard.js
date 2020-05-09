@@ -1,4 +1,4 @@
-const { stripIndents } = require("common-tags");
+const { del } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const xp = require('../../schemas/xp.js');
 
@@ -14,7 +14,7 @@ module.exports = {
         xp.find({ guildID: guildID }, (err, exists) => {
             if (exists) {
                 const embed = new MessageEmbed()
-                    .setTitle("XP Leaderboard")
+                    .setTitle("XP Leaderboard Top 10")
                     .setColor("#0efefe")
                     .setTimestamp()
 
@@ -39,11 +39,11 @@ module.exports = {
                     }
                 } else {
                     for (i = sorted.length - 1; i >= 0; i--) {
-                        embed.addField(`**#${count}**`, `**${sorted[i].userName}, level: ${sorted[i].level}, XP: ${sorted[i].xp}**`)
+                        embed.addField(`**#${count}:**`, `**${sorted[i].userName}, level: ${sorted[i].level}, XP: ${sorted[i].xp}**`)
                         count++;
                     }
                 }
-                message.channel.send(embed);
+                message.channel.send(embed).then(m => del(m, 30000));
             } else {
                 return message.reply("There was an error finding users within this server.").then(m => del(m, 7500));
             }
