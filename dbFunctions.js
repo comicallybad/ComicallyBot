@@ -83,8 +83,8 @@ module.exports = {
                     let currentLevel = exists.level;
                     let nextLevelXP = Number;
                     if (currentLevel == 0) nextLevelXP = 10;
-                    else if (currentLevel == 1) nextLevelXP = 50;
-                    else nextLevelXP = 50 + Math.pow(10, currentLevel);
+                    else if (currentLevel == 1) nextLevelXP = 25;
+                    else nextLevelXP = 10 * Math.pow(currentLevel, 3) / 5;
 
                     if (nextLevelXP <= currentXP) {
                         currentLevel++;
@@ -126,14 +126,14 @@ module.exports = {
                     let rankupXP = Number;
 
                     if (exists.level == 0) rankupXP = 10 - exists.xp;
-                    else if (exists.level == 1) rankupXP = 50 - exists.xp;
-                    else rankupXP = 50 + Math.pow(10, exists.level) - exists.xp;
+                    else if (exists.level == 1) rankupXP = 25 - exists.xp;
+                    else rankupXP = 10 * Math.pow(currentLevel, 3) / 5; - exists.xp;
 
                     while (rankupXP < 0) {
                         exists.username = userName;
                         if (exists.level == 0) rankupXP = 10 - exists.xp;
-                        else if (exists.level == 1) rankupXP = 50 - exists.xp;
-                        else rankupXP = 50 + Math.pow(10, exists.level) - exists.xp;
+                        else if (exists.level == 1) rankupXP = 25 - exists.xp;
+                        else rankupXP = 10 * Math.pow(currentLevel, 3) / 5 - exists.xp;
                         exists.level++;
                         module.exports.checkXPRankup(message, userID, exists.level)
                         rankChannel.send(`${user}You leveled up! You are now level: ${exists.level}`).catch(err => err);
@@ -145,14 +145,14 @@ module.exports = {
                 let rankupXP = Number;
 
                 if (exists.level == 0) rankupXP = 10 - exists.xp;
-                else if (exists.level == 1) rankupXP = 50 - exists.xp;
-                else rankupXP = 50 + Math.pow(10, exists.level) - exists.xp;
+                else if (exists.level == 1) rankupXP = 25 - exists.xp;
+                else rankupXP = 10 * Math.pow(currentLevel, 3) / 5 - exists.xp;
 
                 while (rankupXP < 0) {
                     exists.username = userName;
                     if (exists.level == 0) rankupXP = 10 - exists.xp;
-                    else if (exists.level == 1) rankupXP = 50 - exists.xp;
-                    else rankupXP = 50 + Math.pow(10, exists.level) - exists.xp;
+                    else if (exists.level == 1) rankupXP = 25 - exists.xp;
+                    else rankupXP = 10 * Math.pow(currentLevel, 3) / 5 - exists.xp;
                     exists.level++;
                     module.exports.checkXPRankup(message, userID, exists.level)
                     rankChannel.send(`${user}You leveled up! You are now level: ${exists.level}`).catch(err => err);

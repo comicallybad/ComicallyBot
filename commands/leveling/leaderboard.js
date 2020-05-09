@@ -7,8 +7,7 @@ module.exports = {
     aliases: ["leaderboards", "xpleaderboard", "xpleaderboards"],
     category: "leveling",
     description: "Shows the top level users in the discord server.",
-    permissions: "moderator",
-    usage: "<@user|userID> <amount>",
+    permissions: "member",
     run: (client, message, args) => {
         let guildID = message.guild.id;
         xp.find({ guildID: guildID }, (err, exists) => {

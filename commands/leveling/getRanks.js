@@ -15,7 +15,7 @@ module.exports = {
             .setColor("#0efefe")
             .setTitle("XP Level Ranks")
             .setFooter(message.guild.me.displayName, client.user.displayAvatarURL())
-            .setDescription("List of buyable ranks")
+            .setDescription("List of XP Level ranks")
             .setTimestamp();
 
         const m = await message.channel.send(embed);
