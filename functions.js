@@ -75,7 +75,7 @@ module.exports = {
     findID: function (message, input, type) {
         let roleIDs = message.guild.roles.cache.map(role => role.id);
         let userIDs = message.guild.members.cache.map(user => user.user.id);
-        let mention = input.slice(3, input.length - 1)
+        let mention = input.replace(/\D/g, '');
 
         if (!type || type === "either") {
             if (roleIDs.includes(input)) return input
