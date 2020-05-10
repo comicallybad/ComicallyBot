@@ -50,7 +50,7 @@ module.exports = {
         let userID = message.member.id;
         let userName = message.author.username;
         let xpAdd = Math.floor(Math.random() * 10) + 1;
-        let logChannel = message.channel;
+        let rankChannel = message.channel;
 
         db.findOne({ guildID: guildID }, (err, exists) => {
             if (!exists) module.exports.dbSetup(client)
@@ -60,7 +60,7 @@ module.exports = {
                 db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "rank" } } }, (err, exists) => {
                     if (err) console.log(err)
                     if (exists)
-                        logChannel = client.channels.cache.get(exists.channels[exists.channels.map(cmd => cmd.command).indexOf("rank")].channelID);
+                        rankChannel = client.channels.cache.get(exists.channels[exists.channels.map(cmd => cmd.command).indexOf("rank")].channelID);
                 }).catch(err => console.log(err))
             } else {
                 exists.xpMultiplier = 1
@@ -79,21 +79,19 @@ module.exports = {
                 } else {
                     exists.guildName = guildName;
                     exists.userName = userName;
-                    const currentXP = exists.xp + xpAdd;
-                    let currentLevel = exists.level;
-                    let nextLevelXP = Number;
-                    if (currentLevel == 0) nextLevelXP = 10;
-                    else nextLevelXP = 10 * Math.pow(currentLevel, 3) / 5;
+                    let rankupXP = Number;
 
-                    if (nextLevelXP <= currentXP) {
-                        currentLevel++;
-                        module.exports.checkXPRankup(message, userID, currentLevel)
-                        logChannel.send(`${message.author} You leveled up! You are now level: ${currentLevel}`).catch(err => err);
+                    if (exists.level == 0) rankupXP = 10 - exists.xp;
+                    else rankupXP = 10 * Math.pow(exists.level, 3) / 5; - exists.xp;
+
+                    while (rankupXP < 0) {
+                        exists.username = userName;
+                        if (exists.level == 0) rankupXP = 10 - exists.xp;
+                        else rankupXP = 10 * Math.pow(exists.level, 3) / 5 - exists.xp;
+                        exists.level++;
+                        module.exports.checkXPRankup(message, userID, exists.level)
+                        rankChannel.send(`${user}You leveled up! You are now level: ${exists.level}`).catch(err => err);
                     }
-
-                    exists.xp = currentXP;
-                    exists.level = currentLevel;
-
                     exists.save().catch(err => console.log(err))
                 }
             })
