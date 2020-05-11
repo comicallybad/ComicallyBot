@@ -4,7 +4,7 @@ module.exports = {
     name: "donate",
     aliases: ["botdonate", "donatebot"],
     category: "support",
-    description: "Supports the creator of the bot ❤️.",
+    description: "Provides a link to support the creator of the bot ❤️.",
     permissions: "member",
     run: (client, message, args) => {
         const donationLink = "https://www.paypal.me/comicallybad";
