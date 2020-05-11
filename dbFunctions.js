@@ -49,7 +49,7 @@ module.exports = {
         let guildID = message.guild.id;
         let userID = message.member.id;
         let userName = message.author.username;
-        let xpAdd = Math.floor(Math.random() * 10) + 1;
+        let xpToAdd = Math.floor(Math.random() * 10) + 1;
         let rankChannel = message.channel;
         let user = await message.guild.members.fetch(userID);
 
@@ -57,7 +57,7 @@ module.exports = {
             if (!exists) module.exports.dbSetup(client)
             if (exists) {
                 if (exists.xpMultiplier)
-                    xpAdd = xpAdd * exists.xpMultiplier;
+                    xpToAdd = xpToAdd * exists.xpMultiplier;
                 db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "rank" } } }, (err, exists) => {
                     if (err) console.log(err)
                     if (exists)
@@ -74,11 +74,11 @@ module.exports = {
                     const newXP = new xp({
                         _id: mongoose.Types.ObjectId(),
                         guildID: guildID, guildName: guildName,
-                        userID: userID, userName: userName, xp: xpAdd, level: 0
+                        userID: userID, userName: userName, xp: xpToAdd, level: 0
                     })
                     newXP.save().catch(err => console.log(err));
                 } else {
-                    exists.xp += xpAdd;
+                    exists.xp += xpToAdd;
                     exists.guildName = guildName;
                     exists.userName = userName;
                     let rankupXP = Number;
@@ -123,7 +123,6 @@ module.exports = {
                     userID: userID, userName: userName, xp: xpToAdd, level: 0
                 })
                 newXP.save().then((exists) => {
-                    exists.username = userName;
                     let rankupXP = Number;
 
                     if (exists.level == 0) rankupXP = 10 - exists.xp;
@@ -141,8 +140,7 @@ module.exports = {
                     exists.save().catch(err => console.log(err));
                 }).catch(err => console.log(err));
             } else {
-                exists.xp += xpToAdd
-                exists.username = userName;
+                exists.xp += xpToAdd;
                 let rankupXP = Number;
 
                 if (exists.level == 0) rankupXP = 10 - exists.xp;
@@ -157,7 +155,7 @@ module.exports = {
                     else rankupXP = (10 * Math.pow(exists.level + 1, 3) / 5) - exists.xp;
                     if (rankupXP >= 0) rankChannel.send(`${user}You leveled up! You are now level: ${exists.level}`).catch(err => err);
                 }
-                exists.save().catch(err => console.log(err));
+                exists.save().catch(err => console.log(err))
             }
         }).catch(err => console.log(err));
     },

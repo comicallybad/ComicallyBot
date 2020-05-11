@@ -25,7 +25,6 @@ module.exports = {
         let ID = findID(message, args[0], "user");
         let xpToAdd = Math.floor(parseInt(args[1]));
 
-
         if (!ID) return message.reply("User not found.").then(m => del(m, 7500));
         else addXP(message, ID, Math.floor(parseInt(args[1]))).then(() => {
             const embed = new MessageEmbed()
