@@ -1,5 +1,5 @@
-const { reverseFormatDate, formatTime } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
+const humanizeDuration = require('humanize-duration');
 const xp = require('../../schemas/xp.js');
 const mongoose = require("mongoose");
 
@@ -10,15 +10,14 @@ module.exports = async (client, data) => {
     let userID = data.user.id;
     let userName = data.user.username;
 
+
     if (data.guild.channels) {
         let logChannel = await data.guild.channels.cache.find(c => c.name === "mod-logs" || undefined);
-        let currentDate = new Date();
-        let date = reverseFormatDate(currentDate).replace(/[^0-9.]/g, '');
-        let time = formatTime(currentDate).split(":");
-        let userJoinDate = reverseFormatDate(data.user.createdAt).replace(/[^0-9.]/g, '');
-        let userJoinTime = formatTime(data.user.createdAt).split(":")
-
         if (logChannel) {
+            let currentDate = new Date();
+            let userJoinDate = data.user.createdAt;
+            let time = currentDate - userJoinDate
+            let accountTime = humanizeDuration(currentDate - userJoinDate)
             const embed = new MessageEmbed()
                 .setColor("#0efefe")
                 .setTitle("User Joined")
@@ -27,32 +26,8 @@ module.exports = async (client, data) => {
                 .setFooter(`ID: ${data.user.id}`)
                 .setTimestamp()
 
-            if (date - userJoinDate <= 3) {
-                if (date - userJoinDate == 3)
-                    embed.addField("**Warning** new user account:", `Accoount created 3 days ago: ${userJoinDate}.`);
-                else if (date - userJoinDate == 2)
-                    embed.addField("**Warning** new user account:", `Account created 2 days ago: ${userJoinDate}.`);
-                else if (date - userJoinDate == 1)
-                    embed.addField("**Warning** new user account:", `Account created 1 day ago: ${userJoinDate}.`);
-                else if (date - userJoinDate == 0) {
-                    let hour = 0;
-                    let minute = 0;
-                    let second = 0;
-
-                    if (time[2] - userJoinTime[2] !== 0) second = time[2] - userJoinTime[2];
-                    if (time[1] - userJoinTime[1] !== 0) minute = time[1] - userJoinTime[1];
-                    if (time[0] - userJoinTime[0] !== 0) hour = time[0] - userJoinTime[0];
-                    if (second < 0) {
-                        second += 60;
-                        minute--;
-                    }
-                    if (minute < 0) {
-                        minute += 60;
-                        hour--;
-                    }
-
-                    embed.addField("**Warning** new user account:", `Account created ${hour}hour(s), ${minute}minute(s), ${second}second(s) ago.`);
-                }
+            if (time <= 432000000) { //432000000 is 5 days in MS
+                embed.addField("**Warning** new user account:", `Account created ${accountTime} ago.`);
                 logChannel.send(embed);
             } else {
                 logChannel.send(embed);
