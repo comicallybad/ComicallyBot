@@ -5,7 +5,7 @@ const { del } = require("./functions.js");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-    dbSetup(client) {
+    dbSetup: function (client) {
         let guildsID = (client.guilds.cache.map(guild => guild.id));
         let guildsName = (client.guilds.cache.map(guild => guild.name));
         let commands = (client.commands.map(cmd => cmd.name));
@@ -44,7 +44,7 @@ module.exports = {
         });
     },
 
-    async messageXP(message, client) {
+    messageXP: async function (message, client) {
         let guildName = message.guild.name;
         let guildID = message.guild.id;
         let userID = message.member.id;
@@ -100,7 +100,7 @@ module.exports = {
             })
         })
     },
-    async addXP(message, userID, xpToAdd) {
+    addXP: async function (message, userID, xpToAdd) {
         let guildID = message.guild.id;
         let guildName = message.guild.name;
         let userNames = message.guild.members.cache.map(user => user.user.username);
@@ -160,7 +160,7 @@ module.exports = {
         }).catch(err => console.log(err));
     },
 
-    async checkXPRankup(message, userID, level) {
+    checkXPRankup: async function (message, userID, level) {
         const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
         let guildID = message.guild.id;
         let user = await message.guild.members.fetch(userID)
