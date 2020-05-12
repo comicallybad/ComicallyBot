@@ -1,0 +1,20 @@
+const db = require("../../schemas/db.js");
+
+module.exports = async (client, messages) => {
+    messages.forEach(message => {
+        let messageID;
+        let guildID;
+        if (message) { //fix for cannot read property ID of null
+            if (message.id) {
+                messageID = message.id;
+            } else return;
+            if (message.guild) {
+                guildID = message.guild.id
+            } else return;
+        } else return;
+
+        db.updateOne({ guildID: guildID }, {
+            $pull: { reactionRoles: { messageID: messageID } }
+        }).catch(err => console.log(err))
+    })
+}
