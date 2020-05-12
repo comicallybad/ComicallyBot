@@ -134,7 +134,25 @@ module.exports = {
     },
 
     formatDate: function (date) {
-        return new Intl.DateTimeFormat('en-US').format(date)
+        let year = date.getFullYear();
+        let month = (1 + date.getMonth()).toString().padStart(2, '0');
+        let day = date.getDate().toString().padStart(2, '0');
+
+        return month + '/' + day + '/' + year;
+    },
+
+    reverseFormatDate: function (date) {
+        let year = date.getFullYear();
+        let month = (1 + date.getMonth()).toString().padStart(2, '0');
+        let day = date.getDate().toString().padStart(2, '0');
+
+        return year + '/' + month + '/' + day;
+    },
+
+    formatTime: function (date) {
+        let time = date.toTimeString().split(' ')[0]
+
+        return time;
     },
 
     //Adds certain reactions, returns first user
