@@ -59,9 +59,9 @@ module.exports = {
                             .setFooter(message.member.displayName, message.author.displayAvatarURL())
                             .setTimestamp()
                             .setDescription(stripIndents`
-                            **> XP Role Added by: ${message.member.user}**
-                            **> XP Role Added: ${roleName} (${roleID})**
-                            **> Level: ${level}**`);
+                            **XP Role Added by: ${message.member.user}**
+                            **XP Role Added: ${roleName} (${roleID})**
+                            **Level: ${level}**`);
 
                         logChannel.send(embed);
 

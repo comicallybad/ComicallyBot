@@ -32,9 +32,9 @@ module.exports = {
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()
             .setDescription(stripIndents`
-            **> Unmuted member: ${mutee} (${mutee.id})**
-            **> Unmuted by: ${message.member}**
-            **> Reason: ${reason}**`);
+            **Unmuted member: ${mutee} (${mutee.id})**
+            **Unmuted by: ${message.member}**
+            **Reason: ${reason}**`);
 
         const promptEmbed = new MessageEmbed()
             .setColor("GREEN")

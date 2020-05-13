@@ -48,9 +48,9 @@ module.exports = {
                             .setFooter(message.member.displayName, message.author.displayAvatarURL())
                             .setTimestamp()
                             .setDescription(stripIndents`
-                            **> XP Removed by: ${message.member.user}**
-                            **> User's XP Removed: <@${userID}> ${userName} (${userID})**
-                            **> XP Removed: ${xpToRemove}**`);
+                            **XP Removed by: ${message.member.user}**
+                            **User's XP Removed: <@${userID}> ${userName} (${userID})**
+                            **XP Removed: ${xpToRemove}**`);
 
                         logChannel.send(embed);
 

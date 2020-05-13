@@ -33,10 +33,10 @@ module.exports = {
             .setTimestamp()
             .setFooter(message.guild.name, message.guild.iconURL)
             .setAuthor("Reported Member", rMember.user.displayAvatarURL())
-            .setDescription(stripIndents`**> Member: ${rMember} (${rMember.id})**
-            **>Reported by: ${message.member}**
-            **>Reported in: ${message.channel}**
-            **>Reason: ${args.slice(1).join(" ")}**`);
+            .setDescription(stripIndents`**Member: ${rMember} (${rMember.id})**
+            **Reported by: ${message.member}**
+            **Reported in: ${message.channel}**
+            **Reason: ${args.slice(1).join(" ")}**`);
 
         return channel.send(embed);
     }

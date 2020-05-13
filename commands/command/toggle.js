@@ -70,8 +70,8 @@ function toggle(message, args, command) {
         .setFooter(message.member.displayName, message.author.displayAvatarURL())
         .setTimestamp()
         .setDescription(stripIndents`
-        **> Command Toggled by: ${message.member.user}**
-        **> Command Toggled: ${command}**`);
+        **Command Toggled by: ${message.member.user}**
+        **Command Toggled: ${command}**`);
 
     logChannel.send(embed);
 

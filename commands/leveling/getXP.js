@@ -35,9 +35,9 @@ module.exports = {
                         .setTitle("Rank")
                         .setTimestamp()
                         .setDescription(stripIndents`
-                        **> User is level: ${exists.level}**
-                        **> User has: ${exists.xp} XP**
-                        **> XP Until Next Level: ${rankupXP}**`);
+                        **User is level: ${exists.level}**
+                        **User has: ${exists.xp} XP**
+                        **XP Until Next Level: ${rankupXP}**`);
 
                     return message.reply(embed).then(m => del(m, 30000));
                 } else return message.reply("User has no rank").then(m => del(m, 7500));
