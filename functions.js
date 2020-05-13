@@ -164,4 +164,67 @@ module.exports = {
             .awaitReactions(filter, { max: max, time: time })
             .then(collected => collected.first().users.cache.map(usr => usr).filter(usr => !usr.bot))
     },
+
+    pageList: async function (message, author, array, embed, parameter) {
+        const chooseArr = ["⬅️", "➡️", "🗑️"];
+        let size = 10;
+        let page = 0;
+
+        for (let i = 0; i < size && i < array.length; i++) {
+            embed.addField(`${parameter} ${i + 1}`, array[i]);
+        }
+
+        message.edit(embed);
+
+        module.exports.pageTurn(message, author, array, embed, parameter, size, page);
+    },
+
+    pageTurn: async function (message, author, array, embed, parameter, size, page) {
+        let pages = Math.ceil(array.length / size) - 1; //subtract 1 because page starts at 0
+        let newPage = page;
+        embed.fields = [];
+
+        for (let i = newPage * size; i < (newPage + 1) * size && i < array.length; i++) {
+            embed.addField(`${parameter} ${i + 1}`, array[i]);
+        }
+
+        message.edit(embed);
+
+        if (newPage == 0) {
+            const reacted = await module.exports.promptMessage(message, author, 15, ["➡️", "🗑️"])
+            if (reacted == "➡️") {
+                message.reactions.removeAll().then(() => {
+                    newPage++;
+                    module.exports.pageTurn(message, author, array, embed, parameter, size, newPage);
+                });
+            } else if (reacted == "🗑️") {
+                return message.delete().catch(err => err);
+            } else return message.delete().catch(err => err);
+        } else if (newPage !== 0 && newPage !== pages) {
+            const reacted = await module.exports.promptMessage(message, author, 15, ["⬅️", "➡️", "🗑️"])
+            if (reacted == "➡️") {
+                message.reactions.removeAll().then(() => {
+                    newPage++;
+                    module.exports.pageTurn(message, author, array, embed, parameter, size, newPage);
+                });
+            } else if (reacted == "⬅️") {
+                message.reactions.removeAll().then(() => {
+                    newPage--;
+                    module.exports.pageTurn(message, author, array, embed, parameter, size, newPage);
+                });
+            } else if (reacted == "🗑️") {
+                message.delete().catch(err => err);
+            } else return message.delete().catch(err => err);
+        } else if (newPage == pages) {
+            const reacted = await module.exports.promptMessage(message, author, 15, ["⬅️", "🗑️"])
+            if (reacted == "⬅️") {
+                message.reactions.removeAll().then(() => {
+                    newPage--;
+                    module.exports.pageTurn(message, author, array, embed, parameter, size, newPage);
+                });
+            } else if (reacted == "🗑️") {
+                return message.delete().catch(err => err);
+            } else return message.delete().catch(err => err)
+        }
+    },
 }

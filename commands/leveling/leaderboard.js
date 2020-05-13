@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { del, pageList } = require("../../functions");
 const { MessageEmbed } = require("discord.js");
 const xp = require('../../schemas/xp.js');
 
@@ -10,19 +10,21 @@ module.exports = {
     permissions: "member",
     run: (client, message, args) => {
         let guildID = message.guild.id;
-        xp.find({ guildID: guildID }, (err, exists) => {
+        xp.find({ guildID: guildID }, async (err, exists) => {
             if (exists) {
+                let sorted = exists;
+                let temp;
                 const embed = new MessageEmbed()
-                    .setTitle("XP Leaderboard Top 10")
+                    .setTitle("XP Leaderboards")
+                    .setDescription(`XP leaderboard users: ${sorted.length}`)
                     .setColor("#0efefe")
                     .setTimestamp()
 
-                let sorted = exists;
-                let temp;
+                const m = await message.channel.send(embed);
 
                 for (var i = 0; i < sorted.length; i++) {
                     for (var j = 0; j < sorted.length - 1 - i; j++) {
-                        if (sorted[j].xp > sorted[j + 1].xp) {
+                        if (sorted[j].xp < sorted[j + 1].xp) {
                             temp = sorted[j]
                             sorted[j] = sorted[j + 1];
                             sorted[j + 1] = temp;
@@ -30,21 +32,20 @@ module.exports = {
                     }
                 }
 
-                let count = 1;
-                if (sorted.length >= 10) {
-                    for (i = sorted.length - 1; i > sorted.length - 11; i--) {
-                        embed.addField(`#${count}`, `**${sorted[i].userName}, level: ${sorted[i].level}, XP: ${sorted[i].xp}**`)
-                        count++;
+                if (sorted.length > 0) {
+                    if (sorted.length <= 10) {
+                        sorted.forEach((user, index) => {
+                            embed.addField(`#${index + 1}:`, `**${user.userName}, level: ${user.level}, XP: ${user.xp}**`)
+                        });
+                        return m.edit(embed).then(m => del(m, 30000));
+                    } else {
+                        let array = sorted.map(user => `**${user.userName}, level: ${user.level}, XP: ${user.xp}**`);
+                        pageList(m, message.author, array, embed, "#")
                     }
                 } else {
-                    for (i = sorted.length - 1; i >= 0; i--) {
-                        embed.addField(`**#${count}:**`, `**${sorted[i].userName}, level: ${sorted[i].level}, XP: ${sorted[i].xp}**`)
-                        count++;
-                    }
+                    embed.setDescription("").addField("XP Leaderboards", "There are no users on the leaderboards.")
+                    return m.edit(embed).then(m => del(m, 30000));
                 }
-                message.channel.send(embed).then(m => del(m, 30000));
-            } else {
-                return message.reply("There was an error finding users within this server.").then(m => del(m, 7500));
             }
         })
     }
