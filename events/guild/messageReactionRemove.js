@@ -45,6 +45,7 @@ function checkReactionRole(message, user) {
 
     const embed = new MessageEmbed()
         .setColor("#0efefe")
+        .setTitle("User joined role via Reaction Role.")
         .setFooter(user.id, user.displayAvatarURL())
         .setTimestamp()
 
@@ -56,7 +57,7 @@ function checkReactionRole(message, user) {
             const roles = exists.reactionRoles.filter(rr => rr.messageID == messageID && rr.reaction == reaction && rr.type == "add/remove");
             roles.forEach(role => {
                 guildUser.roles.remove(role.roleID).then(() => {
-                    embed.setDescription(`**${user}**left the **${role.roleName}**(${role.roleID}) via Reaction Role`)
+                    embed.setDescription(`**${user}** ${user.tag}**${role.roleName}**(${role.roleID})`);
                     if (logChannel) logChannel.send(embed)
                     guildUser.send(`Hello, you have been removed from the **${role.roleName}** role in **${guildUser.guild.name}**`).catch(err => {
                         message.message.channel.send(`${user} was removed from the **${role.roleName}** role`).then(m => del(m, 7500))

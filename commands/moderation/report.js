@@ -30,6 +30,7 @@ module.exports = {
 
         const embed = new MessageEmbed()
             .setColor("RED")
+            .setTitle("Report")
             .setTimestamp()
             .setFooter(message.guild.name, message.guild.iconURL)
             .setAuthor("Reported Member", rMember.user.displayAvatarURL())

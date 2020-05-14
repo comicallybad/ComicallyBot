@@ -44,6 +44,7 @@ module.exports = {
 
                         const embed = new MessageEmbed()
                             .setColor("#0efefe")
+                            .setTitle("XP Removed")
                             .setThumbnail(message.author.displayAvatarURL())
                             .setFooter(message.member.displayName, message.author.displayAvatarURL())
                             .setTimestamp()

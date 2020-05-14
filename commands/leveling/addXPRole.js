@@ -55,6 +55,7 @@ module.exports = {
                     }).then(function () {
                         const embed = new MessageEmbed()
                             .setColor("#0efefe")
+                            .setTitle("XP Role Added")
                             .setThumbnail(message.author.displayAvatarURL())
                             .setFooter(message.member.displayName, message.author.displayAvatarURL())
                             .setTimestamp()

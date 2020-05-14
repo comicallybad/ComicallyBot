@@ -17,6 +17,7 @@ module.exports = {
             if (exists) {
                 const embed = new MessageEmbed()
                     .setColor("#0efefe")
+                    .setTitle("Status")
                     .setTimestamp()
 
                 let clientCommandsName = client.commands.map(cmd => cmd.name)

@@ -65,6 +65,7 @@ function addReactionRole(message, reaction, role, type) {
 
     const embed = new MessageEmbed()
         .setColor("#0efefe")
+        .setTitle("Reaction Role Added")
         .setThumbnail(message.author.displayAvatarURL())
         .setFooter(message.member.displayName, message.author.displayAvatarURL())
         .setTimestamp()

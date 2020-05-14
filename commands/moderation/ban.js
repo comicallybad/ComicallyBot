@@ -28,6 +28,7 @@ module.exports = {
 
         const embed = new MessageEmbed()
             .setColor("#ff0000")
+            .setTitle("User Banned")
             .setThumbnail(toBan.user.displayAvatarURL())
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()
