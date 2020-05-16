@@ -35,14 +35,15 @@ module.exports = {
                     db.updateOne({ guildID: guildID }, {
                         $push: { channels: { command: "rank", channelID: channelID, channelName: channelName } }
                     }).catch(err => console.log(err));
+                    return message.reply("Rank channel has been set!").then(m => del(m, 7500));
                 } else {
                     ///update channel if it does exist
                     db.updateOne({ guildID: guildID, 'channels.command': "rank" }, {
                         $set: { 'channels.$.channelID': channelID, 'channels.$.channelName': channelName }
                     }).catch(err => console.log(err));
+                    return message.reply("Updated rank response channel.").then(m => del(m, 7500));
                 }
             }).catch(err => console.log(err));
-            return message.reply("Updated rank response channel.").then(m => del(m, 7500));
         }
     }
 }
