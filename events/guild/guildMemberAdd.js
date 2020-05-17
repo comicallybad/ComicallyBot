@@ -26,7 +26,7 @@ module.exports = async (client, data) => {
                 .setFooter(`ID: ${data.user.id}`)
                 .setTimestamp()
 
-            if (time <= 432000000) { //432000000 is 5 days in MS
+            if (time <= 604800000) { //604800000  is 7 days in MS
                 embed.addField("**Warning** new user account:", `Account created ${accountTime} ago.`);
                 logChannel.send(embed);
             } else {
