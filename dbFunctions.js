@@ -100,6 +100,7 @@ module.exports = {
             })
         })
     },
+
     addXP: async function (message, userID, xpToAdd) {
         let guildID = message.guild.id;
         let guildName = message.guild.name;
@@ -166,6 +167,8 @@ module.exports = {
         let user = await message.guild.members.fetch(userID)
         const embed = new MessageEmbed()
             .setColor("#0efefe")
+            .setTitle("User joined role via Leveling Up")
+            .setFooter(user.id)
             .setTimestamp()
 
         db.findOne({ guildID: guildID, xpRoles: { $elemMatch: { level: level } } }, (err, exists) => {
@@ -173,7 +176,7 @@ module.exports = {
             if (exists) {
                 roles = exists.xpRoles.filter(role => role.level == level)
                 roles.forEach(role => {
-                    embed.setDescription(`**${user}** joined the **${role.roleName}**(${role.roleID}) via Leveling up`);
+                    embed.setDescription(`${user} ${user.user.tag} joined the **${role.roleName}**(${role.roleID})`);
                     if (logChannel) logChannel.send(embed);
                     user.roles.add(role.roleID).then(() => {
                         user.send(`Hello, you have been given the **${role.roleName}** role in ${message.guild.name} for: **Ranking up to level ${level}!**`).catch(err => err);
