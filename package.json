@@ -16,8 +16,8 @@
     "dotenv": "^8.2.0",
     "erela.js": "^1.1.8",
     "fortnite": "^4.3.2",
-    "humanize-duration": "^3.22.0",
-    "mongoose": "^5.9.14",
+    "humanize-duration": "^3.23.0",
+    "mongoose": "^5.9.17",
     "node-fetch": "^2.6.0",
     "random-puppy": "^1.1.0",
     "urban": "^0.3.2"
