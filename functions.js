@@ -166,7 +166,6 @@ module.exports = {
     },
 
     pageList: async function (message, author, array, embed, parameter) {
-        const chooseArr = ["⬅️", "➡️", "🗑️"];
         let size = 10;
         let page = 0;
 

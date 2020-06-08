@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { del, pageList } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const db = require('../../schemas/db.js');
 
@@ -25,9 +25,11 @@ module.exports = {
             if (!exists) return message.reply("Error within database").then(m => del(m, 7500));
             else {
                 let memberRoles = exists.memberRoles.map(role => " Name: " + `\`${role.roleName}\`` + "  ID: " + `\`${role.roleID}\``)
-                if (memberRoles.length > 0) {
+                if (memberRoles.length > 0 && memberRoles.length <= 10) {
                     embed.setDescription("").addField("Member Roles", memberRoles);
                     return m.edit(embed).then(m => del(m, 30000));
+                } else if (memberRoles.length > 10) {
+                    pageList(m, message.author, memberRoles, embed, "Member:")
                 } else {
                     embed.setDescription("").addField("Member Roles", "There have been no bot members set.");
                     m.edit(embed).then(m => del(m, 30000));

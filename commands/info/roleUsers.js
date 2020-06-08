@@ -1,6 +1,5 @@
-const { del, findID } = require("../../functions.js");
+const { del, findID, pageList } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
-const { stripIndents } = require("common-tags");
 
 module.exports = {
     name: "roleusers",
@@ -37,10 +36,10 @@ module.exports = {
             .addField("Number of users in role: ", role.members.size)
             .setTimestamp()
 
-        members.forEach(member => {
-            embed.addField(`Role member: `, `${member.user.username} (${member.user.id})`)
-        });
+        const m = await message.channel.send(embed);
 
-        return message.reply(embed).then(m => del(m, 30000));
+        let array = members.map(member => `${member.user.username} (${member.user.id})`);
+
+        return pageList(m, message.author, array, embed, "Role Member:");
     }
 }
