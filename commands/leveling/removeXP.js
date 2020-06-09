@@ -26,6 +26,9 @@ module.exports = {
         if (isNaN(args[1]) || parseInt(args[1]) <= 0)
             return message.reply("Please provide a valid amount above 0.").then(m => del(m, 7500));
 
+        if (parseInt(args[1]) > 10000)
+            return message.reply("You may not remove more than 10,000 XP from a user").then(m => del(m, 7500));
+
         let ID = findID(message, args[0], "user");
 
         if (!ID) return message.reply("User not found.").then(m => del(m, 7500));
