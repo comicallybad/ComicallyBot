@@ -22,6 +22,9 @@ module.exports = {
         if (isNaN(args[1]) || parseInt(args[1]) <= 0)
             return message.reply("Please provide a valid amount above 0.").then(m => del(m, 7500));
 
+        if (parseInt(args[1]) > 10000)
+            return message.reply("You may not add more than 10,000 XP to a user").then(m => del(m, 7500));
+
         let ID = findID(message, args[0], "user");
         let xpToAdd = Math.floor(parseInt(args[1]));
 
