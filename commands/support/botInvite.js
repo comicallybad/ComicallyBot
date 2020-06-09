@@ -8,6 +8,6 @@ module.exports = {
     permissions: "member",
     run: (client, message, args) => {
         const botInvite = "https://top.gg/bot/492495421822730250";
-        return message.reply(`The donation link to support the bot creator is: ${botInvite}`).then(m => del(m, 15000));
+        return message.reply(`The link to invite the bot is: ${botInvite}`).then(m => del(m, 15000));
     }
 }
