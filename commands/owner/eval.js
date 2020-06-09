@@ -11,7 +11,7 @@ module.exports = {
     usage: "<code to evaluate>",
     run: (client, message, args) => {
         if (message.author.id != process.env.USERID)
-            return message.reply("You're the bot the owner!").then(m => del(m, 7500));
+            return message.reply("You're not the bot the owner!").then(m => del(m, 7500));
 
         if (!args[0])
             return message.reply("You need to provide code to evaluate").then(m => del(m, 7500));
