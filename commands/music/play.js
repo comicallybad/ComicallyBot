@@ -48,7 +48,8 @@ module.exports = {
             guild: message.guild,
             textChannel: message.channel,
             voiceChannel,
-            volume: 10
+            volume: 10,
+            selfDeaf: true,
         });
 
         player.setVoiceChannel(voiceChannel);
