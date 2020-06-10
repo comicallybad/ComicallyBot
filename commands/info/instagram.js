@@ -27,7 +27,11 @@ module.exports = {
             return message.reply("I couldn't find that account...").then(m => del(m, 7500));
         }
 
-        const account = res.graphql.user;
+
+        let account;
+
+        if (res.graphql) account = res.graphql.user;
+        else return message.reply("Sorry there was an error finding that account.").then(m => del(m, 7500));
 
         const embed = new MessageEmbed()
             .setColor("#0efefe")
