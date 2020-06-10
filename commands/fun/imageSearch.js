@@ -20,7 +20,7 @@ module.exports = {
             }
             else {
                 const num = Math.floor(Math.random() * results.length) + 1;
-                return message.reply(results[num].url).then(m => del(m, 7500))
+                return message.reply(results[num].url).then(m => del(m, 30000))
             }
         }
     }
