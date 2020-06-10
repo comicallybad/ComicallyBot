@@ -21,7 +21,7 @@ module.exports = {
             }
             else {
                 const num = Math.floor(Math.random() * results.length) + 1;
-                return message.reply(results[num].url).then(m => del(m, 30000))
+                return message.channel.send(results[num].url).then(m => del(m, 30000))
             }
         }
     }
