@@ -22,13 +22,15 @@ module.exports = {
             else {
                 const num = Math.floor(Math.random() * results.length) + 1;
                 message.channel.send(results[num].url).then(async m => {
-                    const emoji = await promptMessage(m, message.author, 30, ["➡️", "🗑️"]);
+                    const emoji = await promptMessage(m, message.author, 15, ["➡️", "🗑️"]);
                     if (emoji === "➡️") {
                         m.reactions.removeAll().then(() => {
                             nextPicture(m, message.author, results);
                         });
                     } else if (emoji === "🗑️") {
-                        m.delete();
+                        del(m, 0)
+                    } else {
+                        del(m, 0)
                     }
                 })
             }
@@ -39,13 +41,15 @@ module.exports = {
 async function nextPicture(message, author, results) {
     const num = Math.floor(Math.random() * results.length) + 1;
     message.edit(results[num].url).then(async m => {
-        const emoji = await promptMessage(m, author, 30, ["➡️", "🗑️"]);
+        const emoji = await promptMessage(m, author, 15, ["➡️", "🗑️"]);
         if (emoji === "➡️") {
             m.reactions.removeAll().then(() => {
                 nextPicture(m, author, results);
             });
         } else if (emoji === "🗑️") {
-            m.delete();
+            del(m, 0)
+        } else {
+            del(m, 0)
         }
     })
 }
