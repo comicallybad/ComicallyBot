@@ -42,7 +42,7 @@ module.exports = async (client, message) => {
 
         del(message, 0);
 
-        if (command.category !== 'command') {
+        if (command.category !== 'command' && command.category !== "owner" && command.category !== "support") {
             getCommandStatus(message, command.name).then(function (res) {
                 if (!res) message.reply("Command disabled").then(m => del(m, 7500));
                 if (res) hasPermissions(message, command.permissions).then(async function (res) {

@@ -37,7 +37,7 @@ module.exports = {
                 }
 
                 const info = client.categories
-                    .filter(cat => cat !== "command" && cat !== "owner")
+                    .filter(cat => cat !== "command" && cat !== "owner" && cat !== "support")
                     .map(cat => stripIndents`**${cat[0].toUpperCase() + cat.slice(1)}** \n${commands(cat)}`)
                     .reduce((string, category) => string + "\n" + category);
 

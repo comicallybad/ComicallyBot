@@ -20,7 +20,10 @@ module.exports = {
             return message.reply("Please provide a category.").then(m => del(m, 7500));
 
         if (!categories.includes(args[0]))
-            return message.reply("Category not found.")
+            return message.reply("Category not found.").then(m => del(m, 7500));
+
+        if (args[0] == "command" || args[0] == "owner" || args[0] == "support")
+            return message.reply("You may not toggle this category.").then(m => del(m, 7500));
 
         if (!args[1])
             return message.reply("Please provide a true/false or enable/disable.").then(m => del(m, 7500));

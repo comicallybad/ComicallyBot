@@ -13,10 +13,10 @@ module.exports = {
     run: (client, message, args) => {
         let commands = client.commands.map(cmd => cmd.name);
         let invalidCommands = client.commands.map(function (cmd) {
-            if (cmd.category == "command") return cmd.name;
+            if (cmd.category == "command" || cmd.category == "owner" || cmd.category == "support") return cmd.name;
         }).filter(cmd => cmd);
         let catCommandAliases = (client.commands.map(function (cmd) {
-            if (cmd.category == "command") return cmd.aliases;
+            if (cmd.category == "command" || cmd.category == "owner" || cmd.category == "support") return cmd.aliases;
         }).filter(cmd => cmd));
         let invalidAliases = [].concat.apply([], catCommandAliases)
 
@@ -30,7 +30,7 @@ module.exports = {
             return message.reply("Please provide a valid command.").then(m => del(m, 7500));
 
         if (invalidCommands.includes(args[0]) || invalidAliases.includes(args[0]))
-            return message.reply("You can't toggle commands under the command category.").then(m => del(m, 7500));
+            return message.reply("You may not toggle this command.").then(m => del(m, 7500));
 
         if (!args[1])
             return message.reply("Please provide a true or false/enable or disable.").then(m => del(m, 7500));
