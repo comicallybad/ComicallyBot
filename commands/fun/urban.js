@@ -35,7 +35,7 @@ module.exports = {
                     .setTimestamp()
                     .setFooter(`Written by ${author || "unknown"}`);
 
-                message.channel.send(embed).then(m => del(m, 15000));
+                message.channel.send(embed)
             })
         } catch (err) {
             return message.channel.send(`Error while searching... ${err}`).then(m => del(m, 7500));
