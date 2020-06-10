@@ -12,7 +12,7 @@ module.exports = {
         if (!args[0])
             return message.reply("Please provide an image to search for.").then(m => del(m, 7500));
 
-        gis(args[0], logResults);
+        gis(args.join(' '), logResults);
 
         function logResults(error, results) {
             if (error) {
