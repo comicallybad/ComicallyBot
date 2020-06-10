@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { del, promptMessage } = require("../../functions.js");
 var gis = require('g-i-s');
 
 
@@ -9,7 +9,7 @@ module.exports = {
     description: "Searches for a google image.",
     permissions: "member",
     usage: "<image | description for search>",
-    run: (client, message, args) => {
+    run: async (client, message, args) => {
         if (!args[0])
             return message.reply("Please provide an image to search for.").then(m => del(m, 7500));
 
@@ -21,8 +21,31 @@ module.exports = {
             }
             else {
                 const num = Math.floor(Math.random() * results.length) + 1;
-                return message.channel.send(results[num].url).then(m => del(m, 30000))
+                message.channel.send(results[num].url).then(async m => {
+                    const emoji = await promptMessage(m, message.author, 30, ["➡️", "🗑️"]);
+                    if (emoji === "➡️") {
+                        m.reactions.removeAll().then(() => {
+                            nextPicture(m, message.author, results);
+                        });
+                    } else if (emoji === "🗑️") {
+                        m.delete();
+                    }
+                })
             }
         }
     }
+}
+
+async function nextPicture(message, author, results) {
+    const num = Math.floor(Math.random() * results.length) + 1;
+    message.edit(results[num].url).then(async m => {
+        const emoji = await promptMessage(m, author, 30, ["➡️", "🗑️"]);
+        if (emoji === "➡️") {
+            m.reactions.removeAll().then(() => {
+                nextPicture(m, author, results);
+            });
+        } else if (emoji === "🗑️") {
+            m.delete();
+        }
+    })
 }
