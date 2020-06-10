@@ -20,7 +20,7 @@ module.exports = {
                 return message.reply("Could not find any images.").then(m => del(m, 7500))
             }
             else {
-                const num = Math.floor(Math.random() * results.length) + 1;
+                let num = Math.floor(Math.random() * results.length);
                 message.channel.send(results[num].url).then(async m => {
                     const emoji = await promptMessage(m, message.author, 15, ["➡️", "🗑️"]);
                     if (emoji === "➡️") {
@@ -39,7 +39,7 @@ module.exports = {
 }
 
 async function nextPicture(message, author, results) {
-    const num = Math.floor(Math.random() * results.length) + 1;
+    const num = Math.floor(Math.random() * results.length);
     message.edit(results[num].url).then(async m => {
         const emoji = await promptMessage(m, author, 15, ["➡️", "🗑️"]);
         if (emoji === "➡️") {
