@@ -8,6 +8,7 @@ module.exports = {
     category: "fun",
     description: "Searches for a google image.",
     permissions: "member",
+    usage: "<image | description for search>",
     run: (client, message, args) => {
         if (!args[0])
             return message.reply("Please provide an image to search for.").then(m => del(m, 7500));
