@@ -21,20 +21,24 @@ module.exports = {
             }
             else {
                 let num = Math.floor(Math.random() * results.length);
-                message.channel.send(results[num].url).then(async m => {
-                    const emoji = await promptMessage(m, message.author, 15, ["➡️", "🗑️", "❤️"]);
-                    if (emoji === "➡️") {
-                        m.reactions.removeAll().then(() => {
-                            nextPicture(m, message.author, results);
-                        });
-                    } else if (emoji === "🗑️") {
-                        del(m, 0)
-                    } else if (emoji === "❤️") {
-                        m.reactions.removeAll();
-                    } else {
-                        del(m, 0)
-                    }
-                })
+                if (results[num]) {
+                    message.channel.send(results[num].url).then(async m => {
+                        const emoji = await promptMessage(m, message.author, 15, ["➡️", "🗑️", "❤️"]);
+                        if (emoji === "➡️") {
+                            m.reactions.removeAll().then(() => {
+                                nextPicture(m, message.author, results);
+                            });
+                        } else if (emoji === "🗑️") {
+                            del(m, 0)
+                        } else if (emoji === "❤️") {
+                            m.reactions.removeAll();
+                        } else {
+                            del(m, 0)
+                        }
+                    })
+                } else {
+                    return message.reply("Sorry there was an error with that search, try again.").then(m => del(m, 7500));
+                }
             }
         }
     }
@@ -42,18 +46,22 @@ module.exports = {
 
 async function nextPicture(message, author, results) {
     const num = Math.floor(Math.random() * results.length);
-    message.edit(results[num].url).then(async m => {
-        const emoji = await promptMessage(m, author, 15, ["➡️", "🗑️", "❤️"]);
-        if (emoji === "➡️") {
-            m.reactions.removeAll().then(() => {
-                nextPicture(m, author, results);
-            });
-        } else if (emoji === "🗑️") {
-            del(m, 0)
-        } else if (emoji === "❤️") {
-            m.reactions.removeAll();
-        } else {
-            del(m, 0)
-        }
-    })
+    if (results[num]) {
+        message.edit(results[num].url).then(async m => {
+            const emoji = await promptMessage(m, author, 15, ["➡️", "🗑️", "❤️"]);
+            if (emoji === "➡️") {
+                m.reactions.removeAll().then(() => {
+                    nextPicture(m, author, results);
+                });
+            } else if (emoji === "🗑️") {
+                del(m, 0)
+            } else if (emoji === "❤️") {
+                m.reactions.removeAll();
+            } else {
+                del(m, 0)
+            }
+        })
+    } else {
+        return message.reply("Sorry there was an error with that search, try again.").then(m => del(m, 7500));
+    }
 }
