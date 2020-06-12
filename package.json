@@ -17,8 +17,8 @@
     "erela.js": "^1.1.8",
     "fortnite": "^4.3.2",
     "g-i-s": "^2.1.5",
-    "humanize-duration": "^3.23.0",
-    "mongoose": "^5.9.17",
+    "humanize-duration": "^3.23.1",
+    "mongoose": "^5.9.18",
     "node-fetch": "^2.6.0",
     "random-puppy": "^1.1.0",
     "urban": "^0.3.2"
