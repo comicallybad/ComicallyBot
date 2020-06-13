@@ -24,6 +24,8 @@ module.exports = {
         let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         if (!user) return message.reply("Please supply a user to be banned!").then(m => del(m, 7500));
 
+        let nickName = args.splice(1).join(' ');
+
         const embed = new MessageEmbed()
             .setColor("#0efefe")
             .setTitle("User Nickname Changed")
@@ -31,11 +33,10 @@ module.exports = {
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()
             .setDescription(stripIndents`
-            **Member who's nicnkame was changed: ${user} (${user.id})**
-            **Nickname changed to: ${user.nickName}**
+            **Member changed: ${user} (${user.id})**
+            **Nickname changed to: ${nickName}**
             **Nickname changed by: ${message.author}**`);
 
-        let nickName = args.splice(1).join(' ');
         user.setNickname(nickName, '')
             .then(() => {
                 message.reply("User's nickname was successfully changed.").then(m => del(m, 7500));
