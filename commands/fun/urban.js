@@ -9,7 +9,6 @@ module.exports = {
     category: "fun",
     description: "gets an urban dictionary definition",
     permissions: "member",
-    description: "gets an urban dictionary definition",
     run: (client, message, args) => {
         if (!args[0] || !["search", "random"].includes(args[0]))
             return message.reply("Please provide <search|random> (query).").then(m => del(m, 7500));
