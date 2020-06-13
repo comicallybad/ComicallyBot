@@ -12,7 +12,9 @@ module.exports = {
         } else {
             if (message.mentions.channels.first()) {
                 toSay = args.slice(1).join(' ');
-                client.channels.cache.get(message.mentions.channels.first().id).send(toSay)
+                return client.channels.cache.get(message.mentions.channels.first().id).send(toSay).catch(err => {
+                    return message, reply(`There was an error attempting to send the message: ${err}`);
+                });
             } else {
                 message.channel.send(args.join(' '));
             }
