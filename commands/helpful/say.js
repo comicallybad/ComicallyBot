@@ -8,9 +8,14 @@ module.exports = {
     permissions: "member",
     run: async (client, message, args) => {
         if (!args[0]) {
-            return message.reply("Please provide something to say.").then(m => del(m, 7500))
+            return message.reply("Please provide a channel and something to say, or just something to say.").then(m => del(m, 7500));
         } else {
-            message.channel.send(args.join(' '));
+            if (message.mentions.channels.first()) {
+                toSay = args.slice(1).join(' ');
+                client.channels.cache.get(message.mentions.channels.first().id).send(toSay)
+            } else {
+                message.channel.send(args.join(' '));
+            }
         }
     }
 }
