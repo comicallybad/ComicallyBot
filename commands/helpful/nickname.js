@@ -25,7 +25,7 @@ module.exports = {
         if (!user) return message.reply("Please supply a user to be banned!").then(m => del(m, 7500));
 
         const embed = new MessageEmbed()
-            .setColor("#ff0000")
+            .setColor("#0efefe")
             .setTitle("User Nickname Changed")
             .setThumbnail(user.user.displayAvatarURL())
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
