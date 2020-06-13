@@ -16,16 +16,15 @@ module.exports = {
         let serverChannels = client.channels.cache.map(channel => channel).filter(channel => channel.type === "text").filter(channel => channel.guild.id === guildID)
         let channelNames = serverChannels.map(channel => channel.name)
         let channelIDs = serverChannels.map(channel => channel.id)
-        let hashMention = args[0].slice(2, args[0].length - 1)
 
-        if (!channelIDs.includes(hashMention) && !channelIDs.includes(args[0]))
+        if (!message.mentions.channels.first() && !channelIDs.includes(args[0]))
             return message.reply("Channel not found in this server.").then(m => del(m, 7500));
 
         if (channelIDs.includes(args[0]))
             dbUpdate(args[0], channelNames[channelIDs.indexOf(args[0])]);
 
-        if (channelIDs.includes(hashMention))
-            dbUpdate(hashMention, channelNames[channelIDs.indexOf(hashMention)]);
+        if (message.mentions.channels.first())
+            dbUpdate(message.mentions.channels.first().id, message.mentions.channels.first().name);
 
         function dbUpdate(channelID, channelName) {
             db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "suggest" } } }, (err, exists) => {
