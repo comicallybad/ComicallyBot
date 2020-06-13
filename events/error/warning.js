@@ -19,8 +19,8 @@ module.exports = (process, error) => {
         fs.mkdirSync(dir);
     }
 
-    fs.appendFile(`./logs/${formatDate} UnhandledRejection.log`, `${formatDate} ${formatTime}: ${error}\n`, function (err) {
+    fs.appendFile(`./logs/${formatDate} warning.log`, `${formatDate} ${formatTime}: ${error}\n`, function (err) {
         if (err) throw err;
-        console.log(`A new UnhandledRejection has been logged to: ${formatDate} UnhandledRejection.log`)
+        console.log(`A new warning has been logged to: ${formatDate} warning.log`)
     });
 }
