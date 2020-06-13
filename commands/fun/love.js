@@ -7,7 +7,7 @@ module.exports = {
     category: "fun",
     description: "Calculates the love affinity you have for another person.",
     permissions: "member",
-    usage: "[mention | id | username]",
+    usage: "[@user | userID | username]",
     run: (client, message, args) => {
         let person = getMember(message, args[0]);
 

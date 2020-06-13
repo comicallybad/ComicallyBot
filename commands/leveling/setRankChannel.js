@@ -7,7 +7,7 @@ module.exports = {
     category: "leveling",
     description: "Set response channel for leveling.",
     permissions: "moderator",
-    usage: "<channelID|#channel>",
+    usage: "<#channel | channelID>",
     run: (client, message, args) => {
         if (!args[0])
             return message.reply("Please provide a channel.").then(m => del(m, 7500));

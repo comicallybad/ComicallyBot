@@ -9,7 +9,7 @@ module.exports = {
     category: "leveling",
     description: "Remove XP from user.",
     permissions: "moderator",
-    usage: "<@user|userID> <amount>",
+    usage: "<@user | userID> <amount>",
     run: (client, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
 

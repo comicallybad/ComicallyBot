@@ -9,7 +9,7 @@ module.exports = {
     category: "leveling",
     description: "Removes an assignable XP level role.",
     permissions: "moderator",
-    usage: "<@role|roleID>",
+    usage: "<@role | roleID>",
     run: (client, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
         let guildID = message.guild.id;

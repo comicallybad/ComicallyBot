@@ -7,7 +7,7 @@ module.exports = {
     category: "moderation",
     description: "Reports a member.",
     permissions: "member",
-    usage: "<mention | id>",
+    usage: "<@user | userID>",
     run: (client, message, args) => {
         if (!args[0])
             return message.reply("Please provide a user").then(m => del(m, 7500));

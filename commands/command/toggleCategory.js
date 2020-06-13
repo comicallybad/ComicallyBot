@@ -9,7 +9,7 @@ module.exports = {
     category: "command",
     description: "Enable or disable commands.",
     permissions: "admin",
-    usage: "<category> <true|false>",
+    usage: "<category> <true/enable | false/disable>",
     run: (client, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
         let guildID = message.guild.id;

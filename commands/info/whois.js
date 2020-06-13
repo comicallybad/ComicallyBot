@@ -8,7 +8,7 @@ module.exports = {
     category: "info",
     description: "Returns user information.",
     permissions: "member",
-    usage: "[username | id | mention]",
+    usage: "[@user | userID | user]",
     run: (client, message, args) => {
         const member = getMember(message, args.join(" "));
 

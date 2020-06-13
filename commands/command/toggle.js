@@ -9,7 +9,7 @@ module.exports = {
     category: "command",
     description: "Enable or disable commands.",
     permissions: "admin",
-    usage: "<command> <true|false>",
+    usage: "<command> <true/enable | false/disable>",
     run: (client, message, args) => {
         let commands = client.commands.map(cmd => cmd.name);
         let invalidCommands = client.commands.map(function (cmd) {

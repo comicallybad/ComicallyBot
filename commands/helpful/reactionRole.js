@@ -9,7 +9,7 @@ module.exports = {
     category: "helpful",
     description: "Adds an emote users can react to to be given a role.",
     permissions: "moderator",
-    usage: "<messageID> <emote|emoteID> <roleID|@role> [type] Types: 'addonly', 'add/remove'. Type will default to addremove if not supplied.",
+    usage: "<messageID> <emote | emoteID> <@role | roleID> [type] Types: 'addonly', 'add/remove'. Type will default to addremove if not supplied.",
     run: async (client, message, args) => {
         if (!message.guild.me.hasPermission("MANAGE_ROLES"))
             return message.reply("I don't have permission to manage roles!").then(m => del(m, 7500));

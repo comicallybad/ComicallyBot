@@ -9,7 +9,7 @@ module.exports = {
     category: "administration",
     description: "Remove permitted role/user for mod commands.",
     permissions: "admin",
-    usage: "<role ID|@role|userID|@user>",
+    usage: "<@user | userID | @role | roleID>",
     run: (client, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
         let guildID = message.guild.id;

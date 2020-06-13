@@ -7,7 +7,7 @@ module.exports = {
     category: "moderation",
     description: "Unban a member.",
     permissions: "moderator",
-    usage: "<id | mention> [reason]",
+    usage: "<userID> [reason]",
     run: async (client, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
 

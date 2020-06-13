@@ -9,7 +9,7 @@ module.exports = {
     category: "leveling",
     description: "Get members rank.",
     permissions: "member",
-    usage: "[@user|userID]",
+    usage: "[@user | userID]",
     run: (client, message, args) => {
         let guildID = message.guild.id;
         let userID = message.member.id;

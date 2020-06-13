@@ -8,7 +8,7 @@ module.exports = {
     category: "moderation",
     description: "Add permitted role for mod commands.",
     permissions: "moderator",
-    usage: "<role name|@role>",
+    usage: "<@role | role name>",
     run: async (client, message, args) => {
         let guildID = message.guild.id;
         const embed = new MessageEmbed()

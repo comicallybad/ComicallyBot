@@ -8,7 +8,7 @@ module.exports = {
     category: "moderation",
     description: "Soft ban a member.",
     permissions: "moderator",
-    usage: "<id | mention> [reason]",
+    usage: "<@user | userID> [reason]",
     run: async (client, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
 

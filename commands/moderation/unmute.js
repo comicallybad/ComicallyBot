@@ -7,7 +7,7 @@ module.exports = {
     category: "moderation",
     description: "Unmute a member.",
     permissions: "moderator",
-    usage: "<id | mention>",
+    usage: "<@user | userID>",
     run: async (client, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
 

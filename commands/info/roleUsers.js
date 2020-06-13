@@ -7,7 +7,7 @@ module.exports = {
     category: "info",
     description: "Returns users within a role.",
     permissions: "member",
-    usage: "[role name | id | mention]",
+    usage: "[@role | roleID | rolename]",
     run: async (client, message, args) => {
         let roleID;
         let roleNames = message.guild.roles.cache.map(role => role.name);
