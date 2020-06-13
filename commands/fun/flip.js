@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "flip",
-    aliases: ["coinflip", "coin", "heardsortails"],
+    aliases: ["coinflip", "coin", "headsortails"],
     category: "fun",
     description: "Flips a coin for heads or tails.",
     permissions: "member",
