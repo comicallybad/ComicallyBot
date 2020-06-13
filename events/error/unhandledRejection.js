@@ -3,14 +3,15 @@ const { stripIndents } = require("common-tags");
 
 module.exports = (process, error) => {
     const date = new Date();
-    const formatDate =
-        stripIndents`
+    const formatDate = stripIndents`
         ${(date.getMonth() + 1).toString().padStart(2, '0')}-${
-            date.getDate().toString().padStart(2, '0')}-${
-            date.getFullYear().toString().padStart(4, '0')} ${
-            date.getHours().toString().padStart(2, '0')}-${
-            date.getMinutes().toString().padStart(2, '0')}-${
-            date.getSeconds().toString().padStart(2, '0')}`
+        date.getDate().toString().padStart(2, '0')}-${
+        date.getFullYear().toString().padStart(4, '0')}`
+
+    const formatTime = stripIndents`${
+        date.getHours().toString().padStart(2, '0')}-${
+        date.getMinutes().toString().padStart(2, '0')}-${
+        date.getSeconds().toString().padStart(2, '0')}`
 
     var dir = './logs';
 
@@ -18,8 +19,8 @@ module.exports = (process, error) => {
         fs.mkdirSync(dir);
     }
 
-    fs.writeFile(`./logs/${formatDate} UnhandledRejection.log`, `${formatDate}: ${error}`, function (err) {
+    fs.appendFile(`./logs/${formatDate} UnhandledRejection.log`, `${formatDate} ${formatTime}: ${error}\n`, function (err) {
         if (err) throw err;
-        console.log(`A new UnhandledRejection error has been logged: ${formatDate} UnhandledRejection.log`)
+        console.log(`A new UnhandledRejection error has been logged to: ${formatDate} UnhandledRejection.log`)
     });
 }
