@@ -20,6 +20,6 @@ module.exports = (process, error) => {
 
     fs.writeFile(`./logs/${formatDate}.log`, `${formatDate}: ${error}`, function (err) {
         if (err) throw err;
-        console.log("A new error has been logged.")
+        console.log(`A new error has been logged: ${formatDate}`)
     });
 }
