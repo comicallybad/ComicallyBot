@@ -11,10 +11,10 @@ module.exports = {
             return message.reply("Please provide a channel and something to say, or just something to say.").then(m => del(m, 7500));
         } else {
             if (message.mentions.channels.first()) {
-                toSay = args.slice(1).join(' ');
-                return client.channels.cache.get(message.mentions.channels.first().id).send(toSay).catch(err => {
-                    return message, reply(`There was an error attempting to send the message: ${err}`);
-                });
+                let toSay = args.slice(1).join(' ');
+                let channel = client.channels.cache.get(message.mentions.channels.first().id)
+
+                channel.send(toSay).catch(err => message.reply(`There was an error sending a message to that channel. ${err}`).then(m => del(m, 7500)));
             } else {
                 message.channel.send(args.join(' '));
             }
