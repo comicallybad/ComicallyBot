@@ -18,8 +18,8 @@ module.exports = (process, error) => {
         fs.mkdirSync(dir);
     }
 
-    fs.writeFile(`./logs/${formatDate}.log`, `${formatDate}: ${error}`, function (err) {
+    fs.writeFile(`./logs/${formatDate} UnhandledRejection.log`, `${formatDate}: ${error}`, function (err) {
         if (err) throw err;
-        console.log(`A new error has been logged: ${formatDate}`)
+        console.log(`A new UnhandledRejection error has been logged: ${formatDate} UnhandledRejection.log`)
     });
 }
