@@ -7,7 +7,7 @@ module.exports = {
     name: "urban",
     aliases: ["urb", "urbandictionary", "ud"],
     category: "fun",
-    description: "gets an urban dictionary definition",
+    description: "Gets an urban dictionary definition",
     permissions: "member",
     run: (client, message, args) => {
         if (!args[0] || !["search", "random"].includes(args[0]))
