@@ -6,7 +6,7 @@ module.exports = {
     name: "getranks",
     aliases: ["ranks", "listranks", "getroles"],
     category: "leveling",
-    description: "Lists of ranks that can be purchased with coins.",
+    description: "List of ranks that can be purchased with coins.",
     permissions: "member",
     run: async (client, message, args) => {
         const guildID = message.guild.id;
