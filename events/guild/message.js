@@ -8,18 +8,19 @@ module.exports = async (client, message) => {
     if (!message.guild) return;
     if (!message.member) return;
 
+    if (!cooldown.has(message.author.id))
+        messageXP(message, client);
+
+    cooldown.add(message.author.id);
+
+    setTimeout(() => {
+        cooldown.delete(message.author.id);
+    }, cdseconds * 1000);
+
+
     //This was needed to prevent mulitple xp database updates conflicting, resulting in bad behavior. So non command messages will give XP
-    if (!message.content.startsWith(prefix) && !message.content.replace(/\D/g, '').startsWith(`${client.user.id}`)) {
-        if (!cooldown.has(message.author.id))
-            messageXP(message, client);
+    if (!message.content.startsWith(prefix) && !message.content.replace(/\D/g, '').startsWith(`${client.user.id}`)) return
 
-        cooldown.add(message.author.id);
-
-        setTimeout(() => {
-            cooldown.delete(message.author.id);
-        }, cdseconds * 1000);
-        return
-    };
     if (!message.member) message.member = await message.guild.fetchMember(message).catch(err => err);
 
     const args = message.content.startsWith(prefix) ? message.content.slice(prefix.length).trim().split(/ +/g) : message.content.replace(/[^\s]*/, '').trim().split(/ +/g);
