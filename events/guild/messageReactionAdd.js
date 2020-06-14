@@ -49,7 +49,7 @@ function checkReactionRole(message, user) {
                     });
                 }).catch(err => {
                     if (err) guildUser.send(`Hello, there was an issue assigning you the **${role.roleName}** in **${guildUser.guild.name}**, possibly due to role hierarchy: \`${err}\``).catch(e => {
-                        message.message.channel.send(`${user}there was an issue assigning you the **${role.roleName}**`).then(m => del(m, 7500));
+                        message.message.channel.send(`${user} there was an issue assigning you the **${role.roleName}**`).then(m => del(m, 7500));
                     });
                 });
             });
