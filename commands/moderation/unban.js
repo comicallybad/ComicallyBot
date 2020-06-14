@@ -12,10 +12,10 @@ module.exports = {
         const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
 
         if (!message.member.hasPermission("BAN_MEMBERS"))
-            return message.reply("You dont have the ban members permission to perform this command!").then(m => del(m, 7500));
+            return message.reply("You don't have the ban members permission to perform this command!").then(m => del(m, 7500));
 
         if (!message.guild.me.hasPermission("BAN_MEMBERS"))
-            return message.reply("I dont have the permission to perform this command!").then(m => del(m, 7500));
+            return message.reply("I don't have the permission to perform this command!").then(m => del(m, 7500));
 
         if (isNaN(args[0]))
             return message.reply("You need to provide an ID.").then(m => del(m, 7500));
