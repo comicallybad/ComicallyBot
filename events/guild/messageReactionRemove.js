@@ -47,6 +47,7 @@ function checkReactionRole(message, user) {
         .setColor("#0efefe")
         .setTitle("User left role via Reaction Role")
         .setFooter(user.id, user.displayAvatarURL())
+        .setThumbnail(guildUser.user.displayAvatarURL())
         .setTimestamp()
 
     db.findOne({

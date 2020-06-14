@@ -168,7 +168,8 @@ module.exports = {
         const embed = new MessageEmbed()
             .setColor("#0efefe")
             .setTitle("User joined role via Leveling Up")
-            .setFooter(user.id)
+            .setThumbnail(user.user.displayAvatarURL())
+            .setFooter(user.id, user.user.displayAvatarURL())
             .setTimestamp()
 
         db.findOne({ guildID: guildID, xpRoles: { $elemMatch: { level: level } } }, (err, exists) => {
