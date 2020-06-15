@@ -5,7 +5,7 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "getbadwords",
-    aliases: ["badwords", "words"],
+    aliases: ["badwords", "words", "getwords"],
     category: "moderation",
     description: "Returns a list of bad words that will be deleted.",
     permissions: "moderator",
