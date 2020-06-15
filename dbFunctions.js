@@ -204,7 +204,7 @@ module.exports = {
                         let badWordList = exists.badWordList;
                         let bool = badWordList.filter(word => words.includes(word.toLowerCase()));
                         if (bool.length > 0) {
-                            message.delete();
+                            del(message, 0);
                             return message.reply(`watch your language.`).then(m => del(m, 7500));
                         } else return;
                     }
