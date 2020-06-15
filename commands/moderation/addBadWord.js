@@ -28,9 +28,14 @@ module.exports = {
             **Bad Word(s) Added:** ${args.map(word => `\`${word}\``).join(',')}`);
 
         args.forEach(word => {
-            db.updateOne({ guildID: guildID }, {
-                $push: { badWordList: `${word}` }
-            }).catch(err => console.log(err))
+            db.findOne({ guildID: guildID, badWordList: `${word}` }, (err, exists) => {
+                if (exists) return;
+                else {
+                    db.updateOne({ guildID: guildID }, {
+                        $push: { badWordList: `${word}` }
+                    }).catch(err => console.log(err))
+                }
+            })
         })
 
         message.reply("Adding bad word(s) to the list...").then(m => del(m, 7500));
