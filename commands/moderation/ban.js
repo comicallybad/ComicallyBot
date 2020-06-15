@@ -33,25 +33,21 @@ module.exports = {
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()
             .setDescription(stripIndents`
-            **Banned member: ${toBan} (${toBan.id})**
-            **Banned by: ${message.member}**
-            **Reason: ${reason}**`);
+            **Banned member:** ${toBan} (${toBan.id})
+            **Banned by:** ${message.member}
+            **Reason:** ${reason}`);
 
         const promptEmbed = new MessageEmbed()
             .setColor("GREEN")
             .setAuthor(`This verification becomes invalid after 30s.`)
             .setDescription(`Do you want to ban ${toBan}?`)
 
-        // Send the message
         await message.channel.send(promptEmbed).then(async msg => {
-            // Await the reactions and the reactioncollector
             const emoji = await promptMessage(msg, message.author, 30, ["✅", "❌"]);
 
-            // Verification stuff
             if (emoji === "✅") {
                 del(msg, 0);
 
-                //attempt ban and send message
                 toBan.ban(reason).then(() => {
                     toBan.send(`Hello, you have been **banned** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                     message.reply(`${toBan.user.username} (${toBan.user.id}) was successfully banned.`).then(m => del(m, 7500));

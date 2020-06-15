@@ -58,9 +58,9 @@ module.exports = {
                         .setFooter(message.member.displayName, message.author.displayAvatarURL())
                         .setTimestamp()
                         .setDescription(stripIndents`
-                                **XP Giveaway by: <@${message.member.id}> ${message.member.user.username} (${message.member.id})**
-                                **XP Giveaway won by: <@${userID}> (${userID})**
-                                **XP Given: ${amount}**`);
+                        **XP Giveaway by:** <@${message.member.id}> ${message.member.user.username} (${message.member.id})
+                        **XP Giveaway won by:** <@${userID}> (${userID})
+                        **XP Given:** ${amount}`);
 
                     logChannel.send(logEmbed);
 

@@ -33,9 +33,9 @@ module.exports = {
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()
             .setDescription(stripIndents`
-            **Member changed: ${user} (${user.id})**
-            **Nickname changed to: ${nickName}**
-            **Nickname changed by: ${message.author}**`);
+            **Member changed:** ${user} (${user.id})
+            **Nickname changed to:** ${nickName}
+            **Nickname changed by:** ${message.author}`);
 
         user.setNickname(nickName, '')
             .then(() => {

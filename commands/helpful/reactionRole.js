@@ -81,10 +81,10 @@ function addReactionRole(message, reaction, role, type) {
             }).catch(err => console.log(err))
 
             embed.setDescription(stripIndents`
-            **Reaction role create by: ${message.member.user}**
-            **Reaction role:${role}(${role.id})**
-            **Reaction emoji/ID: ${reaction}**
-            **Reaction role messasge ID:${messageID}**`);
+            **Reaction role create by:** ${message.member.user}
+            **Reaction role:** ${role}(${role.id})
+            **Reaction emoji/ID:** ${reaction}
+            **Reaction role messasge ID:** ${messageID}`);
 
             logChannel.send(embed);
         } else {
@@ -97,11 +97,11 @@ function addReactionRole(message, reaction, role, type) {
             }).catch(err => console.log(err));
 
             embed.setDescription(stripIndents`
-            **Reaction role updated by: ${message.member.user}**
-            **Reaction role: ${role}(${role.id})**
-            **Reaction emoji/ID: ${reaction}**
-            **Reaction role messasge ID: ${messageID}**
-            **Reaction role type: ${type}**`);
+            **Reaction role updated by:** ${message.member.user}
+            **Reaction role:** ${role}(${role.id})
+            **Reaction emoji/ID:** ${reaction}
+            **Reaction role messasge ID:** ${messageID}
+            **Reaction role type:** ${type}`);
 
             logChannel.send(embed);
         }

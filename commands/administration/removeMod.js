@@ -41,8 +41,8 @@ module.exports = {
                             .setFooter(message.member.displayName, message.author.displayAvatarURL())
                             .setTimestamp()
                             .setDescription(stripIndents`
-                            **Mod Removed by: ${message.member.user}**
-                            **Role/User ID Removed: (${roleID})**`);
+                            **Mod Removed by:** ${message.member.user}
+                            **Role/User ID Removed:** (${roleID})`);
 
                         logChannel.send(embed);
 

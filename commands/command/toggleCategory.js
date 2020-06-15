@@ -48,9 +48,9 @@ module.exports = {
                 .setFooter(message.member.displayName, message.author.displayAvatarURL())
                 .setTimestamp()
                 .setDescription(stripIndents`
-                **Commands Toggled by: ${message.member.user}**
-                **Commands Category: ${args[0]}**
-                **Commands Toggled: ON**`);
+                **Commands Toggled by:** ${message.member.user}
+                **Commands Category:** ${args[0]}
+                **Commands Toggled:** ON`);
 
             logChannel.send(embed);
 
@@ -74,9 +74,9 @@ module.exports = {
                 .setFooter(message.member.displayName, message.author.displayAvatarURL())
                 .setTimestamp()
                 .setDescription(stripIndents`
-                **Commands Toggled by: ${message.member.user}**
-                **Commands Category: ${args[0]}**
-                **Commands Toggled: OFF**`);
+                **Commands Toggled by:** ${message.member.user}
+                **Commands Category:** ${args[0]}
+                **Commands Toggled:** OFF`);
 
             logChannel.send(embed);
 

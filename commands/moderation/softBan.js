@@ -37,9 +37,9 @@ module.exports = {
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()
             .setDescription(stripIndents`
-            **Soft banned member: ${banMember} (${banMember.id})**
-            **Soft banned by: ${message.member}**
-            **Reason: ${reason}**`);
+            **Soft banned member:** ${banMember} (${banMember.id})
+            **Soft banned by:** ${message.member}
+            **Reason:** ${reason}`);
 
         const promptEmbed = new MessageEmbed()
             .setColor("GREEN")

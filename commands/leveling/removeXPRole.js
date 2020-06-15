@@ -49,8 +49,8 @@ module.exports = {
                             .setFooter(message.member.displayName, message.author.displayAvatarURL())
                             .setTimestamp()
                             .setDescription(stripIndents`
-                            **XP Role Removed by: ${message.member.user}**
-                            **XP Role Removed: ${roleName} (${roleID})**`);
+                            **XP Role Removed by:** ${message.member.user}
+                            **XP Role Removed:** ${roleName} (${roleID})`);
 
                         logChannel.send(embed);
 
