@@ -187,5 +187,29 @@ module.exports = {
                 });
             } else return;
         })
+    },
+    checkBadWords: async function (message) {
+        let guildID = message.guild.id;
+        let words = message.content.replace(/ /g, '').toLowerCase();
+
+        if (message.member.hasPermission("ADMINISTRATOR") ||
+            message.member.hasPermission("KICK_MEMBERS") ||
+            message.member.hasPermission("BAN_MEMBERS")) {
+            return;
+        } else {
+            db.findOne({ guildID: guildID }, (err, exists) => {
+                if (err) console.log(err)
+                if (exists) {
+                    if (exists.badWordList) {
+                        let badWordList = exists.badWordList;
+                        let bool = badWordList.filter(word => words.includes(word.toLowerCase()));
+                        if (bool.length > 0) {
+                            message.delete();
+                            return message.reply(`watch your language.`).then(m => del(m, 7500));
+                        } else return;
+                    }
+                }
+            });
+        }
     }
 }

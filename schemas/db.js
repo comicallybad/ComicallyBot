@@ -12,6 +12,7 @@ const dbSchema = mongoose.Schema({
     xpRoles: [Object],
     reactionRoles: [Object],
     reactionCommands: [Object],
+    badWordList: [String],
 });
 
 module.exports = mongoose.model("db", dbSchema)
