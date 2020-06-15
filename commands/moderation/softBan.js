@@ -67,7 +67,9 @@ module.exports = {
                 logChannel.send(embed);
             } else if (emoji === "❌") {
                 del(msg, 0);
-                message.reply(`Soft ban cancelled.`).then(m => del(m, 7500));
+                return message.reply(`Softban cancelled.`).then(m => del(m, 7500));
+            } else {
+                return del(msg, 0)
             }
         });
     }
