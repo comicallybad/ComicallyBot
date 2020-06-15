@@ -363,7 +363,7 @@ module.exports = {
                 }).catch(err => {
                     if (err) return message.reply(`There was an error attempting to unmute ${message.member} ${err}`).then(m => module.exports.del(m, 7500));
                 });
-            }, 5000)); //5 Minute punishment 300000
+            }, 300000)); //5 Minute punishment 300000
         } else if (userArray.some(user => user.id == message.author.id && user.offences == 5)) {
             let muterole = await module.exports.checkMuteRole(message);
             message.member.roles.add(muterole.id).then(() => {
@@ -381,7 +381,7 @@ module.exports = {
                 }).catch(err => {
                     if (err) return message.reply(`There was an error attempting to unmute ${message.member} ${err}`).then(m => module.exports.del(m, 7500));
                 });
-            }, 15000)); //5 Minute punishment 600000
+            }, 600000)); //5 Minute punishment 600000
         }
     }
 }
