@@ -82,7 +82,7 @@ module.exports = {
                     if (emojiTime === "1️⃣") {
                         del(msg, 0);
                         mutee.roles.add(muterole.id).then(() => {
-                            mutee.send(`Hello, you have been **muted** in ${message.guild.name} for: **${reason}** for **1 Minute**`).catch(err => err); //in case DM's are closed
+                            mutee.send(`Hello, you have been **muted** for **1 minute** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                             message.reply(`${mutee.user.username} was successfully muted for **1 minute**.`).then(m => del(m, 7500));
                             embed.addField("Mute Time: ", "1 Minute");
                             logChannel.send(embed);
@@ -99,7 +99,7 @@ module.exports = {
                     } else if (emojiTime === "5️⃣") {
                         del(msg, 0);
                         mutee.roles.add(muterole.id).then(() => {
-                            mutee.send(`Hello, you have been **muted** in ${message.guild.name} for: **${reason}** for **5 Minutes**`).catch(err => err); //in case DM's are closed
+                            mutee.send(`Hello, you have been **muted** for **5 minutes** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                             message.reply(`${mutee.user.username} was successfully muted for **5 minutes**.`).then(m => del(m, 7500));
                             embed.addField("Mute Time: ", "5 Minutes");
                             logChannel.send(embed);
@@ -116,7 +116,7 @@ module.exports = {
                     } else if (emojiTime === "🔟") {
                         del(msg, 0);
                         mutee.roles.add(muterole.id).then(() => {
-                            mutee.send(`Hello, you have been **muted** in ${message.guild.name} for: **${reason}** for **10 Minutes**`).catch(err => err); //in case DM's are closed
+                            mutee.send(`Hello, you have been **muted** for **10 minutes** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                             message.reply(`${mutee.user.username} was successfully muted for **10 minutes**.`).then(m => del(m, 7500));
                             embed.addField("Mute Time: ", "10 Minutes");
                             logChannel.send(embed);
@@ -133,7 +133,7 @@ module.exports = {
                     } else if (emojiTime === "♾️") {
                         del(msg, 0);
                         mutee.roles.add(muterole.id).then(() => {
-                            mutee.send(`Hello, you have been **muted** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
+                            mutee.send(`Hello, you have been **muted** **indefinitely** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                             message.reply(`${mutee.user.username} was successfully muted **indefinitely**.`).then(m => del(m, 7500));
                             embed.addField("Mute Time: ", "Indefinite");
                             logChannel.send(embed);
