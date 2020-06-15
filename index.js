@@ -5,7 +5,8 @@ const client = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 
 config({ path: __dirname + "/.env" });
 global.prefix = "_";
-global.voiceChannels = [];
+global.voiceChannels = [], global.profanityUsers = [];
+global.spamUsers = [], global.spamOffencers = [];
 
 ["aliases", "commands"].forEach(x => client[x] = new Collection());
 ["command", "event"].forEach(x => require(`./handlers/${x}`)(client));

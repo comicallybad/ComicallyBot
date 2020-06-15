@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const db = require('./schemas/db.js');
 const xp = require('./schemas/xp.js');
-const { del } = require("./functions.js");
+const { del, warn } = require("./functions.js");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
@@ -205,11 +205,11 @@ module.exports = {
                         let bool = badWordList.filter(word => words.includes(word.toLowerCase()));
                         if (bool.length > 0) {
                             del(message, 0);
-                            return message.reply(`watch your language.`).then(m => del(m, 7500));
+                            return warn(message, profanityUsers, "profanity")
                         } else return;
                     }
                 }
             });
         }
-    }
+    },
 }

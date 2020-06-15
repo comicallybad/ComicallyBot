@@ -1,4 +1,7 @@
 const db = require('./schemas/db.js');
+const { MessageEmbed } = require("discord.js");
+const { stripIndents } = require("common-tags");
+let cooldown = new Set();
 
 module.exports = {
     del: async function (message, timeout) {
@@ -202,8 +205,8 @@ module.exports = {
                     module.exports.pageTurn(message, author, array, embed, parameter, size, newPage);
                 });
             } else if (reacted == "🗑️") {
-                return message.delete().catch(err => err);
-            } else return message.delete().catch(err => err);
+                return module.exports.del(message, 0);
+            } else return module.exports.del(message, 0);
         } else if (newPage !== 0 && newPage !== pages) {
             const reacted = await module.exports.promptMessage(message, author, 15, ["⬅️", "➡️", "🗑️"])
             if (reacted == "➡️") {
@@ -217,8 +220,8 @@ module.exports = {
                     module.exports.pageTurn(message, author, array, embed, parameter, size, newPage);
                 });
             } else if (reacted == "🗑️") {
-                message.delete().catch(err => err);
-            } else return message.delete().catch(err => err);
+                module.exports.del(message, 0);
+            } else return module.exports.del(message, 0);
         } else if (newPage == pages) {
             const reacted = await module.exports.promptMessage(message, author, 15, ["⬅️", "🗑️"])
             if (reacted == "⬅️") {
@@ -227,8 +230,158 @@ module.exports = {
                     module.exports.pageTurn(message, author, array, embed, parameter, size, newPage);
                 });
             } else if (reacted == "🗑️") {
-                return message.delete().catch(err => err);
-            } else return message.delete().catch(err => err)
+                return module.exports.del(message, 0);
+            } else return module.exports.del(message, 0);
         }
     },
+    checkMuteRole: async function (message) {
+        let muterole = message.guild.roles.cache.find(r => r.name === "Muted")
+        if (!muterole) {
+            try {
+                muterole = await message.guild.roles.create({
+                    data: { name: "Muted", color: "#778899", permissions: [] }
+                })
+                message.guild.channels.cache.forEach(async (channel, id) => {
+                    await channel.updateOverwrite(muterole, {
+                        SEND_MESSAGES: false,
+                        ADD_REACTIONS: false,
+                        SEND_TTS_MESSAGES: false,
+                        ATTACH_FILES: false,
+                        SPEAK: false,
+                        CONNECT: false
+                    })
+                })
+            } catch (e) {
+                console.log(e.stack);
+            }
+        }
+        return muterole;
+    },
+    checkSpam: function (message) {
+        if (message.member.hasPermission("ADMINISTRATOR") ||
+            message.member.hasPermission("KICK_MEMBERS") ||
+            message.member.hasPermission("BAN_MEMBERS")) {
+            return;
+        } else {
+            if (spamUsers.some(user => user.id === message.author.id)) {
+                spamUsers.find(user => user.id === message.author.id).offences += 1;
+            } else {
+                spamUsers.push({ id: message.author.id, offences: 1 })
+            }
+
+            cooldown.add(message.author.id);
+
+            setTimeout(() => {
+                cooldown.delete(message.author.id);
+            }, 2500);
+
+            setTimeout(() => {
+                if (spamUsers.find(user => user.id === message.author.id))
+                    spamUsers.splice(spamUsers.findIndex(user => user.id === message.author.id), 1)
+            }, 5000)
+
+            if (cooldown.has(message.author.id) && spamUsers.find(user => user.id === message.author.id).offences >= 3) {
+                module.exports.warn(message, spamOffencers, "spam")
+            }
+        }
+    },
+    bulkDeleteCount: async function (message) {
+        let messagesDeleted = await
+            message.channel.messages.fetch({ limit: spamUsers.find(user => user.id === message.author.id).offences }).then(messages => {
+                const spamMessages = messages.filter(msg => msg.member);
+                message.channel.bulkDelete(spamMessages);
+                return spamMessages.array().length;
+            }).catch(err => {
+                return undefined
+            })
+        return messagesDeleted;
+    },
+    warn: async function (message, userArray, type) {
+        const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
+
+        const embed = new MessageEmbed()
+            .setColor("#ff0000")
+            .setTitle("User Warned")
+            .setThumbnail(message.guild.me.user.displayAvatarURL())
+            .setFooter(message.guild.me.displayName, message.guild.me.user.displayAvatarURL())
+            .setTimestamp()
+            .setDescription(stripIndents`
+            **Member warned for spam:** ${message.member} (${message.author.id})
+            **Warned by:** ${message.guild.me}`)
+
+        if (type === "spam") {
+            let messagesDeleted = await module.exports.bulkDeleteCount(message);
+            embed.addField("Messages Deleted", messagesDeleted);
+        } else if (type === "profanity") embed.addField("Message Deleted", message.content);
+
+        if (userArray.some(user => user.id === message.author.id)) {
+            userArray.find(user => user.id === message.author.id).offences += 1;
+            if (userArray.some(user => user.id == message.author.id && user.offences < 3)) {
+                logChannel.send(embed);
+                return message.reply(`You will be muted for ${type} if this continues.`).then(m => module.exports.del(m, 7500));
+            } else if (userArray.some(user => user.id == message.author.id && user.offences == 3)) {
+                module.exports.punish(message, userArray, type);
+            } else if (userArray.some(user => user.id == message.author.id && user.offences == 4)) {
+                logChannel.send(embed);
+                return message.reply(`You will be muted for ${type} if this continues.`).then(m => module.exports.del(m, 7500));
+            } else if (userArray.some(user => user.id == message.author.id && user.offences == 5)) {
+                module.exports.punish(message, userArray, type);
+            }
+        } else {
+            userArray.push({ id: message.author.id, offences: 1 });
+            logChannel.send(embed);
+            return message.reply(`Your messages were deleted for ${type}.`).then(m => module.exports.del(m, 7500));
+        }
+    },
+    punish: async function (message, userArray, reason) {
+        const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
+
+        const embed = new MessageEmbed()
+            .setColor("#ff0000")
+            .setTitle("User Muted")
+            .setThumbnail(message.guild.me.user.displayAvatarURL())
+            .setFooter(message.guild.me.displayName, message.guild.me.user.displayAvatarURL())
+            .setTimestamp()
+            .setDescription(stripIndents`
+            **Muted member:** ${message.member} (${message.author.id})
+            **Muted by:** ${message.guild.me}
+            **Reason:** ${reason}`)
+
+        if (userArray.some(user => user.id == message.author.id && user.offences == 3)) {
+            let muterole = await module.exports.checkMuteRole(message);
+            message.member.roles.add(muterole.id).then(() => {
+                message.member.send(`Hello, you have been **muted** **for 5 minutes** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
+                message.reply(`${message.member.user.username} was successfully muted **5 minutes** for **${reason}**.`).then(m => module.exports.del(m, 7500));
+                embed.addField("Mute Time: ", "5 minutes");
+                logChannel.send(embed);
+            }).catch(err => {
+                if (err) return message.reply(`There was an error attempting to mute ${message.member} ${err}`).then(m => module.exports.del(m, 7500));
+            }).then(setTimeout(() => {
+                message.member.roles.remove(muterole.id).then(() => {
+                    message.member.send(`Hello, you have now been **unmuted** in ${message.guild.name} `).catch(err => err); //in case DM's are closed
+                    message.reply(`${message.member.user.username} was successfully unmuted.`).then(m => module.exports.del(m, 7500));
+                }).catch(err => {
+                    if (err) return message.reply(`There was an error attempting to unmute ${message.member} ${err}`).then(m => module.exports.del(m, 7500));
+                });
+            }, 5000)); //5 Minute punishment 300000
+        } else if (userArray.some(user => user.id == message.author.id && user.offences == 5)) {
+            let muterole = await module.exports.checkMuteRole(message);
+            message.member.roles.add(muterole.id).then(() => {
+                message.member.send(`Hello, you have been **muted** **for 10 minutes** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
+                message.reply(`${message.member.user.username} was successfully muted **10 minutes** for **${reason}**.`).then(m => module.exports.del(m, 7500));
+                embed.addField("Mute Time: ", "10 minutes");
+                logChannel.send(embed);
+            }).catch(err => {
+                if (err) return message.reply(`There was an error attempting to mute ${message.member} ${err}`).then(m => module.exports.del(m, 7500));
+            }).then(setTimeout(() => {
+                userArray.splice(userArray.findIndex(user => user.id === message.author.id), 1)
+                message.member.roles.remove(muterole.id).then(() => {
+                    message.member.send(`Hello, you have now been **unmuted** in ${message.guild.name} `).catch(err => err); //in case DM's are closed
+                    message.reply(`${message.member.user.username} was successfully unmuted.`).then(m => module.exports.del(m, 7500));
+                }).catch(err => {
+                    if (err) return message.reply(`There was an error attempting to unmute ${message.member} ${err}`).then(m => module.exports.del(m, 7500));
+                });
+            }, 15000)); //5 Minute punishment 600000
+        }
+    }
 }

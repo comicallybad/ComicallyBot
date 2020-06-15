@@ -1,4 +1,4 @@
-const { del, getCommandStatus, hasPermissions } = require("../../functions.js");
+const { del, getCommandStatus, hasPermissions, checkSpam } = require("../../functions.js");
 const { messageXP, checkBadWords } = require("../../dbFunctions.js");
 let cooldown = new Set();
 let cdseconds = 5;
@@ -9,6 +9,7 @@ module.exports = async (client, message) => {
     if (!message.member) return;
 
     checkBadWords(message);
+    checkSpam(message);
 
     if (!cooldown.has(message.author.id))
         messageXP(message, client);

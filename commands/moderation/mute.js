@@ -1,4 +1,4 @@
-const { del, promptMessage } = require("../../functions.js");
+const { del, promptMessage, checkMuteRole } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
@@ -24,30 +24,7 @@ module.exports = {
         if (!reason) reason = "No reason given"
 
         //define mute role and if the mute role doesnt exist then create one
-        let muterole = message.guild.roles.cache.find(r => r.name === "Muted")
-        if (!muterole) {
-            try {
-                muterole = await message.guild.roles.create({
-                    data: {
-                        name: "Muted",
-                        color: "#778899",
-                        permissions: []
-                    }
-                })
-                message.guild.channels.cache.forEach(async (channel, id) => {
-                    await channel.updateOverwrite(muterole, {
-                        SEND_MESSAGES: false,
-                        ADD_REACTIONS: false,
-                        SEND_TTS_MESSAGES: false,
-                        ATTACH_FILES: false,
-                        SPEAK: false,
-                        CONNECT: false
-                    })
-                })
-            } catch (e) {
-                console.log(e.stack);
-            }
-        }
+        let muterole = await checkMuteRole(message);
 
         const embed = new MessageEmbed()
             .setColor("#ff0000")
