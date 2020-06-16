@@ -289,7 +289,7 @@ module.exports = {
         let messagesDeleted = await
             message.channel.messages.fetch({ limit: spamUsers.find(user => user.id === message.author.id).offences }).then(messages => {
                 const spamMessages = messages.filter(msg => msg.member);
-                message.channel.bulkDelete(spamMessages);
+                message.channel.bulkDelete(spamMessages).catch(err => err);
                 return spamMessages.array().length;
             }).catch(err => {
                 return undefined
