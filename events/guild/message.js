@@ -1,5 +1,5 @@
-const { del, getCommandStatus, hasPermissions, checkSpam } = require("../../functions.js");
-const { messageXP, checkBadWords } = require("../../dbFunctions.js");
+const { del, getCommandStatus, hasPermissions, } = require("../../functions.js");
+const { messageXP, checkBadWords, checkSpam } = require("../../dbFunctions.js");
 let cooldown = new Set();
 let cdseconds = 5;
 

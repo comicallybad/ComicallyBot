@@ -12,6 +12,9 @@ const dbSchema = mongoose.Schema({
     xpRoles: [Object],
     reactionRoles: [Object],
     reactionCommands: [Object],
+    xpSystem: Boolean,
+    profanityFilter: Boolean,
+    antiSpam: Boolean,
     badWordList: [String],
 });
 

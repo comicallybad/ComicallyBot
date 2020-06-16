@@ -1,7 +1,6 @@
 const db = require('./schemas/db.js');
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
-let cooldown = new Set();
 
 module.exports = {
     del: async function (message, timeout) {
@@ -257,39 +256,13 @@ module.exports = {
         }
         return muterole;
     },
-    checkSpam: function (message) {
-        if (message.member.hasPermission("ADMINISTRATOR") ||
-            message.member.hasPermission("KICK_MEMBERS") ||
-            message.member.hasPermission("BAN_MEMBERS")) {
-            return;
-        } else {
-            if (spamUsers.some(user => user.id === message.author.id)) {
-                spamUsers.find(user => user.id === message.author.id).offences += 1;
-            } else {
-                spamUsers.push({ id: message.author.id, offences: 1 })
-            }
-
-            cooldown.add(message.author.id);
-
-            setTimeout(() => {
-                cooldown.delete(message.author.id);
-            }, 2500);
-
-            setTimeout(() => {
-                if (spamUsers.find(user => user.id === message.author.id))
-                    spamUsers.splice(spamUsers.findIndex(user => user.id === message.author.id), 1)
-            }, 5000)
-
-            if (cooldown.has(message.author.id) && spamUsers.find(user => user.id === message.author.id).offences >= 3) {
-                module.exports.warn(message, spamOffencers, "spam")
-            }
-        }
-    },
     bulkDeleteCount: async function (message) {
         let messagesDeleted = await
             message.channel.messages.fetch({ limit: spamUsers.find(user => user.id === message.author.id).offences }).then(messages => {
                 const spamMessages = messages.filter(msg => msg.member);
-                message.channel.bulkDelete(spamMessages).catch(err => err);
+                message.channel.bulkDelete(spamMessages).catch(err =>
+                    message.channel.send("I am missing permissions to `MANAGE_MESSAGES` to delete spam messages.")).then(m => modele.exports.del(m, 7500))
+                    .catch(err => err);
                 return spamMessages.array().length;
             }).catch(err => {
                 return undefined
@@ -384,6 +357,9 @@ module.exports = {
                     });
                 }, 600000)); //5 Minute punishment 600000
             }
+        } else {
+            message.channel.send("I am missing permissions to `MANAGE_ROLES` to mute users for spam/profanity.").then(m => module.exports.del(m, 7500)
+                .catch(err => err));
         }
     }
 }
