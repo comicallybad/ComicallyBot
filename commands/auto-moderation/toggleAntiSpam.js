@@ -1,5 +1,7 @@
 const { del } = require("../../functions");
 const db = require("../../schemas/db.js");
+const { MessageEmbed } = require("discord.js");
+const { stripIndents } = require("common-tags");
 
 module.exports = {
     name: "toggleantispam",
@@ -23,8 +25,9 @@ module.exports = {
             return message.reply("Please provide a true/false or enable/disable.").then(m => del(m, 7500));
         }
 
-        let bool;
+        const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
         let guildID = message.guild.id;
+        let bool;
 
         if (args[0] === "true" || args[0] === "enable") {
             bool = true;
@@ -32,10 +35,21 @@ module.exports = {
             bool = false;
         }
 
+        const embed = new MessageEmbed()
+            .setColor("#0efefe")
+            .setTitle("Anti-Spam Toggled")
+            .setThumbnail(message.author.displayAvatarURL())
+            .setFooter(message.member.displayName, message.author.displayAvatarURL())
+            .setTimestamp()
+            .setDescription(stripIndents`
+            **Anti-Spam toggled by:** ${message.member.user}
+            **Anti-Spam toggled to:** ${bool}`);
+
         db.updateOne({ guildID: guildID }, {
             $set: { antiSpam: bool }
         }).catch(err => console.log(err))
 
-        return message.reply(`The anti-spam system has been toggled to ${args[0]}.`)
+        logChannel.send(embed);
+        return message.reply(`The anti-spam system has been toggled to ${args[0]}.`).then(m => del(m, 7500));
     }
 }
