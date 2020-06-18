@@ -1,6 +1,6 @@
 const db = require("../../schemas/db.js");
 const { del } = require('../../functions.js');
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, GuildMember } = require("discord.js");
 
 module.exports = async (client, message, user) => {
     if (user.id !== client.user.id) {
@@ -41,17 +41,19 @@ function checkReactionRole(message, user) {
         if (exists) {
             const roles = exists.reactionRoles.filter(rr => rr.messageID == messageID && rr.reaction == reaction);
             roles.forEach(role => {
-                guildUser.roles.add(role.roleID).then(() => {
-                    embed.setDescription(`${user} ${user.tag} **${role.roleName}**(${role.roleID})`);
-                    if (logChannel) logChannel.send(embed);
-                    guildUser.send(`Hello, you have been added to the **${role.roleName}** role in **${guildUser.guild.name}**`).catch(err => {
-                        message.message.channel.send(`${user} was added to the **${role.roleName}** role`).then(m => del(m, 7500))
+                if (!guildUser.roles.cache.get(role.roleID)) {
+                    guildUser.roles.add(role.roleID).then(() => {
+                        embed.setDescription(`${user} ${user.tag} **${role.roleName}**(${role.roleID})`);
+                        if (logChannel) logChannel.send(embed);
+                        guildUser.send(`Hello, you have been added to the **${role.roleName}** role in **${guildUser.guild.name}**`).catch(err => {
+                            message.message.channel.send(`${user} was added to the **${role.roleName}** role`).then(m => del(m, 7500))
+                        });
+                    }).catch(err => {
+                        if (err) guildUser.send(`Hello, there was an issue assigning you the **${role.roleName}** in **${guildUser.guild.name}**, possibly due to role hierarchy: \`${err}\``).catch(e => {
+                            message.message.channel.send(`${user} there was an issue assigning you the **${role.roleName}**`).then(m => del(m, 7500));
+                        });
                     });
-                }).catch(err => {
-                    if (err) guildUser.send(`Hello, there was an issue assigning you the **${role.roleName}** in **${guildUser.guild.name}**, possibly due to role hierarchy: \`${err}\``).catch(e => {
-                        message.message.channel.send(`${user} there was an issue assigning you the **${role.roleName}**`).then(m => del(m, 7500));
-                    });
-                });
+                }
             });
         }
     });
