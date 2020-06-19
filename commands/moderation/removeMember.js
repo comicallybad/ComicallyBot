@@ -42,7 +42,7 @@ module.exports = {
                             .setTimestamp()
                             .setDescription(stripIndents`
                             **Member Removed by:** ${message.member.user}
-                            **Role/User ID Removed:** (${roleID}`);
+                            **Role/User ID Removed:** (${roleID})`);
 
                         logChannel.send(embed);
 
