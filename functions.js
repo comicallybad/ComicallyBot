@@ -6,13 +6,11 @@ module.exports = {
     del: async function (message, timeout) {
         if (message) { //Fix in case bad message
             if (message.id) { //Fix cannot read ID 
-                if (message.deletable) {
-                    setTimeout(function () {
-                        if (!message.reactions.cache.get('🛑')) {  //messages can now stop from being deleted
-                            message.delete({ timeout: 0 }).catch(err => err) //This gets rid of the annoying "Unknown Message" error.
-                        }
-                    }, timeout);
-                }
+                setTimeout(function () {
+                    if (message.deletable && !message.reactions.cache.get('🛑')) {  //messages can now stop from being deleted
+                        message.delete({ timeout: 0 }).catch(err => err) //This gets rid of the annoying "Unknown Message" error.
+                    }
+                }, timeout);
             } else return;
         } else return;
     },
@@ -22,61 +20,39 @@ module.exports = {
         let roleIDs = message.member.roles.cache.map(roles => roles.id);
         let userID = message.member.id;
 
-
-        let hasPermissions = new Promise((resolve, reject) => {
-            if (commandType == "everyone") resolve(true)
-            else if (message.member.hasPermission("ADMINISTRATOR")
-                || message.author.id == process.env.USERID) resolve(true)
+        if (commandType == "everyone") return true;
+        else if (message.member.hasPermission("ADMINISTRATOR")
+            || message.author.id == process.env.USERID) return true;
+        else {
+            let permissions = await db.findOne({ guildID: guildID })
+            if (!permissions) return false
             else {
-                db.findOne({ guildID: guildID }, (err, exists) => {
-                    if (err) console.log(err)
-                    if (!exists) {
-                    } else {
-                        let modRolesIDs = exists.modRoles.map(roles => roles.roleID);
-                        let memberRolesIDs = exists.memberRoles.map(roles => roles.roleID)
+                let modRolesIDs = permissions.modRoles.map(role => role.roleID);
+                let memberRolesIDs = permissions.memberRoles.map(role => role.roleID)
 
-                        if (commandType === "moderator" && roleIDs.forEach((element) => {
-                            if (modRolesIDs.includes(element) || modRolesIDs.includes(userID)) resolve(true)
-                        })) {
-                            roleIDs.forEach((element) => {
-                                if (memberRolesIDs.includes(element)) resolve(true);
-                            });
-                        } else if (commandType === "member" && roleIDs.forEach((element) => {
-                            if (memberRolesIDs.includes(element) || memberRolesIDs.includes(userID)
-                                || modRolesIDs.includes(element) || modRolesIDs.includes(userID)) resolve(true)
-                        })) {
-                            roleIDs.forEach((element) => {
-                                if (memberRolesIDs.includes(element)) resolve(true);
-                            });
-                        } else resolve(false);
-                    }
-                })
+                if (commandType === "moderator") {
+                    if (modRolesIDs.includes(userID)) return true;
+                    else if (modRolesIDs.some(id => roleIDs.includes(id))) return true;
+                    else return false;
+                } else if (commandType === "member") {
+                    if (memberRolesIDs.includes(userID)) return true;
+                    else if (memberRolesIDs.some(id => roleIDs.includes(id))) return true;
+                    else return false;
+                }
             }
-        });
-
-        let bool = await hasPermissions;
-        return bool;
+        }
     },
 
     getCommandStatus: async function (message, command) {
         let guildID = message.guild.id;
 
-        let commandStatus = new Promise((resolve, reject) => {
+        let commandStatus = await
             db.findOne({
                 guildID: guildID,
                 commands: { $elemMatch: { name: command } }
-            }, (err, exists) => {
-                if (err) console.log(err)
-                if (!exists) return message.reply("Setting up database try again momentarily...").then(m => module.exports.del(m, 7500));
-                else {
-                    if (exists.commands[exists.commands.map(cmd => cmd.name).indexOf(command)].status === true) resolve(true);
-                    else resolve(false)
-                }
-            }).catch(err => console.log(err))
-        });
-
-        let status = await commandStatus;
-        return status;
+            })
+        if (commandStatus.commands[commandStatus.commands.map(cmd => cmd.name).indexOf(command)].status === true) return true;
+        else return false;
     },
 
     findID: function (message, input, type) {
@@ -99,24 +75,6 @@ module.exports = {
             else if (roleIDs.includes(mention)) return mention;
             else return undefined;
         }
-    },
-
-    getResponseChannel: async function (message, command) {
-        let guildID = message.guild.id;
-
-        let responseChannel = new Promise((resolve, reject) => {
-            db.findOne({
-                guildID: guildID,
-                channels: { $elemMatch: { command: command } }
-            }, (err, exists) => {
-                if (err) console.log(err)
-                if (!exists) return message.reply("Try setting channel first").then(m => module.exports.del(m, 7500));
-                else resolve(exists.channels[exists.channels.map(cmd => cmd.command).indexOf(command)].channelID)
-            }).catch(err => console.log(err))
-        });
-
-        let status = await responseChannel;
-        return status;
     },
 
     getMember: function (message, toFind = '') {
@@ -233,6 +191,7 @@ module.exports = {
             } else return module.exports.del(message, 0);
         }
     },
+
     checkMuteRole: async function (message) {
         let muterole = message.guild.roles.cache.find(r => r.name === "Muted")
         if (!muterole) {
@@ -256,6 +215,7 @@ module.exports = {
         }
         return muterole;
     },
+
     bulkDeleteCount: async function (message) {
         let messagesDeleted = await
             message.channel.messages.fetch({ limit: spamUsers.find(user => user.id === message.author.id).offences }).then(messages => {
@@ -269,6 +229,7 @@ module.exports = {
             })
         return messagesDeleted;
     },
+
     warn: async function (message, userArray, type) {
         const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
 
@@ -306,6 +267,7 @@ module.exports = {
             return message.reply(`Your messages were deleted for ${type}.`).then(m => module.exports.del(m, 7500));
         }
     },
+
     punish: async function (message, userArray, reason) {
         const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
 

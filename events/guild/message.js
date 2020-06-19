@@ -6,7 +6,7 @@ let cdseconds = 5;
 module.exports = async (client, message) => {
     if (message.author.bot) return;
     if (!message.guild) return;
-    if (!message.member) return;
+    if (!message.member) message.member = await message.guild.fetchMember(message).catch(err => err);
 
     checkBadWords(message);
     checkSpam(message);
@@ -24,7 +24,6 @@ module.exports = async (client, message) => {
     //This was needed to prevent mulitple xp database updates conflicting, resulting in bad behavior. So non command messages will give XP
     if (!message.content.startsWith(prefix) && !message.content.replace(/\D/g, '').startsWith(`${client.user.id}`)) return
 
-    if (!message.member) message.member = await message.guild.fetchMember(message).catch(err => err);
 
     const args = message.content.startsWith(prefix) ? message.content.slice(prefix.length).trim().split(/ +/g) : message.content.replace(/[^\s]*/, '').trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
@@ -46,19 +45,16 @@ module.exports = async (client, message) => {
 
         del(message, 0);
 
+        let perms = await hasPermissions(message, command.permissions);
+        let cmdStatus = await getCommandStatus(message, command.name);
+
         if (command.category !== 'command' && command.category !== "owner" && command.category !== "support") {
-            getCommandStatus(message, command.name).then(function (res) {
-                if (!res) message.reply("Command disabled").then(m => del(m, 7500));
-                if (res) hasPermissions(message, command.permissions).then(async function (res) {
-                    if (!res) message.reply("You do not have permissions for this command.").then(m => del(m, 7500));
-                    if (res) command.run(client, message, args);
-                });
-            });
+            if (!cmdStatus) return message.reply("This command is currently disabled.").then(m => del(m, 7500));
+            if (!perms) return message.reply("You do not have permissions for this command.").then(m => del(m, 7500));
+            else return command.run(client, message, args);
         } else {
-            hasPermissions(message, command.permissions).then(async function (res) {
-                if (!res) message.reply("You do not have permissions for this command.").then(m => del(m, 7500));
-                if (res) command.run(client, message, args);
-            });
+            if (!perms) return message.reply("You do not have permissions for this command.").then(m => del(m, 7500));
+            else return command.run(client, message, args);
         }
     }
 }
