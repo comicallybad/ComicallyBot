@@ -9,6 +9,7 @@
   "author": "ComicallyBad",
   "license": "ISC",
   "dependencies": {
+    "@mikemcbride/dad-jokes": "^1.0.0",
     "ascii-table": "0.0.9",
     "beautify": "0.0.8",
     "common-tags": "^1.8.0",
