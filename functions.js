@@ -127,7 +127,10 @@ module.exports = {
 
         return message
             .awaitReactions(filter, { max: max, time: time })
-            .then(collected => collected.first().users.cache.map(usr => usr).filter(usr => !usr.bot))
+            .then(collected => {
+                if (collected.first()) return collected.first().users.cache.map(usr => usr).filter(usr => !usr.bot);
+                else return [];
+            });
     },
 
     pageList: async function (message, author, array, embed, parameter) {
