@@ -11,7 +11,7 @@ module.exports = {
     run: (client, message, args) => {
         let embed = new MessageEmbed()
             .setColor("#0efefe")
-            .setTitle("A coin was flipped..")
+            .setTitle("Here's a good one...")
             .setTimestamp()
             .setDescription(`${dadJokes.random()}`);
 
