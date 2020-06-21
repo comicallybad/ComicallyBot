@@ -191,17 +191,20 @@ module.exports = {
             if (exists) {
                 roles = exists.xpRoles.filter(role => role.level == level)
                 roles.forEach(role => {
-                    embed.setDescription(`${user} ${user.user.tag} joined the **${role.roleName}**(${role.roleID})`);
-                    if (logChannel) logChannel.send(embed);
-                    user.roles.add(role.roleID).then(() => {
-                        user.send(`Hello, you have been given the **${role.roleName}** role in ${message.guild.name} for: **Ranking up to level ${level}!**`).catch(err => err);
-                    }).catch(err => {
-                        if (err) return message.reply(`There was an error assigning XP level role. ${err}`).then(m => del(m, 7500));
-                    });
+                    if (!guildUser.roles.cache.get(role.roleID)) {
+                        embed.setDescription(`${user} ${user.user.tag} joined the **${role.roleName}**(${role.roleID})`);
+                        if (logChannel) logChannel.send(embed);
+                        user.roles.add(role.roleID).then(() => {
+                            user.send(`Hello, you have been given the **${role.roleName}** role in ${message.guild.name} for: **Ranking up to level ${level}!**`).catch(err => err);
+                        }).catch(err => {
+                            if (err) return message.reply(`There was an error assigning XP level role. ${err}`).then(m => del(m, 7500));
+                        });
+                    }
                 });
             } else return;
         })
     },
+
     checkBadWords: async function (message) {
         let guildID = message.guild.id;
         let words = message.content.replace(/ /g, '').toLowerCase();
@@ -226,6 +229,7 @@ module.exports = {
             });
         }
     },
+
     checkSpam: function (message) {
         let guildID = message.guild.id;
         db.findOne({ guildID: guildID }, (err, exists) => {
