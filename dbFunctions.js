@@ -191,7 +191,7 @@ module.exports = {
             if (exists) {
                 roles = exists.xpRoles.filter(role => role.level == level)
                 roles.forEach(role => {
-                    if (!guildUser.roles.cache.get(role.roleID)) {
+                    if (!member.roles.cache.get(role.roleID)) {
                         embed.setDescription(`${user} ${user.user.tag} joined the **${role.roleName}**(${role.roleID})`);
                         if (logChannel) logChannel.send(embed);
                         user.roles.add(role.roleID).then(() => {
