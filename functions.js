@@ -286,7 +286,7 @@ module.exports = {
             **Reason:** ${reason}`)
 
         if (message.guild.me.hasPermission("MANAGE_ROLES")) {
-            if (userArray.some(user => user.id == message.author.id && user.offences == 7)) {
+            if (userArray.some(user => user.id == message.author.id && user.offences == 5)) {
                 let muterole = await module.exports.checkMuteRole(message);
                 message.member.roles.add(muterole.id).then(() => {
                     message.member.send(`Hello, you have been **muted** **for 5 minutes** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
