@@ -286,7 +286,7 @@ module.exports = {
             **Reason:** ${reason}`)
 
         if (message.guild.me.hasPermission("MANAGE_ROLES")) {
-            if (userArray.some(user => user.id == message.author.id && user.offences == 3)) {
+            if (userArray.some(user => user.id == message.author.id && user.offences == 7)) {
                 let muterole = await module.exports.checkMuteRole(message);
                 message.member.roles.add(muterole.id).then(() => {
                     message.member.send(`Hello, you have been **muted** **for 5 minutes** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
@@ -303,7 +303,7 @@ module.exports = {
                         if (err) return message.reply(`There was an error attempting to unmute ${message.member} ${err}`).then(m => module.exports.del(m, 7500));
                     });
                 }, 300000)); //5 Minute punishment 300000
-            } else if (userArray.some(user => user.id == message.author.id && user.offences == 5)) {
+            } else if (userArray.some(user => user.id == message.author.id && user.offences == 7)) {
                 let muterole = await module.exports.checkMuteRole(message);
                 message.member.roles.add(muterole.id).then(() => {
                     message.member.send(`Hello, you have been **muted** **for 10 minutes** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
