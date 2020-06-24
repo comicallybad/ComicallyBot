@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const db = require('./schemas/db.js');
 const xp = require('./schemas/xp.js');
-const { del, warn } = require("./functions.js");
+const { del, warn, hasPermissions } = require("./functions.js");
 const { MessageEmbed } = require("discord.js");
 let cooldown = new Set();
 
@@ -209,15 +209,13 @@ module.exports = {
         let guildID = message.guild.id;
         let words = message.content.replace(/ /g, '').toLowerCase();
 
-        if (message.member.hasPermission("ADMINISTRATOR") ||
-            message.member.hasPermission("KICK_MEMBERS") ||
-            message.member.hasPermission("BAN_MEMBERS")) {
-            return;
-        } else {
-            db.findOne({ guildID: guildID }, (err, exists) => {
-                if (err) console.log(err)
-                if (exists.profanityFilter) {
-                    if (exists.badWordList) {
+        db.findOne({ guildID: guildID }, async (err, exists) => {
+            if (err) console.log(err)
+            if (exists.profanityFilter) {
+                if (exists.badWordList) {
+                    let isMod = await hasPermissions(message, "moderator")
+                    if (isMod) return;
+                    else {
                         let badWordList = exists.badWordList;
                         let bool = badWordList.filter(word => words.includes(word.toLowerCase()));
                         if (bool.length > 0) {
@@ -226,20 +224,18 @@ module.exports = {
                         } else return;
                     }
                 }
-            });
-        }
+            }
+        });
     },
 
     checkSpam: function (message) {
         let guildID = message.guild.id;
-        db.findOne({ guildID: guildID }, (err, exists) => {
+        db.findOne({ guildID: guildID }, async (err, exists) => {
             if (err) console.log(err)
             if (exists.antiSpam) {
-                if (message.member.hasPermission("ADMINISTRATOR") ||
-                    message.member.hasPermission("KICK_MEMBERS") ||
-                    message.member.hasPermission("BAN_MEMBERS")) {
-                    return;
-                } else {
+                let isMod = await hasPermissions(message, "moderator")
+                if (isMod) return;
+                else {
                     if (spamUsers.some(user => user.id === message.author.id)) {
                         spamUsers.find(user => user.id === message.author.id).offences += 1;
                     } else {
