@@ -253,7 +253,7 @@ module.exports = {
                             spamUsers.splice(spamUsers.findIndex(user => user.id === message.author.id), 1)
                     }, 5000)
 
-                    if (cooldown.has(message.author.id) && spamUsers.find(user => user.id === message.author.id).offences >= 3) {
+                    if (cooldown.has(message.author.id) && spamUsers.find(user => user.id === message.author.id).offences >= 5) {
                         warn(message, spamOffencers, "spam")
                     }
                 }
