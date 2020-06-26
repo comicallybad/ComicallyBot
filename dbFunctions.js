@@ -105,7 +105,7 @@ module.exports = {
                                 }
                                 if (exists.level == 0) rankupXP = 10 - exists.xp;
                                 else rankupXP = (10 * Math.pow(exists.level + 1, 3) / 5) - exists.xp;
-                                if (rankupXP >= 0) rankChannel.send(`${user}You leveled up! You are now level: ${exists.level}`).catch(err => err);
+                                if (rankupXP >= 0) rankChannel.send(`${user} You leveled up! You are now level: ${exists.level}`).catch(err => err);
                             }
                             exists.save().catch(err => console.log(err))
                         }
@@ -150,7 +150,7 @@ module.exports = {
                         }
                         if (exists.level == 0) rankupXP = 10 - exists.xp;
                         else rankupXP = (10 * Math.pow(exists.level + 1, 3) / 5) - exists.xp;
-                        if (rankupXP >= 0) rankChannel.send(`${user}You leveled up! You are now level: ${exists.level}`).catch(err => err);
+                        if (rankupXP >= 0) rankChannel.send(`${user} You leveled up! You are now level: ${exists.level}`).catch(err => err);
                     }
                     exists.save().catch(err => console.log(err));
                 }).catch(err => console.log(err));
@@ -168,7 +168,7 @@ module.exports = {
                     }
                     if (exists.level == 0) rankupXP = 10 - exists.xp;
                     else rankupXP = (10 * Math.pow(exists.level + 1, 3) / 5) - exists.xp;
-                    if (rankupXP >= 0) rankChannel.send(`${user}You leveled up! You are now level: ${exists.level}`).catch(err => err);
+                    if (rankupXP >= 0) rankChannel.send(`${user} You leveled up! You are now level: ${exists.level}`).catch(err => err);
                 }
                 exists.save().catch(err => console.log(err))
             }
