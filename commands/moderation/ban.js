@@ -14,7 +14,7 @@ module.exports = {
         if (!message.guild.me.hasPermission("BAN_MEMBERS"))
             return message.reply("I don't have permission to ban members!").then(m => del(m, 7500));
 
-        let toBan = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
+        let toBan = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || client.users.cache.get(args[0]);
         if (!toBan) return message.reply("Please supply a user to be banned!").then(m => del(m, 7500));
 
         if (toBan.id === message.author.id)
