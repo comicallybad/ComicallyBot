@@ -243,7 +243,7 @@ module.exports = {
             .setFooter(message.guild.me.displayName, message.guild.me.user.displayAvatarURL())
             .setTimestamp()
             .setDescription(stripIndents`
-            **Member warned for spam:** ${message.member} (${message.author.id})
+            **Member warned for ${type}:** ${message.member} (${message.author.id})
             **Warned by:** ${message.guild.me}`)
 
         if (type === "spam") {
