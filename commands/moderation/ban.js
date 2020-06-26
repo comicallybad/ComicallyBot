@@ -14,14 +14,13 @@ module.exports = {
         if (!message.guild.me.hasPermission("BAN_MEMBERS"))
             return message.reply("I don't have permission to ban members!").then(m => del(m, 7500));
 
-        let toBan = await message.mentions.members.first() || client.users.fetch(args[0]);
+        let toBan = message.mentions.users.first() || await client.users.fetch(args[0]);
         if (!toBan) return message.reply("Please supply a user to be banned!").then(m => del(m, 7500));
+
+        console.log(toBan)
 
         if (toBan.id === message.author.id)
             return message.reply("You can't ban yourself...").then(m => del(m, 7500));
-
-        if (!toBan.bannable)
-            return message.reply("I can't ban that person due to role hierarchy, I suppose.").then(m => del(m, 7500));
 
         let reason = args.slice(1).join(" ")
         if (!reason) reason = "No reason given!"
@@ -29,7 +28,7 @@ module.exports = {
         const embed = new MessageEmbed()
             .setColor("#ff0000")
             .setTitle("User Banned")
-            .setThumbnail(toBan.user.displayAvatarURL())
+            .setThumbnail(toBan.displayAvatarURL())
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()
             .setDescription(stripIndents`
@@ -48,9 +47,9 @@ module.exports = {
             if (emoji === "✅") {
                 del(msg, 0);
 
-                toBan.ban(reason).then(() => {
+                message.guild.members.ban(toBan.id, reason).then(() => {
                     toBan.send(`Hello, you have been **banned** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
-                    message.reply(`${toBan.user.username} (${toBan.user.id}) was successfully banned.`).then(m => del(m, 7500));
+                    message.reply(`${toBan.username} (${toBan.id}) was successfully banned.`).then(m => del(m, 7500));
                 }).catch(err => {
                     if (err) return message.reply(`There was an error attempting to ban ${toBan} ${err}`).then(m => del(m, 7500));
                 });
