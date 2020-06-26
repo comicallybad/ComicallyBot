@@ -17,8 +17,6 @@ module.exports = {
         let toBan = message.mentions.users.first() || await client.users.fetch(args[0]);
         if (!toBan) return message.reply("Please supply a user to be banned!").then(m => del(m, 7500));
 
-        console.log(toBan)
-
         if (toBan.id === message.author.id)
             return message.reply("You can't ban yourself...").then(m => del(m, 7500));
 
