@@ -40,6 +40,14 @@ module.exports = {
 
         let array = members.map(member => `${member.user.username} (${member.user.id})`);
 
-        return pageList(m, message.author, array, embed, "Role Member:");
+        if (array.length <= 10) {
+            array.forEach((user, index) => {
+                embed.addField(`Role Member ${index}`, `${user}`);
+            });
+            return message.channel.send(embed).then(m => del(m, 30000));
+        }
+        else {
+            return pageList(m, message.author, array, embed, "Role Member:");
+        }
     }
 }
