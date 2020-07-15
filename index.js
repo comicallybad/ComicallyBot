@@ -4,7 +4,7 @@ const { config } = require("dotenv");
 const client = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 
 config({ path: __dirname + "/.env" });
-global.prefix = "_";
+global.prefix = "=";
 global.voiceChannels = [], global.profanityUsers = [];
 global.spamUsers = [], global.spamOffencers = [];
 

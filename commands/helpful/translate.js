@@ -13,7 +13,7 @@ module.exports = {
             return message.reply("Please provide something to translate.").then(m => del(m, 7500));
         else {
             translate(`${args.join(' ')}`, { to: 'en' }).then(res => {
-                return message.reply(`**Translation:** ${res.text}. **Translated from:** \`${res.from.language.iso}\``);
+                return message.reply(`**Translation:** ${res.text} **Translated from:** \`${res.from.language.iso}\``);
             }).catch(err => {
                 return message.reply(`There was an error translating: ${err}`);
             });
