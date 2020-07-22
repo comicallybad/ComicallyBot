@@ -63,7 +63,7 @@ function getSpecific(client, message, input) {
 
     if (cmd) {
         // Add all cmd info to the embed
-        if (cmd.name) info = `**Command name**: ${cmd.name}`;
+        if (cmd.name) info = `**Command name**: \`${cmd.name}\``;
         if (cmd.aliases) info += `\n**Aliases**: ${cmd.aliases.map(a => `\`${a}\``).join(", ")}`;
         if (cmd.description) info += `\n**Description**: ${cmd.description}`;
         if (cmd.permissions) info += `\n**Permissions**: ${cmd.permissions}`
