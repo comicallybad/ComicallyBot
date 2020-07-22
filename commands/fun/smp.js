@@ -13,6 +13,6 @@ module.exports = {
             **SMP**, standing for "**Shit my pants**", is often used in the context of; "I am going to **SMP**"`)
             .setTimestamp();
 
-        message.channel.send(embed).then(m => del(m, 15000));
+        return message.channel.send(embed).then(m => del(m, 15000));
     }
 }
