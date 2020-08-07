@@ -27,12 +27,12 @@ module.exports = {
                 let memberRoles = exists.memberRoles.map(role => " Name: " + `\`${role.roleName}\`` + "  ID: " + `\`${role.roleID}\``)
                 if (memberRoles.length > 0 && memberRoles.length <= 10) {
                     embed.setDescription("").addField("Member Roles", memberRoles);
-                    return m.edit(embed).then(m => del(m, 30000));
+                    return m.edit(embed).then(del(m, 30000));
                 } else if (memberRoles.length > 10) {
                     pageList(m, message.author, memberRoles, embed, "Member:")
                 } else {
                     embed.setDescription("").addField("Member Roles", "There have been no bot members set.");
-                    m.edit(embed).then(m => del(m, 30000));
+                    m.edit(embed).then(del(m, 30000));
                 }
             }
         }).catch(err => console.log(err))

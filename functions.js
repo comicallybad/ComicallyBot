@@ -9,6 +9,8 @@ module.exports = {
                 setTimeout(function () {
                     if (message.deletable && !message.reactions.cache.get('🛑')) {  //messages can now stop from being deleted
                         message.delete({ timeout: 0 }).catch(err => err) //This gets rid of the annoying "Unknown Message" error.
+                    } else {
+                        message.reactions.removeAll();
                     }
                 }, timeout);
             } else return;

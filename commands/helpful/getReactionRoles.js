@@ -31,14 +31,14 @@ module.exports = {
                         reactionRoles.forEach((rr, index) => {
                             embed.addField(`Reaction Role ${index + 1}:`, `MessageID: \`${rr.messageID}\`  Reaction: \`${rr.reaction}\` Role: \`${rr.roleName}(${rr.roleID})\` Type: \`${rr.type}\`,`)
                         });
-                        return m.edit(embed).then(m => del(m, 30000));
+                        return m.edit(embed).then(del(m, 30000));
                     } else {
                         let array = reactionRoles.map(rr => `MessageID: \`${rr.messageID}\`  Reaction: \`${rr.reaction}\` Role: \`${rr.roleName}(${rr.roleID})\` Type: \`${rr.type}\`,`)
                         pageList(m, message.author, array, embed, "Reaction Role")
                     }
                 } else {
                     embed.setDescription("").addField("Reaction Roles", "There have been no reaction roles set.")
-                    return m.edit(embed).then(m => del(m, 30000));
+                    return m.edit(embed).then(del(m, 30000));
                 }
             }
         }).catch(err => console.log(err))

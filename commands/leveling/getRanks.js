@@ -25,10 +25,10 @@ module.exports = {
             if (exists.xpRoles.length > 0) {
                 let rankList = exists.xpRoles.map(rank => "Name: " + `\`${rank.roleName}\`` + ", ID: " + `\`${rank.roleID}\`` + ", level: " + `\`${rank.level}\``);
                 embed.setDescription("").addField("Ranks: ", rankList);
-                m.edit(embed).then(m => del(m, 30000));
+                m.edit(embed).then(del(m, 30000));
             } else {
                 embed.setDescription("").addField("Ranks: ", "There have been no level ranks set");
-                m.edit(embed).then(m => del(m, 30000));
+                m.edit(embed).then(del(m, 30000));
             }
         }).catch(err => console.log(err))
     }
