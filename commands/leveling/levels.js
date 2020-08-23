@@ -5,7 +5,7 @@ module.exports = {
     name: "levels",
     aliases: ["xpforlevel", "levelxp", "level"],
     category: "leveling",
-    description: "Shows the top level users in the discord server.",
+    description: "Shows XP required for levels.",
     permissions: "member",
     usage: "[level]",
     run: (client, message, args) => {
