@@ -22,13 +22,13 @@ module.exports = {
         const botChoice = chooseArr[Math.floor(Math.random() * chooseArr.length)];
 
         const result = await getResult(reacted, botChoice);
-        await m.reactions.removeAll();
+        await m.reactions.removeAll().catch(err => err);
 
         embed
             .setDescription("")
             .addField(result, `${reacted} vs ${botChoice}`);
 
-        m.edit(embed)
+        m.edit(embed).catch(err => err)
         function getResult(me, clientChosen) {
             if ((me === "🗻" && clientChosen === "✂") ||
                 (me === "📰" && clientChosen === "🗻") ||
