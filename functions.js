@@ -118,7 +118,7 @@ module.exports = {
 
         return message
             .awaitReactions(filter, { max: 1, time: time })
-            .then(collected => collected.first() && collected.first().emoji.name);
+            .then(collected => collected.first() && collected.first().emoji.name).catch(err => message.reply(`There was an error: ${err}`));
     },
 
     //Adds certain reaction, waits for certain amount of reactions, waits certain amount of time, returns all user objects
@@ -132,7 +132,7 @@ module.exports = {
             .then(collected => {
                 if (collected.first()) return collected.first().users.cache.map(usr => usr).filter(usr => !usr.bot);
                 else return [];
-            });
+            }).catch(err => message.reply(`There was an error: ${err}`));
     },
 
     pageList: async function (message, author, array, embed, parameter) {
@@ -165,7 +165,7 @@ module.exports = {
                 message.reactions.removeAll().then(() => {
                     newPage++;
                     module.exports.pageTurn(message, author, array, embed, parameter, size, newPage);
-                });
+                }).catch(err => err);
             } else if (reacted == "🗑️") {
                 return module.exports.del(message, 0);
             } else return module.exports.del(message, 0);
@@ -175,12 +175,12 @@ module.exports = {
                 message.reactions.removeAll().then(() => {
                     newPage++;
                     module.exports.pageTurn(message, author, array, embed, parameter, size, newPage);
-                });
+                }).catch(err => err);
             } else if (reacted == "⬅️") {
                 message.reactions.removeAll().then(() => {
                     newPage--;
                     module.exports.pageTurn(message, author, array, embed, parameter, size, newPage);
-                });
+                }).catch(err => err);
             } else if (reacted == "🗑️") {
                 module.exports.del(message, 0);
             } else return module.exports.del(message, 0);
@@ -190,7 +190,7 @@ module.exports = {
                 message.reactions.removeAll().then(() => {
                     newPage--;
                     module.exports.pageTurn(message, author, array, embed, parameter, size, newPage);
-                });
+                }).catch(err => err);
             } else if (reacted == "🗑️") {
                 return module.exports.del(message, 0);
             } else return module.exports.del(message, 0);
@@ -227,7 +227,6 @@ module.exports = {
                 const spamMessages = messages.filter(msg => msg.member);
                 message.channel.bulkDelete(spamMessages).catch(err =>
                     message.channel.send("I am missing permissions to `MANAGE_MESSAGES` to delete spam messages.")).then(m => modele.exports.del(m, 7500))
-                    .catch(err => err);
                 return spamMessages.array().length;
             }).catch(err => {
                 return undefined
@@ -304,7 +303,7 @@ module.exports = {
                     }).catch(err => {
                         if (err) return message.reply(`There was an error attempting to unmute ${message.member} ${err}`).then(m => module.exports.del(m, 7500));
                     });
-                }, 300000)); //5 Minute punishment 300000
+                }, 300000)).catch(err => err) //5 Minute punishment 300000
             } else if (userArray.some(user => user.id == message.author.id && user.offences == 7)) {
                 let muterole = await module.exports.checkMuteRole(message);
                 message.member.roles.add(muterole.id).then(() => {
@@ -322,7 +321,7 @@ module.exports = {
                     }).catch(err => {
                         if (err) return message.reply(`There was an error attempting to unmute ${message.member} ${err}`).then(m => module.exports.del(m, 7500));
                     });
-                }, 600000)); //5 Minute punishment 600000
+                }, 600000)).catch(err => err) //5 Minute punishment 600000
             }
         } else {
             message.channel.send("I am missing permissions to `MANAGE_ROLES` to mute users for spam/profanity.").then(m => module.exports.del(m, 7500)
