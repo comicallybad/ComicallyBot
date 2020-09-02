@@ -47,6 +47,8 @@ module.exports = async (client, message) => {
         let perms = await hasPermissions(message, command.permissions);
         let cmdStatus = await getCommandStatus(message, command.name);
 
+        del(message, 0);
+
         if (command.category !== 'command' && command.category !== "owner" && command.category !== "support") {
             if (!cmdStatus) return message.reply("This command is currently disabled.").then(m => del(m, 7500));
             if (!perms) return message.reply("You do not have permissions for this command.").then(m => del(m, 7500));
@@ -56,5 +58,4 @@ module.exports = async (client, message) => {
             else return command.run(client, message, args);
         }
     }
-    del(message, 0);
 }
