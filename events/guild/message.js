@@ -44,8 +44,6 @@ module.exports = async (client, message) => {
             return message.reply("I am missing permissions to `MANAGE_MESSAGES` for a clean command experience"
                 + " and/or permissions for `ADD_REACTIONS` for essential commands.").then(m => del(m, 30000));
 
-        del(message, 0);
-
         let perms = await hasPermissions(message, command.permissions);
         let cmdStatus = await getCommandStatus(message, command.name);
 
@@ -58,4 +56,5 @@ module.exports = async (client, message) => {
             else return command.run(client, message, args);
         }
     }
+    del(message, 0);
 }
