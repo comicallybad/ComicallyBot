@@ -44,8 +44,8 @@ module.exports = {
                         .setTimestamp();
 
                     message.channel.send(embed).then(m => del(m, 15000));
-                })
-            })
-        })
+                }).catch(err => console.log(`There was an error in steam.js ${err}`));
+            }).catch(err => console.log(`There was an error in steam.js ${err}`));
+        }).catch(err => console.log(`There was an error in steam.js ${err}`));
     }
 }

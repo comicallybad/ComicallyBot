@@ -44,6 +44,6 @@ module.exports = {
             logChannel.send(embed);
 
             return message.reply(xpToAdd + " XP was added to the user.").then(m => del(m, 7500));
-        })
+        }).catch(err => console.log(`There was an error in addXP ${err}`));
     }
 }

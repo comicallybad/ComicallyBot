@@ -10,6 +10,6 @@ module.exports = {
             msg.edit(`🏓 Pong!
                         Latency is ${ping}ms
                         API Latency is ${Math.round(client.ws.ping)}ms`);
-        })
+        }).catch(err => console.log(`There was an error in ping ${err}`));
     }
 }

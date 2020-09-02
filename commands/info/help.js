@@ -76,7 +76,7 @@ function getSpecific(client, message, input) {
             if (res === true) info += '\n**Status**: ✅';
 
             return message.channel.send(embed.setColor("#0efefe").setDescription(info)).then(m => del(m, 30000));
-        });
+        }).catch(err => console.log(`There was an error in help ${err}`));;
     } else if (cat.includes(input.toLowerCase())) {
         const cmds = client.commands
             .filter(cmd => cmd.category === input.toLowerCase())

@@ -120,13 +120,13 @@ module.exports = {
                     } else {
                         return del(msg, 0);
                     }
-                });
+                }).catch(err => console.log(`There was an error in mute1 ${err}`));
             } else if (emoji === "❌") {
                 del(msg, 0);
                 return message.reply(`Mute cancelled.`).then(m => del(m, 7500));
             } else {
                 return del(msg, 0);
             }
-        });
+        }).catch(err => console.log(`There was an error in mute ${err}`));
     }
 }

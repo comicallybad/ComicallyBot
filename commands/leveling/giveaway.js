@@ -65,7 +65,7 @@ module.exports = {
                     logChannel.send(logEmbed);
 
                     msg.edit(embed);
-                });
+                }).catch(err => console.log(`There was an error in giveaway (addxp) ${err}`));
             } else {
                 msg.reactions.removeAll();
 
@@ -75,6 +75,6 @@ module.exports = {
 
                 msg.edit(embed);
             }
-        });
+        }).catch(err => console.log(`There was an error in giveaway ${err}`));
     }
 }

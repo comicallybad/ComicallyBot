@@ -41,7 +41,6 @@ module.exports = {
             .then(() => {
                 message.reply("User's nickname was successfully changed.").then(m => del(m, 7500));
                 logChannel.send(embed);
-            })
-            .catch(err => message.reply("I can't change that users nickname due to role hierarchy, I suppose.").then(m => del(m, 7500)));
+            }).catch(err => message.reply("I can't change that users nickname due to role hierarchy, I suppose.").then(m => del(m, 7500)));
     }
 }

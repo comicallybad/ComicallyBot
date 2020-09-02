@@ -118,7 +118,7 @@ module.exports = {
 
         return message
             .awaitReactions(filter, { max: 1, time: time })
-            .then(collected => collected.first() && collected.first().emoji.name).catch(err => message.reply(`There was an error: ${err}`));
+            .then(collected => collected.first() && collected.first().emoji.name).catch(err => console.log(`There was an error in prompMesssage ${err}`));
     },
 
     //Adds certain reaction, waits for certain amount of reactions, waits certain amount of time, returns all user objects
@@ -132,7 +132,7 @@ module.exports = {
             .then(collected => {
                 if (collected.first()) return collected.first().users.cache.map(usr => usr).filter(usr => !usr.bot);
                 else return [];
-            }).catch(err => message.reply(`There was an error: ${err}`));
+            }).catch(err => console.log(`There was an error in awaitReaction ${err}`));
     },
 
     pageList: async function (message, author, array, embed, parameter) {
@@ -226,7 +226,8 @@ module.exports = {
             message.channel.messages.fetch({ limit: spamUsers.find(user => user.id === message.author.id).offences }).then(messages => {
                 const spamMessages = messages.filter(msg => msg.member);
                 message.channel.bulkDelete(spamMessages).catch(err =>
-                    message.channel.send("I am missing permissions to `MANAGE_MESSAGES` to delete spam messages.")).then(m => modele.exports.del(m, 7500))
+                    message.channel.send("I am missing permissions to `MANAGE_MESSAGES` to delete spam messages."))
+                    .then(m => modele.exports.del(m, 7500));
                 return spamMessages.array().length;
             }).catch(err => {
                 return undefined

@@ -63,6 +63,6 @@ module.exports = {
                 del(msg, 0);
                 message.reply(`Kick cancelled.`).then(m => del(m, 7500));
             }
-        });
+        }).catch(err => console.log(`There was an error in kick ${err}`));
     }
 };

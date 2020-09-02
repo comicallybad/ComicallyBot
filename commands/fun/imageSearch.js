@@ -22,7 +22,7 @@ module.exports = {
             else {
                 message.channel.send("Image: ").then(m => {
                     nextPicture(m, message.author, results)
-                });
+                }).catch(err => console.log(`There was an error in imageSearch ${err}`));
             }
         }
     }
@@ -36,7 +36,7 @@ async function nextPicture(message, author, results) {
             if (emoji === "➡️") {
                 m.reactions.removeAll().then(() => {
                     nextPicture(m, author, results);
-                });
+                }).catch(err => console.log(`There was an error in nextPicture: ${err}`));;
             } else if (emoji === "🗑️") {
                 del(m, 0)
             } else if (emoji === "❤️") {
@@ -44,7 +44,7 @@ async function nextPicture(message, author, results) {
             } else {
                 del(m, 0)
             }
-        })
+        }).catch(err => console.log(`There was an error in imageSearch ${err}`));
     } else {
         return message.reply("Sorry there was an error with that search, try again.").then(m => del(m, 7500));
     }

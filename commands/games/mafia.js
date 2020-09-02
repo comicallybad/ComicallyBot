@@ -65,6 +65,6 @@ module.exports = {
 
                 msg.edit(embed).then(m => del(m, 15000));
             }
-        });
+        }).catch(err => console.log(`There was an error in mafia ${err}`));;
     }
 }
