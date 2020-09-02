@@ -227,7 +227,7 @@ module.exports = {
                 const spamMessages = messages.filter(msg => msg.member);
                 message.channel.bulkDelete(spamMessages).catch(err =>
                     message.channel.send("I am missing permissions to `MANAGE_MESSAGES` to delete spam messages."))
-                    .then(m => modele.exports.del(m, 7500));
+                    .then(m => module.exports.del(m, 7500));
                 return spamMessages.array().length;
             }).catch(err => {
                 return undefined
