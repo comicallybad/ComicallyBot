@@ -10,7 +10,7 @@ global.spamUsers = [], global.spamOffencers = [];
 
 ["aliases", "commands"].forEach(x => client[x] = new Collection());
 ["command", "event"].forEach(x => require(`./handlers/${x}`)(client));
-require(`./handlers/error`)(process);
+require(`./handlers/error`)(client, process);
 client.categories = new fs.readdirSync("./commands/");
 
 client.login(process.env.TOKEN);

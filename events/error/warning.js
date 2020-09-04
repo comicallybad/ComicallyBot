@@ -1,7 +1,7 @@
 const fs = require("fs");
 const { stripIndents } = require("common-tags");
 
-module.exports = (process, error) => {
+module.exports = async (client, process, error) => {
     const date = new Date();
     const formatDate = stripIndents`
         ${(date.getMonth() + 1).toString().padStart(2, '0')}-${
@@ -23,4 +23,7 @@ module.exports = (process, error) => {
         if (err) throw err;
         console.log(`A new warning has been logged to: ${formatDate} warning.log`)
     });
+
+    let owner = await client.users.cache.get(`${process.env.USERID}`);
+    owner.send(`New warning ${error}`);
 }
