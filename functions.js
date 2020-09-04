@@ -10,7 +10,7 @@ module.exports = {
                     if (message.deletable && !message.reactions.cache.get('🛑')) {  //messages can now stop from being deleted
                         message.delete({ timeout: 0 }).catch(err => err) //This gets rid of the annoying "Unknown Message" error.
                     } else {
-                        message.reactions.removeAll();
+                        message.reactions.removeAll().catch(err => err); //This gets rid of the annoying "Unknown Message" error.
                     }
                 }, timeout);
             } else return;
@@ -230,7 +230,7 @@ module.exports = {
                     .then(m => module.exports.del(m, 7500));
                 return spamMessages.array().length;
             }).catch(err => {
-                return undefined
+                return undefined;
             })
         return messagesDeleted;
     },
