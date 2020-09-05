@@ -52,9 +52,11 @@ module.exports = {
             db.findOne({
                 guildID: guildID,
                 commands: { $elemMatch: { name: command } }
-            })
-        if (commandStatus.commands[commandStatus.commands.map(cmd => cmd.name).indexOf(command)].status === true) return true;
-        else return false;
+            });
+        if (commandStatus) {
+            if (commandStatus.commands[commandStatus.commands.map(cmd => cmd.name).indexOf(command)].status === true) return true;
+            else return false;
+        } else return;
     },
 
     findID: function (message, input, type) {
