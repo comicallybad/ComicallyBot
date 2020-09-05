@@ -1,8 +1,9 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 const db = require('./schemas/db.js');
 const xp = require('./schemas/xp.js');
-const { del, warn, hasPermissions } = require("./functions.js");
-const { MessageEmbed } = require("discord.js");
+const { del, warn, hasPermissions } = require('./functions.js');
+const { MessageEmbed } = require('discord.js');
+
 let cooldown = new Set();
 
 module.exports = {
@@ -13,7 +14,6 @@ module.exports = {
 
         guildsID.forEach((element, guildIndex) => { //for each guild
             db.findOne({ guildID: guildsID[guildIndex] }, (err, exists) => {
-                if (err) console.log(err)
                 if (!exists) {
                     const newDB = new db({
                         _id: mongoose.Types.ObjectId(),
@@ -29,10 +29,10 @@ module.exports = {
                         badWordList: [],
                         xpMultiplier: 1,
                     })
-                    newDB.save().catch(err => console.log(err))
+                    newDB.save().catch(err => console.log(err));
                 } else {
                     exists.guildName = guildsName[guildIndex]; //in case name changed
-                    exists.save().catch(err => console.log(err))
+                    exists.save().catch(err => console.log(err));
                 }
             }).then(function () {
                 commands.forEach((element, cmdIndex) => {
@@ -40,15 +40,14 @@ module.exports = {
                         guildID: guildsID[guildIndex],
                         commands: { $elemMatch: { name: commands[cmdIndex] } }
                     }, (err, exists) => {
-                        if (err) console.log(err)
                         if (!exists) {
                             db.updateOne({ guildID: guildsID[guildIndex] }, {
                                 $push: { commands: { name: commands[cmdIndex], status: true } }
-                            }).catch(err => console.log(err))
+                            }).catch(err => console.log(err));
                         }
                     })
                 });
-            }).catch(err => console.log(err))
+            }).catch(err => console.log(err));
         });
     },
 
@@ -56,7 +55,7 @@ module.exports = {
         let guildID = message.guild.id;
 
         db.findOne({ guildID: guildID }, async (err, exists) => {
-            if (!exists) module.exports.dbSetup(client)
+            if (!exists) return module.exports.dbSetup(client);
             if (exists.xpSystem) {
                 let guildName = message.guild.name;
                 let userID = message.member.id;
@@ -66,22 +65,21 @@ module.exports = {
                 let user = await message.guild.members.fetch(userID);
 
                 db.findOne({ guildID: guildID }, (err, exists) => {
-                    if (!exists) module.exports.dbSetup(client)
                     if (exists) {
                         if (exists.xpMultiplier)
                             xpToAdd = xpToAdd * exists.xpMultiplier;
                         db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "rank" } } }, (err, exists) => {
-                            if (err) console.log(err)
                             if (exists)
                                 rankChannel = client.channels.cache.get(exists.channels[exists.channels.map(cmd => cmd.command).indexOf("rank")].channelID);
                         }).catch(err => console.log(err))
                     } else {
-                        exists.xpMultiplier = 1
-                        exists.save().catch(err => console.log(err));
+                        exists.xpMultiplier = 1;
+                        exists.save().catch(err => console.log(err)).then(function () {
+
+                        });
                     }
                 }).catch(err => console.log(err)).then(function () {
                     xp.findOne({ guildID: guildID, userID: userID }, (err, exists) => {
-                        if (err) console.log(err)
                         if (!exists) {
                             const newXP = new xp({
                                 _id: mongoose.Types.ObjectId(),
@@ -93,26 +91,23 @@ module.exports = {
                             exists.xp += xpToAdd;
                             exists.guildName = guildName;
                             exists.userName = userName;
-                            let rankupXP = Number;
-
-                            if (exists.level == 0) rankupXP = 10 - exists.xp;
-                            else rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 - exists.xp;
+                            let rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 + 25 - exists.xp;
 
                             while (rankupXP <= 0) {
                                 if (rankupXP <= 0) {
                                     exists.level++;
-                                    module.exports.checkXPRankup(message, userID, exists.level)
+                                    module.exports.checkXPRankup(message, userID, exists.level);
                                 }
-                                if (exists.level == 0) rankupXP = 10 - exists.xp;
-                                else rankupXP = (10 * Math.pow(exists.level + 1, 3) / 5) - exists.xp;
-                                if (rankupXP >= 0) rankChannel.send(`${user} You leveled up! You are now level: ${exists.level}`).catch(err => err);
+                                rankupXP = rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 + 25 - exists.xp;
+                                if (rankupXP >= 0)
+                                    rankChannel.send(`${user} You leveled up! You are now level: ${exists.level}`).catch(err => err);
                             }
-                            exists.save().catch(err => console.log(err))
+                            exists.save().catch(err => console.log(err));
                         }
-                    }).catch(err => console.log(err))
-                })
+                    }).catch(err => console.log(err));
+                });
             }
-        }).catch(err => console.log(err))
+        }).catch(err => console.log(err));
     },
 
     addXP: async function (message, userID, xpToAdd) {
@@ -125,10 +120,9 @@ module.exports = {
         let user = await message.guild.members.fetch(userID);
 
         db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "rank" } } }, (err, exists) => {
-            if (err) console.log(err)
             if (exists)
                 rankChannel = message.guild.channels.cache.get(exists.channels[exists.channels.map(cmd => cmd.command).indexOf("rank")].channelID);
-        }).catch(err => console.log(err))
+        }).catch(err => console.log(err));
 
         xp.findOne({ guildID: guildID, userID: userID }, (err, exists) => {
             if (!exists) {
@@ -137,40 +131,20 @@ module.exports = {
                     guildID: guildID, guildName: guildName,
                     userID: userID, userName: userName, xp: xpToAdd, level: 0
                 })
-                newXP.save().then((exists) => {
-                    let rankupXP = Number;
-
-                    if (exists.level == 0) rankupXP = 10 - exists.xp;
-                    else rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 - exists.xp;
-
-                    while (rankupXP <= 0) {
-                        if (rankupXP <= 0) {
-                            exists.level++;
-                            module.exports.checkXPRankup(message, userID, exists.level)
-                        }
-                        if (exists.level == 0) rankupXP = 10 - exists.xp;
-                        else rankupXP = (10 * Math.pow(exists.level + 1, 3) / 5) - exists.xp;
-                        if (rankupXP >= 0) rankChannel.send(`${user} You leveled up! You are now level: ${exists.level}`).catch(err => err);
-                    }
-                    exists.save().catch(err => console.log(err));
-                }).catch(err => console.log(err));
+                newXP.save().catch(err => console.log(err));
             } else {
                 exists.xp += xpToAdd;
-                let rankupXP = Number;
-
-                if (exists.level == 0) rankupXP = 10 - exists.xp;
-                else rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 - exists.xp;
+                let rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 + 25 - exists.xp;
 
                 while (rankupXP <= 0) {
                     if (rankupXP <= 0) {
                         exists.level++;
-                        module.exports.checkXPRankup(message, userID, exists.level)
+                        module.exports.checkXPRankup(message, userID, exists.level);
                     }
-                    if (exists.level == 0) rankupXP = 10 - exists.xp;
-                    else rankupXP = (10 * Math.pow(exists.level + 1, 3) / 5) - exists.xp;
+                    rankupXP = rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 + 25 - exists.xp;
                     if (rankupXP >= 0) rankChannel.send(`${user} You leveled up! You are now level: ${exists.level}`).catch(err => err);
                 }
-                exists.save().catch(err => console.log(err))
+                exists.save().catch(err => console.log(err));
             }
         }).catch(err => console.log(err));
     },
@@ -178,7 +152,7 @@ module.exports = {
     checkXPRankup: async function (message, userID, level) {
         const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
         let guildID = message.guild.id;
-        let user = await message.guild.members.fetch(userID)
+        let user = await message.guild.members.fetch(userID);
         const embed = new MessageEmbed()
             .setColor("#0efefe")
             .setTitle("User joined role via Leveling Up")
@@ -187,9 +161,8 @@ module.exports = {
             .setTimestamp()
 
         db.findOne({ guildID: guildID, xpRoles: { $elemMatch: { level: level } } }, (err, exists) => {
-            if (err) console.log(err)
             if (exists) {
-                roles = exists.xpRoles.filter(role => role.level == level)
+                roles = exists.xpRoles.filter(role => role.level == level);
                 roles.forEach(role => {
                     if (!message.member.roles.cache.get(role.roleID)) {
                         embed.setDescription(`${user} ${user.user.tag} joined the **${role.roleName}**(${role.roleID})`);
@@ -202,7 +175,7 @@ module.exports = {
                     }
                 });
             } else return;
-        })
+        });
     },
 
     checkBadWords: async function (message) {
@@ -210,17 +183,17 @@ module.exports = {
         let words = message.content.replace(/ /g, '').toLowerCase();
 
         db.findOne({ guildID: guildID }, async (err, exists) => {
-            if (err) console.log(err)
+            if (!exists) return;
             if (exists.profanityFilter) {
                 if (exists.badWordList) {
-                    let isMod = await hasPermissions(message, "moderator")
+                    let isMod = await hasPermissions(message, "moderator");
                     if (isMod) return;
                     else {
                         let badWordList = exists.badWordList;
                         let bool = badWordList.filter(word => words.includes(word.toLowerCase()));
                         if (bool.length > 0) {
                             del(message, 0);
-                            return warn(message, profanityUsers, "profanity")
+                            return warn(message, profanityUsers, "profanity");
                         } else return;
                     }
                 }
@@ -231,9 +204,9 @@ module.exports = {
     checkSpam: function (message) {
         let guildID = message.guild.id;
         db.findOne({ guildID: guildID }, async (err, exists) => {
-            if (err) console.log(err)
+            if (!exists) return;
             if (exists.antiSpam) {
-                let isMod = await hasPermissions(message, "moderator")
+                let isMod = await hasPermissions(message, "moderator");
                 if (isMod) return;
                 else {
                     if (spamUsers.some(user => user.id === message.author.id)) {
@@ -250,14 +223,14 @@ module.exports = {
 
                     setTimeout(() => {
                         if (spamUsers.find(user => user.id === message.author.id))
-                            spamUsers.splice(spamUsers.findIndex(user => user.id === message.author.id), 1)
-                    }, 5000)
+                            spamUsers.splice(spamUsers.findIndex(user => user.id === message.author.id), 1);
+                    }, 5000);
 
                     if (cooldown.has(message.author.id) && spamUsers.find(user => user.id === message.author.id).offences >= 5) {
-                        warn(message, spamOffencers, "spam")
+                        warn(message, spamOffencers, "spam");
                     }
                 }
             }
-        })
+        }).catch(err => console.log(err));
     },
 }

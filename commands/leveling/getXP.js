@@ -25,10 +25,7 @@ module.exports = {
             xp.findOne({ guildID: guildID, userID: usrID }, (err, exists) => {
                 if (!exists) return message.reply("User doesn't have a rank yet.").then(m => del(m, 7500));
                 if (exists) {
-                    let rankupXP = Number;
-
-                    if (exists.level == 0) rankupXP = 10 - exists.xp;
-                    else rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 - exists.xp;
+                    let rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 + 25 - exists.xp;
 
                     const embed = new MessageEmbed()
                         .setColor("#0efefe")
