@@ -21,7 +21,7 @@
     "google-translate-free": "^2.4.5",
     "humanize-duration": "^3.23.1",
     "mongoose": "^5.10.3",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "random-puppy": "^1.1.0",
     "urban": "^0.3.2"
   }
