@@ -1,7 +1,7 @@
 const fs = require("fs");
 const { stripIndents } = require("common-tags");
 
-module.exports = async (client, process, error) => {
+module.exports = async (client, process, error, origin) => {
     const date = new Date();
     const formatDate = stripIndents`
         ${(date.getMonth() + 1).toString().padStart(2, '0')}-${
@@ -19,11 +19,11 @@ module.exports = async (client, process, error) => {
         fs.mkdirSync(dir);
     }
 
-    fs.appendFile(`./logs/${formatDate} UncaughtException.log`, `${formatDate} ${formatTime}: ${error}\n`, function (err) {
+    fs.appendFile(`./logs/${formatDate} UncaughtException.log`, `${formatDate} ${formatTime}: ${error} at ${origin}\n`, function (err) {
         if (err) throw err;
         console.log(`A new UncaughtException has been logged to: ${formatDate} UncaughtException.log`)
     });
 
     let owner = await client.users.cache.get(`${process.env.USERID}`);
-    owner.send(`New uncaughtExcemption error ${error}`);
+    owner.send(`New uncaughtExcemption error ${error}. At origin: ${origin}`);
 }
