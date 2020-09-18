@@ -125,7 +125,7 @@ module.exports = {
 
     //Adds certain reaction, waits for certain amount of reactions, waits certain amount of time, returns all user objects
     awaitReaction: async function (message, max, time, emoji) {
-        message.react(emoji);
+        message.react(emoji).catch(err => err);
 
         const filter = (reaction, user) => emoji == reaction.emoji.name && user.id !== message.author.id;
 

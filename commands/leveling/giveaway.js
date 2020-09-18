@@ -45,7 +45,7 @@ module.exports = {
                 let userID = users[random].id;
                 let userName = users[random].username;
 
-                msg.reactions.removeAll();
+                msg.reactions.removeAll().catch(err => err);
 
                 embed
                     .setDescription(`Congrats <@${userID}>, you are the winner of the ${amount} xp giveaway!`)
@@ -64,16 +64,16 @@ module.exports = {
 
                     logChannel.send(logEmbed);
 
-                    msg.edit(embed);
+                    msg.edit(embed).catch(err => err);
                 }).catch(err => console.log(`There was an error in giveaway (addxp) ${err}`));
             } else {
-                msg.reactions.removeAll();
+                msg.reactions.removeAll().catch(err => err);
 
                 embed
                     .setDescription(`There were no winners awarded, not enough reactions!`)
                     .setFooter(`No one won the ${amount} XP!`, message.author.displayAvatarURL());
 
-                msg.edit(embed);
+                msg.edit(embed).catch(err => err);
             }
         }).catch(err => console.log(`There was an error in giveaway ${err}`));
     }
