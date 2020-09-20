@@ -74,9 +74,7 @@ module.exports = {
                         }).catch(err => console.log(err))
                     } else {
                         exists.xpMultiplier = 1;
-                        exists.save().catch(err => console.log(err)).then(function () {
-
-                        });
+                        exists.save().catch(err => console.log(err));
                     }
                 }).catch(err => console.log(err)).then(function () {
                     xp.findOne({ guildID: guildID, userID: userID }, (err, exists) => {
