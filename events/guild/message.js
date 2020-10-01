@@ -31,9 +31,11 @@ module.exports = async (client, message) => {
             if (exists) {
                 let channel = await client.channels.cache.get(exists.channels.filter(x => x.command === "Bot Chatting")[0].channelID);
                 if (message.channel == channel) return cleverbot(`${message.content}`).then(response => message.channel.send(response));
+                else return;
             }
             else return;
         });
+        return;
     }
 
 
