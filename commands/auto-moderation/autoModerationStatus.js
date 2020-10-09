@@ -18,13 +18,15 @@ module.exports = {
             .setTimestamp();
 
         db.findOne({ guildID: guildID }, (err, exists) => {
-            let antiSpam = exists.antiSpam;
-            let profanityFilter = exists.profanityFilter;
-            let xpSystem = exists.xpSystem;
-            embed.addField("Anti-Spam System:", `\`${antiSpam}\``)
-            embed.addField("Profanity Filter:", `\`${profanityFilter}\``)
-            embed.addField("XP System: ", `\`${xpSystem}\``)
-            message.channel.send(embed).then(m => del(m, 30000))
+            if (exists) {
+                let antiSpam = exists.antiSpam;
+                let profanityFilter = exists.profanityFilter;
+                let xpSystem = exists.xpSystem;
+                embed.addField("Anti-Spam System:", `\`${antiSpam}\``)
+                embed.addField("Profanity Filter:", `\`${profanityFilter}\``)
+                embed.addField("XP System: ", `\`${xpSystem}\``)
+                message.channel.send(embed).then(m => del(m, 30000));
+            }
         }).catch(err => err)
     }
 }
