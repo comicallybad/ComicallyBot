@@ -53,7 +53,7 @@ module.exports = {
                 del(msg, 0);
 
                 //attempt unban and send message
-                message.guild.members.unban(bannedMember, reason).then(() => {
+                message.guild.members.unban(bannedMember).then(() => {
                     bannedMember.send(`Hello, you have been **unbanned** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                     message.reply(`${bannedMember.username} (${bannedMember.id}) was successfully unbanned.`).then(m => del(m, 7500));
                 }).catch(err => {
