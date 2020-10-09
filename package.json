@@ -20,8 +20,8 @@
     "fortnite": "^4.3.2",
     "g-i-s": "^2.1.6",
     "google-translate-free": "^2.4.5",
-    "humanize-duration": "^3.23.1",
-    "mongoose": "^5.10.3",
+    "humanize-duration": "^3.24.0",
+    "mongoose": "^5.10.8",
     "node-fetch": "^2.6.1",
     "random-puppy": "^1.1.0",
     "urban": "^0.3.2"
