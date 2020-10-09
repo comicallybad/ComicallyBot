@@ -32,9 +32,9 @@ module.exports = {
                 .setFooter(message.member.displayName, message.author.displayAvatarURL())
                 .setTimestamp()
                 .setDescription(stripIndents`
-            **Banned member:** ${toBan} (${toBan.id})
-            **Banned by:** ${message.member}
-            **Reason:** ${reason}`);
+                **Banned member:** ${toBan} (${toBan.id})
+                **Banned by:** ${message.member}
+                **Reason:** ${reason}`);
 
             const promptEmbed = new MessageEmbed()
                 .setColor("GREEN")
@@ -47,7 +47,7 @@ module.exports = {
                 if (emoji === "✅") {
                     del(msg, 0);
 
-                    message.guild.members.ban(toBan.id, reason).then(() => {
+                    message.guild.members.ban(toBan.id).then(() => {
                         toBan.send(`Hello, you have been **banned** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                         message.reply(`${toBan.username} (${toBan.id}) was successfully banned.`).then(m => del(m, 7500));
                     }).catch(err => {
