@@ -26,7 +26,7 @@ module.exports = {
         if (args[0] && args[1] && args[2]) {
             const msg = await message.channel.messages.fetch(args[0]).catch(err => err);
 
-            if (!msg || msg.message == "Unknown Message")
+            if (!msg || msg.message == "Unknown Message" || !msg.id)
                 return message.reply("Could not find message in current channel.").then(m => del(m, 7500));
 
             let reaction = await args[1];
@@ -40,14 +40,12 @@ module.exports = {
                     type = "addonly"
                 }
             } else type = "add/remove"
-
-            msg.react(reaction)
-                .then(() => {//attempt unicode emoji
+            
+            msg.react(reaction).then(() => {//attempt unicode emoji
                     addReactionRole(msg, reaction, role, type);
                 }).catch(() => {
                     let customEmoji = reaction.replace("<:", "").slice(reaction.replace("<:", "").indexOf(":") + 1, reaction.replace("<:", "").length - 1); //gross code yes...
-                    msg.react(customEmoji)
-                        .then(() => {//attempt custom emoji
+                    msg.react(customEmoji).then(() => {//attempt custom emoji
                             addReactionRole(msg, customEmoji, role, type);
                         }).catch(err => message.reply("Invalid emoji. I must have access to the emoji.").then(m => del(m, 7500)))
                 });
