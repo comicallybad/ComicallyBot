@@ -82,7 +82,8 @@ function addReactionRole(message, reaction, role, type) {
             **Reaction role create by:** ${message.member.user}
             **Reaction role:** ${role}(${role.id})
             **Reaction emoji/ID:** ${reaction}
-            **Reaction role messasge ID:** ${messageID}`);
+            **Reaction role messasge ID:** ${messageID}
+            **Reaction role type: **${type}`);
 
             logChannel.send(embed);
         } else {
