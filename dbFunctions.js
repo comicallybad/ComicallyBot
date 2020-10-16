@@ -158,22 +158,22 @@ module.exports = {
             .setFooter(user.id, user.user.displayAvatarURL())
             .setTimestamp()
 
-        db.findOne({ guildID: guildID, xpRoles: { $elemMatch: { level: level } } }, (err, exists) => {
-            if (exists) {
-                roles = exists.xpRoles.filter(role => role.level == level);
-                roles.forEach(role => {
-                    if (!message.member.roles.cache.get(role.roleID)) {
-                        embed.setDescription(`${user} ${user.user.tag} joined the **${role.roleName}**(${role.roleID})`);
-                        if (logChannel) logChannel.send(embed);
-                        user.roles.add(role.roleID).then(() => {
-                            user.send(`Hello, you have been given the **${role.roleName}** role in ${message.guild.name} for: **Ranking up to level ${level}!**`).catch(err => err);
-                        }).catch(err => {
-                            if (err) return message.reply(`There was an error assigning XP level role. ${err}`).then(m => del(m, 7500));
-                        });
-                    }
-                });
-            } else return;
-        });
+        let exists = await db.findOne({ guildID: guildID, xpRoles: { $elemMatch: { level: level } } });
+        if (exists) {
+            roles = exists.xpRoles.filter(role => role.level == level);
+            roles.forEach(role => {
+                if (!user.roles.cache.get(role.roleID)) {
+                    embed.setDescription(`${user} ${user.user.tag} joined the **${role.roleName}**(${role.roleID})`);
+                    if (logChannel) logChannel.send(embed);
+                    user.roles.add(role.roleID).then(() => {
+                        return user.send(`Hello, you have been given the **${role.roleName}** role in ${message.guild.name} for: **Ranking up to level ${level}!**`).catch(err => err);
+                    }).catch(err => {
+                        if (err) return message.reply(`There was an error assigning XP level role. ${err}`).then(m => del(m, 7500));
+                    });
+                }
+            });
+            return;
+        } else return;
     },
 
     checkBadWords: async function (message) {
