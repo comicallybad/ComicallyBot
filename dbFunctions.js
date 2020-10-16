@@ -122,7 +122,7 @@ module.exports = {
                 rankChannel = message.guild.channels.cache.get(exists.channels[exists.channels.map(cmd => cmd.command).indexOf("rank")].channelID);
         }).catch(err => console.log(err));
 
-        xp.findOne({ guildID: guildID, userID: userID }, (err, exists) => {
+        xp.findOne({ guildID: guildID, userID: userID }, async (err, exists) => {
             if (!exists) {
                 const newXP = new xp({
                     _id: mongoose.Types.ObjectId(),
@@ -137,7 +137,7 @@ module.exports = {
                 while (rankupXP <= 0) {
                     if (rankupXP <= 0) {
                         exists.level++;
-                        module.exports.checkXPRankup(message, userID, exists.level);
+                        await module.exports.checkXPRankup(message, userID, exists.level);
                     }
                     rankupXP = rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 + 25 - exists.xp;
                     if (rankupXP >= 0) rankChannel.send(`${user} You leveled up! You are now level: ${exists.level}`).catch(err => err);
