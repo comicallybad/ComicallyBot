@@ -49,11 +49,9 @@ module.exports = {
                 const emoji = await promptMessage(msg, message.author, 30, ["✅", "❌"]);
 
                 if (emoji === "✅") {
-                    console.log("inside if")
                     del(msg, 0);
 
                     message.guild.members.ban(toBan.id).then(() => {
-                        console.log("inside ban")
                         message.guild.members.unban(toBan.id)
                         toBan.send(`Hello, you have been **soft banned** in ${message.guild.name} for: **${reason}**`).catch(err => err) //in case DM's are closed
                         message.reply(`${toBan.username}(${toBan.id}) was successfully soft banned.`).then(m => del(m, 7500));
@@ -61,7 +59,6 @@ module.exports = {
                         if (err) return message.reply(`There was an error attempting to softban ${toBan} ${err}`).then(m => del(m, 7500));
                     });
 
-                    console.log(logChannel);
                     return logChannel.send(embed);
                 } else if (emoji === "❌") {
                     del(msg, 0);
