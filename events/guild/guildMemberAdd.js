@@ -10,27 +10,28 @@ module.exports = async (client, data) => {
     let userID = data.user.id;
     let userName = data.user.username;
 
+    if (data.user.id !== client.user.id) {
+        if (data.guild.channels) {
+            let logChannel = await data.guild.channels.cache.find(c => c.name === "mod-logs" || undefined);
+            if (logChannel) {
+                let currentDate = new Date();
+                let userJoinDate = data.user.createdAt;
+                let time = currentDate - userJoinDate
+                let accountTime = humanizeDuration(currentDate - userJoinDate)
+                const embed = new MessageEmbed()
+                    .setColor("#0efefe")
+                    .setTitle("User Joined")
+                    .setThumbnail(data.user.displayAvatarURL())
+                    .setDescription(`${data.user} ${data.user.tag}`)
+                    .setFooter(`ID: ${data.user.id}`)
+                    .setTimestamp()
 
-    if (data.guild.channels) {
-        let logChannel = await data.guild.channels.cache.find(c => c.name === "mod-logs" || undefined);
-        if (logChannel) {
-            let currentDate = new Date();
-            let userJoinDate = data.user.createdAt;
-            let time = currentDate - userJoinDate
-            let accountTime = humanizeDuration(currentDate - userJoinDate)
-            const embed = new MessageEmbed()
-                .setColor("#0efefe")
-                .setTitle("User Joined")
-                .setThumbnail(data.user.displayAvatarURL())
-                .setDescription(`${data.user} ${data.user.tag}`)
-                .setFooter(`ID: ${data.user.id}`)
-                .setTimestamp()
-
-            if (time <= 604800000) { //604800000  is 7 days in MS
-                embed.addField("**Warning** new user account:", `Account created ${accountTime} ago.`);
-                logChannel.send(embed);
-            } else {
-                logChannel.send(embed);
+                if (time <= 604800000) { //604800000  is 7 days in MS
+                    embed.addField("**Warning** new user account:", `Account created ${accountTime} ago.`);
+                    logChannel.send(embed);
+                } else {
+                    logChannel.send(embed);
+                }
             }
         }
     }
