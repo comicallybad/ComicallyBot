@@ -6,7 +6,7 @@ module.exports = {
     name: "randomquote",
     aliases: ["rquote", "quoterandom"],
     category: "fun",
-    description: "Says a random form of encouragement.",
+    description: "Says a random quote from an author",
     permissions: "member",
     run: (client, message, args) => {
         let embed = new MessageEmbed()
