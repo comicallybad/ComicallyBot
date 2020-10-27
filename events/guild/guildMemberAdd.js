@@ -34,6 +34,12 @@ module.exports = async (client, data) => {
                 }
             }
         }
+        let welcomeChannel = await data.guild.channels.cache.find(c => c.name === "💠welcome");
+        let becomeAMemberChannel = await data.guild.channels.cache.find(c => c.name === "✅become-a-member");
+        let customizationChannel = await data.guild.channels.cache.find(c => c.name === "✅customization");
+
+        if(welcomeChannel && becomeAMemberChannel && customizationChannel)
+            welcomeChannel.send(`Welcome ${data.user} to ${data.guild.name}, head over to ${becomeAMemberChannel} to get your role! Once you have received your role, head over to ${customizationChannel} to customize your experience!`).catch(err => err);
     }
 
     xp.findOne({ guildID: guildID, userID: userID }, (err, exists) => {
