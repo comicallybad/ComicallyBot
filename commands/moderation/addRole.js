@@ -8,7 +8,7 @@ module.exports = {
     category: "moderation",
     description: "Add user to a role.",
     permissions: "moderator",
-    usage: "<@user | userID><@role | roleID>",
+    usage: "<@user | userID> <@role | roleID>",
     run: async (client, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
 
@@ -21,7 +21,9 @@ module.exports = {
         if (user.id === message.author.id)
             return message.reply("You can't give yourself roles...").then(m => del(m, 7500));
 
-        let role = message.guild.roles.cache.find(r => r.name === args[1]) || message.guild.roles.cache.find(r => r.id === args[1]);
+        const roleName = args.slice(1).join(" ");
+
+        let role = message.guild.roles.cache.find(r => r.name === roleName) || message.guild.roles.cache.find(r => r.id === args[1]);
 
         if (!role)
             return message.reply("Could not find role.").then(m => del(m, 7500));
