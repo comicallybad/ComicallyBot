@@ -7,7 +7,7 @@ module.exports = {
     category: "helpful",
     description: "Translates a message to a specified language for you.",
     permissions: "member",
-    usage: "<message to translate>",
+    usage: "<language code> <message to translate>",
     run: (client, message, args) => {
         if (!args[0])
             return message.reply("Please provide a language code Ex: 'en' for english 'es' for spanish.").then(m => del(m, 7500));
