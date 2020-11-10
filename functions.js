@@ -252,8 +252,12 @@ module.exports = {
 
         if (type === "spam") {
             let messagesDeleted = await module.exports.bulkDeleteCount(message);
-            embed.addField("Messages Deleted", messagesDeleted);
-        } else if (type === "profanity") embed.addField("Message Deleted", message.content);
+            embed.addField("Channel:", message.channel);
+            embed.addField("Number Of Messages Deleted:", messagesDeleted);
+        } else if (type === "profanity") {
+            embed.addField("Channel:", message.channel);
+            embed.addField("Message Deleted", `||${message.content}||`);
+        }
 
         if (userArray.some(user => user.id === message.author.id)) {
             userArray.find(user => user.id === message.author.id).offences += 1;
