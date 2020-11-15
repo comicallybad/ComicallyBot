@@ -16,6 +16,7 @@ const dbSchema = mongoose.Schema({
     profanityFilter: Boolean,
     antiSpam: Boolean,
     badWordList: [String],
+    welcomeMessage: [String],
 });
 
 module.exports = mongoose.model("db", dbSchema)

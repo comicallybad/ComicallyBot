@@ -2,6 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const humanizeDuration = require('humanize-duration');
 const xp = require('../../schemas/xp.js');
 const mongoose = require("mongoose");
+const db = require("../../schemas/db.js");
 
 module.exports = async (client, data) => {
     activities = [`${client.guilds.cache.size} servers!`, `${client.channels.cache.size} channels!`, `${client.users.cache.size} users!`], i = 0;
@@ -33,13 +34,33 @@ module.exports = async (client, data) => {
                     logChannel.send(embed);
                 }
             }
-        }
-        let welcomeChannel = await data.guild.channels.cache.find(c => c.name === "💠welcome");
-        let becomeAMemberChannel = await data.guild.channels.cache.find(c => c.name === "✅become-a-member");
-        let customizationChannel = await data.guild.channels.cache.find(c => c.name === "✅customization");
+            let welcomeCH;
+            db.findOne({ guildID: data.guild.id, channels: { $elemMatch: { command: "welcome" } } }, async (err, exists) => {
+                if (exists) {
+                    welcomeCH = await client.channels.cache.get(exists.channels.filter(x => x.command === "welcome")[0].channelID);
+                }
+            });
 
-        if(welcomeChannel && becomeAMemberChannel && customizationChannel)
-            welcomeChannel.send(`Welcome ${data.user} to ${data.guild.name}, head over to ${becomeAMemberChannel} to get your role! Once you have received your role, head over to ${customizationChannel} to customize your experience!`).catch(err => err);
+            let welcomeMSG;
+            db.findOne({ guildID: guildID }, async (err, exists) => {
+                if (exists) {
+                    if (exists.welcomeMessage.length > 0) {
+                        let msg = exists.welcomeMessage.toString().replace(/\[user\]/g, `${data.user}`);
+                        let msgArray = msg.split(" ");
+                        let msgMap = await msgArray.map((guild, index) => {
+                            if (guild.replace(/[0-9]/g, "") == "[]") {
+                                let channel = client.channels.cache.get(guild.substring(1, guild.length - 1));
+                                return msgArray[index] = `${channel}`;
+                            } else return msgArray[index];
+                        });
+                        welcomeMSG = msgMap.join(" ");
+                        if (welcomeCH && welcomeMSG) {
+                            welcomeCH.send(`${welcomeMSG}`);
+                        }
+                    }
+                }
+            }).catch(err => err);
+        }
     }
 
     xp.findOne({ guildID: guildID, userID: userID }, (err, exists) => {
