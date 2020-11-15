@@ -31,6 +31,24 @@ module.exports = {
             **Welcome message changed by:** ${message.author}`);
 
         logChannel.send(embed);
-        return message.reply(`Welcome message has been set to: ${args.join(' ')}`).then(m => del(m, 7500));
+
+        let welcomeMSG;
+        db.findOne({ guildID: guildID }, async (err, exists) => {
+            if (exists) {
+                if (exists.welcomeMessage.length > 0) {
+                    let msg = exists.welcomeMessage.toString();
+                    let msgArray = msg.split(" ");
+                    let msgMap = await msgArray.map((guild, index) => {
+                        if (guild.replace(/[0-9]/g, "") == "[]") {
+                            let channel = client.channels.cache.get(guild.substring(1, guild.length - 1));
+                            return msgArray[index] = `${channel}`;
+                        } else return msgArray[index];
+                    });
+                    welcomeMSG = msgMap.join(" ");
+                }
+            }
+        }).catch(err => err);
+
+        return message.reply(`Welcome message has been set to: ${welcomeMSG}`).then(m => del(m, 7500));
     }
 }
