@@ -6,7 +6,7 @@ const { stripIndents } = require("common-tags");
 module.exports = {
     name: "setwelcomechannel",
     aliases: ["setwelcomech", "swelcomech"],
-    category: "helpful",
+    category: "welcoming",
     description: "Set a channel for welcoming users.",
     permissions: "moderator",
     usage: "<#channel | channelID>",

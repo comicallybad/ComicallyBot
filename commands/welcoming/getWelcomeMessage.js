@@ -4,7 +4,7 @@ const db = require('../../schemas/db.js');
 module.exports = {
     name: "getwelcomemessage",
     aliases: ["getwelcomemsg", "gwelcomemsg"],
-    category: "helpful",
+    category: "welcoming",
     description: "Get's the current welcome channel.",
     permissions: "moderator",
     run: (client, message, args) => {

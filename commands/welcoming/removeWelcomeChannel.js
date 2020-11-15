@@ -4,7 +4,7 @@ const { del } = require("../../functions.js")
 module.exports = {
     name: "removewelcomechannel",
     aliases: ["removewelcomech", "rwelcomech"],
-    category: "helpful",
+    category: "welcoming",
     description: "Removes the channel where the welcome messages will be sent for new users.",
     permissions: "moderator",
     run: (client, message, args) => {
@@ -13,6 +13,16 @@ module.exports = {
                 db.updateOne({ guildID: message.guild.id, 'channels.command': "welcome" }, {
                     $pull: { channels: { command: "welcome" } }
                 }).catch(err => console.log(err));
+
+                const embed = new MessageEmbed()
+                    .setColor("#0efefe")
+                    .setTitle("Welcome Channel Removed")
+                    .setFooter(message.member.displayName, message.author.displayAvatarURL())
+                    .setTimestamp()
+                    .setDescription(stripIndents`
+                    **Welcome channel removed by:** ${message.author}`);
+
+                logChannel.send(embed);
                 return message.reply("Removed welcome channel.").then(m => del(m, 7500));
             } else return message.reply("There has been no welcome channel set.").then(m => del(m, 7500));
         });

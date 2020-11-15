@@ -4,7 +4,7 @@ const { del } = require("../../functions.js")
 module.exports = {
     name: "getwelcomechannel",
     aliases: ["getwelcomech", "gwelcomech"],
-    category: "helpful",
+    category: "welcoming",
     description: "Adds a welcome channel where welcome message will be sent when a user joins.",
     permissions: "moderator",
     run: (client, message, args) => {
