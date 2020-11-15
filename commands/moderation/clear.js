@@ -37,7 +37,25 @@ module.exports = {
                         return message.reply(`There was an error attempting to delete user messages: ${err}`)
                     });
                 });
-            } else return message.reply("Sorry, I could not find that user.").then(m => del(m, 7500));
+            } else {
+                let user = await client.users.fetch(args[0]);
+
+                if (user) {
+                    if (isNaN(args[1]) || parseInt(args[1]) <= 0)
+                        return message.reply("Please provide a valid number.").then(m => del(m, 7500));
+
+                    if (!message.guild.me.hasPermission("MANAGE_MESSAGES"))
+                        return message.reply("I do not have permissions to delete messages.").then(m => del(m, 7500));
+
+                    message.channel.messages.fetch({ limit: 100 }).then((messages) => {
+                        const filterBy = user ? user.id : Client.user.id;
+                        messages = messages.filter(m => m.author.id === filterBy).array().slice(0, args[1]);
+                        message.channel.bulkDelete(messages).catch(err => {
+                            return message.reply(`There was an error attempting to delete user messages: ${err}`)
+                        });
+                    });
+                } else return message.reply("Sorry, I could not find that user.").then(m => del(m, 7500));
+            }
         }
     }
 }
