@@ -33,7 +33,7 @@ module.exports = {
         logChannel.send(embed);
 
         let welcomeMSG;
-        let msg = args.join(' ').welcomeMessage.toString();
+        let msg = args.join(' ').toString();
         let msgArray = msg.split(" ");
         let msgMap = await msgArray.map((guild, index) => {
             if (guild.replace(/[0-9]/g, "") == "[]") {
