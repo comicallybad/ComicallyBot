@@ -10,7 +10,7 @@ module.exports = {
     description: "Set a welcoming message for new users. (welcome channel must be set first with `_setwelcomechannel`)",
     permissions: "moderator",
     usage: "<message> Include [user] to mention the new user. Use [Some channelID] to add a mention to a channel",
-    run: (client, message, args) => {
+    run: async (client, message, args) => {
         let guildID = message.guild.id;
         const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
 
