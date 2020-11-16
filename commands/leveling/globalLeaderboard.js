@@ -36,14 +36,14 @@ module.exports = {
                         sorted.forEach((user, index) => {
                             embed.addField(`#${index + 1}:`, `**${user.userName}, level: ${user.level}, XP: ${user.xp}**`)
                         });
-                        return m.edit(embed).then(del(m, 30000));
+                        return m.edit(embed).then(del(m, 30000)).catch(err => err);
                     } else {
                         let array = sorted.map(user => `**${user.userName}, level: ${user.level}, XP: ${user.xp}**`);
                         pageList(m, message.author, array, embed, "#")
                     }
                 } else {
                     embed.setDescription("").addField("XP Leaderboards", "There are no users on the leaderboards.")
-                    return m.edit(embed).then(del(m, 30000));
+                    return m.edit(embed).then(del(m, 30000)).catch(err => err);
                 }
             }
         })
