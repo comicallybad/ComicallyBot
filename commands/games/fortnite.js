@@ -31,8 +31,8 @@ module.exports = {
 
                 store.forEach(el => {
                     embed.addField(el.name, stripIndents`**- Rarity:** ${el.rarity}
-                **- Price:** ${el.vbucks} v-bucks
-                **- Image:** [Press Me](${el.image})`, true)
+                    **- Price:** ${el.vbucks} v-bucks
+                    **- Image:** [Press Me](${el.image})`, true)
                 });
 
                 message.channel.send(embed);
@@ -61,6 +61,7 @@ module.exports = {
                 const duo = search.stats.duo;
                 const squad = search.stats.squad;
 
+                try{
                 const embed = new MessageEmbed()
                     .setTitle(`${search.username} (${search.platform})`)
                     .setURL(search.url)
@@ -83,7 +84,10 @@ module.exports = {
                     **- KD:** ${lifetime.kd}
                     **- Kills:** ${lifetime.kills}`, false)
 
-                message.channel.send(embed).then(m => del(m, 15000));
+                    message.channel.send(embed).then(m => del(m, 30000));
+                }catch{
+                    return message.reply("There was an error finding the stats for this user..").then(m => del(m, 7500));
+                }
             }
     }
 }
