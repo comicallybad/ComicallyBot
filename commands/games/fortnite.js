@@ -29,10 +29,13 @@ module.exports = {
                     return b.vbucks - a.vbucks;
                 });
 
-                store.forEach(el => {
+                store.forEach((el, index) => {
+                    if(index<40)
+                    {
                     embed.addField(el.name, stripIndents`**- Rarity:** ${el.rarity}
                     **- Price:** ${el.vbucks} v-bucks
                     **- Image:** [Press Me](${el.image})`, true)
+                    }
                 });
 
                 message.channel.send(embed);
