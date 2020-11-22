@@ -38,7 +38,14 @@ module.exports = {
                     .addField('Goodnight Message:', `${args.join(' ')}`);
 
                 return message.channel.send(embed);
+            } else{
+                embed
+                    .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
+                    .setThumbnail(member.user.displayAvatarURL())
+                    .addField('Goodmorning Message:', `Goodmorning ${message.member.displayName} sleep tight!`);
+
+                return message.channel.send(embed);
             }
-        }
+        } 
     }
 }

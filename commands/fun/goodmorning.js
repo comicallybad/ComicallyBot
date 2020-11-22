@@ -38,7 +38,14 @@ module.exports = {
                     .addField('Goodmorning Message:', `${args.join(' ')}`);
 
                 return message.channel.send(embed);
+            } else{
+                embed
+                    .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
+                    .setThumbnail(member.user.displayAvatarURL())
+                    .addField('Goodmorning Message:', `Goodmorning ${message.member.displayName} rise and shine!`);
+
+                return message.channel.send(embed);
             }
-        }
+        } 
     }
 }
