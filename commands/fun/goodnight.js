@@ -7,7 +7,7 @@ module.exports = {
     category: "fun",
     description: "Sends a cute goodnight message.",
     permissions: "member",
-    usage: "[@user][Give a goodnight message]",
+    usage: "[@user] [Give a goodnight message]",
     run: async (client, message, args) => {
         const embed = new MessageEmbed()
             .setFooter(`Message from: ${message.member.displayName}`, message.member.user.displayAvatarURL())
