@@ -15,8 +15,8 @@ module.exports = {
 
         if (!args[0]) {
             embed
-                .setThumbnail(message.member.user.displayAvatarURL())
                 .setColor(message.member.displayHexColor === '#000000' ? '#ffffff' : message.member.displayHexColor)
+                .setThumbnail(message.author.displayAvatarURL())
                 .addField('Goodmorning Message:', `Goodmorning ${message.member.displayName} rise and shine!`)
 
             return message.channel.send(embed);
@@ -33,19 +33,19 @@ module.exports = {
                 return message.channel.send(embed);
             } else if (member.id == message.member.id && args[0]) {
                 embed
-                    .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
-                    .setThumbnail(member.user.displayAvatarURL())
+                    .setColor(member.user.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
+                    .setThumbnail(member.author.displayAvatarURL())
                     .addField('Goodmorning Message:', `${args.join(' ')}`);
 
                 return message.channel.send(embed);
-            } else{
+            } else {
                 embed
                     .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
                     .setThumbnail(member.user.displayAvatarURL())
-                    .addField('Goodmorning Message:', `Goodmorning ${message.member.displayName} rise and shine!`);
+                    .addField('Goodmorning Message:', `Goodmorning ${member.displayName} rise and shine!`);
 
                 return message.channel.send(embed);
             }
-        } 
+        }
     }
 }
