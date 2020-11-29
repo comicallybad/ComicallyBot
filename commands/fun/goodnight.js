@@ -42,7 +42,7 @@ module.exports = {
                 embed
                     .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
                     .setThumbnail(member.user.displayAvatarURL())
-                    .addField('Goodnight Message:', `Goodnight ${message.member.displayName} sleep tight!`);
+                    .addField('Goodnight Message:', `Goodnight ${member.displayName} sleep tight!`);
 
                 return message.channel.send(embed);
             }
