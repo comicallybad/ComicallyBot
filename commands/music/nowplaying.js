@@ -14,7 +14,7 @@ module.exports = {
         const { title, author, duration, thumbnail } = player.queue[0];
 
         const embed = new MessageEmbed()
-            .setAuthor("Current Song Playing.", message.author.displayAvatarURL)
+            .setAuthor("Current Song Playing.", message.author.displayAvatarURL())
             .setThumbnail(thumbnail)
             .setDescription(`${player.playing ? "▶️" : "⏸️"} **${title}** \`${Utils.formatTime(duration, true)}\` by ${author}`)
 
