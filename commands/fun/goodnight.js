@@ -25,10 +25,13 @@ module.exports = {
             let member = await message.mentions.users.first() ? message.guild.members.cache.get(message.mentions.users.first().id) : message.member;
 
             if (member.id !== message.member.id && args[1]) {
-                embed
-                    .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
-                    .setThumbnail(member.user.displayAvatarURL())
-                    .addField('Goodnight Message:', `${args.slice(1, args.length).join(' ')}`);
+                if (args.slice(1, args.length).join(' ').length >= 2048)
+                    return message.reply("You can only use a string less than 2048 characters!").then(m => del(m, 7500));
+                else
+                    embed
+                        .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
+                        .setThumbnail(member.user.displayAvatarURL())
+                        .addField('Goodnight Message:', `${args.slice(1, args.length).join(' ')}`);
 
                 return message.channel.send(embed);
             } else if (member.id == message.member.id && args[0]) {
@@ -39,10 +42,13 @@ module.exports = {
 
                 return message.channel.send(embed);
             } else {
-                embed
-                    .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
-                    .setThumbnail(member.user.displayAvatarURL())
-                    .addField('Goodnight Message:', `Goodnight ${member.displayName} sleep tight!`);
+                if (args.slice(1, args.length).join(' ').length >= 2048)
+                    return message.reply("You can only use a string less than 2048 characters!").then(m => del(m, 7500));
+                else
+                    embed
+                        .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
+                        .setThumbnail(member.user.displayAvatarURL())
+                        .addField('Goodnight Message:', `Goodnight ${member.displayName} sleep tight!`);
 
                 return message.channel.send(embed);
             }
