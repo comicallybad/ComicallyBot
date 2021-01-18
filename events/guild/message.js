@@ -50,12 +50,18 @@ module.exports = async (client, message) => {
     if (command) {
         const channelPermissions = message.channel.permissionsFor(message.guild.me);
 
+        if (!channelPermissions.has("VIEW_CHANNEL")) return;
+
         if (!channelPermissions.has("SEND_MESSAGES"))
             return message.author.send("I am missing permissions to `SEND_MESSAGES`").then(m => del(m, 60000)).catch(err => err);
+
+        if (!channelPermissions.has("EMBED_LINKS"))
+            return message.reply("I am missing permissions to `EMBED_LINKS` for certain commands.").then(m => del(m, 30000));
 
         if (!channelPermissions.has("MANAGE_MESSAGES") || !channelPermissions.has("ADD_REACTIONS"))
             return message.reply("I am missing permissions to `MANAGE_MESSAGES` for a clean command experience"
                 + " and/or permissions for `ADD_REACTIONS` for essential commands.").then(m => del(m, 30000));
+
 
         let perms = await hasPermissions(message, command.permissions);
         let cmdStatus = await getCommandStatus(message, command.name);
