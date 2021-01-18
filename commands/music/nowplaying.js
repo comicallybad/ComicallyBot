@@ -1,5 +1,5 @@
 const { del } = require("../../functions.js");
-const { Utils } = require("erela.js")
+const humanizeDuration = require("humanize-duration");
 const { MessageEmbed } = require("discord.js")
 
 module.exports = {
@@ -16,7 +16,7 @@ module.exports = {
         const embed = new MessageEmbed()
             .setAuthor("Current Song Playing.", message.author.displayAvatarURL())
             .setThumbnail(thumbnail)
-            .setDescription(`${player.playing ? "▶️" : "⏸️"} **${title}** \`${Utils.formatTime(duration, true)}\` by ${author}`)
+            .setDescription(`${player.playing ? "▶️" : "⏸️"} **${title}** \`${humanizeDuration(duration)}\` by ${author}`)
 
         return message.channel.send(embed).then(m => del(m, 15000));
     }

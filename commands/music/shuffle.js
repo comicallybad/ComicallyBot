@@ -12,7 +12,7 @@ module.exports = {
             return message.reply("No song currently playing in this guild").then(m => del(m, 7500));
 
         const voiceChannel = message.member.voice.channel;
-        if (!voiceChannel || voiceChannel.id !== player.voiceChannel.id)
+        if (!voiceChannel || voiceChannel.id !== player.voiceChannel)
             return message.reply("You need to be in the voice channel to play music.").then(m => del(m, 7500));
 
         player.queue.shuffle();

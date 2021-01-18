@@ -11,10 +11,10 @@ module.exports = {
         if (!player) return message.reply("No song/s currently playing in this guild.");
 
         const voiceChannel = message.member.voice.channel;
-        if (!voiceChannel || voiceChannel.id !== player.voiceChannel.id)
+        if (!voiceChannel || voiceChannel.id !== player.voiceChannel)
             return message.reply("You need to be in a voice channel to pause music.").then(m => del(m, 7500));
 
-        player.pause(player.playing);
+        player.pause(true);
         return message.reply(`Player is now ${player.playing ? "resumed" : "paused"}.`).then(m => del(m, 7500));
     }
 }

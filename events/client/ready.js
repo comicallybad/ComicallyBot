@@ -1,7 +1,6 @@
 const { del } = require("../../functions.js");
 const mongoose = require("mongoose");
 const { dbSetup } = require("../../dbFunctions.js");
-const { ErelaClient, Utils } = require("erela.js");
 const { stripIndents } = require("common-tags");
 
 module.exports = client => {
@@ -25,14 +24,5 @@ module.exports = client => {
 
     dbSetup(client);
 
-    client.music = new ErelaClient(client, [{ "host": "localhost", "port": 2333, "password": process.env.ERELA }])
-        .on("nodeError", () => console.log("Error connecting Erela"))
-        .on("nodeConnect", () => console.log("Successfully connected Erela."))
-        .on("queueEnd", player => {
-            player.textChannel.send("Queue has ended.").then(m => del(m, 30000));
-            return client.music.players.destroy(player.guild.id)
-        })
-        .on("trackStart", ({ textChannel }, { title, duration }) => {
-            textChannel.send(`Now playing: **${title}** \`${Utils.formatTime(duration, true)}\``).then(m => del(m, 30000));
-        });
+    client.music.init(client.user.id);
 }

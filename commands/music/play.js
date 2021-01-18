@@ -1,5 +1,5 @@
 const { del } = require("../../functions.js");
-const { Utils } = require("erela.js");
+const humanizeDuration = require("humanize-duration");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
@@ -33,7 +33,8 @@ module.exports = {
                 return message.reply(`Player is now ${checkPlayer.playing ? "resumed" : "paused"}.`).then(m => del(m, 7500));
             } else return message.reply("Please provide a song name or link to search.").then(m => del(m, 7500));
         } else if (!args[0] && checkPlayer.voiceChannel !== voiceChannel) {
-            checkPlayer.setVoiceChannel(voiceChannel);
+            checkPlayer.voiceChannel = voiceChannel;
+            checkPlayer.connect();
             if (!checkPlayer.playing) checkPlayer.pause(checkPlayer.playing);
             return message.reply(`Player has successfully joined.`).then(m => del(m, 7500));
         }
@@ -44,21 +45,21 @@ module.exports = {
             }
         }
 
-        const player = client.music.players.spawn({
-            guild: message.guild,
-            textChannel: message.channel,
-            voiceChannel,
+        const player = client.music.create({
+            guild: message.guild.id,
+            voiceChannel: voiceChannel.id,
+            textChannel: message.channel.id,
             volume: 10,
-            selfDeaf: true,
+            selfDeafen: true,
         });
 
-        player.setVoiceChannel(voiceChannel);
+        player.connect();
 
         client.music.search(args.join(" "), message.author).then(async res => {
             switch (res.loadType) {
                 case "TRACK_LOADED":
                     player.queue.add(res.tracks[0]);
-                    message.reply(`Queuing \`${res.tracks[0].title}\` \`${Utils.formatTime(res.tracks[0].duration, true)}\``).then(m => del(m, 15000));
+                    message.reply(`Queuing \`${res.tracks[0].title}\` \`${humanizeDuration(res.tracks[0].duration)}\``).then(m => del(m, 15000));
                     if (!player.playing) player.play();
                     break;
 
@@ -83,7 +84,7 @@ module.exports = {
                         }
                         const track = tracks[Number(m.content) - 1];
                         player.queue.add(track)
-                        message.reply(`Queuing \`${track.title}\` \`${Utils.formatTime(track.duration, true)}\``).then(m => del(m, 15000));
+                        message.reply(`Queuing \`${track.title}\` \`${humanizeDuration(track.duration)}\``).then(m => del(m, 15000));
                         if (!player.playing) player.play();
                         del(m, 0);
                         del(selector, 0);
@@ -98,9 +99,9 @@ module.exports = {
                     break;
 
                 case "PLAYLIST_LOADED":
-                    res.playlist.tracks.forEach(track => player.queue.add(track));
-                    const duration = Utils.formatTime(res.playlist.tracks.reduce((acc, cur) => ({ duration: acc.duration + cur.duration })).duration, true);
-                    message.reply(`Queuing \`${res.playlist.tracks.length}\` \`${duration}\` tracks in playlist \`${res.playlist.info.name}\``).then(m => del(m, 15000));
+                    res.tracks.forEach(track => player.queue.add(track));
+                    const duration = humanizeDuration(res.tracks.reduce((acc, cur) => ({ duration: acc.duration + cur.duration })).duration);
+                    message.reply(`Queuing \`${res.tracks.length}\` \`${duration}\` tracks in playlist \`${res.playlist.name}\``).then(m => del(m, 15000));
                     if (!player.playing) player.play();
                     break;
             }
