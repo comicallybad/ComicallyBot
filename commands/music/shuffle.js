@@ -8,7 +8,7 @@ module.exports = {
     permissions: "member",
     run: (client, message, args) => {
         const player = client.music.players.get(message.guild.id);
-        if (!player || !player.queue[0])
+        if (!player || !player.queue.current)
             return message.reply("No song currently playing in this guild").then(m => del(m, 7500));
 
         const voiceChannel = message.member.voice.channel;

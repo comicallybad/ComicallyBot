@@ -33,8 +33,7 @@ module.exports = {
                 return message.reply(`Player is now ${checkPlayer.playing ? "resumed" : "paused"}.`).then(m => del(m, 7500));
             } else return message.reply("Please provide a song name or link to search.").then(m => del(m, 7500));
         } else if (!args[0] && checkPlayer.voiceChannel !== voiceChannel) {
-            checkPlayer.voiceChannel = voiceChannel;
-            checkPlayer.connect();
+            checkPlayer.setVoiceChannel(voiceChannel.id);
             if (!checkPlayer.playing) checkPlayer.pause(checkPlayer.playing);
             return message.reply(`Player has successfully joined.`).then(m => del(m, 7500));
         }
