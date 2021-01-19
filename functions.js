@@ -202,23 +202,17 @@ module.exports = {
     checkMuteRole: async function (message) {
         let muterole = message.guild.roles.cache.find(r => r.name === "Muted")
         if (!muterole) {
-            try {
-                muterole = await message.guild.roles.create({
-                    data: { name: "Muted", color: "#778899", permissions: [] }
-                })
-                message.guild.channels.cache.forEach(async (channel, id) => {
-                    await channel.updateOverwrite(muterole, {
-                        SEND_MESSAGES: false,
-                        ADD_REACTIONS: false,
-                        SEND_TTS_MESSAGES: false,
-                        ATTACH_FILES: false,
-                        SPEAK: false,
-                        CONNECT: false
-                    })
-                })
-            } catch (e) {
-                console.log(e.stack);
-            }
+            muterole = await message.guild.roles.create({
+                data: { name: "Muted", color: "#778899", permissions: [] }
+            }).catch(err => message.reply(`${err}`));
+            message.guild.channels.cache.forEach(async (channel, id) => {
+                await channel.createOverwrite(muterole, {
+                    SEND_MESSAGES: false,
+                    ADD_REACTIONS: false,
+                    SPEAK: false,
+                    CONNECT: false
+                 }).catch(err =>err);
+            })
         }
         return muterole;
     },
