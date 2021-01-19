@@ -53,10 +53,13 @@ module.exports = async (client, message) => {
         if (!channelPermissions.has("VIEW_CHANNEL")) return;
 
         if (!channelPermissions.has("SEND_MESSAGES"))
-            return message.author.send("I am missing permissions to `SEND_MESSAGES`").then(m => del(m, 60000)).catch(err => err);
+            return message.author.send("I am missing permissions to `SEND_MESSAGES`").then(m => del(m, 60000));
 
         if (!channelPermissions.has("EMBED_LINKS"))
             return message.reply("I am missing permissions to `EMBED_LINKS` for certain commands.").then(m => del(m, 30000));
+
+        if (!channelPermissions.has("READ_MESSAGE_HISTORY"))
+            return message.reply("I am missing permissions to `READ_MESSAGE_HISTORY` for certain commands.").then(m => del(m, 30000));
 
         if (!channelPermissions.has("MANAGE_MESSAGES") || !channelPermissions.has("ADD_REACTIONS"))
             return message.reply("I am missing permissions to `MANAGE_MESSAGES` for a clean command experience"
@@ -70,7 +73,7 @@ module.exports = async (client, message) => {
 
         if (command.category !== 'command' && command.category !== "owner" && command.category !== "support") {
             if (!cmdStatus) return message.reply("This command is currently disabled.").then(m => del(m, 7500));
-            if (!perms) return message.reply("You do not have permissions for this command.").then(m => del(m, 7500));
+            if (!perms) return message.reply("You do not have permissions for this command.").then(m => del(m, 7500))
             else return command.run(client, message, args);
         } else {
             if (!perms) return message.reply("You do not have permissions for this command.").then(m => del(m, 7500));
