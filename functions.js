@@ -133,7 +133,7 @@ module.exports = {
             .awaitReactions(filter, { max: max, time: time })
             .then(collected => {
                 if (collected.first()) return collected.first().users.cache.map(usr => usr).filter(usr => !usr.bot);
-                else return [];
+                else return message.reactions.cache.get(`${emoji}`).users.cache.map(usr => usr).filter(usr => !usr.bot);
             }).catch(err => console.log(`There was an error in awaitReaction ${err}`));
     },
 
@@ -211,7 +211,7 @@ module.exports = {
                     ADD_REACTIONS: false,
                     SPEAK: false,
                     CONNECT: false
-                 }).catch(err =>err);
+                }).catch(err => err);
             })
         }
         return muterole;
