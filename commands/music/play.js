@@ -18,7 +18,7 @@ module.exports = {
 
         const permissions = voiceChannel.permissionsFor(client.user);
 
-        if (!permissions.has("VIEW_CHANNEL")) 
+        if (!permissions.has("VIEW_CHANNEL"))
             return message.reply("I cannot view the channel you wish to connect me to!").then(m => del(m, 7500));
 
         if (!permissions.has("CONNECT"))
