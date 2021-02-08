@@ -13,9 +13,6 @@ module.exports = {
             return message.reply("No song/s currently playing within this guild.").then(m => del(m, 7500));
         const voiceChannel = message.member.voice.channel;
 
-        console.log(voiceChannel.id)
-        console.log(player.voiceChannel)
-
         if (!voiceChannel || voiceChannel.id !== player.voiceChannel)
             return message.reply("You need to be in the voice channel to adjust the volume.").then(m => del(m, 7500));
 
