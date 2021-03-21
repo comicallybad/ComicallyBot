@@ -24,7 +24,7 @@ module.exports = {
         } else if (roleNames.includes(args.join(" "))) {
             roleID = roleIDs[roleNames.indexOf(args.join(" "))];
         } else {
-            return message.reply("Sorry, I could not find that role.")
+            return message.reply("Sorry, I could not find that role.").then(m => del(m, 7500));
         }
 
         let role = roles.filter(role => role.id == roleID).map(role => role)[0];
@@ -44,7 +44,7 @@ module.exports = {
             array.forEach((user, index) => {
                 embed.addField(`Role Member ${index}`, `${user}`);
             });
-            return message.channel.send(embed).then(m => del(m, 30000));
+            return m.edit(embed).then(m => del(m, 30000));
         }
         else {
             return pageList(m, message.author, array, embed, "Role Member:");
