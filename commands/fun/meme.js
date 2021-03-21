@@ -13,6 +13,8 @@ module.exports = {
         const random = subReddits[Math.floor(Math.random() * subReddits.length)];
 
         const img = await randomPuppy(random)
+        while (img == undefined) await randomPuppy(random);
+
         const embed = new MessageEmbed()
             .setColor("#0efefe")
             .setImage(img)
