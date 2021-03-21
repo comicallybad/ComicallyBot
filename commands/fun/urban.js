@@ -16,23 +16,29 @@ module.exports = {
         let search = args[1] ? urban(args.slice(1).join(" ")) : urban.random();
         try {
             search.first(res => {
-                if (!res) return message.reply("No results found for this topic, sorry!");
+                if (!res) return message.reply("No results found for this topic, sorry!").then(m => del(m, 7500));
                 let { word, definition, example, thumbs_up, thumbs_down, permalink, author } = res;
 
-                let embed = new MessageEmbed()
-                    .setColor("#0efefe")
-                    .setAuthor(`Urban Dictionary | ${word}`, image)
-                    .setThumbnail(image)
-                    .setDescription(stripIndents`**Defintion:** ${definition || "No definition"}
-                            **Example:** ${example || "No Example"}
-                            **Upvote:** ${thumbs_up || 0}
-                            **Downvote:** ${thumbs_down || 0}
-                            **Link:** [link to ${word}](${permalink || "https://www.urbandictionary.com/"})`)
-                    .setTimestamp()
-                    .setFooter(`Written by ${author || "unknown"}`);
+                let description = stripIndents`**Defintion:** ${definition || "No definition"}
+                    **Example:** ${example || "No Example"}
+                    **Upvote:** ${thumbs_up || 0}
+                    **Downvote:** ${thumbs_down || 0}
+                    **Link:** [link to ${word}](${permalink || "https://www.urbandictionary.com/"})`
 
-                message.channel.send(embed)
-            })
+                if (description.length >= 1024)
+                    return message.reply("This definition is too long of a string for a message embed sorry!").then(m => del(m, 7500));
+                else {
+                    let embed = new MessageEmbed()
+                        .setColor("#0efefe")
+                        .setAuthor(`Urban Dictionary | ${word}`, image)
+                        .setThumbnail(image)
+                        .setDescription(description)
+                        .setTimestamp()
+                        .setFooter(`Written by ${author || "unknown"}`);
+
+                    message.channel.send(embed)
+                }
+            });
         } catch (err) {
             return message.channel.send(`Error while searching... ${err}`).then(m => del(m, 7500));
         }
