@@ -14,6 +14,9 @@ module.exports = {
         let guildID = message.guild.id;
         const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
 
+        if (args.join(' ') >= 1024)
+            return message.reply("Your welcome message must be 1024 characters or shorter.").then(m => del(m, 7500));
+
         db.findOne({ guildID: guildID }, (err, exists) => {
             if (exists) {
                 exists.welcomeMessage = `${args.join(' ')}`;
@@ -31,23 +34,20 @@ module.exports = {
                 return msgArray[index] = `${channel}`;
             } else return msgArray[index];
         });
+
         welcomeMSG = msgMap.join(" ");
 
-        if (welcomeMSG >= 1024)
-            return message.reply("Your welcome message must be 1024 characters or shorter.").then(m => del(m, 7500));
-        else {
-            const embed = new MessageEmbed()
-                .setColor("#0efefe")
-                .setTitle("Welcome Message Changed")
-                .setFooter(message.member.displayName, message.author.displayAvatarURL())
-                .setTimestamp()
-                .setDescription(stripIndents`
+        const embed = new MessageEmbed()
+            .setColor("#0efefe")
+            .setTitle("Welcome Message Changed")
+            .setFooter(message.member.displayName, message.author.displayAvatarURL())
+            .setTimestamp()
+            .setDescription(stripIndents`
             **Welcome message changed to:** ${welcomeMSG}
             **Welcome message changed by:** ${message.author}`);
 
-            logChannel.send(embed);
+        logChannel.send(embed);
 
-            return message.reply(`Welcome message has been set to: ${welcomeMSG}`).then(m => del(m, 7500));
-        }
+        return message.reply(`Welcome message has been set to: ${welcomeMSG}`).then(m => del(m, 7500));
     }
 }
