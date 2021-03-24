@@ -33,17 +33,21 @@ module.exports = {
         });
         welcomeMSG = msgMap.join(" ");
 
-        const embed = new MessageEmbed()
-            .setColor("#0efefe")
-            .setTitle("Welcome Message Changed")
-            .setFooter(message.member.displayName, message.author.displayAvatarURL())
-            .setTimestamp()
-            .setDescription(stripIndents`
+        if (welcomeMSG >= 1024)
+            return message.reply("Your welcome message must be 1024 characters or shorter.").then(m => del(m, 7500));
+        else {
+            const embed = new MessageEmbed()
+                .setColor("#0efefe")
+                .setTitle("Welcome Message Changed")
+                .setFooter(message.member.displayName, message.author.displayAvatarURL())
+                .setTimestamp()
+                .setDescription(stripIndents`
             **Welcome message changed to:** ${welcomeMSG}
             **Welcome message changed by:** ${message.author}`);
 
-        logChannel.send(embed);
+            logChannel.send(embed);
 
-        return message.reply(`Welcome message has been set to: ${welcomeMSG}`).then(m => del(m, 7500));
+            return message.reply(`Welcome message has been set to: ${welcomeMSG}`).then(m => del(m, 7500));
+        }
     }
 }
