@@ -42,7 +42,7 @@ module.exports = {
         **- Private account:** ${account.is_private ? "Yes 🔐" : "Nope 🔓"}`
 
         if (info >= 1024)
-            return message.reply("Sorry, this profile must have a bio too large to fit inside of a message embed.")
+            return message.reply("Sorry, this profile must have a bio too large to fit inside of a message embed.").then(m => del(m, 7500));
         else {
             const embed = new MessageEmbed()
                 .setColor("#0efefe")
