@@ -33,19 +33,25 @@ module.exports = {
         if (res.graphql) account = res.graphql.user;
         else return message.reply("Sorry there was an error finding that account.").then(m => del(m, 7500));
 
-        const embed = new MessageEmbed()
-            .setColor("#0efefe")
-            .setTitle(account.full_name)
-            .setURL(`https://instagram.com/${name}`)
-            .setThumbnail(account.profile_pic_url_hd)
-            .addField("Profile information", stripIndents`**- Username:** ${account.username}
-            **- Full name:** ${account.full_name}
-            **- Biography:** ${account.biography.length == 0 ? "none" : account.biography}
-            **- Posts:** ${account.edge_owner_to_timeline_media.count}
-            **- Followers:** ${account.edge_followed_by.count}
-            **- Following:** ${account.edge_follow.count}
-            **- Private account:** ${account.is_private ? "Yes 🔐" : "Nope 🔓"}`);
+        const info = stripIndents`**- Username:** ${account.username}
+        **- Full name:** ${account.full_name}
+        **- Biography:** ${account.biography.length == 0 ? "none" : account.biography}
+        **- Posts:** ${account.edge_owner_to_timeline_media.count}
+        **- Followers:** ${account.edge_followed_by.count}
+        **- Following:** ${account.edge_follow.count}
+        **- Private account:** ${account.is_private ? "Yes 🔐" : "Nope 🔓"}`
 
-        message.channel.send(embed).then(m => del(m, 15000));
+        if (info >= 1024)
+            return message.reply("Sorry, this profile must have a bio too large to fit inside of a message embed.")
+        else {
+            const embed = new MessageEmbed()
+                .setColor("#0efefe")
+                .setTitle(account.full_name)
+                .setURL(`https://instagram.com/${name}`)
+                .setThumbnail(account.profile_pic_url_hd)
+                .addField("Profile information", info);
+
+            message.channel.send(embed).then(m => del(m, 15000));
+        }
     }
 }
