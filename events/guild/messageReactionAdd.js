@@ -15,7 +15,7 @@ module.exports = async (client, message, user) => {
 }
 
 function checkReactionRole(message, user) {
-    if (!message.guild.me.hasPermission("MANAGE_ROLES")) return;
+    if (!message.message.guild.me.hasPermission("MANAGE_ROLES")) return;
 
     let logChannel;
     if (message.message.guild.channels)
