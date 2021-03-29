@@ -31,8 +31,6 @@ function removeReactionRole(message) {
 }
 
 function checkReactionRole(message, user) {
-    if (!message.message.guild.me.hasPermission("MANAGE_ROLES")) return;
-
     let logChannel;
     if (message.message.guild.channels)
         logChannel = message.message.guild.channels.cache.find(c => c.name === "reaction-logs" || c.name === "mod-logs" || undefined);
