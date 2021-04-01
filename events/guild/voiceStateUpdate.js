@@ -17,9 +17,9 @@ module.exports = (client, voiceStateStart, voiceStateEnd) => {
             const guildID = voiceStateEnd.guild.id;
             const player = client.music.players.get(guildID);
             if (player) client.music.players.get(guildID).destroy();
-                if (channelsSome(startChannel)) {
-                    channelsSplice(startChannel)
-                }
+            if (channelsSome(startChannel)) {
+                channelsSplice(startChannel)
+            }
         } else {//Update user count
             if (channelsFind(startChannel)) {
                 channelsFind(startChannel).users -= 1;
@@ -87,7 +87,7 @@ function disconnect(client, channelID) {
             const guildID = client.channels.cache.get(channelID).guild.id;
             const player = client.music.players.get(guildID);
             if (player) client.music.players.get(guildID).destroy();
-            else client.channels.cache.get(channelID).disconnect()
+            else client.channels.cache.get(channelID).leave()
             if (channelsSome(channelID)) channelsSplice(channelID)
         }
 }
