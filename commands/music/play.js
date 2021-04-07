@@ -55,7 +55,7 @@ module.exports = {
             selfDeafen: true,
         });
 
-        player.connect();
+        if (player.state !== "CONNECTED") player.connect();
 
         client.music.search(args.join(" "), message.author).then(async res => {
             switch (res.loadType) {
