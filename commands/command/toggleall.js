@@ -37,7 +37,7 @@ module.exports = {
                 **Commands Toggled by:** ${message.member.user}
                 **Commands Toggled:** ON`);
 
-            logChannel.send(embed);
+            logChannel.send(embed).catch(err => err);
 
             return message.reply("Toggling all commands on... this may take a second...").then(m => del(m, 7500));
         }
@@ -59,7 +59,7 @@ module.exports = {
                 **Commands Toggled by: ${message.member.user}
                 **Commands Toggled:** OFF`);
 
-            logChannel.send(embed);
+            logChannel.send(embed).catch(err => err);
 
             return message.reply("Toggling all commands off... this may take a second...").then(m => del(m, 7500));
         }

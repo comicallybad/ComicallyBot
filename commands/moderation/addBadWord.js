@@ -40,6 +40,6 @@ module.exports = {
 
         message.reply("Adding bad word(s) to the list...").then(m => del(m, 7500));
 
-        return logChannel.send(embed);
+        return logChannel.send(embed).catch(err => err);
     }
 }

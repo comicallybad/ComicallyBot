@@ -29,9 +29,9 @@ module.exports = async (client, data) => {
 
                 if (time <= 604800000) { //604800000  is 7 days in MS
                     embed.addField("**Warning** new user account:", `Account created ${accountTime} ago.`);
-                    logChannel.send(embed);
+                    logChannel.send(embed).catch(err => err);
                 } else {
-                    logChannel.send(embed);
+                    logChannel.send(embed).catch(err => err);
                 }
             }
             let welcomeCH;

@@ -19,7 +19,7 @@ module.exports = async (client, data) => {
                     .setFooter(`ID: ${data.user.id}`)
                     .setTimestamp()
 
-                logChannel.send(embed);
+                logChannel.send(embed).catch(err => err);
             }
         }
     }

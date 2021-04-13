@@ -62,7 +62,7 @@ module.exports = {
                         **XP Giveaway won by:** <@${userID}> (${userID})
                         **XP Given:** ${amount}`);
 
-                    logChannel.send(logEmbed);
+                    logChannel.send(logEmbed).catch(err => err);
 
                     msg.edit(embed).catch(err => err);
                 }).catch(err => console.log(`There was an error in giveaway (addxp) ${err}`));

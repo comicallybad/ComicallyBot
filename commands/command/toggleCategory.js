@@ -52,7 +52,7 @@ module.exports = {
                 **Commands Category:** ${args[0]}
                 **Commands Toggled:** ON`);
 
-            logChannel.send(embed);
+            logChannel.send(embed).catch(err => err);
 
             return message.reply("Enabling category... this may take a second...").then(m => del(m, 7500));
         }
@@ -78,7 +78,7 @@ module.exports = {
                 **Commands Category:** ${args[0]}
                 **Commands Toggled:** OFF`);
 
-            logChannel.send(embed);
+            logChannel.send(embed).catch(err => err);
 
             return message.reply("Disabling category... this may take a second...").then(m => del(m, 7500));
         }

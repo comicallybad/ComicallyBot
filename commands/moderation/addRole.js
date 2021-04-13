@@ -53,7 +53,7 @@ module.exports = {
                 user.roles.add(role.id).then(() => {
                     user.send(`Hello, you have been added to the **${role.name}** role in ${message.guild.name}`).catch(err => err); //in case DM's are closed
                     message.reply(`${user} was successfully added to the **${role.name}** role.`).then(m => del(m, 7500));
-                    logChannel.send(embed);
+                    logChannel.send(embed).catch(err => err);
                 }).catch(err => {
                     if (err) return message.reply(`There was an error attempting to add ${user} to the ${role.name} role: ${err}`).then(m => del(m, 7500));
                 })

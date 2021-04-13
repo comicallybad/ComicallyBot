@@ -60,7 +60,7 @@ module.exports = {
                     if (err) return message.reply(`There was an error attempting to unban ${bannedMember} ${err}`).then(m => del(m, 7500));
                 });
 
-                logChannel.send(embed);
+                logChannel.send(embed).catch(err => err);
             } else if (emoji === "❌") {
                 del(msg, 0);
                 return message.reply(`Unban cancelled.`).then(m => del(m, 7500));

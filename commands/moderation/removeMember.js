@@ -44,7 +44,7 @@ module.exports = {
                             **Member Removed by:** ${message.member.user}
                             **Role/User ID Removed:** (${roleID})`);
 
-                        logChannel.send(embed);
+                        logChannel.send(embed).catch(err => err);
 
                         return message.reply("Removing member... this may take a second...").then(m => del(m, 7500));
                     }).catch(err => console.log(err))

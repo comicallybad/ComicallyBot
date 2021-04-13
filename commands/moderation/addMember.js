@@ -56,7 +56,7 @@ module.exports = {
                             **Member Added by:** ${message.member.user}
                             **Role/User Added:** ${roleName} (${roleID})`);
 
-                        logChannel.send(embed);
+                        logChannel.send(embed).catch(err => err);
 
                         return message.reply("Adding member... this may take a second...").then(m => del(m, 7500));
                     }).catch(err => console.log(err))

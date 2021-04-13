@@ -64,7 +64,7 @@ module.exports = {
                             **XP Role Added:** ${roleName} (${roleID})
                             **Level:** ${level}`);
 
-                        logChannel.send(embed);
+                        logChannel.send(embed).catch(err => err);
 
                         return message.reply("Adding XP level role.").then(m => del(m, 7500));
                     }).catch(err => console.log(err))

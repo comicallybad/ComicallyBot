@@ -256,19 +256,19 @@ module.exports = {
         if (userArray.some(user => user.id === message.author.id)) {
             userArray.find(user => user.id === message.author.id).offences += 1;
             if (userArray.some(user => user.id == message.author.id && user.offences < 3)) {
-                logChannel.send(embed);
+                logChannel.send(embed).catch(err => err);
                 return message.reply(`You will be muted for ${type} if this continues.`).then(m => module.exports.del(m, 7500));
             } else if (userArray.some(user => user.id == message.author.id && user.offences == 3)) {
                 module.exports.punish(message, userArray, type);
             } else if (userArray.some(user => user.id == message.author.id && user.offences == 4)) {
-                logChannel.send(embed);
+                logChannel.send(embed).catch(err => err)
                 return message.reply(`You will be muted for ${type} if this continues.`).then(m => module.exports.del(m, 7500));
             } else if (userArray.some(user => user.id == message.author.id && user.offences == 5)) {
                 module.exports.punish(message, userArray, type);
             }
         } else {
             userArray.push({ id: message.author.id, offences: 1 });
-            logChannel.send(embed);
+            logChannel.send(embed).catch(err => err);
             return message.reply(`Your messages were deleted for ${type}.`).then(m => module.exports.del(m, 7500));
         }
     },
@@ -294,7 +294,7 @@ module.exports = {
                     message.member.send(`Hello, you have been **muted** **for 5 minutes** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                     message.reply(`${message.member.user.username} was successfully muted **5 minutes** for **${reason}**.`).then(m => module.exports.del(m, 7500));
                     embed.addField("Mute Time: ", "5 minutes");
-                    logChannel.send(embed);
+                    logChannel.send(embed).catch(err => err);
                 }).catch(err => {
                     if (err) return message.reply(`There was an error attempting to mute ${message.member} ${err}`).then(m => module.exports.del(m, 7500));
                 }).then(setTimeout(() => {
@@ -311,7 +311,7 @@ module.exports = {
                     message.member.send(`Hello, you have been **muted** **for 10 minutes** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                     message.reply(`${message.member.user.username} was successfully muted **10 minutes** for **${reason}**.`).then(m => module.exports.del(m, 7500));
                     embed.addField("Mute Time: ", "10 minutes");
-                    logChannel.send(embed);
+                    logChannel.send(embed).catch(err => err);
                 }).catch(err => {
                     if (err) return message.reply(`There was an error attempting to mute ${message.member} ${err}`).then(m => module.exports.del(m, 7500));
                 }).then(setTimeout(() => {

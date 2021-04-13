@@ -13,7 +13,7 @@ module.exports = async (client, guild, user) => {
                 .setFooter(`ID: ${user.id}`)
                 .setTimestamp()
 
-            logChannel.send(embed);
+            logChannel.send(embed).catch(err => err);
         }
     }
 }

@@ -56,7 +56,7 @@ module.exports = {
                             **User's XP Removed:** <@${userID}> ${userName} (${userID})
                             **XP Removed:** ${xpToRemove}`);
 
-                        logChannel.send(embed);
+                        logChannel.send(embed).catch(err => err);
 
                         return message.reply(xpToRemove + " XP was removed to the user.").then(m => del(m, 7500));
                     }

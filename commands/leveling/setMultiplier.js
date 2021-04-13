@@ -38,7 +38,7 @@ module.exports = {
                     **Multiplier Set by:** ${message.member.user}
                     **Multiplier Set to:** ${args[0]}`);
 
-                logChannel.send(embed);
+                logChannel.send(embed).catch(err => err);
 
                 return message.reply("Server multiplier set to: " + args[0] + "x XP").then(m => del(m, 7500));
             }

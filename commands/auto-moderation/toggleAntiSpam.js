@@ -49,7 +49,7 @@ module.exports = {
             $set: { antiSpam: bool }
         }).catch(err => console.log(err))
 
-        logChannel.send(embed);
+        logChannel.send(embed).catch(err => err);
         return message.reply(`The anti-spam system has been toggled to ${args[0]}.`).then(m => del(m, 7500));
     }
 }

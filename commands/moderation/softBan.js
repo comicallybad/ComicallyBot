@@ -15,7 +15,7 @@ module.exports = {
         if (!message.guild.me.hasPermission("BAN_MEMBERS"))
             return message.reply("I don't have the permission to perform this command!").then(m => del(m, 7500));
 
-        if(!args[0])
+        if (!args[0])
             return message.reply("Please provide a user to softban.").then(m => del(m, 7500));
 
         try {
@@ -59,7 +59,7 @@ module.exports = {
                         if (err) return message.reply(`There was an error attempting to softban ${toBan} ${err}`).then(m => del(m, 7500));
                     });
 
-                    return logChannel.send(embed);
+                    return logChannel.send(embed).catch(err => err);
                 } else if (emoji === "❌") {
                     del(msg, 0);
                     return message.reply(`Softban cancelled.`).then(m => del(m, 7500));
