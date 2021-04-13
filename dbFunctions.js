@@ -164,7 +164,7 @@ module.exports = {
             roles.forEach(role => {
                 if (!user.roles.cache.get(role.roleID)) {
                     embed.setDescription(`${user} ${user.user.tag} joined the **${role.roleName}**(${role.roleID})`);
-                    if (logChannel) logChannel.send(embed);
+                    if (logChannel) logChannel.send(embed).catch(err => err);
                     user.roles.add(role.roleID).then(() => {
                         return user.send(`Hello, you have been given the **${role.roleName}** role in ${message.guild.name} for: **Ranking up to level ${level}!**`).catch(err => err);
                     }).catch(err => {
