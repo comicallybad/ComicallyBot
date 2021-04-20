@@ -15,6 +15,7 @@ config({ path: __dirname + "/.env" });
 global.prefix = "_";
 global.voiceChannels = [], global.profanityUsers = [];
 global.spamUsers = [], global.spamOffencers = [];
+global.botChatters = [];
 
 ["aliases", "commands"].forEach(x => client[x] = new Collection());
 ["command", "event", "erela"].forEach(x => require(`./handlers/${x}`)(client));
