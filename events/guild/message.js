@@ -29,11 +29,24 @@ module.exports = async (client, message) => {
     if (!message.content.startsWith(prefix) && !message.content.replace(/\D/g, '').startsWith(`${client.user.id}`)) {
         db.findOne({ guildID: message.guild.id, channels: { $elemMatch: { command: "Bot Chatting" } } }, async (err, exists) => {
             if (exists) {
+                console.log(botChatters);
                 let channel = await client.channels.cache.get(exists.channels.filter(x => x.command === "Bot Chatting")[0].channelID);
-                if (message.channel == channel) return cleverbot(`${message.content}`).then(response => message.channel.send(response));
-                else return;
-            }
-            else return;
+                if (botChatters.some(user => user.id === message.author.id)) {
+                    if (message.channel == channel) return cleverbot(`${message.content}`, botChatters.responses).then(response => {
+                        if (botChatters.some(user => user.id === message.author.id)) {
+                            botChatters.find(user => user.id === message.author.id).responses.push(`${response}`);
+                            message.channel.send(response);
+                        } else botChatters.push({ id: message.author.id, responses: [`${response}`] });
+                    });
+                    else return;
+                } else {
+                    if (message.channel == channel) return cleverbot(`${message.content}`).then(response => {
+                        botChatters.push({ id: message.author.id, responses: [`${response}`] });
+                        message.channel.send(response);
+                    });
+                    else return;
+                }
+            } else return;
         });
         return;
     }
