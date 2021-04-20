@@ -34,16 +34,14 @@ module.exports = async (client, message) => {
                     if (message.channel == channel) return cleverbot(`${message.content}`, botChatters.responses).then(response => {
                         if (botChatters.some(user => user.id === message.author.id)) {
                             botChatters.find(user => user.id === message.author.id).responses.push(`${response}`);
-                            message.channel.send(response);
-                        } else botChatters.push({ id: message.author.id, responses: [`${response}`] });
+                            return message.channel.send(response);
+                        }
                     });
-                    else return;
                 } else {
                     if (message.channel == channel) return cleverbot(`${message.content}`).then(response => {
                         botChatters.push({ id: message.author.id, responses: [`${response}`] });
-                        message.channel.send(response);
+                        return message.channel.send(response);
                     });
-                    else return;
                 }
             } else return;
         });
