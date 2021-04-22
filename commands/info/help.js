@@ -10,16 +10,8 @@ module.exports = {
     permissions: "everyone",
     usage: "[command | alias | category]",
     run: async (client, message, args) => {
-        // If there's an arg found
-        // Send the info of that command found
-        // If no info found, return not found embed.
-        if (args[0]) {
-            return getSpecific(client, message, args[0]);
-        } else {
-            // Otherwise send all the commands available
-            // Without the cmd info
-            return getAll(client, message);
-        }
+        if (args[0]) return getSpecific(client, message, args[0]);
+        else return getAll(client, message);
     }
 }
 
@@ -28,25 +20,15 @@ async function getAll(client, message) {
         .addField("Additional information",
             `Members must be added to gain access to \`member\` commands via \`${prefix}addmember\`.\n` +
             `Moderators must be added to gain access to \`moderator\` commands via \`${prefix}addmod\`.\n ` +
-            `Use \`${prefix}help <command name|alias>\` to view help/permissions for commands.\n` +
+            `Use \`${prefix}help <category | command name | alias>\` to view help/permissions for commands.\n` +
             `Add a \`🛑\` reaction to bot messages to prevent them from being deleted.`)
         .setColor("#0efefe")
         .setTitle("Help")
         .setTimestamp();
 
-    // Map all the commands
-    // with the specific category
-    const commands = (category) => {
-        return client.commands
-            .filter(cmd => cmd.category === category)
-            .map(cmd => ` \`${prefix}${cmd.name}\``)
-            .join(",");
-    }
-
-    // Map all the categories
     const info = client.categories
         .filter(cat => cat !== "owner")
-        .map(cat => stripIndents`**${cat[0].toUpperCase() + cat.slice(1)}** \n${commands(cat)}`)
+        .map(cat => stripIndents`**${cat[0].toUpperCase() + cat.slice(1)}** \n\`${prefix}help ${cat}\` to view ${cat} commands`)
         .reduce((string, category) => string + "\n" + category);
 
     return message.channel.send(embed.setDescription(info)).then(m => del(m, 30000));
@@ -54,15 +36,12 @@ async function getAll(client, message) {
 
 function getSpecific(client, message, input) {
     const embed = new MessageEmbed()
-
-    // Get the cmd by the name or alias
     const cmd = client.commands.get(input.toLowerCase()) || client.commands.get(client.aliases.get(input.toLowerCase()));
     const cat = client.categories;
 
     let info = `No information found for command **${input.toLowerCase()}**`;
 
     if (cmd) {
-        // Add all cmd info to the embed
         if (cmd.name) info = `**Command name**: \`${cmd.name}\``;
         if (cmd.aliases) info += `\n**Aliases**: ${cmd.aliases.map(a => `\`${a}\``).join(", ")}`;
         if (cmd.description) info += `\n**Description**: ${cmd.description}`;
@@ -74,7 +53,6 @@ function getSpecific(client, message, input) {
         getCommandStatus(message, cmd.name).then(async function (res) {
             if (res === false) info += '\n**Status**: ❌';
             if (res === true) info += '\n**Status**: ✅';
-
             return message.channel.send(embed.setColor("#0efefe").setDescription(info)).then(m => del(m, 30000));
         }).catch(err => console.log(`There was an error in help ${err}`));;
     } else if (cat.includes(input.toLowerCase())) {
@@ -84,10 +62,6 @@ function getSpecific(client, message, input) {
             .join(",");
 
         info = `**${input[0].toUpperCase() + input.slice(1).toLowerCase()}** \n ${cmds}`;
-
         return message.channel.send(embed.setColor("#0efefe").setDescription(info)).then(m => del(m, 30000));
-    } else {
-        // If no cmd is found, send not found embed
-        return message.channel.send(embed.setColor("#ff0000").setDescription(info)).then(m => del(m, 30000));
-    }
+    } else return message.channel.send(embed.setColor("#ff0000").setDescription(info)).then(m => del(m, 30000));
 }
