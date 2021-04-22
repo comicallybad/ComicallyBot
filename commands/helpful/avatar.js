@@ -19,7 +19,6 @@ module.exports = {
             let member = message.mentions.members.first() || await client.users.fetch(args[0]);
             if (!member) return message.reply("User not found.").then(m => del(m, 7500));
             else {
-                console.log(member);
                 const embed = new MessageEmbed()
                     .setAuthor(`${member.tag}`, `${member.displayAvatarURL()}`)
                     .setColor("#000000")
