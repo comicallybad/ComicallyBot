@@ -1,7 +1,9 @@
 const { del, findID } = require("../../functions.js");
 const db = require("../../schemas/db.js");
+const xp = require("../../schemas/xp.js");
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
+const { checkXPRankup } = require("../../dbFunctions.js");
 
 module.exports = {
     name: "addxprole",
@@ -39,6 +41,7 @@ module.exports = {
 
         function addRole(roleName, roleID, inputLevel) {
             let level = parseInt(inputLevel);
+            let userIDs = message.guild.members.cache.map(user => user.user.id);
 
             db.findOne({
                 guildID: guildID, xpRoles: { $elemMatch: { roleName: roleName, roleID: roleID } }
@@ -47,8 +50,30 @@ module.exports = {
                 if (exists) {
                     db.updateOne({ guildID: guildID, 'xpRoles.roleID': roleID }, {
                         $set: { 'xpRoles.$.level': level }
+                    }).then(() => {
+                        const embed = new MessageEmbed()
+                            .setColor("#0efefe")
+                            .setTitle("XP Role Updated")
+                            .setThumbnail(message.author.displayAvatarURL())
+                            .setFooter(message.member.displayName, message.author.displayAvatarURL())
+                            .setTimestamp()
+                            .setDescription(stripIndents`
+                            **XP Role Updated by:** ${message.member.user}
+                            **XP Role Updated:** ${roleName} (${roleID})
+                            **Level:** ${level}`);
+
+                        logChannel.send(embed).catch(err => err);
+
+                        userIDs.forEach(ID => {
+                            xp.findOne({ guildID: guildID, userID: ID }, (err, exists) => {
+                                if (exists) {
+                                    if (exists.level >= level) checkXPRankup(message, ID, level);
+                                }
+                            });
+                        });
+
+                        return message.reply("Updating XP role level.").then(m => del(m, 7500));
                     }).catch(err => console.log(err))
-                    return message.reply("Updating XP role level.").then(m => del(m, 7500));
                 } if (!exists) {
                     db.updateOne({ guildID: guildID }, {
                         $push: { xpRoles: { roleName: roleName, roleID: roleID, level: level } }
@@ -65,6 +90,14 @@ module.exports = {
                             **Level:** ${level}`);
 
                         logChannel.send(embed).catch(err => err);
+
+                        userIDs.forEach(ID => {
+                            xp.findOne({ guildID: guildID, userID: ID }, (err, exists) => {
+                                if (exists) {
+                                    if (exists.level >= level) checkXPRankup(message, ID, level);
+                                }
+                            });
+                        });
 
                         return message.reply("Adding XP level role.").then(m => del(m, 7500));
                     }).catch(err => console.log(err))
