@@ -13,9 +13,16 @@ module.exports = {
             .setTitle("A dice was rolled..")
             .setTimestamp()
 
-        let number = Math.floor(Math.random() * 6 + 1);
+        let number = Math.floor(Math.random() * 6);
+        let images =
+            ["https://upload.wikimedia.org/wikipedia/commons/2/2c/Alea_1.png",
+                "https://upload.wikimedia.org/wikipedia/commons/b/b8/Alea_2.png",
+                "https://upload.wikimedia.org/wikipedia/commons/2/2f/Alea_3.png",
+                "https://upload.wikimedia.org/wikipedia/commons/8/8d/Alea_4.png",
+                "https://upload.wikimedia.org/wikipedia/commons/5/55/Alea_5.png",
+                "https://upload.wikimedia.org/wikipedia/commons/f/f4/Alea_6.png"]
 
-        embed.addField("Result", `\`${number}\``);
+        embed.setImage(images[number]);
 
         message.channel.send(embed).then(m => del(m, 15000));
     }
