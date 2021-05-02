@@ -14,6 +14,9 @@ module.exports = {
         let guildID = message.guild.id;
         const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
 
+        if (!args[0])
+            return message.reply(`Please input the welcome message you wish to set after ${prefix} `).then(m => del(m, 7500));
+
         if (args.join(' ') >= 1024)
             return message.reply("Your welcome message must be 1024 characters or shorter.").then(m => del(m, 7500));
 
