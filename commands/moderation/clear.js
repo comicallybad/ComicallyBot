@@ -29,7 +29,7 @@ module.exports = {
             if (message.mentions.users.first()) {
                 message.channel.messages.fetch({ limit: 100 }).then((messages) => {
                     const filterBy = message.mentions.users.first() ? message.mentions.users.first().id : Client.user.id;
-                    messages = messages.filter(m => m.author.id === filterBy).array().slice(0, args[1]);
+                    messages = messages.filter(m => m.author.id === filterBy).array().slice(0, args[1] + 1);
                     message.channel.bulkDelete(messages).catch(err => {
                         return message.reply(`There was an error attempting to delete user messages: ${err}`)
                     });
