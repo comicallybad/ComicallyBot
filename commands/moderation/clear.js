@@ -17,7 +17,7 @@ module.exports = {
 
             let deleteAmount;
 
-            if (parseInt(args[0]) > 100) deleteAmount = 99;
+            if (parseInt(args[0]) >= 100) deleteAmount = 99;
             else deleteAmount = parseInt(args[0]);
 
             message.channel.bulkDelete(deleteAmount + 1, true)
