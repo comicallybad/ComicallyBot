@@ -98,7 +98,8 @@ module.exports = {
                                 }
                                 rankupXP = rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 + 25 - exists.xp;
                                 if (rankupXP >= 0)
-                                    rankChannel.send(`${user} You leveled up! You are now level: ${exists.level}`).catch(err => err);
+                                    if (rankChannel)
+                                        rankChannel.send(`${user} You leveled up! You are now level: ${exists.level}`).catch(err => err);
                             }
                             exists.save().catch(err => console.log(err));
                         }
@@ -140,7 +141,9 @@ module.exports = {
                         await module.exports.checkXPRankup(message, userID, exists.level);
                     }
                     rankupXP = rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 + 25 - exists.xp;
-                    if (rankupXP >= 0) rankChannel.send(`${user} You leveled up! You are now level: ${exists.level}`).catch(err => err);
+                    if (rankupXP >= 0)
+                        if (rankChannel)
+                            rankChannel.send(`${user} You leveled up! You are now level: ${exists.level}`).catch(err => err);
                 }
                 exists.save().catch(err => console.log(err));
             }
