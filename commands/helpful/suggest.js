@@ -4,7 +4,7 @@ const db = require('../../schemas/db.js');
 
 module.exports = {
     name: "suggest",
-    aliases: ["suggestion", "addsuggestion", "idea"],
+    aliases: ["suggestion", "addsuggestion"],
     category: "helpful",
     description: "Sends a message with a suggestion users can vote on.",
     permissions: "member",
