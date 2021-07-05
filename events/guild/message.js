@@ -2,6 +2,7 @@ const { del, getCommandStatus, hasPermissions, } = require("../../functions.js")
 const { messageXP, checkBadWords, checkSpam } = require("../../dbFunctions.js");
 const db = require("../../schemas/db.js")
 const cleverbot = require("cleverbot");
+let clev = new cleverbot({ key: `${process.env.CLEVERBOT}` });
 
 let cooldown = new Set();
 let cdseconds = 5;
@@ -24,23 +25,17 @@ module.exports = async (client, message) => {
         cooldown.delete(message.author.id);
     }, cdseconds * 1000);
 
-
-    ///The cleverbot site is broken, so this feature has not been doing anything but providing errors, Until I find another similar package, or they fix their site, this feature will be disabled,.
-
-    //Note FIX talk to a bot.
-
-    //This was needed to prevent mulitple xp database updates conflicting, resulting in bad behavior. So non command messages will give XP
-    // if (!message.content.startsWith(prefix) && !message.content.replace(/\D/g, '').startsWith(`${client.user.id}`)) {
-    //     db.findOne({ guildID: message.guild.id, channels: { $elemMatch: { command: "Bot Chatting" } } }, async (err, exists) => {
-    //         if (exists) {
-    //             let channel = await client.channels.cache.get(exists.channels.filter(x => x.command === "Bot Chatting")[0].channelID);
-    //             if (message.channel == channel) return cleverbot(`${message.content}`).then(response => {
-    //                 return message.channel.send(response);
-    //             });
-    //         } else return;
-    //     });
-    //     return;
-    // }
+    if (!message.content.startsWith(prefix) && !message.content.replace(/\D/g, '').startsWith(`${client.user.id}`)) {
+        db.findOne({ guildID: message.guild.id, channels: { $elemMatch: { command: "Bot Chatting" } } }, async (err, exists) => {
+            if (exists) {
+                let channel = await client.channels.cache.get(exists.channels.filter(x => x.command === "Bot Chatting")[0].channelID);
+                if (message.channel == channel) return clev.query(`${message.content}`).then(response => {
+                    return message.channel.send(response.output);
+                });
+            } else return;
+        });
+        return;
+    }
 
     if (message.content.startsWith(prefix) && !message.content.replace(/\D/g, '').startsWith(`${client.user.id}`)) {
         const args = message.content.startsWith(prefix) ? message.content.slice(prefix.length).trim().split(/ +/g) : message.content.replace(/[^\s]*/, '').trim().split(/ +/g);
