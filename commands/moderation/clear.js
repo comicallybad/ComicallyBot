@@ -31,6 +31,19 @@ module.exports = {
             if (parseInt(args[1]) > 100) deleteAmount = 99;
             else deleteAmount = parseInt(args[1]);
 
+            if (parseInt(args[0]) > 1000000) {
+                let user = message.guild.users.fetch(`${args[0]}`).catch(err => message.reply("Could not find user with that ID.").then(m => del(m, 7500)));
+                if (user) {
+                    message.channel.messages.fetch({ limit: 100 }).then((messages) => {
+                        const filterBy = user.id;
+                        messages = messages.filter(m => m.author.id === filterBy).array().slice(0, (deleteAmount + 1));
+                        message.channel.bulkDelete(messages).catch(err => {
+                            return message.reply(`There was an error attempting to delete user messages: ${err}`)
+                        });
+                    });
+                }
+            }
+
             if (message.mentions.users.first()) {
                 message.channel.messages.fetch({ limit: 100 }).then((messages) => {
                     const filterBy = message.mentions.users.first() ? message.mentions.users.first().id : Client.user.id;
