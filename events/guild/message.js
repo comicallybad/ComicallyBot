@@ -1,8 +1,7 @@
 const { del, getCommandStatus, hasPermissions, } = require("../../functions.js");
 const { messageXP, checkBadWords, checkSpam } = require("../../dbFunctions.js");
-const db = require("../../schemas/db.js")
-const cleverbot = require("cleverbot");
-let clev = new cleverbot({ key: `${process.env.CLEVERBOT}` });
+const db = require("../../schemas/db.js");
+const fetch = require('node-fetch');
 
 let cooldown = new Set();
 let cdseconds = 5;
@@ -29,9 +28,15 @@ module.exports = async (client, message) => {
         db.findOne({ guildID: message.guild.id, channels: { $elemMatch: { command: "Bot Chatting" } } }, async (err, exists) => {
             if (exists) {
                 let channel = await client.channels.cache.get(exists.channels.filter(x => x.command === "Bot Chatting")[0].channelID);
-                if (message.channel == channel) return clev.query(`${message.content}`).then(response => {
-                    return message.channel.send(response.output);
-                });
+                if (message.channel == channel) {
+                    let url = `https://www.cleverbot.com/getreply?key=${process.env.CLEVERBOT}&input=${message.content}`, settings = { method: "Get" };
+                    fetch(url, settings)
+                        .then(res => res)
+                        .then((response) => {
+                            console.log(response)
+                            if (response.output) return message.channel.send(response.output);
+                        });
+                }
             } else return;
         });
         return;
