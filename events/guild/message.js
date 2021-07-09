@@ -29,12 +29,11 @@ module.exports = async (client, message) => {
             if (exists) {
                 let channel = await client.channels.cache.get(exists.channels.filter(x => x.command === "Bot Chatting")[0].channelID);
                 if (message.channel == channel) {
-                    let url = `https://www.cleverbot.com/getreply?key=${process.env.CLEVERBOT}&input=${message.content}`, settings = { method: "Get" };
+                    let url = `https://www.cleverbot.com/getreply?key=${process.env.CLEVERBOT}&input=${message.content.replace(/[^\w\s!?]/g,'')}`, settings = { method: "Get" };
                     fetch(url, settings)
-                        .then(res => res)
-                        .then((response) => {
-                            console.log(response)
-                            if (response.output) return message.channel.send(response.output);
+                        .then(res => res.json())
+                        .then((json) => {
+                            if (json.output) return message.channel.send(json.output);
                         });
                 }
             } else return;
