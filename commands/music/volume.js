@@ -25,7 +25,7 @@ module.exports = {
         if (Number(args[0]) <= 0 || Number(args[0]) > 100)
             return message.reply("You may only set the volume to 1-100").then(m => del(m, 7500));
 
-        player.setVolume(Number(args[0]));
+        player.volume(Number(args[0]));
         return message.reply(`Successfully set the volume to: ${args[0]}`).then(m => del(m, 7500));
     }
 }
