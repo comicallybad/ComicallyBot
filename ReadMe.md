@@ -1,9 +1,9 @@
 ComicallyBot2.0 is a bot that uses a permission and status structure. Commands can be toggled on or off by server. Roles and Users can also be given permission to access certain commands by server. ComicallyBot2.0 has many moderation commands, fun commands, informational commands, and a leveling system.
 ________________________________________________________________________________
 To clone and use ComicallyBot2.0 you will have to do a few things:
-1. Install mongodb and compass for mongodb. Install Java v11 https://www.azul.com/downloads/zulu-community/?version=java-11-lts&os=&os=windows&architecture=x86-64-bit&package=jdk and lavalink from https://www.npmjs.com/package/erela.js. Place lavalink .zip contents into a lavalink folder inside the project.
+1. Install mongodb and compass for mongodb. Install Java v11 https://www.azul.com/downloads/zulu-community/?version=java-11-lts&os=&os=windows&architecture=x86-64-bit&package=jdk and lavalink from https://solaris.codes/projects/erelajs/docs/typedefs/PlayOptions.html#overview Place lavalink .zip contents into a lavalink folder inside the project.
 2. Create a .env file with a "TOKEN" for a discord token, "FORTNITE" for a fortnite API key, and "STEAM" for steam API key, "ERELA" for erela password, and "USERID" for discord User ID for owner commands
-3. Create a application.yml file inside lavalink ex: https://github.com/Frederikam/Lavalink/blob/master/LavalinkServer/application.yml.example
+3. Create a application.yml file inside lavalink ex: https://github.com/stuyy/Lavalink-Discordpy-Example/blob/master/application.yml
 4. npm i --save
 5. To start the bot correctly use: "start.bat" or open /lavalink/start.bat and then "node ." in project directory
 6. Commands will default to enabled. So use `_help Command` for more information
