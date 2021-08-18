@@ -41,14 +41,12 @@ module.exports = {
                 }
             } else type = "add/remove"
 
-            msg.react(reaction).then(() => {//attempt unicode emoji
-                addReactionRole(msg, reaction, role, type);
-            }).catch(() => {
-                let customEmoji = reaction.replace("<:", "").slice(reaction.replace("<:", "").indexOf(":") + 1, reaction.replace("<:", "").length - 1); //gross code yes...
-                msg.react(customEmoji).then(() => {//attempt custom emoji
+            msg.react(reaction).then(() => {
+                if (reaction.contains("<:")) {
+                    let customEmoji = reaction.replace("<:", "").slice(reaction.replace("<:", "").indexOf(":") + 1, reaction.replace("<:", "").length - 1);
                     addReactionRole(msg, customEmoji, role, type);
-                }).catch(err => message.reply("Invalid emoji. I must have access to the emoji.").then(m => del(m, 7500)))
-            });
+                } else addReactionRole(msg, reaction, role, type);
+            }).catch(err => message.reply("Invalid emoji. I must have access to the emoji.").then(m => del(m, 7500)));
         }
     }
 }
