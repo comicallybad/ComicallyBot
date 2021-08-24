@@ -31,9 +31,9 @@ module.exports = async (client, message) => {
                 if (message.channel == channel) {
                     let url = `https://www.cleverbot.com/getreply?key=${process.env.CLEVERBOT}&input=${message.content.replace(/[^\w\s!?]/g,'')}`, settings = { method: "Get" };
                     fetch(url, settings)
-                        .then(res => res.json())
+                        .then(res => res.json()).catch(err => err)
                         .then((json) => {
-                            if (json.output) return message.channel.send(json.output);
+                            if (json.output) return message.channel.send(json.output).catch(err => err);
                         });
                 }
             } else return;
