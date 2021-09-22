@@ -19,7 +19,7 @@ module.exports = (client, member) => {
     }
     let muterole = member.guild.roles.cache.find(r => r.name === "Muted")
     setTimeout(() => {
-        if (!member.roles.cache.some(role => role.name === 'Muted')) {
+        if (!member.roles.cache.some(role => role.name === "Muted")) {
             member.roles.remove(muterole.id);
             const embed2 = new MessageEmbed()
                 .setColor("#00ff00")
