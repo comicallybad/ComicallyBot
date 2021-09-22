@@ -244,11 +244,7 @@ module.exports = {
             **Member warned for ${type}:** ${message.member} (${message.author.id})
             **Warned by:** ${message.guild.me}`)
 
-        if (type === "spam") {
-            let messagesDeleted = await module.exports.bulkDeleteCount(message);
-            embed.addField("Channel:", message.channel);
-            embed.addField("Number Of Messages Deleted:", messagesDeleted);
-        } else if (type === "profanity") {
+        if (type === "profanity") {
             embed.addField("Channel:", message.channel);
             embed.addField("Message Deleted", `||${message.content}||`);
         }

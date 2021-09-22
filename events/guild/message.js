@@ -13,7 +13,7 @@ module.exports = async (client, message) => {
     if (!message.member) message.member = await message.guild.fetchMember(message).catch(err => err);
 
     checkBadWords(message);
-    checkSpam(message);
+    checkSpam(client, message);
 
     if (!cooldown.has(message.author.id))
         messageXP(message, client);
@@ -29,7 +29,7 @@ module.exports = async (client, message) => {
             if (exists) {
                 let channel = await client.channels.cache.get(exists.channels.filter(x => x.command === "Bot Chatting")[0].channelID);
                 if (message.channel == channel) {
-                    let url = `https://www.cleverbot.com/getreply?key=${process.env.CLEVERBOT}&input=${message.content.replace(/[^\w\s!?]/g,'')}`, settings = { method: "Get" };
+                    let url = `https://www.cleverbot.com/getreply?key=${process.env.CLEVERBOT}&input=${message.content.replace(/[^\w\s!?]/g, '')}`, settings = { method: "Get" };
                     fetch(url, settings)
                         .then(res => res.json()).catch(err => err)
                         .then((json) => {
@@ -63,6 +63,9 @@ module.exports = async (client, message) => {
 
             if (!channelPermissions.has("READ_MESSAGE_HISTORY"))
                 return message.reply("I am missing permissions to `READ_MESSAGE_HISTORY` for certain commands.").then(m => del(m, 30000));
+
+            if (!message.guild.me.hasPermission("MANAGE_ROLES"))
+                return message.reply("I am missing permissions to `MANAGE_ROLEs` for auto-moderation.").then(m => del(m, 30000));
 
             if (!channelPermissions.has("MANAGE_MESSAGES") || !channelPermissions.has("ADD_REACTIONS"))
                 return message.reply("I am missing permissions to `MANAGE_MESSAGES` for a clean command experience"

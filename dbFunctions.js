@@ -4,8 +4,6 @@ const xp = require('./schemas/xp.js');
 const { del, warn, hasPermissions } = require('./functions.js');
 const { MessageEmbed } = require('discord.js');
 
-let cooldown = new Set();
-
 module.exports = {
     dbSetup: function (client) {
         let guildsID = (client.guilds.cache.map(guild => guild.id));
@@ -202,35 +200,15 @@ module.exports = {
         });
     },
 
-    checkSpam: function (message) {
+    checkSpam: function (client, message) {
+        client.antiSpam.message(message);
         let guildID = message.guild.id;
-        db.findOne({ guildID: guildID }, async (err, exists) => {
+        db.findOne({ guildID: guildID }, (err, exists) => {
             if (!exists) return;
             if (exists.antiSpam) {
-                let isMod = await hasPermissions(message, "moderator");
+                let isMod = hasPermissions(message, "moderator");
                 if (isMod) return;
-                else {
-                    if (spamUsers.some(user => user.id === message.author.id)) {
-                        spamUsers.find(user => user.id === message.author.id).offences += 1;
-                    } else {
-                        spamUsers.push({ id: message.author.id, offences: 1 })
-                    }
-
-                    cooldown.add(message.author.id);
-
-                    setTimeout(() => {
-                        cooldown.delete(message.author.id);
-                    }, 2500);
-
-                    setTimeout(() => {
-                        if (spamUsers.find(user => user.id === message.author.id))
-                            spamUsers.splice(spamUsers.findIndex(user => user.id === message.author.id), 1);
-                    }, 5000);
-
-                    if (cooldown.has(message.author.id) && spamUsers.find(user => user.id === message.author.id).offences >= 5) {
-                        warn(message, spamOffencers, "spam");
-                    }
-                }
+                else client.antiSpam.message(message).catch(err => err);
             }
         }).catch(err => console.log(err));
     },
