@@ -29,7 +29,7 @@ module.exports = {
         if (!reason) reason = "No reason given!"
 
         const embed = new MessageEmbed()
-            .setColor("#ff0000")
+            .setColor("#00ff00")
             .setTitle("User Unbanned")
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()

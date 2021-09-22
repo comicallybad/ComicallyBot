@@ -31,7 +31,7 @@ module.exports = {
         if (!ID) return message.reply("User not found.").then(m => del(m, 7500));
         else addXP(message, ID, Math.floor(parseInt(args[1]))).then(() => {
             const embed = new MessageEmbed()
-                .setColor("#0efefe")
+                .setColor("#00ff00")
                 .setTitle("XP Added")
                 .setThumbnail(message.author.displayAvatarURL())
                 .setFooter(message.member.displayName, message.author.displayAvatarURL())

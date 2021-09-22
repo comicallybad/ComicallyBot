@@ -53,7 +53,7 @@ module.exports = {
 
                 addXP(message, userID, amount).then(() => {
                     const logEmbed = new MessageEmbed()
-                        .setColor("#0efefe")
+                        .setColor("#00ff00")
                         .setThumbnail(message.author.displayAvatarURL())
                         .setFooter(message.member.displayName, message.author.displayAvatarURL())
                         .setTimestamp()

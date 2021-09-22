@@ -27,7 +27,7 @@ module.exports = {
         if (!muterole) return message.reply("There is no mute role to remove!").then(m => del(m, 7500));
 
         const embed = new MessageEmbed()
-            .setColor("#ff0000")
+            .setColor("#00ff00")
             .setTitle("User Unmuted")
             .setThumbnail(mutee.user.displayAvatarURL())
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
