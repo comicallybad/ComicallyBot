@@ -65,7 +65,7 @@ module.exports = async (client, message) => {
                 return message.reply("I am missing permissions to `READ_MESSAGE_HISTORY` for certain commands.").then(m => del(m, 30000));
 
             if (!message.guild.me.hasPermission("MANAGE_ROLES"))
-                return message.reply("I am missing permissions to `MANAGE_ROLEs` for auto-moderation.").then(m => del(m, 30000));
+                return message.reply("I am missing permissions to `MANAGE_ROLES` for auto-moderation.").then(m => del(m, 30000));
 
             if (!channelPermissions.has("MANAGE_MESSAGES") || !channelPermissions.has("ADD_REACTIONS"))
                 return message.reply("I am missing permissions to `MANAGE_MESSAGES` for a clean command experience"
