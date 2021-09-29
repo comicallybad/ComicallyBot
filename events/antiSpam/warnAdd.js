@@ -17,7 +17,7 @@ module.exports = (client, member) => {
         logChannel.send(embed);
     }
     setTimeout(() => {
-        userIndex = client.antiSpam.cache.warnedUsers.indexOf(`${member.id}`);
+        let userIndex = client.antiSpam.cache.warnedUsers.indexOf(`${member.id}`);
         client.antiSpam.cache.warnedUsers.splice(userIndex, 1);
     }, 15000)
 }
