@@ -4,14 +4,9 @@ const { stripIndents } = require("common-tags");
 module.exports = async (client, process, error) => {
     const date = new Date();
     const formatDate = stripIndents`
-        ${(date.getMonth() + 1).toString().padStart(2, '0')}-${
-        date.getDate().toString().padStart(2, '0')}-${
-        date.getFullYear().toString().padStart(4, '0')}`
+        ${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}-${date.getFullYear().toString().padStart(4, '0')}`
 
-    const formatTime = stripIndents`${
-        date.getHours().toString().padStart(2, '0')}-${
-        date.getMinutes().toString().padStart(2, '0')}-${
-        date.getSeconds().toString().padStart(2, '0')}`
+    const formatTime = stripIndents`${date.getHours().toString().padStart(2, '0')}-${date.getMinutes().toString().padStart(2, '0')}-${date.getSeconds().toString().padStart(2, '0')}`
 
     var dir = './logs';
 
@@ -19,11 +14,11 @@ module.exports = async (client, process, error) => {
         fs.mkdirSync(dir);
     }
 
-    fs.appendFile(`./logs/${formatDate} warning.log`, `${formatDate} ${formatTime}: ${error}\n`, function (err) {
+    fs.appendFile(`./logs/${formatDate} warning.log`, `${formatDate} ${formatTime}: ${error.stack}\n`, function (err) {
         if (err) throw err;
         console.log(`A new warning has been logged to: ${formatDate} warning.log`)
     });
 
     let owner = await client.users.cache.get(`${process.env.USERID}`);
-    owner.send(`New warning ${error}`);
+    owner.send(`New warning ${error.stach}`).catch(err => console.log(`Could not sen error message to owner. ${err}`));
 }
