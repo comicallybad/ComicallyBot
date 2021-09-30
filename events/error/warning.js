@@ -20,5 +20,5 @@ module.exports = async (client, process, error) => {
     });
 
     let owner = await client.users.cache.get(`${process.env.USERID}`);
-    owner.send(`New warning ${error.stach}`).catch(err => console.log(`Could not sen error message to owner. ${err}`));
+    owner.send(`New warning ${error.stack}`).catch(err => console.log(`Could not send warning error message to owner. ${err}`));
 }

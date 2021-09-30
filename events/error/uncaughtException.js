@@ -17,11 +17,11 @@ module.exports = async (client, process, error, origin) => {
 
     if (!fs.existsSync(dir)) fs.mkdirSync(dir);
 
-    fs.appendFile(`./logs/${formatDate} UncaughtException.log`, `${formatDate} ${formatTime}: ${error.stack} at ${origin}\n`, function (err) {
+    fs.appendFile(`./logs/${formatDate} UncaughtException.log`, `${formatDate} ${formatTime} A new uncaughtExcemption error: ${error.stack} at: ${origin}\n`, function (err) {
         if (err) throw err;
         console.log(`A new UncaughtException has been logged to: ${formatDate} UncaughtException.log`);
     });
 
     let owner = await client.users.cache.get(`${process.env.USERID}`);
-    owner.send(`New uncaughtExcemption error ${error.stack}. At origin: ${origin}`).catch(err => console.log(`Could not sen error message to owner. ${err}`));
+    owner.send(`${formatDate} ${formatTime} A new uncaughtExcemption error: ${error.stack} at: ${origin}`).catch(err => console.log(`Could not send uncaughtExcemption error message to owner. ${err}`));
 }
