@@ -11,4 +11,3 @@ module.exports = (client) => {
     };
     ["antiSpam"].forEach(x => load(x));
 };
-//
