@@ -1,6 +1,5 @@
 const { del } = require("../../functions.js");
 const db = require('../../schemas/db.js');
-const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
