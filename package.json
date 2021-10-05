@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@mikemcbride/dad-jokes": "^1.0.0",
+    "algebra.js": "^0.2.6",
     "ascii-table": "^0.0.9",
     "beautify": "^0.0.8",
     "common-tags": "^1.8.0",
@@ -22,6 +23,7 @@
     "get-random-quote": "^1.1.3",
     "google-translate-free": "^2.4.5",
     "humanize-duration": "^3.27.0",
+    "mathjs": "^9.5.0",
     "mongoose": "^5.12.14",
     "node-fetch": "^2.6.1",
     "popular-movie-quotes": "^1.2.4",
