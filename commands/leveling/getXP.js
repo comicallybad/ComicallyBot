@@ -26,11 +26,12 @@ module.exports = {
                 if (!exists) return message.reply("User doesn't have a rank yet.").then(m => del(m, 7500));
                 if (exists) {
                     let rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 + 25 - exists.xp;
-
                     const embed = new MessageEmbed()
                         .setColor("#0efefe")
-                        .setTitle("Rank")
+                        .setTitle(`${exists.userNickname != null ? exists.userNickname : exists.userName}'s rank`)
                         .setTimestamp()
+                        .setThumbnail(exists.userDisplayAvatarURL)
+                        .setFooter(exists.userID)
                         .setDescription(stripIndents`
                         **User is level:** ${exists.level}
                         **User has:** ${exists.xp} XP

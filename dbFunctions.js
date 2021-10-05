@@ -57,7 +57,9 @@ module.exports = {
             if (exists.xpSystem) {
                 let guildName = message.guild.name;
                 let userID = message.member.id;
-                let userName = message.author.username;
+                let userName = message.member.user.username;
+                let userNickname = message.member.nickname;
+                let userDisplayAvatarURL = message.member.user.displayAvatarURL()
                 let xpToAdd = Math.floor(Math.random() * 10) + 1;
                 let rankChannel = message.channel;
                 let user = await message.guild.members.fetch(userID);
@@ -80,13 +82,15 @@ module.exports = {
                             const newXP = new xp({
                                 _id: mongoose.Types.ObjectId(),
                                 guildID: guildID, guildName: guildName,
-                                userID: userID, userName: userName, xp: xpToAdd, level: 0
-                            })
+                                userID: userID, userName: userName,
+                                userNickname: userNickname, userDisplayAvatarURL: userDisplayAvatarURL,
+                                xp: xpToAdd, level: 0
+                            });
                             newXP.save().catch(err => console.log(err));
                         } else {
-                            exists.xp += xpToAdd;
-                            exists.guildName = guildName;
-                            exists.userName = userName;
+                            exists.xp += xpToAdd, exists.guildName = guildName;
+                            exists.userName = userName, exists.userNickname = userNickname;
+                            exists.userDisplayAvatarURL = userDisplayAvatarURL;
                             let rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 + 25 - exists.xp;
 
                             while (rankupXP <= 0) {

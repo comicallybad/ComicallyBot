@@ -35,11 +35,11 @@ module.exports = {
                 if (sorted.length > 0) {
                     if (sorted.length <= 10) {
                         sorted.forEach((user, index) => {
-                            embed.addField(`#${index + 1}:`, `**${user.userName}, level: ${user.level}, XP: ${user.xp}**`)
+                            embed.addField(`#${index + 1}:`, `**${user.userNickname != null ? user.userNickname : user.userName}, level: ${user.level}, XP: ${user.xp}**`)
                         });
                         return m.edit(embed).then(del(m, 30000));
                     } else {
-                        let array = sorted.map(user => `**${user.userName}, level: ${user.level}, XP: ${user.xp}**`);
+                        let array = sorted.map(user => `**${user.userNickname != null ? user.userNickname : user.userName}, level: ${user.level}, XP: ${user.xp}**`);
                         pageList(m, message.author, array, embed, "#")
                     }
                 } else {
