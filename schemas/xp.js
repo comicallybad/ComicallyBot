@@ -6,6 +6,8 @@ const xpSchema = mongoose.Schema({
     guildName: String,
     userID: String,
     userName: String,
+    userNickname: String,
+    userDisplayAvatarURL: String,
     xp: Number,
     level: Number
 });
