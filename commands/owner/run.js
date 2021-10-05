@@ -29,7 +29,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter(client.user.username, client.user.displayAvatarURL())
                 .setTitle("Eval")
-                .addField("Code to evaluate", `\`\`\`js\n${beautify(args.join(" "), { format: "js" })}\n\`\`\``)
+                .addField("Code to evaluate", `\`\`\`js\n${beautify(args.join(' '), { format: "js" })}\n\`\`\``)
                 .addField("Evaluated: ", evaluated)
                 .addField("Type of: ", typeof (evaluated))
 
