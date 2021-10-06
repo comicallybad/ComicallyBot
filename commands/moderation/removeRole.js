@@ -23,7 +23,7 @@ module.exports = {
 
         const roleName = args.slice(1).join(" ");
 
-        let role = message.guild.roles.cache.find(r => r.name === roleName) || message.guild.roles.cache.find(r => r.id === args[1]);
+        let role = message.guild.roles.cache.find(r => r.name === roleName) || message.guild.roles.cache.find(r => r.id === args[1]) || message.mentions.roles.first();
 
         if (!role)
             return message.reply("Could not find role.").then(m => del(m, 7500));
