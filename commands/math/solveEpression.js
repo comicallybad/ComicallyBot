@@ -11,14 +11,14 @@ module.exports = {
     usage: "<math expression to be simplified> ex: 2* 5 will result in 10.",
     run: (client, message, args) => {
         try {
-            let expression = args[0]
-            if (args[1]) expression = args.join('');
+            let expression = args[0].replace(/([a-zA-Z])/g, 'x')
+            if (args[1]) expression = args.join('').replace(/([a-zA-Z])/g, 'x')
 
             let embed = new MessageEmbed()
                 .setTitle("Solving Expression")
                 .setColor("#0efefe")
                 .addField(`Original expression:`, `\`${expression}\``)
-                .addField("Solved expression: ", `\`${algebra.parse(expression).solveFor("x").toString()}\``)
+                .addField("Solved expression: ", algebra.parse(expression).solveFor("x").toString().length > 0 ? `\`${algebra.parse(expression).solveFor("x").toString()}\`` : `\`Could not solve. Possible imaginary solutions.\``)
                 .setFooter("React ❤️ to save or 🗑️ to delete.\n No reaction will then delete after 30s", message.author.displayAvatarURL())
 
             message.channel.send(embed).then(async m => {
