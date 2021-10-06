@@ -32,7 +32,7 @@ module.exports = {
             else deleteAmount = parseInt(args[1]);
 
             if (parseInt(args[0]) > 1000000) {
-                let user = message.guild.users.fetch(`${args[0]}`).catch(err => message.reply("Could not find user with that ID.").then(m => del(m, 7500)));
+                let user = message.guild.members.fetch(`${args[0]}`).catch(err => message.reply("Could not find user with that ID.").then(m => del(m, 7500)));
                 if (user) {
                     message.channel.messages.fetch({ limit: 100 }).then((messages) => {
                         const filterBy = user.id;
