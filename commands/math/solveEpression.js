@@ -11,8 +11,7 @@ module.exports = {
     usage: "<math expression to be simplified> ex: 2* 5 will result in 10.",
     run: (client, message, args) => {
         try {
-            let expression = args[0].replace(/([a-zA-Z])/g, 'x')
-            if (args[1]) expression = args.join('').replace(/([a-zA-Z])/g, 'x')
+            let expression = args.join('').replace(/([a-zA-Z])/g, 'x');
 
             let embed = new MessageEmbed()
                 .setTitle("Solving Expression")
