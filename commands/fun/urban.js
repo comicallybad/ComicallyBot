@@ -2,6 +2,7 @@ const { del } = require("../../functions.js");
 const urban = require("urban");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
+const { larger } = require("mathjs");
 
 module.exports = {
     name: "urban",
@@ -13,7 +14,6 @@ module.exports = {
     run: (client, message, args) => {
         if (!args[0] || !["search", "random"].includes(args[0]))
             return message.reply("Please provide <search|random> (query).").then(m => del(m, 7500));
-        let image = "http://cdn.marketplaceimages.windowsphone.com/v8/images/5c942bfe-6c90-45b0-8cd7-1f2129c6e319?imageType=ws_icon_medium";
         let search = args[1] ? urban(args.slice(1).join(" ")) : urban.random();
         try {
             search.first(res => {
@@ -22,8 +22,8 @@ module.exports = {
 
                 let description = stripIndents`**Defintion:** ${definition || "No definition"}
                     **Example:** ${example || "No Example"}
-                    **Upvote:** ${thumbs_up || 0}
-                    **Downvote:** ${thumbs_down || 0}
+                    **Upvotes:** ${thumbs_up || 0}
+                    **Downvotes:** ${thumbs_down || 0}
                     **Link:** [link to ${word}](${permalink || "https://www.urbandictionary.com/"})`
 
                 if (description.length >= 1024)
@@ -31,8 +31,7 @@ module.exports = {
                 else {
                     let embed = new MessageEmbed()
                         .setColor("#0efefe")
-                        .setAuthor(`Urban Dictionary | ${word}`, image)
-                        .setThumbnail(image)
+                        .setAuthor(`Urban Dictionary | ${word}`)
                         .setDescription(description)
                         .setTimestamp()
                         .setFooter(`Written by ${author || "unknown"}`);
