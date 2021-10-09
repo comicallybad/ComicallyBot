@@ -3,18 +3,32 @@ const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
 module.exports = {
-    del: async function (message, timeout) {
+    del: async function (message, timeout) {    //New global delete function due to discord.js changing it too much
         if (message) { //Fix in case bad message
             if (message.id) { //Fix cannot read ID 
-                setTimeout(function () {
-                    if (message.deletable && !message.reactions.cache.get('🛑')) {  //messages can now stop from being deleted
-                        message.delete({ timeout: 0 }).catch(err => err) //This gets rid of the annoying "Unknown Message" error.
-                    } else {
-                        message.reactions.removeAll().catch(err => err); //This gets rid of the annoying "Unknown Message" error.
-                    }
+                setTimeout(() => {
+                    if (message.deletable && !message.reactions.cache.get('🛑'))    //messages can now stop from being deleted
+                        message.delete().catch(err => err);     //This gets rid of the annoying "Unknown Message" error.
+                    else message.reactions.removeAll().catch(err => err);    //This gets rid of the annoying "Unknown Message" error.
                 }, timeout);
             } else return;
         } else return;
+    },
+
+    s: function (message, content, embeds) {  //New global send function due to discord.js changing it too much
+        if (!message) return;
+        else if (!embeds) message.channel.send({ content: content });
+        else if (!content) message.channel.send({ embeds: embeds });
+        else if (content && embeds) message.channel.send({ content: content, embeds: embeds });
+        else return;
+    },
+
+    r: function (message, content, embeds) {  //New global send function due to discord.js changing it too much
+        if (!message) return;
+        else if (!embeds) message.channel.send({ content: `${message.member} ${content}` });
+        else if (!content) message.channel.send({ content: `${message.member}`, embeds: embeds });
+        else if (content && embeds) message.channel.send({ content: `${message.member} ${content}`, embeds: embeds });
+        else return;
     },
 
     hasPermissions: async function (message, commandType) {
