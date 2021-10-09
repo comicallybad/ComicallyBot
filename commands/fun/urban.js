@@ -2,7 +2,6 @@ const { del } = require("../../functions.js");
 const urban = require("urban");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
-const { larger } = require("mathjs");
 
 module.exports = {
     name: "urban",
