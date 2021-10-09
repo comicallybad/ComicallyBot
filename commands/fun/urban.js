@@ -8,12 +8,12 @@ module.exports = {
     aliases: ["urb", "urbandictionary", "ud"],
     category: "fun",
     description: "Gets an urban dictionary definition",
-    usage: "[search <term> | random]",
+    usage: "<search term> | <random>",
     permissions: "member",
     run: (client, message, args) => {
-        if (!args[0] || !["search", "random"].includes(args[0]))
-            return message.reply("Please provide <search|random> (query).").then(m => del(m, 7500));
-        let search = args[1] ? urban(args.slice(1).join(" ")) : urban.random();
+        if (!args[0])
+            return message.reply("Please provide <search trerm> | <random>.").then(m => del(m, 7500));
+        let search = args[0] !== "random" ? urban(args.join("")) : urban.random();
         try {
             search.first(res => {
                 if (!res) return message.reply("No results found for this topic, sorry!").then(m => del(m, 7500));
