@@ -17,7 +17,8 @@ module.exports = async (client, message, user) => {
 function checkReactionRole(message, user) {
     let logChannel;
     if (message.message.guild.channels)
-        logChannel = message.message.guild.channels.cache.find(c => c.name === "reaction-logs" || c.name === "mod-logs" || undefined);
+        logChannel = message.message.guild.channels.cache.find(c => c.name.includes("reaction-logs"));
+    if (!logChannel) message.message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
     let guildUser = message.message.guild.members.cache.get(user.id);
     let guildID = message.message.guild.id;
 
