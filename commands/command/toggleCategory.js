@@ -9,9 +9,9 @@ module.exports = {
     category: "command",
     description: "Enable or disable commands.",
     permissions: "admin",
-    usage: "<category> <true/enable | false/disable>",
+    usage: "<category> <on/true/enable | off/false/disable>",
     run: (client, message, args) => {
-        const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
         let guildID = message.guild.id;
         let categories = client.commands.map(command => command.category)
         let commands = client.commands
@@ -26,12 +26,12 @@ module.exports = {
             return message.reply("You may not toggle this category.").then(m => del(m, 7500));
 
         if (!args[1])
-            return message.reply("Please provide a true/false or enable/disable.").then(m => del(m, 7500));
+            return message.reply("Please provide an on/off, true/false or enable/disable.").then(m => del(m, 7500));
 
-        if (!args[1] === "true" || !args[1] === "false" || !args[1] === "enable" || !args[1] === "disable")
-            return message.reply("Please provide only true/false or enable/disable.").then(m => del(m, 7500));
+        if (!args[1] === "true" || !args[1] === "false" || !args[1] === "enable" || !args[1] === "disable" || !args[1] === "on" || !args[1] === "off")
+            return message.reply("Please provide only on/off, true/false or enable/disable.").then(m => del(m, 7500));
 
-        if (args[1] === "true" || args[1] === "enable") {
+        if (args[1] === "true" || args[1] === "enable" || args[1] === "on") {
             commands = commands.map(function (command) {
                 if (command.category === args[0]) return command.name
             }).filter(m => m)
@@ -57,7 +57,7 @@ module.exports = {
             return message.reply("Enabling category... this may take a second...").then(m => del(m, 7500));
         }
 
-        if (args[1] === "false" || args[1] === "disable") {
+        if (args[1] === "false" || args[1] === "disable" || args[1] === "off") {
             commands = commands.map(function (command) {
                 if (command.category === args[0]) return command.name
             }).filter(m => m)

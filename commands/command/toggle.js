@@ -9,7 +9,7 @@ module.exports = {
     category: "command",
     description: "Enable or disable commands.",
     permissions: "admin",
-    usage: "<command> <true/enable | false/disable>",
+    usage: "<command> <on/true/enable | off/false/disable>",
     run: (client, message, args) => {
         let commands = client.commands.map(cmd => cmd.name);
         let invalidCommands = client.commands.map(function (cmd) {
@@ -53,12 +53,12 @@ module.exports = {
 }
 
 function toggle(message, args, command) {
-    const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
+    const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
     let guildID = message.guild.id;
     let bool;
 
-    if (args[1] === "true" || args[1] === "enable") bool = true;
-    if (args[1] === "false" || args[1] === "disable") bool = false;
+    if (args[1] === "true" || args[1] === "enable" || args[1] === "on") bool = true;
+    if (args[1] === "false" || args[1] === "disable" || args[1] === "off") bool = false;
 
     db.updateOne({ guildID: guildID, 'commands.name': command }, {
         $set: { 'commands.$.status': bool }

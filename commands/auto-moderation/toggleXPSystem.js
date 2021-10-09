@@ -9,7 +9,7 @@ module.exports = {
     category: "auto-moderation",
     description: "Toggles the leveling system on or off.",
     permissions: "moderator",
-    usage: "<true/enable | false/disable>",
+    usage: "<on/true/enable | off/false/disable>",
     run: (client, message, args) => {
         if (!message.guild.me.hasPermission("MANAGE_ROLES"))
             return message.reply("I need `MANAGE_ROLES` permissions for the XP system.").then(m => del(m, 7500));
@@ -18,19 +18,17 @@ module.exports = {
             return message.reply("Please provide a true/false or enable/disable.").then(m => del(m, 7500));
 
         if (args[0] !== "true" && args[0] !== "enable"
-            && args[0] !== "false" && args[0] !== "disable") {
-            return message.reply("Please provide a true/false or enable/disable.").then(m => del(m, 7500));
+            && args[0] !== "false" && args[0] !== "disable"
+            && args[0] !== "on" && args[0] !== "off") {
+            return message.reply("Please provide an on/off, true/false or enable/disable.").then(m => del(m, 7500));
         }
 
-        const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
         let guildID = message.guild.id;
         let bool;
 
-        if (args[0] === "true" || args[0] === "enable") {
-            bool = true;
-        } else {
-            bool = false;
-        }
+        if (args[0] === "true" || args[0] === "enable" || args[0] === "on") bool = true;
+        else bool = false;
 
         const embed = new MessageEmbed()
             .setColor("#0efefe")
