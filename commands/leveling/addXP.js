@@ -11,7 +11,7 @@ module.exports = {
     permissions: "moderator",
     usage: "<@user|userID> <amount>",
     run: (client, message, args) => {
-        const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         if (!args[0])
             return message.reply("Please provide a user.").then(m => del(m, 7500));

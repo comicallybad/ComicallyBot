@@ -8,7 +8,7 @@ module.exports = async (client, data) => {
 
     if (data.user.id !== client.user.id) {
         if (data.guild.channels) {
-            let logChannel = await data.guild.channels.cache.find(c => c.name === "mod-logs" || undefined);
+            let logChannel = await data.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
 
             if (logChannel) {
                 const embed = new MessageEmbed()

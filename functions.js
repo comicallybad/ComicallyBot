@@ -232,7 +232,7 @@ module.exports = {
     },
 
     warn: async function (message, userArray, type) {
-        const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         const embed = new MessageEmbed()
             .setColor("#ff0000")
@@ -270,7 +270,7 @@ module.exports = {
     },
 
     punish: async function (message, userArray, reason) {
-        const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         const embed = new MessageEmbed()
             .setColor("#ff0000")

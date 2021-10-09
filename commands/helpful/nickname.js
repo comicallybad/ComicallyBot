@@ -16,7 +16,7 @@ module.exports = {
         if (!args[1])
             return message.reply("Please provide a new nickname.").then(m => del(m, 7500));
 
-        const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         if (!message.guild.me.hasPermission("MANAGE_NICKNAMES"))
             return message.reply("I don't have permission to manage nicknames!").then(m => del(m, 7500));

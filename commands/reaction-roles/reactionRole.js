@@ -43,14 +43,14 @@ module.exports = {
 
             if (reaction.includes("<:")) {
                 let customEmoji = reaction.replace("<:", "").slice(reaction.replace("<:", "").indexOf(":") + 1, reaction.replace("<:", "").length - 1);
-                msg.react(customEmoji).then(()=>addReactionRole(msg, customEmoji, role, type)).catch(err => message.reply(`Invalid emoji: ${err}`));
-            } else msg.react(reaction).then(()=>addReactionRole(msg, reaction, role, type)).catch(err => message.reply(`Invalid emoji: ${err}`));
+                msg.react(customEmoji).then(() => addReactionRole(msg, customEmoji, role, type)).catch(err => message.reply(`Invalid emoji: ${err}`));
+            } else msg.react(reaction).then(() => addReactionRole(msg, reaction, role, type)).catch(err => message.reply(`Invalid emoji: ${err}`));
         }
     }
 }
 
 function addReactionRole(message, reaction, role, type) {
-    const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
+    const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
     const guildID = message.guild.id;
     const messageID = message.id;

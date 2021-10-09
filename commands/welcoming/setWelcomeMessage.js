@@ -12,7 +12,7 @@ module.exports = {
     usage: "<message> Include [user] to mention the new user. Use [Some channelID] to add a mention to a channel",
     run: async (client, message, args) => {
         let guildID = message.guild.id;
-        const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         if (!args[0])
             return message.reply(`Please input the welcome message you wish to set after ${prefix} `).then(m => del(m, 7500));

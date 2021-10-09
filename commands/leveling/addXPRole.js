@@ -16,7 +16,7 @@ module.exports = {
         if (!message.guild.me.hasPermission("MANAGE_ROLES"))
             return message.reply("I don't have permission to manage roles!").then(m => del(m, 7500));
 
-        const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
         let guildID = message.guild.id;
 
         if (!args[0])

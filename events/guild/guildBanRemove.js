@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = async (client, guild, user) => {
     if (guild.channels) {
-        let logChannel = await guild.channels.cache.find(c => c.name === "mod-logs" || undefined);
+        let logChannel = await guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
 
         if (logChannel) {
             const embed = new MessageEmbed()

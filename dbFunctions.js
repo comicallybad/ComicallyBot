@@ -153,7 +153,7 @@ module.exports = {
     },
 
     checkXPRankup: async function (message, userID, level) {
-        const logChannel = message.guild.channels.cache.find(c => c.name === "mod-logs") || message.channel;
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
         let guildID = message.guild.id;
         let user = await message.guild.members.fetch(userID);
         const embed = new MessageEmbed()

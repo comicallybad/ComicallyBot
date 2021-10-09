@@ -23,9 +23,10 @@ module.exports = {
         if (!args[1])
             return message.channel.send("Please provide a reason for the report").then(m => del(m, 7500));
 
-        let channel = message.guild.channels.cache.find(channel => channel.name === "reports") || message.guild.channels.cache.find(channel => channel.name === "mod-logs");
+        let logChannel = message.guild.channels.cache.find(c => c.name.includes("reports"));
+        if (!logChannel) message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
 
-        if (!channel)
+        if (!logChannel)
             return message.channel.send("Couldn't find a \`#reports\` or \`#mod-logs\` channel").then(m => del(m, 7500));
 
         const embed = new MessageEmbed()
@@ -39,6 +40,6 @@ module.exports = {
             **Reported in:** ${message.channel}
             **Reason:** ${args.slice(1).join(" ")}`);
 
-        return channel.send(embed);
+        return logChannel.send(embed);
     }
-}  
+}
