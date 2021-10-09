@@ -8,7 +8,7 @@ module.exports = {
     permissions: "moderator",
     usage: "[@user | userID]<number of messages>",
     run: async (client, message, args) => {
-        if (!message.guild.me.hasPermission("MANAGE_MESSAGES"))
+        if (!message.guild.me.permissions.has("MANAGE_MESSAGES"))
             return message.reply("I do not have permissions to delete messages.").then(m => del(m, 7500));
 
         if (!args[1]) {
