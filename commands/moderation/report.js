@@ -17,7 +17,7 @@ module.exports = {
         if (!rMember)
             return message.reply("Couldn't find that user").then(m => del(m, 7500));
 
-        if (rMember.hasPermission("BAN_MEMBERS") || rMember.user.bot)
+        if (rMember.permissions.has("BAN_MEMBERS") || rMember.user.bot)
             return message.reply("Cannot report that user").then(m => del(m, 7500));
 
         if (!args[1])

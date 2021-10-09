@@ -18,7 +18,7 @@ module.exports = {
 
         const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
-        if (!message.guild.me.hasPermission("MANAGE_NICKNAMES"))
+        if (!message.guild.me.permissions.has("MANAGE_NICKNAMES"))
             return message.reply("I don't have permission to manage nicknames!").then(m => del(m, 7500));
 
         let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
