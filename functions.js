@@ -23,7 +23,7 @@ module.exports = {
         let userID = message.member.id;
 
         if (commandType == "everyone") return true;
-        else if (message.member.hasPermission("ADMINISTRATOR")
+        else if (message.member.permissions.has("ADMINISTRATOR")
             || message.author.id == process.env.USERID) return true;
         else {
             let permissions = await db.findOne({ guildID: guildID })
@@ -283,7 +283,7 @@ module.exports = {
             **Muted by:** ${message.guild.me}
             **Reason:** ${reason}`)
 
-        if (message.guild.me.hasPermission("MANAGE_ROLES")) {
+        if (message.guild.me.permissions.has("MANAGE_ROLES")) {
             if (userArray.some(user => user.id == message.author.id && user.offences == 5)) {
                 let muterole = await module.exports.checkMuteRole(message);
                 message.member.roles.add(muterole.id).then(() => {

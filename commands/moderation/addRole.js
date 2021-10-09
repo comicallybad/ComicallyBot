@@ -12,7 +12,7 @@ module.exports = {
     run: async (client, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
-        if (!message.guild.me.hasPermission("MANAGE_ROLES"))
+        if (!message.guild.me.permissions.has("MANAGE_ROLES"))
             return message.reply("I don't have permission to manage roles!").then(m => del(m, 7500));
 
         let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
