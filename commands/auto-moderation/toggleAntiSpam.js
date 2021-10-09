@@ -11,10 +11,10 @@ module.exports = {
     permissions: "moderator",
     usage: "<on/true/enable | off/false/disable>",
     run: (client, message, args) => {
-        if (!message.guild.me.hasPermission("MANAGE_MESSAGES"))
+        if (!message.guild.me.permissions.has("MANAGE_MESSAGES"))
             return message.reply("I need `MANAGE_MESSAGES` permissions for the anti-spam system.").then(m => del(m, 7500));
 
-        if (!message.guild.me.hasPermission("MANAGE_ROLES"))
+        if (!message.guild.me.permissions.has("MANAGE_ROLES"))
             return message.reply("I need `MANAGE_ROLES` permissions for the anti-spam system.").then(m => del(m, 7500));
 
         if (!args[0])
