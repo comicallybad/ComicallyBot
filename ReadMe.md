@@ -45,9 +45,11 @@ To clone and use ComicallyBot2.0 you will have to do a few things:
 
 https://www.azul.com/downloads/zulu-community/?version=java-11-lts&os=&os=windows&architecture=x86-64-bit&package=jdk 
 
+Scroll down all the way, find your OS, download whichever works best for you. (For windows download the .zip).
+
 https://ci.fredboat.com/buildConfiguration/Lavalink_Build?branch=refs%2Fheads%2Fdev&mode=builds&guest=1 
 
-rick click ![alt text](https://cdn.discordapp.com/attachments/418817098278764544/887838713500024832/unknown.png) > open link in new tab > click Download All (.zip) (top right)
+Rick click the top ![alt text](https://cdn.discordapp.com/attachments/418817098278764544/887838713500024832/unknown.png) on the right side of the page, then > open link in new tab > click Download All (.zip) (top right)
 
 Place lavalink .zip contents into a lavalink folder inside the project.
 
