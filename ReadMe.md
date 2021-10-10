@@ -49,7 +49,7 @@ Scroll down all the way, find your OS, download whichever works best for you. (F
 
 https://ci.fredboat.com/buildConfiguration/Lavalink_Build?branch=refs%2Fheads%2Fdev&mode=builds&guest=1 
 
-Rick click the top ![alt text](https://cdn.discordapp.com/attachments/418817098278764544/887838713500024832/unknown.png) on the right side of the page, then > open link in new tab > click Download All (.zip) (top right)
+Hover over the top ![alt text](https://cdn.discordapp.com/attachments/418817098278764544/887838713500024832/unknown.png) icon on the right side of the page, then click > Artifacts > click Download All (.zip) (Top right).
 
 Place lavalink .zip contents into a lavalink folder inside the project.
 
