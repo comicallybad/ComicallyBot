@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const { dbSetup } = require("../../dbFunctions.js");
 const { stripIndents } = require("common-tags");
-const { AutoPoster } = require('topgg-autoposter')
 
 module.exports = client => {
     const date = new Date()
@@ -26,8 +25,4 @@ module.exports = client => {
     dbSetup(client);
 
     client.music.init(client.user.id);
-
-    const ap = AutoPoster(`${process.env.DISCORDBOTLISTING}`, client)
-
-    ap.on('posted', () => { });
 }
