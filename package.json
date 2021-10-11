@@ -28,6 +28,7 @@
     "node-fetch": "^2.6.1",
     "popular-movie-quotes": "^1.2.4",
     "random-puppy": "^1.1.0",
+    "topgg-autoposter": "^2.0.0",
     "urban": "^0.3.4",
     "word-definition": "^2.1.6"
   }
