@@ -15,7 +15,9 @@ module.exports = {
         if (amount == -1) return message.channel.send(`There was an error fetching invites...`).then(m => del(m, 7500));
 
         if (amount > 0) {
-            const invites = await message.guild.fetchInvites().then(invites => invites.map(invite => `**${invite.code}** made by **${invite.inviter.username}** with **${invite.uses}** uses.`));
+            const invites = await message.guild.fetchInvites().then(invites => invites.sort((x, y) => { return y.uses - x.uses }).map(invite => {
+                if (invite.inviter) return `**${invite.code}** made by **${invite.inviter.username}** with **${invite.uses}** uses.`
+            }));
             return message.channel.send(invites).then(m => del(m, 30000));
         } else {
             return message.reply("There are no server invites created.").then(m => del(m, 30000))
