@@ -27,7 +27,7 @@ module.exports = client => {
 
     client.music.init(client.user.id);
 
-    const ap = AutoPoster('Your Top.gg Token', client)
+    const ap = AutoPoster(`${process.env.DISCORDBOTLISTING}`, client)
 
     ap.on('posted', () => { });
 }
