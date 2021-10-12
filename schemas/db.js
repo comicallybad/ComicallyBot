@@ -17,6 +17,7 @@ const dbSchema = mongoose.Schema({
     antiSpam: Boolean,
     badWordList: [String],
     welcomeMessage: [String],
+    welcomeMessageReactions: [String],
 });
 
 module.exports = mongoose.model("db", dbSchema)

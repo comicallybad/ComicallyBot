@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, Message } = require("discord.js");
 const humanizeDuration = require('humanize-duration');
 const xp = require('../../schemas/xp.js');
 const mongoose = require("mongoose");
@@ -55,7 +55,17 @@ module.exports = async (client, data) => {
                         });
                         welcomeMSG = msgMap.join(" ");
                         if (welcomeCH && welcomeMSG) {
-                            welcomeCH.send(`${welcomeMSG}`);
+                            welcomeCH.send(`${welcomeMSG}`).then(m => {
+                                if (exists.welcomeMessageReactions.length > 0) {
+                                    try {
+                                        let i = 0;
+                                        while (i < exists.welcomeMessageReactions.length)
+                                            m.react(exists.welcomeMessageReactions[i]).then(i++);
+                                    } catch (err) {
+                                        if (logChannel) return logChannel.send(`There was an issue with welcome message reactions: ${err}`);
+                                    }
+                                }
+                            });
                         }
                     }
                 }
