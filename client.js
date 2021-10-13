@@ -1,7 +1,13 @@
 const { Client, Intents, Collection } = require("discord.js");
 const fs = require("fs");
 const { config } = require("dotenv");
+<<<<<<< HEAD
 const client = new Client({ ws: { intents: Intents.ALL }, partials: ['GUILD_MEMBER', 'REACTION', 'CHANNEL', 'MESSAGE'], shardCount: 1 });
+=======
+const intents = [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, Intents.FLAGS.GUILD_INVITES,
+Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_VOICE_STATES]
+const client = new Client({ intents: intents }, { partials: ['GUILD_MEMBER', 'REACTION', 'CHANNEL', 'MESSAGE'] });
+>>>>>>> 01444bc (Rebase after shard update)
 const { Manager } = require("erela.js");
 const AntiSpam = require('discord-anti-spam');
 
@@ -24,12 +30,20 @@ client.antiSpam = new AntiSpam({
 });
 
 config({ path: __dirname + "/.env" });
+<<<<<<< HEAD
 global.prefix = "_";
+=======
+global.prefix = "=";
+>>>>>>> 01444bc (Rebase after shard update)
 global.voiceChannels = [], global.profanityUsers = [];
 
 ["aliases", "commands"].forEach(x => client[x] = new Collection());
 ["command", "event", "erela", "antiSpam"].forEach(x => require(`./handlers/${x}`)(client));
+<<<<<<< HEAD
 require(`./handlers/error`)(client, process);
+=======
+// require(`./handlers/error`)(client, process);
+>>>>>>> 01444bc (Rebase after shard update)
 client.categories = new fs.readdirSync("./commands/");
 
 client.login(process.env.TOKEN);
