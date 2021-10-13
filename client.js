@@ -5,8 +5,6 @@ const client = new Client({ ws: { intents: Intents.ALL }, partials: ['GUILD_MEMB
 const { Manager } = require("erela.js");
 const AntiSpam = require('discord-anti-spam');
 
-client.on('interactionCreate', interaction => {return});
-
 client.music = new Manager({
     nodes: [{ host: "localhost", port: 2333, password: "ErelaServerPassword!" }], send(id, payload) {
         const guild = client.guilds.cache.get(id);
