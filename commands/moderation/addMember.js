@@ -9,7 +9,7 @@ module.exports = {
     category: "moderation",
     description: "Add permitted role/user for member commands.",
     permissions: "moderator",
-    usage: "<@role | roleID>",
+    usage: "<@role | roleID | @user | userID>",
     run: (client, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
         let guildID = message.guild.id;
