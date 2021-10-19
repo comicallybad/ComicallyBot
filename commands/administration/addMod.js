@@ -7,7 +7,7 @@ module.exports = {
     name: "addmod",
     aliases: ["amod", "modadd"],
     category: "administration",
-    description: "Add permitted role/user for mod commands.",
+    description: "Add permitted role(s)/user(s) for mod commands.",
     permissions: "admin",
     usage: "<@user | userID | @role | roleID>",
     run: (client, message, args) => {
