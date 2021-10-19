@@ -32,7 +32,7 @@ module.exports = {
                     exists.guildName = guildsName[guildIndex]; //in case name changed
                     exists.save().catch(err => console.log(err));
                 }
-            }).then(function () {
+            }).then(() => {
                 commands.forEach((element, cmdIndex) => {
                     db.findOne({
                         guildID: guildsID[guildIndex],
@@ -76,7 +76,7 @@ module.exports = {
                         exists.xpMultiplier = 1;
                         exists.save().catch(err => console.log(err));
                     }
-                }).catch(err => console.log(err)).then(function () {
+                }).catch(err => console.log(err)).then(() => {
                     xp.findOne({ guildID: guildID, userID: userID }, (err, exists) => {
                         if (!exists) {
                             const newXP = new xp({

@@ -5,7 +5,6 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "addmember",
-    aliases: ["amember", "memberadd"],
     category: "moderation",
     description: "Add permitted role/user for member commands.",
     permissions: "moderator",
@@ -44,7 +43,7 @@ module.exports = {
                 if (!exists) {
                     db.updateOne({ guildID: guildID }, {
                         $push: { memberRoles: { roleName: roleName, roleID: roleID } }
-                    }).then(function () {
+                    }).then(() => {
 
                         const embed = new MessageEmbed()
                             .setColor("#0efefe")
@@ -60,7 +59,7 @@ module.exports = {
 
                         return message.reply("Adding member... this may take a second...").then(m => del(m, 7500));
                     }).catch(err => console.log(err))
-                } else return message.reply("user/role already added.").then(m => del(m, 7500));
+                } else return message.reply("User/role already added.").then(m => del(m, 7500));
             }).catch(err => console.log(err))
         }
     }

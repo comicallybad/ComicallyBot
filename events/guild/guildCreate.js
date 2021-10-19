@@ -19,7 +19,7 @@ module.exports = (client, guild) => {
             exists.guildName = guild.name; //in case name changed
             exists.save().catch(err => console.log(err))
         }
-    }).then(function () {
+    }).then(() => {
         commands.forEach((element, cmdIndex) => {
             db.findOne({
                 guildID: guild.id,

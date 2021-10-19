@@ -43,7 +43,7 @@ module.exports = {
                 if (!exists) {
                     db.updateOne({ guildID: guildID }, {
                         $push: { modRoles: { roleName: roleName, roleID: roleID } }
-                    }).then(function () {
+                    }).then(() => {
 
                         const embed = new MessageEmbed()
                             .setColor("#0efefe")

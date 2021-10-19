@@ -77,7 +77,7 @@ module.exports = {
                 } if (!exists) {
                     db.updateOne({ guildID: guildID }, {
                         $push: { xpRoles: { roleName: roleName, roleID: roleID, level: level } }
-                    }).then(function () {
+                    }).then(() => {
                         const embed = new MessageEmbed()
                             .setColor("#0efefe")
                             .setTitle("XP Role Added")

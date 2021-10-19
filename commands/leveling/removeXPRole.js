@@ -41,7 +41,7 @@ module.exports = {
                 if (exists) {
                     db.updateOne({ guildID: guildID }, {
                         $pull: { xpRoles: { roleID: roleID } }
-                    }).then(function () {
+                    }).then(() => {
                         const embed = new MessageEmbed()
                             .setColor("#0efefe")
                             .setTitle("XP Role Removed")
