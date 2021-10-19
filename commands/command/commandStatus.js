@@ -4,8 +4,8 @@ const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
 module.exports = {
-    name: "status",
-    aliases: ["commandstatus", "commands"],
+    name: "commandstatus",
+    aliases: ["status"],
     category: "command",
     description: "Show command status.",
     permissions: "moderator",

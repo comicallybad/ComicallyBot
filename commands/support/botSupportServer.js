@@ -1,8 +1,8 @@
 const { del } = require("../../functions.js");
 
 module.exports = {
-    name: "botsupport",
-    aliases: ["supportserver", "serversupport", "botserver"],
+    name: "botsupportserver",
+    aliases: ["supportserver", "botserver", "botsupport"],
     category: "support",
     description: "Provides the support server for the bot.",
     permissions: "member",

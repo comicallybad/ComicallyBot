@@ -2,8 +2,8 @@ const { del } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-    name: "roll",
-    aliases: ["dice", "diceroll", "rolldice"],
+    name: "diceroll",
+    aliases: ["dice", "roll"],
     category: "fun",
     description: "Rolls a dice for a number 1-6.",
     permissions: "member",

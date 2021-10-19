@@ -4,8 +4,8 @@ const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
 module.exports = {
-    name: "reactionrole",
-    aliases: ["rr", "rrole", "reactionr"],
+    name: "setreactionrole",
+    aliases: ["reactionrole", "rr", "setrr"],
     category: "reaction-roles",
     description: "Adds an emote users can react to to be given a role.",
     permissions: "moderator",

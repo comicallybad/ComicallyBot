@@ -3,8 +3,8 @@ const { MessageEmbed } = require("discord.js");
 const db = require('../../schemas/db.js');
 
 module.exports = {
-    name: "suggest",
-    aliases: ["suggestion", "addsuggestion"],
+    name: "addsuggestion",
+    aliases: ["suggest", "suggestion"],
     category: "helpful",
     description: "Sends a message with a suggestion users can vote on.",
     permissions: "member",

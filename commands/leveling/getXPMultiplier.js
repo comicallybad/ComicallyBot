@@ -2,8 +2,8 @@ const { del } = require("../../functions.js");
 const db = require('../../schemas/db.js');
 
 module.exports = {
-    name: "getmultiplier",
-    aliases: ["xpmultiplier", "getxpmultiplier", "multiplierget"],
+    name: "getxpmultiplier",
+    aliases: ["xpmultiplier", "getmultiplier"],
     category: "leveling",
     description: "Get XP multiplier.",
     permissions: "member",

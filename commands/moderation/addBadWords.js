@@ -4,8 +4,8 @@ const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-    name: "addbadword",
-    aliases: ["badwordadd", "addword", "addbadwords", "badwordsadd", "addwords"],
+    name: "addbadwords",
+    aliases: ["addwords", "addword", "addbadword"],
     category: "moderation",
     description: "Adds a word to a list of bad words that will be deleted.",
     permissions: "moderator",
@@ -15,7 +15,7 @@ module.exports = {
         let guildID = message.guild.id;
 
         if (!args[0])
-            return message.reply("Please provide a word to you wish to disallow.").then(m => del(m, 7500));
+            return message.reply("Please provide a word or words separated by a space you wish to disallow.").then(m => del(m, 7500));
 
         const embed = new MessageEmbed()
             .setColor("#0efefe")
