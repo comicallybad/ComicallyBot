@@ -17,9 +17,9 @@ module.exports = {
         if (!args[0])
             return message.reply("Please provide a user/role.").then(m => del(m, 7500));
 
-        let roleNames = message.guild.roles.cache.map(role => role.name.toLowerCase());
+        let roleNames = message.guild.roles.cache.map(role => role.name);
         let roleIDs = message.guild.roles.cache.map(role => role.id);
-        let userNames = message.guild.members.cache.map(user => user.user.username.toLowerCase());
+        let userNames = message.guild.members.cache.map(user => user.user.username);
         let userIDs = message.guild.members.cache.map(user => user.user.id);
 
         let ID = findID(message, args[0])
@@ -39,12 +39,10 @@ module.exports = {
             db.findOne({
                 guildID: guildID, modRoles: { $elemMatch: { roleName: roleName, roleID: roleID } }
             }, (err, exists) => {
-                if (err) console.log(err)
                 if (!exists) {
                     db.updateOne({ guildID: guildID }, {
                         $push: { modRoles: { roleName: roleName, roleID: roleID } }
                     }).then(() => {
-
                         const embed = new MessageEmbed()
                             .setColor("#0efefe")
                             .setTitle("Mod Added")

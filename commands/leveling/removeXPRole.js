@@ -18,7 +18,7 @@ module.exports = {
             return message.reply("Please provide a role.").then(m => del(m, 7500));
 
         let roleIDs = message.guild.roles.cache.map(role => role.id);
-        let roleNames = message.guild.roles.cache.map(role => role.name.toLowerCase());
+        let roleNames = message.guild.roles.cache.map(role => role.name);
 
 
         let ID = findID(message, args[0], "role");
@@ -37,7 +37,6 @@ module.exports = {
             db.findOne({
                 guildID: guildID, xpRoles: { $elemMatch: { roleID: roleID } }
             }, (err, exists) => {
-                if (err) console.log(err)
                 if (exists) {
                     db.updateOne({ guildID: guildID }, {
                         $pull: { xpRoles: { roleID: roleID } }
