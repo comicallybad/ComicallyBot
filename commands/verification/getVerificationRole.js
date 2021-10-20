@@ -5,7 +5,7 @@ const db = require('../../schemas/db.js');
 module.exports = {
     name: "getverificationrole",
     aliases: ["getverifyrole"],
-    category: "moderation",
+    category: "verification",
     description: "Add permitted role for mod commands.",
     permissions: "moderator",
     usage: "<@role | role name>",

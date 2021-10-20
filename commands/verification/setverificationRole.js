@@ -6,7 +6,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "setverificationrole",
     aliases: ["addverifyrole"],
-    category: "moderation",
+    category: "verification",
     description: "Adds verification role to be given after using the verify command.",
     permissions: "moderator",
     usage: "<@role | roleID>",

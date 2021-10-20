@@ -6,7 +6,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "removeverificationrole",
     aliases: ["rmverifyrole"],
-    category: "moderation",
+    category: "verification",
     description: "Removes verification role to be given after using the verify command.",
     permissions: "moderator",
     usage: "<@role | role ID>",
