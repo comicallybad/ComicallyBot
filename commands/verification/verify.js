@@ -43,7 +43,8 @@ module.exports = {
                     message.member.roles.add(role.id).then(() => {
                         message.member.send(`Hello, you have been added to the **${role.name}** role in ${message.guild.name}`).catch(err => err); //in case DM's are closed
                         message.reply(`${message.member} was successfully added to the **${role.name}** role.`).then(m => del(m, 7500));
-                        logChannel.send(embed).catch(err => err);
+                        if (logChannel)
+                            logChannel.send(embed).catch(err => err);
                     }).catch(err => {
                         if (err) return message.reply(`There was an error attempting to add ${message.member} to the ${role.name} role: ${err}`).then(m => del(m, 7500));
                     });
@@ -57,9 +58,6 @@ module.exports = {
                         .setDescription(stripIndents`
                         **Verified Member:** ${message.member} (${message.member.id})
                         **Role added:** ${role.name} (${role.id})`);
-
-                    if (logChannel)
-                        return logChannel.send(embed);
                 } else {
                     del(msg, 0);
                     message.reply("Sorry, you chose incorrectly. 😢").then(m => del(m, 7500));
