@@ -5,9 +5,9 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "removemember",
-    aliases: ["rmember", "memberremove"],
+    aliases: ["memberremove", "rmmember"],
     category: "moderation",
-    description: "Add permitted role/user for member commands.",
+    description: "Remove permitted role/user for member commands.",
     permissions: "moderator",
     usage: "<@role | role ID | @user | userID>",
     run: (client, message, args) => {
@@ -28,11 +28,10 @@ module.exports = {
                 guildID: guildID,
                 memberRoles: { $elemMatch: { roleID: roleID } }
             }, (err, exists) => {
-                if (err) console.log(err)
                 if (exists) {
                     db.updateOne({ guildID: guildID }, {
                         $pull: { memberRoles: { roleID: roleID } }
-                    }).then(function () {
+                    }).then(() => {
 
                         const embed = new MessageEmbed()
                             .setColor("#0efefe")
@@ -48,7 +47,7 @@ module.exports = {
 
                         return message.reply("Removing member... this may take a second...").then(m => del(m, 7500));
                     }).catch(err => console.log(err))
-                } else return message.reply("user/role was never added, or it was already removed.").then(m => del(m, 7500));
+                } else return message.reply("User/role was never added, or it was already removed.").then(m => del(m, 7500));
             }).catch(err => console.log(err))
         }
     }

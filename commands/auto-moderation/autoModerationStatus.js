@@ -4,7 +4,7 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "automoderationstatus",
-    aliases: ["statusautomod", "statusautomoderation", "automodstatus"],
+    aliases: ["automodstatus"],
     category: "auto-moderation",
     description: "Toggles the anti-spam system on or off.",
     permissions: "moderator",

@@ -31,7 +31,7 @@ module.exports = {
 
             const embed = new MessageEmbed()
                 .setColor("#ff0000")
-                .setTitle("User SoftBanned")
+                .setTitle("Member SoftBanned")
                 .setThumbnail(toBan.displayAvatarURL())
                 .setFooter(message.member.displayName, message.author.displayAvatarURL())
                 .setTimestamp()

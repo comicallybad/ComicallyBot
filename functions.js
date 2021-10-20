@@ -250,7 +250,7 @@ module.exports = {
 
         const embed = new MessageEmbed()
             .setColor("#ff0000")
-            .setTitle("User Warned")
+            .setTitle("Member Warned")
             .setThumbnail(message.guild.me.user.displayAvatarURL())
             .setFooter(message.guild.me.displayName, message.guild.me.user.displayAvatarURL())
             .setTimestamp()
@@ -288,7 +288,7 @@ module.exports = {
 
         const embed = new MessageEmbed()
             .setColor("#ff0000")
-            .setTitle("User Muted")
+            .setTitle("Member Muted")
             .setThumbnail(message.guild.me.user.displayAvatarURL())
             .setFooter(message.guild.me.displayName, message.guild.me.user.displayAvatarURL())
             .setTimestamp()

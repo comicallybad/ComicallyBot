@@ -2,8 +2,8 @@ const db = require("../../schemas/db.js");
 const { del } = require("../../functions.js")
 
 module.exports = {
-    name: "addbotchatchannel",
-    aliases: ["addbotchannel", "abc", "updatebotchatchannel", "updatebotchannel", "ubc", "sbc"],
+    name: "setbotchannel",
+    aliases: ["setbotch", "sbc", "addbotch"],
     category: "autochat",
     description: "Adds the channel where the bot can talk to people.",
     permissions: "moderator",

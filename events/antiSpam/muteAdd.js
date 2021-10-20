@@ -6,7 +6,7 @@ module.exports = (client, member) => {
     if (logChannel) {
         const embed = new MessageEmbed()
             .setColor("#ff0000")
-            .setTitle("User Muted")
+            .setTitle("Member Muted")
             .setThumbnail(member.guild.me.user.displayAvatarURL())
             .setFooter(member.guild.me.displayName, member.guild.me.user.displayAvatarURL())
             .setTimestamp()
@@ -23,7 +23,7 @@ module.exports = (client, member) => {
             member.roles.remove(muterole.id).then(() => {
                 const embed2 = new MessageEmbed()
                     .setColor("#00ff00")
-                    .setTitle("User Unmuted")
+                    .setTitle("Member Unmuted")
                     .setThumbnail(member.guild.me.user.displayAvatarURL())
                     .setFooter(member.guild.me.displayName, member.guild.me.user.displayAvatarURL())
                     .setTimestamp()

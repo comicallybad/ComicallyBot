@@ -2,8 +2,8 @@ const { del } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-    name: "flip",
-    aliases: ["coinflip", "coin", "headsortails"],
+    name: "coinflip",
+    aliases: ["flip"],
     category: "fun",
     description: "Flips a coin for heads or tails.",
     permissions: "member",
@@ -18,6 +18,6 @@ module.exports = {
         if (number === 0) embed.addField("Result", "\`Heads\`")
         else embed.addField("Result", "\`Tails\`")
 
-        message.channel.send(embed).then(m => del(m, 15000));
+        message.channel.send(embed).then(m => del(m, 30000));
     }
 }

@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "love",
-    aliases: ["loveme", "feels"],
+    aliases: ["feels", "vibes"],
     category: "fun",
     description: "Calculates the love affinity you have for another person.",
     permissions: "member",

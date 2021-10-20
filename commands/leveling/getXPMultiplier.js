@@ -2,8 +2,8 @@ const { del } = require("../../functions.js");
 const db = require('../../schemas/db.js');
 
 module.exports = {
-    name: "getmultiplier",
-    aliases: ["xpmultiplier", "getxpmultiplier", "multiplierget"],
+    name: "getxpmultiplier",
+    aliases: ["xpmultiplier", "getmultiplier"],
     category: "leveling",
     description: "Get XP multiplier.",
     permissions: "member",
@@ -11,7 +11,6 @@ module.exports = {
         let guildID = message.guild.id;
 
         db.findOne({ guildID: guildID }, (err, exists) => {
-            if (!exists) console.log("Error in getMultiplier");
             if (exists.xpMultiplier) return message.reply("This server has a " + exists.xpMultiplier + "x multiplier").then(m => del(m, 15000));
             else {
                 exists.xpMultiplier = 1;

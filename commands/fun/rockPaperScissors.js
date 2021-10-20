@@ -4,8 +4,8 @@ const { MessageEmbed } = require("discord.js");
 const chooseArr = ["🗻", "📰", "✂"];
 
 module.exports = {
-    name: "rps",
-    aliases: ["rockpaperscissors"],
+    name: "rockpaperscissors",
+    aliases: ["rps"],
     category: "fun",
     description: "Rock Paper Scissors game. React to one of the emojis to play the game.",
     permissions: "member",

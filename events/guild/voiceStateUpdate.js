@@ -68,11 +68,11 @@ function checkUsers(client) {
 }
 
 function checkDisconnect(client, channelID) {
-    let disconnectChannel = setTimeout(function () {
+    let disconnectChannel = setTimeout(() => {
         clearInterval(intervalCheck);
         disconnect(client, channelID);
     }, 300000); //5 minutes == 300000
-    let intervalCheck = setInterval(function () {
+    let intervalCheck = setInterval(() => {
         var size = getSize(client, channelID)
         if (size > 1) {
             clearInterval(intervalCheck);

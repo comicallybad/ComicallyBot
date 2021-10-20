@@ -21,7 +21,6 @@ module.exports = {
         const m = await message.channel.send(embed);
 
         db.findOne({ guildID: guildID }, (err, exists) => {
-            if (err) console.log(err);
             if (exists.xpRoles.length > 0) {
                 let rankList = exists.xpRoles.map(rank => "Name: " + `\`${rank.roleName}\`` + ", ID: " + `\`${rank.roleID}\`` + ", level: " + `\`${rank.level}\``);
                 embed.setDescription("").addField("Ranks: ", rankList);

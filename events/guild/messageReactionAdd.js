@@ -30,7 +30,7 @@ function checkReactionRole(message, user) {
 
     const embed = new MessageEmbed()
         .setColor("#0efefe")
-        .setTitle("User joined role via Reaction Role")
+        .setTitle("Member joined role via Reaction Role")
         .setFooter(user.id, user.displayAvatarURL())
         .setThumbnail(guildUser.user.displayAvatarURL())
         .setTimestamp()

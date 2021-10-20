@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "encouragement",
-    aliases: ["encourage", "inspiration", "inspire", "inspireme"],
+    aliases: ["encourage", "inspiration", "inspire"],
     category: "fun",
     description: "Says a random form of encouragement.",
     permissions: "member",

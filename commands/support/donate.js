@@ -2,7 +2,6 @@ const { del } = require("../../functions.js");
 
 module.exports = {
     name: "donate",
-    aliases: ["botdonate", "donatebot"],
     category: "support",
     description: "Provides a link to support the creator of the bot ❤️.",
     permissions: "member",

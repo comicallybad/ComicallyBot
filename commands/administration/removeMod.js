@@ -28,12 +28,10 @@ module.exports = {
                 guildID: guildID,
                 modRoles: { $elemMatch: { roleID: roleID } }
             }, (err, exists) => {
-                if (err) console.log(err)
                 if (exists) {
                     db.updateOne({ guildID: guildID }, {
                         $pull: { modRoles: { roleID: roleID } }
-                    }).then(function () {
-
+                    }).then(() => {
                         const embed = new MessageEmbed()
                             .setColor("#0efefe")
                             .setTitle("Mod Removed")

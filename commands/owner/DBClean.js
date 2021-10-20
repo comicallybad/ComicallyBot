@@ -3,7 +3,7 @@ const db = require("../../schemas/db.js")
 
 module.exports = {
     name: "dbclean",
-    aliases: ["cleanupdb", "dbcleaup"],
+    aliases: ["dbcleaup"],
     category: "owner",
     description: "Cleans DB database from unused guilds.",
     permissions: "admin",

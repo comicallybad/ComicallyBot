@@ -4,7 +4,7 @@ var wd = require("word-definition");
 
 module.exports = {
     name: "define",
-    aliases: ["dict", "dictionary"],
+    aliases: ["def"],
     category: "helpful",
     description: "Defines a word for you.",
     permissions: "member",

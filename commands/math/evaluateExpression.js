@@ -4,7 +4,7 @@ const { del, promptMessage } = require("../../functions.js");
 
 module.exports = {
     name: "evaluateexpression",
-    aliases: ["evaluate", "mathevaluate"],
+    aliases: ["evaluate"],
     category: "math",
     description: "Evaluates a math expression.",
     permissions: "member",

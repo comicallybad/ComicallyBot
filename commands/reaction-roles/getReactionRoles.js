@@ -4,7 +4,7 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "getreactionroles",
-    aliases: ["getrr", "rrolesget", "reactionrolesget"],
+    aliases: ["getrr"],
     category: "reaction-roles",
     description: "Gets a list of active reaction roles.",
     permissions: "moderator",
@@ -20,10 +20,7 @@ module.exports = {
 
         const m = await message.channel.send(embed);
 
-        db.findOne({
-            guildID: guildID,
-        }, (err, exists) => {
-            if (err) console.log(err)
+        db.findOne({ guildID: guildID }, (err, exists) => {
             if (exists) {
                 let reactionRoles = exists.reactionRoles
                 if (reactionRoles.length > 0) {

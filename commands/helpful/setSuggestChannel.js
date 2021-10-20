@@ -3,7 +3,7 @@ const db = require('../../schemas/db.js');
 
 module.exports = {
     name: "setsuggestchannel",
-    aliases: ["setsuggestch", "suggestchannelset", "rolechannelset", "setrolechannel"],
+    aliases: ["setsuggestch", "suggestchset"],
     category: "helpful",
     description: "Set a channel for suggest command.",
     permissions: "moderator",
@@ -28,7 +28,6 @@ module.exports = {
 
         function dbUpdate(channelID, channelName) {
             db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "suggest" } } }, (err, exists) => {
-                if (err) console.log(err);
                 if (!exists) {
                     //push channel if it doesn't exist
                     db.updateOne({ guildID: guildID }, {

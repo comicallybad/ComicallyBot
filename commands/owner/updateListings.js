@@ -3,8 +3,7 @@ const fetch = require("node-fetch");
 
 module.exports = {
     name: "updatelistings",
-    aliases: ["updatelisting", "listingupdate"],
-    category: "info",
+    category: "owner",
     description: "Update server listing info.",
     permissions: "admin",
     run: async (client, message, args) => {

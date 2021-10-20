@@ -30,7 +30,7 @@ module.exports = {
 
         const embed = new MessageEmbed()
             .setColor("#00ff00")
-            .setTitle("User Unbanned")
+            .setTitle("Member Unbanned")
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()
             .setDescription(stripIndents`

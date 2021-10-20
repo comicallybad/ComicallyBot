@@ -5,7 +5,7 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "togglecategory",
-    aliases: ["togglecat", "cattoggle"],
+    aliases: ["togglecat"],
     category: "command",
     description: "Enable or disable commands.",
     permissions: "admin",

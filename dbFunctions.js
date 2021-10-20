@@ -21,7 +21,6 @@ module.exports = {
                         xpSystem: false,
                         xpRoles: [],
                         reactionRoles: [],
-                        reactionCommands: [],
                         profanityFilter: false,
                         antiSpam: false,
                         badWordList: [],
@@ -32,7 +31,7 @@ module.exports = {
                     exists.guildName = guildsName[guildIndex]; //in case name changed
                     exists.save().catch(err => console.log(err));
                 }
-            }).then(function () {
+            }).then(() => {
                 commands.forEach((element, cmdIndex) => {
                     db.findOne({
                         guildID: guildsID[guildIndex],
@@ -76,7 +75,7 @@ module.exports = {
                         exists.xpMultiplier = 1;
                         exists.save().catch(err => console.log(err));
                     }
-                }).catch(err => console.log(err)).then(function () {
+                }).catch(err => console.log(err)).then(() => {
                     xp.findOne({ guildID: guildID, userID: userID }, (err, exists) => {
                         if (!exists) {
                             const newXP = new xp({
@@ -158,7 +157,7 @@ module.exports = {
         let user = await message.guild.members.fetch(userID);
         const embed = new MessageEmbed()
             .setColor("#0efefe")
-            .setTitle("User joined role via Leveling Up")
+            .setTitle("Member joined role via Leveling Up")
             .setThumbnail(user.user.displayAvatarURL())
             .setFooter(user.id, user.user.displayAvatarURL())
             .setTimestamp()

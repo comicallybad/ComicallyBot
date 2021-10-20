@@ -13,7 +13,7 @@ module.exports = async (client, data) => {
             if (logChannel) {
                 const embed = new MessageEmbed()
                     .setColor("#0efefe")
-                    .setTitle("User Left")
+                    .setTitle("Member Left")
                     .setThumbnail(data.user.displayAvatarURL())
                     .setDescription(`${data.user} ${data.user.tag}`)
                     .setFooter(`ID: ${data.user.id}`)

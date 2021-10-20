@@ -4,16 +4,14 @@ const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
 module.exports = {
-    name: "status",
-    aliases: ["commandstatus", "commands"],
+    name: "commandstatus",
+    aliases: ["status"],
     category: "command",
     description: "Show command status.",
     permissions: "moderator",
     run: (client, message, args) => {
         let guildID = message.guild.id;
         db.findOne({ guildID: guildID }, (err, exists) => {
-            if (err) console.log(err)
-            if (!exists) return message.reply("Error in database")
             if (exists) {
                 const embed = new MessageEmbed()
                     .setColor("#0efefe")

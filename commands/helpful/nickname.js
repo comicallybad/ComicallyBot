@@ -28,7 +28,7 @@ module.exports = {
 
         const embed = new MessageEmbed()
             .setColor("#0efefe")
-            .setTitle("User Nickname Changed")
+            .setTitle("Member Nickname Changed")
             .setThumbnail(user.user.displayAvatarURL())
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()

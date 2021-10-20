@@ -4,8 +4,8 @@ const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
 module.exports = {
-    name: "urban",
-    aliases: ["urb", "urbandictionary", "ud"],
+    name: "urbandictionary",
+    aliases: ["urb", "urban"],
     category: "fun",
     description: "Gets an urban dictionary definition",
     usage: "<search term> | <random>",

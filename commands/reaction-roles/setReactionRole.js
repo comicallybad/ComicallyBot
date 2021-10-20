@@ -4,8 +4,8 @@ const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
 module.exports = {
-    name: "reactionrole",
-    aliases: ["rr", "rrole", "reactionr"],
+    name: "setreactionrole",
+    aliases: ["reactionrole", "rr", "setrr"],
     category: "reaction-roles",
     description: "Adds an emote users can react to to be given a role.",
     permissions: "moderator",
@@ -68,12 +68,10 @@ function addReactionRole(message, reaction, role, type) {
         guildID: guildID,
         reactionRoles: { $elemMatch: { messageID: messageID, roleID: roleID } }
     }, (err, exists) => {
-        if (err) console.log(err)
         if (!exists) {
             db.updateOne({ guildID: guildID }, {
                 $push: { reactionRoles: { messageID: messageID, reaction: reaction, roleID: roleID, roleName: roleName, type: type } }
             }).catch(err => console.log(err))
-
             embed.setDescription(stripIndents`
             **Reaction role create by:** ${message.member.user}
             **Reaction role:** ${role}(${role.id})

@@ -1,8 +1,8 @@
 const { del } = require("../../functions");
 
 module.exports = {
-    name: "say",
-    aliases: ["send", "message"],
+    name: "announce",
+    aliases: ["say"],
     category: "helpful",
     description: "Makes the bot say something.",
     permissions: "moderator",

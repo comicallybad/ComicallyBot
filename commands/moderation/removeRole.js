@@ -4,7 +4,6 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "removerole",
-    aliases: ["roleremove"],
     category: "moderation",
     description: "Removes user from a role.",
     permissions: "moderator",
@@ -30,7 +29,7 @@ module.exports = {
 
         const embed = new MessageEmbed()
             .setColor("#0efefe")
-            .setTitle("User Removed From Role")
+            .setTitle("Member Removed From Role")
             .setThumbnail(user.user.displayAvatarURL())
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()

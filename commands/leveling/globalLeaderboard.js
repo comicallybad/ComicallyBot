@@ -4,7 +4,7 @@ const xp = require('../../schemas/xp.js');
 
 module.exports = {
     name: "globalleaderboard",
-    aliases: ["leaderboardglobal", "xpgloballeaderboard", "globalleaderboards"],
+    aliases: ["xpgloballeaderboards", "xpgloballeaderboard", "globalleaderboards"],
     category: "leveling",
     description: "Shows the top level users out of all servers.",
     permissions: "member",
