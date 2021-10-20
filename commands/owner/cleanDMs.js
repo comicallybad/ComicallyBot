@@ -3,7 +3,7 @@ const { del } = require('../../functions.js');
 module.exports = {
     name: "cleandms",
     aliases: ["cdm"],
-    category: "info",
+    category: "owner",
     description: "Cleans DM messages from bot to Owner.",
     permissions: "admin",
     run: async (client, message, args) => {
