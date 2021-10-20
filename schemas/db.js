@@ -12,7 +12,6 @@ const dbSchema = mongoose.Schema({
     xpMultiplier: Number,
     xpRoles: [Object],
     reactionRoles: [Object],
-    reactionCommands: [Object],
     xpSystem: Boolean,
     profanityFilter: Boolean,
     antiSpam: Boolean,

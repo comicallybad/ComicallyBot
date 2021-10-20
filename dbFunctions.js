@@ -21,7 +21,6 @@ module.exports = {
                         xpSystem: false,
                         xpRoles: [],
                         reactionRoles: [],
-                        reactionCommands: [],
                         profanityFilter: false,
                         antiSpam: false,
                         badWordList: [],
