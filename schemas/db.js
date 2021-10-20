@@ -6,6 +6,7 @@ const dbSchema = mongoose.Schema({
     guildName: String,
     memberRoles: [Object],
     modRoles: [Object],
+    verificationRole: [Object],
     commands: [Object],
     channels: [Object],
     xpMultiplier: Number,
