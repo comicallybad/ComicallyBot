@@ -39,6 +39,8 @@ module.exports = {
                     del(msg, 0);
                     message.reply("Congratuations, chose correctly!").then(m => del(m, 7500));
 
+                    const role = await message.guild.roles.cache.find(r => r.name === exists.verificationRole[0].roleName) || message.guild.roles.cache.find(r => r.id === exists.verificationRole[0].roleID);
+
                     const embed = new MessageEmbed()
                         .setColor("#0efefe")
                         .setTitle("Member Verified")
@@ -49,7 +51,6 @@ module.exports = {
                         **Verified Member:** ${message.member} (${message.member.id})
                         **Role added:** ${role.name} (${role.id})`);
 
-                    const role = await message.guild.roles.cache.find(r => r.name === exists.verificationRole[0].roleName) || message.guild.roles.cache.find(r => r.id === exists.verificationRole[0].roleID);
                     message.member.roles.add(role.id).then(() => {
                         message.member.send(`Hello, you have been added to the **${role.name}** role in ${message.guild.name}`).catch(err => err); //in case DM's are closed
                         message.reply(`${message.member} was successfully added to the **${role.name}** role.`).then(m => del(m, 7500));
