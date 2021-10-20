@@ -28,7 +28,7 @@ module.exports = {
 
         const embed = new MessageEmbed()
             .setColor("#00ff00")
-            .setTitle("User Unmuted")
+            .setTitle("Member Unmuted")
             .setThumbnail(mutee.user.displayAvatarURL())
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()

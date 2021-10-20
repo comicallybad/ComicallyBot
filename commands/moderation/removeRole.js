@@ -29,7 +29,7 @@ module.exports = {
 
         const embed = new MessageEmbed()
             .setColor("#0efefe")
-            .setTitle("User Removed From Role")
+            .setTitle("Member Removed From Role")
             .setThumbnail(user.user.displayAvatarURL())
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()

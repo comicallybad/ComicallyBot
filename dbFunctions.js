@@ -158,7 +158,7 @@ module.exports = {
         let user = await message.guild.members.fetch(userID);
         const embed = new MessageEmbed()
             .setColor("#0efefe")
-            .setTitle("User joined role via Leveling Up")
+            .setTitle("Member joined role via Leveling Up")
             .setThumbnail(user.user.displayAvatarURL())
             .setFooter(user.id, user.user.displayAvatarURL())
             .setTimestamp()

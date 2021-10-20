@@ -8,7 +8,7 @@ module.exports = async (client, guild, user) => {
             if (logChannel) {
                 const embed = new MessageEmbed()
                     .setColor("#0efefe")
-                    .setTitle("User Banned")
+                    .setTitle("Member Banned")
                     .setThumbnail(user.displayAvatarURL())
                     .setDescription(`${user} ${user.tag}`)
                     .setFooter(`ID: ${user.id}`)
