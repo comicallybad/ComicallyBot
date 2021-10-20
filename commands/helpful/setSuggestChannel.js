@@ -28,7 +28,6 @@ module.exports = {
 
         function dbUpdate(channelID, channelName) {
             db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "suggest" } } }, (err, exists) => {
-                if (err) console.log(err);
                 if (!exists) {
                     //push channel if it doesn't exist
                     db.updateOne({ guildID: guildID }, {

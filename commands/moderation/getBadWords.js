@@ -19,7 +19,6 @@ module.exports = {
             .setTimestamp()
 
         db.findOne({ guildID: guildID }, (err, exists) => {
-            if (err) console.log(err)
             if (exists) {
                 if (exists.badWordList.length > 0) {
                     badWordList = exists.badWordList.map(word => `\`${word}\``).join(',');

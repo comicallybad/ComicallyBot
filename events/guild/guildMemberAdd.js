@@ -36,9 +36,8 @@ module.exports = async (client, data) => {
             }
             let welcomeCH;
             db.findOne({ guildID: data.guild.id, channels: { $elemMatch: { command: "welcome" } } }, async (err, exists) => {
-                if (exists) {
+                if (exists)
                     welcomeCH = await client.channels.cache.get(exists.channels.filter(x => x.command === "welcome")[0].channelID);
-                }
             });
 
             let welcomeMSG;

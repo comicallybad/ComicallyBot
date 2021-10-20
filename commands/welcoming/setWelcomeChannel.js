@@ -31,7 +31,6 @@ module.exports = {
 
         function dbUpdate(channelID, channelName) {
             db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "welcome" } } }, (err, exists) => {
-                if (err) console.log(err);
                 if (!exists) {
                     //push channel if it doesn't exist
                     const embed = new MessageEmbed()

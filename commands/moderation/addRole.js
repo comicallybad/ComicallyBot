@@ -55,7 +55,7 @@ module.exports = {
                     logChannel.send(embed).catch(err => err);
                 }).catch(err => {
                     if (err) return message.reply(`There was an error attempting to add ${user} to the ${role.name} role: ${err}`).then(m => del(m, 7500));
-                })
+                });
             } else if (emoji === "❌") {
                 del(msg, 0);
                 return message.reply(`Role add cancelled.`).then(m => del(m, 7500));

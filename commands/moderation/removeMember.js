@@ -28,7 +28,6 @@ module.exports = {
                 guildID: guildID,
                 memberRoles: { $elemMatch: { roleID: roleID } }
             }, (err, exists) => {
-                if (err) console.log(err)
                 if (exists) {
                     db.updateOne({ guildID: guildID }, {
                         $pull: { memberRoles: { roleID: roleID } }

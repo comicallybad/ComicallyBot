@@ -5,7 +5,6 @@ module.exports = (client, guild) => {
     activities = [`${client.guilds.cache.size} servers!`, `${client.channels.cache.size} channels!`, `${client.users.cache.size} users!`], i = 0;
     let commands = (client.commands.map(cmd => cmd.name));
     db.findOne({ guildID: guild.id }, (err, exists) => {
-        if (err) console.log(err)
         if (!exists) {
             const newDB = new db({
                 _id: mongoose.Types.ObjectId(),
@@ -25,7 +24,6 @@ module.exports = (client, guild) => {
                 guildID: guild.id,
                 commands: { $elemMatch: { name: commands[cmdIndex] } }
             }, (err, exists) => {
-                if (err) console.log(err)
                 if (!exists) {
                     db.updateOne({ guildID: guild.id }, {
                         $push: { commands: { name: commands[cmdIndex], status: true } }

@@ -12,8 +12,6 @@ module.exports = {
     run: (client, message, args) => {
         let guildID = message.guild.id;
         db.findOne({ guildID: guildID }, (err, exists) => {
-            if (err) console.log(err)
-            if (!exists) return message.reply("Error in database")
             if (exists) {
                 const embed = new MessageEmbed()
                     .setColor("#0efefe")

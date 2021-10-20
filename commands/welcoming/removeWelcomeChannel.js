@@ -13,7 +13,6 @@ module.exports = {
                 db.updateOne({ guildID: message.guild.id, 'channels.command': "welcome" }, {
                     $pull: { channels: { command: "welcome" } }
                 }).catch(err => console.log(err));
-
                 const embed = new MessageEmbed()
                     .setColor("#0efefe")
                     .setTitle("Welcome Channel Removed")
