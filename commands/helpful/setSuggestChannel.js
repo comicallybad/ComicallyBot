@@ -3,7 +3,7 @@ const db = require('../../schemas/db.js');
 
 module.exports = {
     name: "setsuggestchannel",
-    aliases: ["setsuggestch", "suggestchannelset", "rolechannelset", "setrolechannel"],
+    aliases: ["setsuggestch", "suggestchset"],
     category: "helpful",
     description: "Set a channel for suggest command.",
     permissions: "moderator",

@@ -4,7 +4,6 @@ const dadJokes = require('@mikemcbride/dad-jokes');
 
 module.exports = {
     name: "dadjoke",
-    aliases: ["jokedad"],
     category: "fun",
     description: "Says a random dad joke.",
     permissions: "member",
@@ -15,6 +14,6 @@ module.exports = {
             .setTimestamp()
             .setDescription(`${dadJokes.random()}`);
 
-        message.channel.send(embed).then(m => del(m, 15000));
+        message.channel.send(embed).then(m => del(m, 30000));
     }
 }

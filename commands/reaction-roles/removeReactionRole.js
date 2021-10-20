@@ -3,7 +3,7 @@ const db = require("../../schemas/db.js");
 
 module.exports = {
     name: "removereactionrole",
-    aliases: ["rrremove", "removerr"],
+    aliases: ["removerr"],
     category: "reaction-roles",
     description: "Removes a reaction role.",
     permissions: "moderator",

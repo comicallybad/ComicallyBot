@@ -4,7 +4,7 @@ const movieQuote = require("popular-movie-quotes");
 
 module.exports = {
     name: "moviequote",
-    aliases: ["quotemovie", "rmquote"],
+    aliases: ["mquote"],
     category: "fun",
     description: "Says a quote from a movie provided, or a random movie.",
     usage: "[movie title]",

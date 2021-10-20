@@ -4,7 +4,6 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "play",
-    aliases: ["p", "pplay"],
     category: "music",
     description: "Resume  music or queue a song from YouTube/SoundCloud.",
     permissions: "member",

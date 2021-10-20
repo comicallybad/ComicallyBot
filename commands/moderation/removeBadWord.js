@@ -5,7 +5,7 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "removebadword",
-    aliases: ["badwordremove", "removeword", "badwordsremove", "removebadwords", "removewords"],
+    aliases: ["removeword", "removebadwords", "removewords"],
     category: "moderation",
     description: "Removes a word from the list of bad words that will be deleted.",
     permissions: "moderator",
@@ -15,7 +15,7 @@ module.exports = {
         let guildID = message.guild.id;
 
         if (!args[0])
-            return message.reply("Please provide a word to you wish to allow.").then(m => del(m, 7500));
+            return message.reply("Please provide a word or words separated by a space you wish to remove from the list.").then(m => del(m, 7500));
 
         const embed = new MessageEmbed()
             .setColor("#0efefe")

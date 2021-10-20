@@ -4,7 +4,7 @@ var gis = require('g-i-s');
 
 module.exports = {
     name: "imagesearch",
-    aliases: ["image", "picsearch", "pic"],
+    aliases: ["image", "pic"],
     category: "fun",
     description: "Searches for a google image.",
     permissions: "member",

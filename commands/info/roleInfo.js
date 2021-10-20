@@ -4,7 +4,7 @@ const { stripIndents } = require("common-tags");
 
 module.exports = {
     name: "roleinfo",
-    aliases: ["role", "inforole", "rolei"],
+    aliases: ["role"],
     category: "info",
     description: "Returns role information.",
     permissions: "member",

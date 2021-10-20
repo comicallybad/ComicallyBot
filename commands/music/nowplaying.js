@@ -4,7 +4,7 @@ const { MessageEmbed } = require("discord.js")
 
 module.exports = {
     name: "nowplaying",
-    aliases: ["np", "now", "playing", "song", "current"],
+    aliases: ["np", "song", "songname"],
     category: "music",
     description: "Displays what song is currently playing.",
     permissions: "member",

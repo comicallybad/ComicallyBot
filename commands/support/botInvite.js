@@ -2,7 +2,7 @@ const { del } = require("../../functions.js");
 
 module.exports = {
     name: "botinvite",
-    aliases: ["invitebot", "botlink", "botinvitelink"],
+    aliases: ["botlink"],
     category: "support",
     description: "Provides a link to share the bot with others.",
     permissions: "member",

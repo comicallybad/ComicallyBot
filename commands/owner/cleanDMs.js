@@ -2,7 +2,7 @@ const { del } = require('../../functions.js');
 
 module.exports = {
     name: "cleandms",
-    aliases: ["dmclean", "cleandm"],
+    aliases: ["cdm"],
     category: "info",
     description: "Cleans DM messages from bot to Owner.",
     permissions: "admin",

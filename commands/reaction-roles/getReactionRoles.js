@@ -4,7 +4,7 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "getreactionroles",
-    aliases: ["getrr", "rrolesget", "reactionrolesget"],
+    aliases: ["getrr"],
     category: "reaction-roles",
     description: "Gets a list of active reaction roles.",
     permissions: "moderator",

@@ -3,7 +3,6 @@ const fetch = require("node-fetch");
 
 module.exports = {
     name: "updatelistings",
-    aliases: ["updatelisting", "listingupdate"],
     category: "info",
     description: "Update server listing info.",
     permissions: "admin",

@@ -3,7 +3,7 @@ const xp = require("../../schemas/xp.js")
 
 module.exports = {
     name: "xpclean",
-    aliases: ["cleanxp", "cleanxpuop", "xpcleanup"],
+    aliases: ["xpcleanup"],
     category: "owner",
     description: "Cleans XP database from unused users.",
     permissions: "admin",

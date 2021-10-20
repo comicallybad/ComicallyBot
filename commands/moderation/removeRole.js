@@ -4,7 +4,6 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "removerole",
-    aliases: ["roleremove"],
     category: "moderation",
     description: "Removes user from a role.",
     permissions: "moderator",

@@ -2,7 +2,7 @@ const { del } = require("../../functions.js");
 
 module.exports = {
     name: "suicidehotline",
-    aliases: ["suicide", "helphotline", "helpline", "mentalsupport"],
+    aliases: ["suicide", "hotline", "mentalsupport"],
     category: "helpful",
     description: "Sends a link to a list of suicide hotline numbers.",
     permissions: "member",

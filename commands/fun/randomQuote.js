@@ -4,7 +4,7 @@ const getRandomQuote = require('get-random-quote');
 
 module.exports = {
     name: "randomquote",
-    aliases: ["rquote", "quoterandom"],
+    aliases: ["rquote"],
     category: "fun",
     description: "Says a random quote from an author",
     permissions: "member",

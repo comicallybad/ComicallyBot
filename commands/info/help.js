@@ -4,7 +4,7 @@ const { stripIndents } = require("common-tags");
 
 module.exports = {
     name: "help",
-    aliases: ["h"],
+    aliases: ["h", "commands"],
     category: "info",
     description: "Returns all commands, returns all commands in a category, or returns a specific command's information.",
     permissions: "everyone",

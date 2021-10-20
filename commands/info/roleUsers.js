@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "roleusers",
-    aliases: ["membersrole", "rolemembers", "usersrole"],
+    aliases: ["rolemembers", "usersrole"],
     category: "info",
     description: "Returns users within a role.",
     permissions: "member",

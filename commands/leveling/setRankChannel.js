@@ -3,7 +3,7 @@ const db = require('../../schemas/db.js');
 
 module.exports = {
     name: "setrankchannel",
-    aliases: ["setrankch", "rankchannelset", "rolechannelset", "setrolechannel"],
+    aliases: ["setrankch", "setrolechannel"],
     category: "leveling",
     description: "Set response channel for leveling.",
     permissions: "moderator",
