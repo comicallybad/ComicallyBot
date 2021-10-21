@@ -3,15 +3,13 @@ const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
 module.exports = {
-    del: async function (message, timeout) {
+    del: async function (message, timeout) {    //New global delete function due to discord.js changing it too much
         if (message) { //Fix in case bad message
             if (message.id) { //Fix cannot read ID 
                 setTimeout(() => {
-                    if (message.deletable && !message.reactions.cache.get('🛑')) {  //messages can now stop from being deleted
-                        message.delete({ timeout: 0 }).catch(err => err) //This gets rid of the annoying "Unknown Message" error.
-                    } else {
-                        message.reactions.removeAll().catch(err => err); //This gets rid of the annoying "Unknown Message" error.
-                    }
+                    if (message.deletable && !message.reactions.cache.get('🛑'))    //messages can now stop from being deleted
+                        message.delete().catch(err => err);     //This gets rid of the annoying "Unknown Message" error.
+                    else message.reactions.removeAll().catch(err => err);    //This gets rid of the annoying "Unknown Message" error.
                 }, timeout);
             } else return;
         } else return;
