@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["cdm"],
     category: "owner",
     description: "Cleans DM messages from bot to Owner.",
-    permissions: "admin",
+    permissions: "owner",
     run: async (client, message, args) => {
         let dm = await client.channels.cache.get(process.env.DMCHANNELID);
         if (!dm) return message.reply("Send the bot a DM, then try this command again.").then(m => del(m, 7500));
