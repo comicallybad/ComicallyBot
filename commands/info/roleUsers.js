@@ -32,8 +32,7 @@ module.exports = {
 
         const embed = new MessageEmbed()
             .setColor(role.color)
-            .setTitle(role.name)
-            .addField("Number of users in role: ", role.members.size)
+            .setTitle(`${role.name}: ${role.members.size} members`)
             .setTimestamp()
 
         const m = await message.channel.send(embed);
