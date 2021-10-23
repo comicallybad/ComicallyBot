@@ -6,7 +6,7 @@ const { Manager } = require("erela.js");
 const AntiSpam = require('discord-anti-spam');
 
 client.music = new Manager({
-    nodes: [{ host: "localhost", port: 2333, password: "ErelaServerPassword!" }], send(id, payload) {
+    nodes: [{ host: "localhost", port: 2333, password: process.env.ERELA }], send(id, payload) {
         const guild = client.guilds.cache.get(id);
         if (guild) guild.shard.send(payload);
     },
@@ -19,7 +19,7 @@ client.antiSpam = new AntiSpam({
     muteMessage: '**{user_tag}** has been muted for spamming.',
     maxDuplicatesWarning: 6, maxDuplicatesKick: 99, maxDuplicatesBan: 99, maxDuplicatesMute: 8,
     ignoredPermissions: ['MANAGE_NICKNAMES'], ignoreBots: true,
-     verbose: false, muteRoleName: "Muted",removeMessages: true,
+    verbose: false, muteRoleName: "Muted", removeMessages: true,
 });
 
 config({ path: __dirname + "/.env" });
