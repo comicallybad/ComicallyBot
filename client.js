@@ -18,10 +18,12 @@ client.antiSpam = new AntiSpam({
     kickMessage: '**{user_tag}** has been kicked for spamming.',
     muteMessage: '**{user_tag}** has been muted for spamming.',
     maxDuplicatesWarning: 6, maxDuplicatesKick: 99, maxDuplicatesBan: 99, maxDuplicatesMute: 8,
-    ignoredPermissions: ['MANAGE_NICKNAMES'], ignoreBots: true,
+    ignoredPermissions: ['MANAGE_NICKNAMES'],
+    ignoreBots: true, verbose: false, muteRoleName: "Muted",
+    removeMessages: true, removeBotMessages: false, ignoreBots: true,
+    ignoredPermissions: ['MANAGE_NICKNAMES', 'MANAGE_MESSAGES'],
     verbose: false, muteRoleName: "Muted", removeMessages: true,
 });
-
 config({ path: __dirname + "/.env" });
 global.prefix = "_";
 global.voiceChannels = [], global.profanityUsers = [];
