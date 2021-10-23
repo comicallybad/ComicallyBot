@@ -16,7 +16,7 @@ module.exports = async (client, message) => {
         checkBadWords(message);
         checkSpam(client, message);
     } catch (err) {
-        console.log(err);
+        console.log(err.stack);
     }
 
     if (!cooldown.has(message.author.id))
