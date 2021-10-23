@@ -18,9 +18,8 @@ client.antiSpam = new AntiSpam({
     kickMessage: '**{user_tag}** has been kicked for spamming.',
     muteMessage: '**{user_tag}** has been muted for spamming.',
     maxDuplicatesWarning: 6, maxDuplicatesKick: 99, maxDuplicatesBan: 99, maxDuplicatesMute: 8,
-    ignoredPermissions: ['MANAGE_NICKNAMES'],
-    ignoreBots: true, verbose: false, muteRoleName: "Muted",
-    removeMessages: true, removeBotMessages: true, removeBotMessagesAfter: 15000,
+    ignoredPermissions: ['MANAGE_NICKNAMES'], ignoreBots: true,
+     verbose: false, muteRoleName: "Muted",removeMessages: true,
 });
 
 config({ path: __dirname + "/.env" });
