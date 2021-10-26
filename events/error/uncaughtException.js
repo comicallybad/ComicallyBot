@@ -22,6 +22,6 @@ module.exports = async (client, process, error, origin) => {
         console.log(`A new UncaughtException has been logged to: ${formatDate} UncaughtException.log`);
     });
 
-    let owner = await client.users.cache.get(`${process.env.USERID}`);
+    let owner = await client.users.fetch(`${process.env.USERID}`);
     owner.send(`${formatDate} ${formatTime} A new uncaughtExcemption error: ${error.stack} at: ${origin}`).catch(err => console.log(`Could not send uncaughtExcemption error message to owner. ${err}`));
 }
