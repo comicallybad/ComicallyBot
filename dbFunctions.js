@@ -5,10 +5,10 @@ const { del, warn, hasPermissions } = require('./functions.js');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = {
-    dbSetup: function (client) {
-        let guildsID = (client.guilds.cache.map(guild => guild.id));
-        let guildsName = (client.guilds.cache.map(guild => guild.name));
-        let commands = (client.commands.map(cmd => cmd.name));
+    dbSetup: async function (client) {
+        let guildsID = await client.guilds.cache.map(guild => guild.id);
+        let guildsName = await client.guilds.cache.map(guild => guild.name);
+        let commands = await client.commands.map(cmd => cmd.name);
 
         guildsID.forEach((element, guildIndex) => { //for each guild
             db.findOne({ guildID: guildsID[guildIndex] }, (err, exists) => {
