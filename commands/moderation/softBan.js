@@ -19,8 +19,8 @@ module.exports = {
             return message.reply("Please provide a user to softban.").then(m => del(m, 7500));
 
         try {
-            let toBan = (message.mentions.users.first() || await client.users.fetch(args[0]));
-            if (!toBan) return message.reply("Please supply a user to be softbanned!").then(m => del(m, 7500));
+            let toBan = message.mentions.members.first() || await message.guild.members.cache.get(args[0]) || await client.users.fetch(args[0]);
+            if (!toBan) return message.reply("Could not find that user!").then(m => del(m, 7500));
 
 
             if (toBan.id === message.author.id)

@@ -14,8 +14,11 @@ module.exports = {
         if (!message.guild.me.hasPermission("KICK_MEMBERS"))
             return message.reply("I don't have permission to kick members!").then(m => del(m, 7500));
 
-        let toKick = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-        if (!toKick) return message.reply("Please supply a user to be kicked!").then(m => del(m, 7500));
+        if (!args[0])
+            return message.reply("Please provide a user to be kicked!").then(m, del(m, 7500));
+
+        let toKick = message.mentions.members.first() || await message.guild.members.cache.get(args[0]) || await client.users.fetch(args[0]);
+        if (!toKick) return message.reply("Could not find that user!").then(m => del(m, 7500));
 
         if (toKick.id === message.author.id)
             return message.reply("You can't kick yourself...").then(m => del(m, 7500));
