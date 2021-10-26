@@ -1,5 +1,5 @@
 const { del } = require("../../functions.js");
-const xp = require("../../schemas/xp.js")
+const xp = require("../../schemas/xp.js");
 
 module.exports = {
     name: "xpclean",
