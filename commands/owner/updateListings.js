@@ -5,7 +5,7 @@ module.exports = {
     name: "updatelistings",
     category: "owner",
     description: "Update server listing info.",
-    permissions: "admin",
+    permissions: "owner",
     run: async (client, message, args) => {
         const discordbotlistngBot = await fetch('https://discordbotlist.com/api/v1/bots/492495421822730250/stats', {
             method: 'post',

@@ -1,12 +1,12 @@
 const { del } = require("../../functions.js");
-const db = require("../../schemas/db.js")
+const db = require("../../schemas/db.js");
 
 module.exports = {
     name: "dbclean",
     aliases: ["dbcleaup"],
     category: "owner",
     description: "Cleans DB database from unused guilds.",
-    permissions: "admin",
+    permissions: "owner",
     run: (client, message, args) => {
         if (message.author.id != process.env.USERID)
             return message.reply("You're not the bot the owner!").then(m => del(m, 7500));
