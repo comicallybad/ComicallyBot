@@ -17,7 +17,7 @@ module.exports = {
         if (!args[0])
             return message.reply("Please provide a user to be kicked!").then(m, del(m, 7500));
 
-        let toKick = message.mentions.members.first() || await message.guild.members.cache.get(args[0]) || await client.users.fetch(args[0]);
+        let toKick = message.mentions.members.first() || await message.guild.members.cache.get(args[0]);
         if (!toKick) return message.reply("Could not find that user!").then(m => del(m, 7500));
 
         if (toKick.id === message.author.id)
