@@ -1,27 +1,18 @@
 const fs = require("fs");
-const { stripIndents } = require("common-tags");
 
 module.exports = async (client, process, reason, promise) => {
-    const date = new Date();
-    const formatDate = stripIndents`${(date.getMonth() + 1)
-        .toString().padStart(2, '0')}-${date.getDate()
-            .toString().padStart(2, '0')}-${date.getFullYear()
-                .toString().padStart(4, '0')}`
-
-    const formatTime = stripIndents`${date.getHours()
-        .toString().padStart(2, '0')}-${date.getMinutes()
-            .toString().padStart(2, '0')}-${date.getSeconds()
-                .toString().padStart(2, '0')}`
+    const time = new Date();
+    time.toLocaleString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
 
     var dir = './logs';
 
     if (!fs.existsSync(dir)) fs.mkdirSync(dir);
 
-    fs.appendFile(`./logs/${formatDate} UnhandledRejection.log`, `${formatDate} ${formatTime}: A new unhandledRejection: at promise ${promise} ${reason}\n`, function (err) {
+    fs.appendFile(`${dir}/${time} UnhandledRejection.log`, `${time}: A new unhandledRejection: at promise ${promise} ${reason}\n`, (err) => {
         if (err) throw err;
-        console.log(`A new UnhandledRejection has been logged to: ${formatDate} UnhandledRejection.log`)
+        console.log(`A new UnhandledRejection has been logged to: ${time} UnhandledRejection.log`);
     });
 
     let owner = await client.users.fetch(`${process.env.USERID}`);
-    owner.send(`${formatDate} ${formatTime}: A new unhandledRejection error ${promise} ${reason}`).catch(err => console.log(`Could not send unhandledRejection error message to owner. ${err}`));
+    owner.send(`${time}: A new unhandledRejection error ${promise} ${reason}`).catch(err => console.log(`Could not send unhandledRejection error message to owner. ${err}`));
 }
