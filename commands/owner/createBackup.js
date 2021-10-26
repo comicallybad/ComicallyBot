@@ -5,13 +5,16 @@ const xp = require("../../schemas/xp.js");
 
 module.exports = {
     name: "createbackup",
-    aliases: ["backup"],
+    aliases: ["backup", "backups"],
     category: "owner",
     description: "Creates a backup JSON file for the xps and dbs databases.",
     permissions: "owner",
     run: (client, message, args) => {
         if (message.author.id != process.env.USERID)
             return message.reply("You're not the bot the owner!").then(m => del(m, 7500));
+
+        const time = new Date();
+        time.toLocaleString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
 
         var dir = './backups';
 
@@ -30,7 +33,7 @@ module.exports = {
                 if (err) throw err;
                 console.log(`A new warning has been logged to: ${time} warning.log`);
             });
-            return message.reply("Your dbs database has been backed up.").then(m => del(m, 7500));
-        }).catch(err => message.reply(`There was an error backing up the dbs database. ${err}`).then(m => del(m, 7500)));
+            return message.reply("Your xps database has been backed up.").then(m => del(m, 7500));
+        }).catch(err => message.reply(`There was an error backing up the xps database. ${err}`).then(m => del(m, 7500)));
     }
 }
