@@ -24,7 +24,7 @@
     "google-translate-free": "^2.4.5",
     "humanize-duration": "^3.27.0",
     "mathjs": "^9.5.0",
-    "mongoose": "^5.12.14",
+    "mongoose": "^5.13.12",
     "node-fetch": "^2.6.1",
     "popular-movie-quotes": "^1.2.4",
     "random-puppy": "^1.1.0",
