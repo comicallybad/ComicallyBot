@@ -12,12 +12,8 @@ module.exports = async (client, message) => {
     if (!message.guild) return;
     if (!message.member) message.member = await message.guild.fetchMember(message).catch(err => err);
 
-    try {
-        checkBadWords(message);
-        checkSpam(client, message);
-    } catch (err) {
-        console.log(err.stack);
-    }
+    checkBadWords(message);
+    checkSpam(client, message);
 
     if (!cooldown.has(message.author.id))
         messageXP(message, client);
