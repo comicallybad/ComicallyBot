@@ -13,15 +13,15 @@ module.exports = {
 
         const currentGuilds = client.guilds.cache.map(guild => guild.id)
 
-        db.find().then(data => {
-            const dbGuilds = data.map(guild => guild.guildID)
-            dbGuilds.forEach(ID => {
+        db.find().then(guild => {
+            const guildIDs = guild.map(guild => guild.guildID)
+            guildIDs.forEach(ID => {
                 if (!currentGuilds.includes(ID)) {
                     db.deleteOne({ guildID: ID })
-                        .catch(err => message.reply(`There was an error cleaning empty database listings. ${err}`).then(m => del(m, 7500)))
+                        .catch(err => message.reply(`There was an error cleaning empty database listings. ${err}`).then(m => del(m, 7500)));
                 }
-            })
-            return message.reply("DB database has been cleaned up.").then(m => del(m, 7500))
-        }).catch(err => message.reply(`There was an error cleaning empty database listings. ${err}`).then(m => del(m, 7500)))
+            });
+            return message.reply("DB database has been cleaned up.").then(m => del(m, 7500));
+        }).catch(err => message.reply(`There was an error cleaning guild database: ${err}`).then(m => del(m, 7500)));
     }
 }
