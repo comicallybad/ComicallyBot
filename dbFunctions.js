@@ -17,14 +17,20 @@ module.exports = {
                         _id: mongoose.Types.ObjectId(),
                         guildID: guildsID[guildIndex],
                         guildName: guildsName[guildIndex],
+                        memberRoles: [],
+                        modRoles: [],
+                        verificationRole: [],
                         commands: [],
-                        xpSystem: false,
+                        channels: [],
                         xpRoles: [],
-                        reactionRoles: [],
+                        xpMultiplier: 1,
+                        xpSystem: false,
                         profanityFilter: false,
                         antiSpam: false,
+                        reactionRoles: [],
                         badWordList: [],
-                        xpMultiplier: 1,
+                        welcomeMessage: [],
+                        welcomeMessageReactions: [],
                     })
                     newDB.save().catch(err => console.log(err));
                 } else {
