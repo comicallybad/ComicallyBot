@@ -25,7 +25,7 @@ client.antiSpam = new AntiSpam({
     verbose: false, muteRoleName: "Muted", removeMessages: true,
 });
 config({ path: __dirname + "/.env" });
-global.prefix = "=";
+global.prefix = "_";
 global.voiceChannels = [], global.profanityUsers = [];
 
 ["aliases", "commands"].forEach(x => client[x] = new Collection());
