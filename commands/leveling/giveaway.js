@@ -44,12 +44,14 @@ module.exports = {
                 const random = Math.floor(Math.random() * users.length);
                 let userID = users[random].id;
                 let userName = users[random].username;
+                let displayAvatar = await message.guild.members.cache.get(users[random].id).user.displayAvatarURL();
 
                 msg.reactions.removeAll().catch(err => err);
 
                 embed
                     .setDescription(`Congrats <@${userID}>, you are the winner of the ${amount} xp giveaway!`)
-                    .setFooter(`${userName} won ${amount} xp!`, message.author.displayAvatarURL());
+                    .setThumbnail(displayAvatar)
+                    .setFooter(`${userName} won ${amount} xp!`, displayAvatar);
 
                 addXP(message, userID, amount).then(() => {
                     const logEmbed = new MessageEmbed()
