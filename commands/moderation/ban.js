@@ -14,10 +14,12 @@ module.exports = {
         if (!message.guild.me.permissions.has("BAN_MEMBERS"))
             return message.reply("I don't have permission to ban members!").then(m => del(m, 7500));
 
-        try {
-            let toBan = (message.mentions.users.first() || await client.users.fetch(args[0]));
-            if (!toBan) return message.reply("Please supply a user to be banned!").then(m => del(m, 7500));
+        if (!args[0])
+            return message.reply("Please provide a user to be banned!").then(m => del(m, 7500));
 
+        try {
+            let toBan = message.mentions.members.first() || await message.guild.members.cache.get(args[0]) || await client.users.fetch(args[0]);
+            if (!toBan) return message.reply("Could not find that user!").then(m => del(m, 7500));
 
             if (toBan.id === message.author.id)
                 return message.reply("You can't ban yourself...").then(m => del(m, 7500));

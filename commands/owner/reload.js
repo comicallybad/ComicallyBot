@@ -4,7 +4,7 @@ module.exports = {
     name: "reload",
     category: "owner",
     description: "Reloads a command.",
-    permissions: "admin",
+    permissions: "owner",
     usage: "<category> <command>",
     run: (client, message, args) => {
         if (message.author.id != process.env.USERID)
