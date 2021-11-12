@@ -26,8 +26,8 @@ module.exports = {
         if (!toKick.kickable)
             return message.reply("I can't kick that person due to role hierarchy, I suppose.").then(m => del(m, 7500));
 
-        let reason = args.slice(1).join(" ")
-        if (!reason) reason = "No reason given!"
+        let reason = args.slice(1).join(" ");
+        if (!reason) reason = "No reason given!";
 
         const embed = new MessageEmbed()
             .setColor("#ff0000")
