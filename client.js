@@ -26,6 +26,7 @@ client.antiSpam = new AntiSpam({
     ignoredPermissions: ['MANAGE_NICKNAMES', 'MANAGE_MESSAGES'],
     verbose: false, muteRoleName: "Muted", removeMessages: true,
 });
+
 config({ path: __dirname + "/.env" });
 global.prefix = "_";
 global.voiceChannels = [], global.profanityUsers = [];
