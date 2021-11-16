@@ -1,5 +1,7 @@
 const db = require("../../schemas/db.js");
 const { del } = require("../../functions.js")
+const { MessageEmbed } = require("discord.js");
+const { stripIndents } = require("common-tags");
 
 module.exports = {
     name: "removewelcomeMessage",
