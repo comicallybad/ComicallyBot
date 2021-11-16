@@ -44,7 +44,7 @@ module.exports = async (client, data) => {
             db.findOne({ guildID: guildID }, async (err, exists) => {
                 if (exists) {
                     if (exists.welcomeMessage.length > 0) {
-                        let msg = exists.welcomeMessage[0].toString().replace(/\[user\]/g, `${data.user}`);
+                        let msg = exists.welcomeMessage.toString().replace(/\[user\]/g, `${data.user}`);
                         let msgArray = msg.split(" ");
                         let msgMap = await msgArray.map((guild, index) => {
                             if (guild.replace(/[0-9]/g, "") == "[]") {
