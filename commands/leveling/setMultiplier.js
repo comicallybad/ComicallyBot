@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, del } = require("../../functions.js");
 const db = require('../../schemas/db.js');
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
@@ -38,7 +38,7 @@ module.exports = {
                     **Multiplier Set by:** ${message.member.user}
                     **Multiplier Set to:** ${args[0]}`);
 
-                logChannel.send(embed).catch(err => err);
+                s(logChannel, '', embed).catch(err => err);
 
                 return message.reply("Server multiplier set to: " + args[0] + "x XP").then(m => del(m, 7500));
             }

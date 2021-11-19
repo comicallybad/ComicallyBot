@@ -1,4 +1,4 @@
-const { del, pageList } = require("../../functions.js");
+const { s, del, pageList } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const db = require('../../schemas/db.js');
 
@@ -18,7 +18,7 @@ module.exports = {
             .setDescription("List of server bot members")
             .setTimestamp();
 
-        const m = await message.channel.send(embed);
+        const m = await s(message.channel, '', embed);
 
         db.findOne({ guildID: guildID }, (err, exists) => {
             if (!exists) return message.reply("Error within database").then(m => del(m, 7500));
@@ -31,7 +31,7 @@ module.exports = {
                     pageList(m, message.author, memberRoles, embed, "Member:")
                 } else {
                     embed.setDescription("").addField("Member Roles", "There have been no bot members set.");
-                    m.edit(embed).then(del(m, 30000));
+                    return m.edit(embed).then(del(m, 30000));
                 }
             }
         }).catch(err => console.log(err))

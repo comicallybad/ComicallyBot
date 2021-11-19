@@ -1,3 +1,4 @@
+const { s } = require('../../functions.js');
 const { MessageEmbed } = require('discord.js');
 const { stripIndents } = require("common-tags");
 
@@ -15,7 +16,7 @@ module.exports = (client, member) => {
             **Muted by:** ${member.guild.me}
             **Reason:** Spam`)
 
-        logChannel.send(embed);
+        s(logChannel, '', embed);
     }
     let muterole = member.guild.roles.cache.find(r => r.name === "Muted")
     setTimeout(() => {
@@ -31,7 +32,7 @@ module.exports = (client, member) => {
                     **Unmuted member:** ${member} (${member.id})
                     **Unmuted by:** ${member.guild.me}
                     **Reason:** 5 Minute mute expired`)
-                if (logChannel) logChannel.send(embed2);
+                if (logChannel) return s(logChannel, '', embed2);
             })
         }
     }, 300000)

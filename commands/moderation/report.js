@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, del } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
@@ -21,13 +21,13 @@ module.exports = {
             return message.reply("Cannot report that user").then(m => del(m, 7500));
 
         if (!args[1])
-            return message.channel.send("Please provide a reason for the report").then(m => del(m, 7500));
+            return message.reply("Please provide a reason for the report").then(m => del(m, 7500));
 
         let logChannel = message.guild.channels.cache.find(c => c.name.includes("reports"));
         if (!logChannel) message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
 
         if (!logChannel)
-            return message.channel.send("Couldn't find a \`#reports\` or \`#mod-logs\` channel").then(m => del(m, 7500));
+            return message.reply("Couldn't find a \`#reports\` or \`#mod-logs\` channel").then(m => del(m, 7500));
 
         const embed = new MessageEmbed()
             .setColor("RED")
@@ -40,6 +40,6 @@ module.exports = {
             **Reported in:** ${message.channel}
             **Reason:** ${args.slice(1).join(" ")}`);
 
-        return logChannel.send(embed);
+        return s(logChannel, '', embed);
     }
 }

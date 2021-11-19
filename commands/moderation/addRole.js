@@ -1,4 +1,4 @@
-const { del, promptMessage } = require("../../functions.js");
+const { s, del, promptMessage } = require("../../functions.js");
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
 
@@ -43,7 +43,7 @@ module.exports = {
             .setAuthor(`This verification becomes invalid after 30s.`)
             .setDescription(`Do you want to add ${user} to then **${role.name}** role?`)
 
-        await message.channel.send(promptEmbed).then(async msg => {
+        await s(message.channel, '', promptEmbed).then(async msg => {
             const emoji = await promptMessage(msg, message.author, 30, ["✅", "❌"]);
 
             if (emoji === "✅") {
@@ -52,7 +52,7 @@ module.exports = {
                 user.roles.add(role.id).then(() => {
                     user.send(`Hello, you have been added to the **${role.name}** role in ${message.guild.name}`).catch(err => err); //in case DM's are closed
                     message.reply(`${user} was successfully added to the **${role.name}** role.`).then(m => del(m, 7500));
-                    logChannel.send(embed).catch(err => err);
+                    s(logChannel, '', embed).catch(err => err);
                 }).catch(err => {
                     if (err) return message.reply(`There was an error attempting to add ${user} to the ${role.name} role: ${err}`).then(m => del(m, 7500));
                 });

@@ -1,4 +1,4 @@
-const { promptMessage } = require("../../functions.js");
+const { s, promptMessage } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 
 const chooseArr = ["🗻", "📰", "✂"];
@@ -16,7 +16,7 @@ module.exports = {
             .setDescription("Add a reaction to one of these emojis to play the game!")
             .setTimestamp();
 
-        const m = await message.channel.send(embed);
+        const m = await s(message.channel, '', embed);
         const reacted = await promptMessage(m, message.author, 30, chooseArr);
 
         const botChoice = chooseArr[Math.floor(Math.random() * chooseArr.length)];

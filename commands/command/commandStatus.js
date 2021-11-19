@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, del } = require("../../functions.js");
 const db = require('../../schemas/db.js');
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
@@ -39,7 +39,7 @@ module.exports = {
                     .map(cat => stripIndents`**${cat[0].toUpperCase() + cat.slice(1)}** \n${commands(cat)}`)
                     .reduce((string, category) => string + "\n" + category);
 
-                return message.channel.send(embed.setDescription(info)).then(m => del(m, 30000));
+                return s(message.channel, '', embed.setDescription(info)).then(m => del(m, 30000));
             }
         });
     }

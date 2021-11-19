@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, del } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 const fetch = require("node-fetch");
@@ -27,7 +27,6 @@ module.exports = {
             return message.reply("I couldn't find that account...").then(m => del(m, 7500));
         }
 
-
         let account;
 
         if (res.graphql) account = res.graphql.user;
@@ -51,7 +50,7 @@ module.exports = {
                 .setThumbnail(account.profile_pic_url_hd)
                 .addField("Profile information", info);
 
-            message.channel.send(embed).then(m => del(m, 15000));
+            return s(message.channel, '', embed).then(m => del(m, 15000));
         }
     }
 }

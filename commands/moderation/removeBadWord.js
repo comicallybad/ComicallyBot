@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, del } = require("../../functions.js");
 const db = require('../../schemas/db.js');
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
@@ -34,6 +34,6 @@ module.exports = {
         })
         message.reply("Removing bad word(s) from the list...").then(m => del(m, 7500));
 
-        return logChannel.send(embed).catch(err => err);
+        return s(logChannel, '', embed).catch(err => err);
     }
 }

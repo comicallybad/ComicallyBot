@@ -1,4 +1,4 @@
-const { del, promptMessage } = require("../../functions.js");
+const { s, del, promptMessage } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
@@ -43,7 +43,7 @@ module.exports = {
                 .setAuthor(`This verification becomes invalid after 30s.`)
                 .setDescription(`Do you want to ban ${toBan}?`)
 
-            await message.channel.send(promptEmbed).then(async msg => {
+            await s(message.channel, '', promptEmbed).then(async msg => {
                 const emoji = await promptMessage(msg, message.author, 30, ["✅", "❌"]);
 
                 if (emoji === "✅") {
@@ -56,7 +56,7 @@ module.exports = {
                         if (err) return message.reply(`There was an error attempting to ban ${toBan} ${err}`).then(m => del(m, 7500));
                     });
 
-                    logChannel.send(embed).catch(err => err);
+                    s(logChannel, '', embed).catch(err => err);
                 } else if (emoji === "❌") {
                     del(msg, 0);
                     return message.reply(`Ban cancelled.`).then(m => del(m, 7500));

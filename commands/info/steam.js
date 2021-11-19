@@ -1,4 +1,4 @@
-const { del, formatDate } = require("../../functions.js");
+const { s, del, formatDate } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const fetch = require("node-fetch");
 const { stripIndents } = require("common-tags");
@@ -24,11 +24,11 @@ module.exports = {
             const state = ["Offline", "Online", "Busy", "Away", "Snooze", "Looking to trade", "Looking to play"];
 
             fetch(summaries).then(res => res.json()).then(body => {
-                if (!body.response) return message.channel.send("I was unable to find a steam profile with that name").then(m => del(m, 7500));
+                if (!body.response) return s(message.channel, "I was unable to find a steam profile with that name").then(m => del(m, 7500));
                 const { personaname, avatarfull, realname, personastate, loccountrycode, profileurl, timecreated } = body.response.players[0];
 
                 fetch(bans).then(res => res.json()).then(body => {
-                    if (!body.players) return message.channel.send("I was unable to find a steam profile with that name").then(m => del(m, 7500));
+                    if (!body.players) return s(message.channel, "I was unable to find a steam profile with that name").then(m => del(m, 7500));
                     const { NumberOfVACBans, NumberOfGameBans } = body.players[0];
 
                     const embed = new MessageEmbed()
@@ -43,7 +43,7 @@ module.exports = {
                         **Link:** [link to profile](${profileurl})`)
                         .setTimestamp();
 
-                    message.channel.send(embed).then(m => del(m, 15000));
+                    return s(message.channel, '', embed).then(m => del(m, 15000));
                 }).catch(err => console.log(`There was an error in steam.js ${err}`));
             }).catch(err => console.log(`There was an error in steam.js ${err}`));
         }).catch(err => console.log(`There was an error in steam.js ${err}`));

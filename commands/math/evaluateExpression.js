@@ -1,6 +1,6 @@
+const { s, del, promptMessage } = require("../../functions.js");
 const { evaluate } = require("mathjs");
 const { MessageEmbed } = require("discord.js");
-const { del, promptMessage } = require("../../functions.js");
 
 module.exports = {
     name: "evaluateexpression",
@@ -20,14 +20,14 @@ module.exports = {
                 .addField("Evaluated expression: ", `\`${evaluate(expression).toString()}\``)
                 .setFooter("React ❤️ to save or 🗑️ to delete.\n No reaction will then delete after 30s", message.author.displayAvatarURL())
 
-            message.channel.send(embed).then(async m => {
+            s(message.channel, '', embed).then(async m => {
                 let reacted = await promptMessage(m, message.author, 30, ["❤️", "🗑️"]);
                 if (reacted == "❤️") m.reactions.removeAll();
                 else if (reacted == "🗑️") del(m, 0);
                 else if (!reacted) del(m, 0);
             });
         } catch {
-            message.reply('You must have provided invalid syntax, or the expression could not be evaluated').then(m => del(m, 7500));
+            return message.reply('You must have provided invalid syntax, or the expression could not be evaluated').then(m => del(m, 7500));
         }
     }
 }

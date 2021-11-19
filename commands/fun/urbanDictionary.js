@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, del } = require("../../functions.js");
 const urban = require("urban");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
@@ -35,11 +35,11 @@ module.exports = {
                         .setTimestamp()
                         .setFooter(`Written by ${author || "unknown"}`);
 
-                    message.channel.send(embed)
+                    return s(message.channel, '', embed);
                 }
             });
         } catch (err) {
-            return message.channel.send(`Error while searching... ${err}`).then(m => del(m, 7500));
+            return s(message.channel, `Error while searching... ${err}`).then(m => del(m, 7500));
         }
     }
 }

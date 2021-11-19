@@ -1,4 +1,4 @@
-const { del, getCommandStatus } = require("../../functions.js");
+const { s, del, getCommandStatus } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
@@ -31,7 +31,7 @@ async function getAll(client, message) {
         .map(cat => stripIndents`**${cat[0].toUpperCase() + cat.slice(1)}** \n\`${prefix}help ${cat}\` to view ${cat} commands`)
         .reduce((string, category) => string + "\n" + category);
 
-    return message.channel.send(embed.setDescription(info)).then(m => del(m, 30000));
+    return s(message.channel, '', embed.setDescription(info)).then(m => del(m, 30000));
 }
 
 function getSpecific(client, message, input) {
@@ -53,7 +53,7 @@ function getSpecific(client, message, input) {
         getCommandStatus(message, cmd.name).then(async function (res) {
             if (res === false) info += '\n**Status**: ❌';
             if (res === true) info += '\n**Status**: ✅';
-            return message.channel.send(embed.setColor("#0efefe").setDescription(info)).then(m => del(m, 30000));
+            return s(message.channel, '', embed.setColor("#0efefe").setDescription(info)).then(m => del(m, 30000));
         }).catch(err => console.log(`There was an error in help ${err}`));;
     } else if (cat.includes(input.toLowerCase())) {
         const cmds = client.commands
@@ -62,6 +62,6 @@ function getSpecific(client, message, input) {
             .join(",");
 
         info = `**${input[0].toUpperCase() + input.slice(1).toLowerCase()}** \n ${cmds}`;
-        return message.channel.send(embed.setColor("#0efefe").setDescription(info)).then(m => del(m, 30000));
-    } else return message.channel.send(embed.setColor("#ff0000").setDescription(info)).then(m => del(m, 30000));
+        return s(message.channel, '', embed.setColor("#0efefe").setDescription(info)).then(m => del(m, 30000));
+    } else return s(message.channel, '', embed.setColor("#ff0000").setDescription(info)).then(m => del(m, 30000));
 }

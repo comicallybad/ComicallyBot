@@ -1,4 +1,4 @@
-const { del, promptMessage } = require("../../functions.js");
+const { s, del, promptMessage } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
@@ -21,9 +21,10 @@ module.exports = {
             return message.reply("You need to provide an ID.").then(m => del(m, 7500));
 
         let bannedMember = await client.users.fetch(args[0])
-            .catch(err => message.channel.send(`There was a problem fetching that user. ${err}`).then(m => del(m, 7500)));
+            .catch(err => s(message.channel, `There was a problem fetching that user. ${err}`).then(m => del(m, 7500)));
 
-        if (!bannedMember) return message.channel.send("Please provide a user id to unban someone!").then(m => del(m, 7500));
+        if (!bannedMember)
+            return message.reply("Please provide a user id to unban someone!").then(m => del(m, 7500));
 
         let reason = args.slice(1).join(" ")
         if (!reason) reason = "No reason given!"
@@ -44,7 +45,7 @@ module.exports = {
             .setDescription(`Do you want to unban ${bannedMember}?`)
 
         // Send the message
-        await message.channel.send(promptEmbed).then(async msg => {
+        await s(message.channel, '', promptEmbed).then(async msg => {
             // Await the reactions and the reactioncollector
             const emoji = await promptMessage(msg, message.author, 30, ["✅", "❌"]);
 
@@ -60,7 +61,7 @@ module.exports = {
                     if (err) return message.reply(`There was an error attempting to unban ${bannedMember} ${err}`).then(m => del(m, 7500));
                 });
 
-                logChannel.send(embed).catch(err => err);
+                s(logChannel, '', embed).catch(err => err);
             } else if (emoji === "❌") {
                 del(msg, 0);
                 return message.reply(`Unban cancelled.`).then(m => del(m, 7500));

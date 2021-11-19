@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, del } = require("../../functions.js");
 const db = require('../../schemas/db.js');
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
@@ -46,7 +46,7 @@ module.exports = {
                         $push: { channels: { command: "welcome", channelID: channelID, channelName: channelName } }
                     }).catch(err => console.log(err));
 
-                    logChannel.send(embed).catch(err => err);
+                    s(logChannel, '', embed).catch(err => err);
                     return message.reply("Welcome channel has been set!").then(m => del(m, 7500));
                 } else {
                     ///update channel if it does exist
@@ -63,7 +63,7 @@ module.exports = {
                         $set: { 'channels.$.channelID': channelID, 'channels.$.channelName': channelName }
                     }).catch(err => console.log(err));
 
-                    logChannel.send(embed).catch(err => err);
+                    s(logChannel, '', embed).catch(err => err);
                     return message.reply("Updated welcome channel.").then(m => del(m, 7500));
                 }
             }).catch(err => console.log(err));

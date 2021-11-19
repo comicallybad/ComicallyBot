@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, del } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
@@ -19,7 +19,7 @@ module.exports = {
                 .setThumbnail(message.author.displayAvatarURL())
                 .addField('Goodmorning Message:', `Goodmorning ${message.member.displayName} rise and shine!`)
 
-            return message.channel.send(embed);
+            return s(message.channel, '', embed);
         }
         if (args[0]) {
             let member = await message.mentions.users.first() ? message.guild.members.cache.get(message.mentions.users.first().id) : message.member;
@@ -33,7 +33,7 @@ module.exports = {
                         .setThumbnail(member.user.displayAvatarURL())
                         .addField('Goodmorning Message:', `${args.slice(1, args.length).join(' ')}`);
 
-                    return message.channel.send(embed);
+                    return s(message.channel, '', embed);
                 }
             } else if (member.id == message.member.id && args[0]) {
                 if (args.join(' ').length >= 1024)
@@ -44,7 +44,7 @@ module.exports = {
                         .setThumbnail(message.author.displayAvatarURL())
                         .addField('Goodmorning Message:', `${args.join(' ')}`);
 
-                    return message.channel.send(embed);
+                    return s(message.channel, '', embed);
                 }
             } else {
                 embed
@@ -52,7 +52,7 @@ module.exports = {
                     .setThumbnail(member.user.displayAvatarURL())
                     .addField('Goodmorning Message:', `Goodmorning ${member.displayName} rise and shine!`);
 
-                return message.channel.send(embed);
+                return s(message.channel, '', embed);
             }
         }
     }

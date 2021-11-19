@@ -1,3 +1,4 @@
+const { s } = require('../../functions.js');
 const { MessageEmbed } = require("discord.js");
 const xp = require("../../schemas/xp.js")
 
@@ -19,7 +20,7 @@ module.exports = async (client, data) => {
                     .setFooter(`ID: ${data.user.id}`)
                     .setTimestamp()
 
-                logChannel.send(embed).catch(err => err);
+                s(logChannel, '', embed).catch(err => err);
             }
         }
     }

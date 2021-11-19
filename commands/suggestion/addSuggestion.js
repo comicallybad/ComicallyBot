@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, del } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const db = require('../../schemas/db.js');
 
@@ -36,8 +36,8 @@ module.exports = {
                         .setTimestamp()
 
                     if (args[0]) {
-                        let m = await message.channel.send(embed);
-                        m.react("✅").then(m.react("❌"));
+                        let m = await s(message.channel, '', embed);
+                        return m.react("✅").then(m.react("❌"));
                     }
                 }
             }

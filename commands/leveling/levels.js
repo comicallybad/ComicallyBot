@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, del } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
@@ -24,7 +24,7 @@ module.exports = {
                 let XP = 10 * Math.pow(i + 1, 3) / 5 + 25;
                 embed.addField(`XP for level ${i + 1}`, `${XP} XP`)
             }
-            message.channel.send(embed).then(m => del(m, 30000));
+            return s(message.channel, '', embed).then(m => del(m, 30000));
         }
     }
 }

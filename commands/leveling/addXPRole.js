@@ -1,4 +1,4 @@
-const { del, findID } = require("../../functions.js");
+const { s, del, findID } = require("../../functions.js");
 const db = require("../../schemas/db.js");
 const xp = require("../../schemas/xp.js");
 const { stripIndents } = require("common-tags");
@@ -61,7 +61,7 @@ module.exports = {
                             **XP Role Updated:** ${roleName} (${roleID})
                             **Level:** ${level}`);
 
-                        logChannel.send(embed).catch(err => err);
+                        s(logChannel, '', embed).catch(err => err);
 
                         userIDs.forEach(ID => {
                             xp.findOne({ guildID: guildID, userID: ID }, (err, exists) => {
@@ -88,7 +88,7 @@ module.exports = {
                             **XP Role Added:** ${roleName} (${roleID})
                             **Level:** ${level}`);
 
-                        logChannel.send(embed).catch(err => err);
+                        s(logChannel, '', embed).catch(err => err);
 
                         userIDs.forEach(ID => {
                             xp.findOne({ guildID: guildID, userID: ID }, (err, exists) => {

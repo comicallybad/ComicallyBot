@@ -1,4 +1,4 @@
-const { del } = require("../../functions");
+const { s, del } = require("../../functions");
 const db = require("../../schemas/db.js");
 const { MessageEmbed } = require("discord.js");
 
@@ -25,7 +25,7 @@ module.exports = {
                 embed.addField("Anti-Spam System:", `\`${antiSpam}\``)
                 embed.addField("Profanity Filter:", `\`${profanityFilter}\``)
                 embed.addField("XP System: ", `\`${xpSystem}\``)
-                message.channel.send(embed).then(m => del(m, 30000));
+                return s(message.channel, '', embed).then(m => del(m, 30000));
             }
         }).catch(err => err)
     }

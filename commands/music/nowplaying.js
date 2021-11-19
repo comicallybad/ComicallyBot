@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, del } = require("../../functions.js");
 const humanizeDuration = require("humanize-duration");
 const { MessageEmbed } = require("discord.js")
 
@@ -18,6 +18,6 @@ module.exports = {
             .setThumbnail(thumbnail)
             .setDescription(`${player.playing ? "▶️" : "⏸️"} **${title}** \`${humanizeDuration(duration)}\` by ${author}`)
 
-        return message.channel.send(embed).then(m => del(m, 15000));
+        return s(message.channel, '', embed).then(m => del(m, 15000));
     }
 }

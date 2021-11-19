@@ -1,4 +1,4 @@
-const { del } = require("../../functions");
+const { s, del } = require("../../functions");
 
 module.exports = {
     name: "announce",
@@ -15,9 +15,9 @@ module.exports = {
                 let toSay = args.slice(1).join(' ');
                 let channel = client.channels.cache.get(message.mentions.channels.first().id)
 
-                channel.send(toSay).catch(err => message.reply(`There was an error sending a message to that channel. ${err}`).then(m => del(m, 7500)));
+                return s(channel, `${toSay}`).catch(err => message.reply(`There was an error sending a message to that channel. ${err}`).then(m => del(m, 7500)));
             } else {
-                message.channel.send(args.join(' '));
+                return s(message.channel, `${args.join(' ')}`);
             }
         }
     }

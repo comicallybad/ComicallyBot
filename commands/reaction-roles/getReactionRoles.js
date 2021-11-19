@@ -1,4 +1,4 @@
-const { del, pageList } = require("../../functions");
+const { s, del, pageList } = require("../../functions");
 const db = require("../../schemas/db.js");
 const { MessageEmbed } = require("discord.js");
 
@@ -18,7 +18,7 @@ module.exports = {
             .setDescription("List of server reaction roles.")
             .setTimestamp();
 
-        const m = await message.channel.send(embed);
+        const m = await s(message.channel, '', embed);
 
         db.findOne({ guildID: guildID }, (err, exists) => {
             if (exists) {

@@ -1,4 +1,4 @@
-const { del, findID } = require("../../functions.js");
+const { s, del, findID } = require("../../functions.js");
 const db = require('../../schemas/db.js');
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
@@ -53,7 +53,7 @@ module.exports = {
                             **Mod Added by:** ${message.member.user}
                             **Role/User Added:** ${roleName} (${roleID})`);
 
-                        logChannel.send(embed).catch(err => err);
+                        s(logChannel, '', embed).catch(err => err);
 
                         return message.reply("Adding mod... this may take a second...").then(m => del(m, 7500));
                     }).catch(err => console.log(err))

@@ -1,4 +1,4 @@
-const { del, promptMessage } = require("../../functions.js");
+const { s, del, promptMessage } = require("../../functions.js");
 var gis = require('g-i-s');
 
 
@@ -20,7 +20,7 @@ module.exports = {
                 return message.reply("Could not find any images.").then(m => del(m, 7500))
             }
             else {
-                message.channel.send("Image: ").then(m => {
+                s(message.channel, "Image: ").then(m => {
                     nextPicture(m, message.author, results)
                 }).catch(err => console.log(`There was an error in imageSearch ${err}`));
             }

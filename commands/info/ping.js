@@ -1,3 +1,5 @@
+const { s } = require('../../functions.js')
+
 module.exports = {
     name: "ping",
     aliases: ["latency"],
@@ -5,7 +7,7 @@ module.exports = {
     description: "Returns latency and API ping.",
     permissions: "member",
     run: async (client, message, args) => {
-        message.channel.send("Pinging...").then(msg => {
+        return s(message.channel, "Pinging...").then(msg => {
             let ping = msg.createdTimestamp - message.createdTimestamp
 
             msg.edit(`🏓 Pong!

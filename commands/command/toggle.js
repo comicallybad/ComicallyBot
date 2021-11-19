@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, del } = require("../../functions.js");
 const db = require('../../schemas/db.js');
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
@@ -74,7 +74,7 @@ function toggle(message, args, command) {
         **Command Toggled by:** ${message.member.user}
         **Command Toggled:** ${command}`);
 
-    logChannel.send(embed).catch(err => err);
+    s(logChannel, '', embed).catch(err => err);
 
     return message.reply("Toggling command... this may take a second...").then(m => del(m, 7500));
 }

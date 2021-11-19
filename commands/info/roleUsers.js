@@ -1,4 +1,4 @@
-const { del, findID, pageList } = require("../../functions.js");
+const { s, del, findID, pageList } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
@@ -35,7 +35,7 @@ module.exports = {
             .setTitle(`${role.name}: ${role.members.size} members`)
             .setTimestamp()
 
-        const m = await message.channel.send(embed);
+        const m = await s(message.chanel, '', embed);
 
         let array = members.map(member => `${member.user.username} (${member.user.id})`);
 

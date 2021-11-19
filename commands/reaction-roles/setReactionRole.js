@@ -1,4 +1,4 @@
-const { findID, del } = require("../../functions");
+const { s, findID, del } = require("../../functions");
 const db = require("../../schemas/db.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
@@ -79,7 +79,7 @@ function addReactionRole(message, reaction, role, type) {
             **Reaction role messasge ID:** ${messageID}
             **Reaction role type: **${type}`);
 
-            logChannel.send(embed).catch(err => err);
+            return s(logChannel, '', embed).catch(err => err);
         } else {
             const currentReaction = exists.reactionRoles.filter(rr => rr.messageID == messageID && rr.roleID == roleID)[0].reaction
             if (reaction !== currentReaction)
@@ -96,7 +96,7 @@ function addReactionRole(message, reaction, role, type) {
             **Reaction role messasge ID:** ${messageID}
             **Reaction role type:** ${type}`);
 
-            logChannel.send(embed).catch(err => err);
+            return s(logChannel, '', embed).catch(err => err);
         }
     }).catch(err => console.log(err))
 }

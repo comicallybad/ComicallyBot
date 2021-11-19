@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, del } = require("../../functions.js");
 const beautify = require("beautify");
 const { MessageEmbed } = require("discord.js");
 
@@ -33,7 +33,7 @@ module.exports = {
                 .addField("Evaluated: ", evaluated)
                 .addField("Type of: ", typeof (evaluated))
 
-            message.channel.send(embed).then(m => del(m, 15000));
+            return s(message.channel, '', embed).then(m => del(m, 15000));
         } catch (err) {
             let embed = new MessageEmbed()
                 .setColor("#FF0000")
@@ -41,7 +41,7 @@ module.exports = {
                 .setDescription(err)
                 .setFooter(client.user.username, client.user.displayAvatarURL())
 
-            message.channel.send(embed).then(m => del(m, 15000));
+            return s(message.channel, '', embed).then(m => del(m, 15000));
         }
     }
 }

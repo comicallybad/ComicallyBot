@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, del } = require("../../functions.js");
 const db = require('../../schemas/db.js');
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
@@ -49,7 +49,7 @@ module.exports = {
             **Welcome message changed to:** ${welcomeMSG}
             **Welcome message changed by:** ${message.author}`);
 
-        logChannel.send(embed).catch(err => err);
+        s(logChannel, '', embed).catch(err => err);
 
         return message.reply(`Welcome message has been set to: ${welcomeMSG}`).then(m => del(m, 7500));
     }

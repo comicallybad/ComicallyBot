@@ -1,4 +1,4 @@
-const { del, promptMessage } = require("../../functions.js");
+const { s, del, promptMessage } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
@@ -46,7 +46,7 @@ module.exports = {
             .setDescription(`Do you want to kick ${toKick}?`)
 
         // Send the message
-        await message.channel.send(promptEmbed).then(async msg => {
+        await s(message.channel, '', promptEmbed).then(async msg => {
             // Await the reactions and the reaction collector
             const emoji = await promptMessage(msg, message.author, 30, ["✅", "❌"]);
 
@@ -61,10 +61,10 @@ module.exports = {
                     if (err) return message.reply(`There was an error attempting to kick ${toKick} ${err}`).then(m => del(m, 7500));
                 });
 
-                logChannel.send(embed).catch(err => err);
+                s(logChannel, '', embed).catch(err => err);
             } else if (emoji === "❌") {
                 del(msg, 0);
-                message.reply(`Kick cancelled.`).then(m => del(m, 7500));
+                return message.reply(`Kick cancelled.`).then(m => del(m, 7500));
             }
         }).catch(err => console.log(`There was an error in kick ${err}`));
     }

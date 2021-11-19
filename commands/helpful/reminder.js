@@ -1,6 +1,6 @@
 const humanizeDuration = require("humanize-duration");
 const { MessageEmbed } = require("discord.js");
-const { del } = require("../../functions");
+const { s, del } = require("../../functions");
 
 module.exports = {
     name: "reminder",
@@ -27,7 +27,7 @@ module.exports = {
             message.reply(`${humanizeDuration(time)} timer set`).then(m => del(m, 7500));
 
             return setTimeout(() => {
-                message.channel.send(embed);
+                s(message.channel, '', embed);
             }, time);
         } else if (args[1]) {
             const timeSplit = args[0].split(":");
@@ -47,7 +47,7 @@ module.exports = {
             message.reply(`You will be reminded in ${humanizeDuration(time)}.`).then(m => del(m, 7500));
 
             return setTimeout(() => {
-                message.channel.send(embed);
+                s(message.channel, '', embed);
             }, time);
         }
     }

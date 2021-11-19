@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, del } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
@@ -24,6 +24,6 @@ module.exports = {
 
         embed.setImage(images[number]);
 
-        message.channel.send(embed).then(m => del(m, 15000));
+        return s(message.channel, '', embed).then(m => del(m, 15000));
     }
 }

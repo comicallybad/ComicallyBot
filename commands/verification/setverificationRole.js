@@ -1,4 +1,4 @@
-const { del, findID } = require("../../functions.js");
+const { s, del, findID } = require("../../functions.js");
 const db = require('../../schemas/db.js');
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
@@ -44,7 +44,7 @@ module.exports = {
                         **Verification Role Added by:** ${message.member.user}
                         **Role Added:** ${roleName} (${roleID})`);
 
-                    logChannel.send(embed).catch(err => err);
+                    s(logChannel, '', embed).catch(err => err);
 
                     return message.reply("Adding/updating verification role... this may take a second...").then(m => del(m, 7500));
                 }

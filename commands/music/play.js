@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, del } = require("../../functions.js");
 const humanizeDuration = require("humanize-duration");
 const { MessageEmbed } = require("discord.js");
 
@@ -72,7 +72,7 @@ module.exports = {
                         .setDescription(tracks.map(video => `**${index++} -** ${video.title}`))
                         .setFooter("Your response time closes within the next 30 seconds. Type 'cancel' to cancel the selection");
 
-                    const selector = await message.channel.send(embed);
+                    const selector = await s(message.channel, '', embed);
 
                     const collector = message.channel.createMessageCollector(m => {
                         return m.author.id === message.author.id && new RegExp(`^([1-5]|cancel)$`, "i").test(m.content)

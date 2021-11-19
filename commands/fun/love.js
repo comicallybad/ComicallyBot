@@ -1,4 +1,4 @@
-const { getMember } = require("../../functions.js");
+const { s, getMember } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
@@ -27,6 +27,6 @@ module.exports = {
                 `💟 ${Math.floor(love)}%\n\n${loveLevel}`)
             .setTimestamp();
 
-        message.channel.send(embed);
+        return s(message.channel, '', embed);
     }
 }

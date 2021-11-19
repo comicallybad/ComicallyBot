@@ -1,4 +1,4 @@
-const { del, getCommandStatus, hasPermissions, } = require("../../functions.js");
+const { s, del, getCommandStatus, hasPermissions, } = require("../../functions.js");
 const { messageXP, checkBadWords, checkSpam } = require("../../dbFunctions.js");
 const db = require("../../schemas/db.js");
 const fetch = require('node-fetch');
@@ -33,7 +33,7 @@ module.exports = async (client, message) => {
                     fetch(url, settings)
                         .then(res => res.json()).catch(err => err)
                         .then((json) => {
-                            if (json.output) return message.channel.send(json.output).catch(err => err);
+                            if (json.output) return s(message.channel, `${json.output}`).catch(err => err);
                         });
                 }
             } else return;

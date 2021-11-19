@@ -1,4 +1,4 @@
-const { del, promptMessage } = require("../../functions.js");
+const { s, del, promptMessage } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 const db = require('../../schemas/db.js');
@@ -33,7 +33,7 @@ module.exports = {
 
                 emojis = emojis.sort(() => Math.random() - 0.5);
 
-                const msg = await message.channel.send(embed);
+                const msg = await s(message.channel, '', embed);
                 const emoji = await promptMessage(msg, message.author, 30, emojis);
                 if (emoji == "❤️") {
                     del(msg, 0);
@@ -53,9 +53,9 @@ module.exports = {
 
                     message.member.roles.add(role.id).then(() => {
                         message.member.send(`Hello, you have been added to the **${role.name}** role in ${message.guild.name}`).catch(err => err); //in case DM's are closed
-                        message.channel.send(`${message.member} was successfully added to the **${role.name}** role.`).then(m => del(m, 7500));
+                        s(message.channel, `${message.member} was successfully added to the **${role.name}** role.`).then(m => del(m, 7500));
                         if (logChannel)
-                            return logChannel.send(embed).catch(err => err);
+                            return s(logChannel, '', embed).catch(err => err);
                     }).catch(err => {
                         if (err) return message.reply(`There was an error attempting to add ${message.member} to the ${role.name} role: ${err}`).then(m => del(m, 7500));
                     });
