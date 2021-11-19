@@ -12,7 +12,7 @@ module.exports = {
     description: "Sends a verification message to prevent DM scamlink spammers.",
     permissions: "everyone",
     run: async (client, message, args) => {
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || null
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || null;
         let guildID = message.guild.id;
 
         db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "verify" } } }, async (err, exists) => {

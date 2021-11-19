@@ -2,7 +2,7 @@ const { Client, Intents, Collection } = require("discord.js");
 const fs = require("fs");
 const { config } = require("dotenv");
 const intents = [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, Intents.FLAGS.GUILD_INVITES,
-Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_VOICE_STATES]
+Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_VOICE_STATES];
 const client = new Client({ intents: intents }, { partials: ['GUILD_MEMBER', 'REACTION', 'CHANNEL', 'MESSAGE'] });
 const { Manager } = require("erela.js");
 const AntiSpam = require('discord-anti-spam');
@@ -26,6 +26,7 @@ client.antiSpam = new AntiSpam({
     ignoredPermissions: ['MANAGE_NICKNAMES', 'MANAGE_MESSAGES'],
     verbose: false, muteRoleName: "Muted", removeMessages: true,
 });
+
 config({ path: __dirname + "/.env" });
 global.prefix = "=";
 global.voiceChannels = [], global.profanityUsers = [];

@@ -17,7 +17,7 @@ module.exports = {
         if (!args[0])
             return message.reply("Please provide a user to be kicked!").then(m, del(m, 7500));
 
-        let toBan = message.mentions.members.first() || await message.guild.members.cache.get(args[0]) || await client.users.fetch(args[0]);
+        let toKick = message.mentions.members.first() || await message.guild.members.cache.get(args[0]) || await client.users.fetch(args[0]);
         if (!toKick) return message.reply("Could not find that user!").then(m => del(m, 7500));
 
         if (toKick.id === message.author.id)
@@ -26,8 +26,8 @@ module.exports = {
         if (!toKick.kickable)
             return message.reply("I can't kick that person due to role hierarchy, I suppose.").then(m => del(m, 7500));
 
-        let reason = args.slice(1).join(" ")
-        if (!reason) reason = "No reason given!"
+        let reason = args.slice(1).join(" ");
+        if (!reason) reason = "No reason given!";
 
         const embed = new MessageEmbed()
             .setColor("#ff0000")

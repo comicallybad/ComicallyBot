@@ -25,7 +25,7 @@ module.exports = async (client, data) => {
                     .setThumbnail(data.user.displayAvatarURL())
                     .setDescription(`${data.user} ${data.user.tag}`)
                     .setFooter(`ID: ${data.user.id}`)
-                    .setTimestamp()
+                    .setTimestamp();
 
                 if (time <= 604800000) { //604800000  is 7 days in MS
                     embed.addField("**Warning** new user account:", `Account created ${accountTime} ago.`);
@@ -64,7 +64,7 @@ module.exports = async (client, data) => {
                                         if (logChannel) return logChannel.send(`There was an issue with welcome message reactions: ${err}`);
                                     }
                                 }
-                            });
+                            }).catch(err => logChannel.send(`There was an error in sending a welcome message: ${err}`));
                         }
                     }
                 }
