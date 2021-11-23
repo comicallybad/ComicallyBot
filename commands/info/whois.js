@@ -9,8 +9,11 @@ module.exports = {
     description: "Returns user information.",
     permissions: "member",
     usage: "[@user | userID | user]",
-    run: (client, message, args) => {
-        const member = getMember(message, args.join(" "));
+    run: async (client, message, args) => {
+        let member;
+        if (args[0])
+            member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
+        else member = message.member;
 
         // Member variables
         const joined = formatDate(member.joinedAt);
