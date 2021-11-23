@@ -17,7 +17,8 @@ module.exports = {
         if (!args[0])
             return message.reply("Please provide a user to be kicked!").then(m, del(m, 7500));
 
-        let toKick = message.mentions.members.first() || await message.guild.members.cache.get(args[0]) || await client.users.fetch(args[0]);
+        let toKick = message.mentions.members.first() || await message.guild.members.cache.get(args[0]);
+        if (!toKick) toKick = await client.users.fetch(args[0]);
         if (!toKick) return message.reply("Could not find that user!").then(m => del(m, 7500));
 
         if (toKick.id === message.author.id)
@@ -57,15 +58,14 @@ module.exports = {
                 toKick.kick(reason).then(() => {
                     toKick.send(`Hello, you have been **kicked** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                     message.reply(`${toKick.user.username}(${toKick.user.id}) was successfully kicked.`).then(m => del(m, 7500));
+                    return s(logChannel, '', embed).catch(err => err);
                 }).catch(err => {
                     if (err) return message.reply(`There was an error attempting to kick ${toKick} ${err}`).then(m => del(m, 7500));
                 });
-
-                s(logChannel, '', embed).catch(err => err);
             } else if (emoji === "❌") {
                 del(msg, 0);
                 return message.reply(`Kick cancelled.`).then(m => del(m, 7500));
             }
-        }).catch(err => console.log(`There was an error in kick ${err}`));
+        }).catch(err => err);
     }
 };

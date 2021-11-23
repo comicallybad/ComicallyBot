@@ -1,4 +1,4 @@
-const { s, getMember } = require("../../functions.js");
+const { s } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
@@ -8,13 +8,19 @@ module.exports = {
     description: "Calculates the love affinity you have for another person.",
     permissions: "member",
     usage: "[@user | userID | username]",
-    run: (client, message, args) => {
-        let person = getMember(message, args[0]);
+    run: async (client, message, args) => {
+        let person;
+        if (args[0])
+            person = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
 
         if (!person || message.author.id === person.id) {
-            person = message.guild.members.cache
-                .filter(m => m.id !== message.author.id)
-                .random();
+            const allMembers = [
+                ...(
+                    (await message.guild.members.fetch())
+                        .filter(m => m.id !== message.author.id)
+                ).values()
+            ]
+            person = await allMembers[Math.floor(Math.random() * allMembers.length)]
         }
 
         const love = Math.random() * 100;
@@ -24,8 +30,7 @@ module.exports = {
         const embed = new MessageEmbed()
             .setColor("#ffb6c1")
             .addField(`☁ **${person.displayName}** loves **${message.member.displayName}** this much:`,
-                `💟 ${Math.floor(love)}%\n\n${loveLevel}`)
-            .setTimestamp();
+                `💟 ${Math.floor(love)}%\n\n${loveLevel}`).setTimestamp();
 
         return s(message.channel, '', embed);
     }

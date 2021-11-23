@@ -51,11 +51,10 @@ module.exports = {
                 mutee.roles.remove(muterole.id).then(() => {
                     mutee.send(`Hello, you have been **unmuted** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                     message.reply(`${mutee.user.username} was successfully unmuted.`).then(m => del(m, 7500));
+                    return s(logChannel, '', embed).catch(err => err);
                 }).catch(err => {
                     if (err) return message.reply(`There was an error attempting to unmute ${mutee} ${err}`).then(m => del(m, 7500));
                 });
-
-                return s(logChannel, '', embed).catch(err => err);
             } else if (emoji === "❌") {
                 del(msg, 0);
                 return message.reply(`Unmute cancelled.`).then(m => del(m, 7500));
