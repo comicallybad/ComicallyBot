@@ -127,6 +127,6 @@ module.exports = {
             } else {
                 return del(msg, 0);
             }
-        }).catch(err => console.log(`There was an error in mute ${err}`));
+        }).catch(err => err);
     }
 }
