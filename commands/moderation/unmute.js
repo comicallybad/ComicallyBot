@@ -58,9 +58,7 @@ module.exports = {
             } else if (emoji === "❌") {
                 del(msg, 0);
                 return message.reply(`Unmute cancelled.`).then(m => del(m, 7500));
-            } else {
-                return del(msg, 0)
-            }
-        }).catch(err => console.log(`There was an error in unmute ${err}`));
+            } else return del(msg, 0)
+        }).catch(err => err);
     }
 }

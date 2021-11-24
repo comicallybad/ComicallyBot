@@ -44,16 +44,12 @@ module.exports = {
             .setAuthor(`This verification becomes invalid after 30s.`)
             .setDescription(`Do you want to unban ${bannedMember}?`)
 
-        // Send the message
         await s(message.channel, '', promptEmbed).then(async msg => {
-            // Await the reactions and the reactioncollector
             const emoji = await promptMessage(msg, message.author, 30, ["✅", "❌"]);
 
-            // Verification stuffs
             if (emoji === "✅") {
                 del(msg, 0);
 
-                //attempt unban and send message
                 message.guild.members.unban(bannedMember).then(() => {
                     bannedMember.send(`Hello, you have been **unbanned** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                     message.reply(`${bannedMember.username} (${bannedMember.id}) was successfully unbanned.`).then(m => del(m, 7500));
@@ -64,9 +60,7 @@ module.exports = {
             } else if (emoji === "❌") {
                 del(msg, 0);
                 return message.reply(`Unban cancelled.`).then(m => del(m, 7500));
-            } else {
-                return del(msg, 0)
-            }
-        }).catch(err => console.log(`There was an error in unban ${err}`));
+            } else return del(msg, 0)
+        }).catch(err => err);
     }
 }

@@ -46,12 +46,9 @@ module.exports = {
             .setAuthor(`This verification becomes invalid after 30s.`)
             .setDescription(`Do you want to kick ${toKick}?`)
 
-        // Send the message
         await s(message.channel, '', promptEmbed).then(async msg => {
-            // Await the reactions and the reaction collector
             const emoji = await promptMessage(msg, message.author, 30, ["✅", "❌"]);
 
-            // The verification stuffs
             if (emoji === "✅") {
                 del(msg, 0);
 
@@ -65,7 +62,7 @@ module.exports = {
             } else if (emoji === "❌") {
                 del(msg, 0);
                 return message.reply(`Kick cancelled.`).then(m => del(m, 7500));
-            }
+            } else return del(msg, 0);
         }).catch(err => err);
     }
 };
