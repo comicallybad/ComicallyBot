@@ -11,13 +11,14 @@ module.exports = {
         if (!args[0]) {
             return message.reply("Please provide a channel and something to say, or just something to say.").then(m => del(m, 7500));
         } else {
-            if (message.mentions.channels.first() === args[0]) {
+            let channelMentionID = args[0].replace("<#", "").slice(args[0].replace("<#", "").indexOf(":") + 1, args[0].replace("<#", "").length - 1);
+            if (message.mentions.channels.first().id === channelMentionID) {
                 let toSay = args.slice(1).join(' ');
-                let channel = client.channels.cache.get(message.mentions.channels.first().id)
+                let channel = await message.guild.channels.cache.get(message.mentions.channels.first().id);
 
-                channel.send(toSay).catch(err => message.reply(`There was an error sending a message to that channel. ${err}`).then(m => del(m, 7500)));
+                return channel.send(toSay).catch(err => message.reply(`There was an error sending a message to that channel. ${err}`).then(m => del(m, 7500)));
             } else {
-                message.channel.send(args.join(' '));
+                return message.channel.send(args.join(' '));
             }
         }
     }
