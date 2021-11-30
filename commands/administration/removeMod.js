@@ -15,12 +15,12 @@ module.exports = {
         let guildID = message.guild.id;
 
         if (!args[0])
-            return message.reply("Please provide a user/role.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a user/role.").then(m => del(m, 7500));
 
         let ID = findID(message, args[0]);
 
         if (!ID)
-            return message.reply("user/role not found").then(m => del(m, 7500));
+            return r(message.channel, message.author, "user/role not found").then(m => del(m, 7500));
         else removeMod(ID);
 
         function removeMod(roleID) {
@@ -44,9 +44,9 @@ module.exports = {
 
                         s(logChannel, '', embed).catch(err => err);
 
-                        return message.reply("Removing mod... this may take a second...").then(m => del(m, 7500));
+                        return r(message.channel, message.author, "Removing mod... this may take a second...").then(m => del(m, 7500));
                     }).catch(err => console.log(err))
-                } else return message.reply("user/role was never added, or it was already removed.").then(m => del(m, 7500));
+                } else return r(message.channel, message.author, "user/role was never added, or it was already removed.").then(m => del(m, 7500));
             }).catch(err => console.log(err))
         }
     }

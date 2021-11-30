@@ -12,19 +12,19 @@ module.exports = {
         const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         if (!message.guild.me.permissions.has("MANAGE_ROLES"))
-            return message.reply("I don't have permission to manage roles!").then(m => del(m, 7500));
+            return r(message.channel, message.author, "I don't have permission to manage roles!").then(m => del(m, 7500));
 
         let mutee = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-        if (!mutee) return message.reply("Please supply a user to be muted!").then(m => del(m, 7500));
+        if (!mutee) return r(message.channel, message.author, "Please supply a user to be muted!").then(m => del(m, 7500));
 
         if (mutee.id === message.author.id)
-            return message.reply("You can't unmute yourself...? This should not even be possible if you are muted...").then(m => del(m, 7500));
+            return r(message.channel, message.author, "You can't unmute yourself...? This should not even be possible if you are muted...").then(m => del(m, 7500));
 
         let reason = args.slice(1).join(" ");
         if (!reason) reason = "No reason given"
 
         let muterole = message.guild.roles.cache.find(r => r.name === "Muted")
-        if (!muterole) return message.reply("There is no mute role to remove!").then(m => del(m, 7500));
+        if (!muterole) return r(message.channel, message.author, "There is no mute role to remove!").then(m => del(m, 7500));
 
         const embed = new MessageEmbed()
             .setColor("#00ff00")

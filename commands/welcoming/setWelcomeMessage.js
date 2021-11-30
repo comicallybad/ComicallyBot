@@ -18,7 +18,7 @@ module.exports = {
             return message.reply(`Please input the welcome message you wish to set after ${prefix} `).then(m => del(m, 7500));
 
         if (args.join(' ') >= 1024)
-            return message.reply("Your welcome message must be 1024 characters or shorter.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Your welcome message must be 1024 characters or shorter.").then(m => del(m, 7500));
 
         db.findOne({ guildID: guildID }, (err, exists) => {
             if (exists) {

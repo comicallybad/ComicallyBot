@@ -13,8 +13,8 @@ module.exports = {
                 db.updateOne({ guildID: message.guild.id, 'channels.command': "Bot Chatting" }, {
                     $pull: { channels: { command: "Bot Chatting" } }
                 }).catch(err => console.log(err));
-                return message.reply("Removed bot chatting channel.").then(m => del(m, 7500));
-            } else return message.reply("There has been no bot chat channel set.").then(m => del(m, 7500));
+                return r(message.channel, message.author, "Removed bot chatting channel.").then(m => del(m, 7500));
+            } else return r(message.channel, message.author, "There has been no bot chat channel set.").then(m => del(m, 7500));
         });
     }
 }

@@ -17,13 +17,13 @@ module.exports = {
         if (!args[0]) getRank(userID);
         else {
             let ID = findID(message, args[0], "user");
-            if (!ID) return message.reply("User not found.").then(m => del(m, 7500));
+            if (!ID) return r(message.channel, message.author, "User not found.").then(m => del(m, 7500));
             else getRank(ID);
         }
 
         function getRank(usrID) {
             xp.findOne({ guildID: guildID, userID: usrID }, (err, exists) => {
-                if (!exists) return message.reply("User doesn't have a rank yet.").then(m => del(m, 7500));
+                if (!exists) return r(message.channel, message.author, "User doesn't have a rank yet.").then(m => del(m, 7500));
                 if (exists) {
                     let rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 + 25 - exists.xp;
                     const embed = new MessageEmbed()
@@ -37,8 +37,8 @@ module.exports = {
                         **User has:** ${exists.xp} XP
                         **XP Until Next Level:** ${rankupXP}`);
 
-                    return message.reply(embed).then(m => del(m, 30000));
-                } else return message.reply("User has no rank").then(m => del(m, 7500));
+                    return r(message.channel, message.author, '', embed).then(m => del(m, 30000));
+                } else return r(message.channel, message.author, "User has no rank").then(m => del(m, 7500));
             })
         }
     }

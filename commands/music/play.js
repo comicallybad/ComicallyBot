@@ -13,27 +13,27 @@ module.exports = {
         const checkPlayer = client.music.players.get(message.guild.id);
 
         if (!voiceChannel)
-            return message.reply("You need to be in a voice channel to play music.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "You need to be in a voice channel to play music.").then(m => del(m, 7500));
 
         const permissions = voiceChannel.permissionsFor(client.user);
 
         if (!permissions.has("VIEW_CHANNEL"))
-            return message.reply("I cannot view the channel you wish to connect me to!").then(m => del(m, 7500));
+            return r(message.channel, message.author, "I cannot view the channel you wish to connect me to!").then(m => del(m, 7500));
 
         if (!permissions.has("CONNECT"))
-            return message.reply("I cannot connect to your voice channel, make sure I have permission to!").then(m => del(m, 7500));
+            return r(message.channel, message.author, "I cannot connect to your voice channel, make sure I have permission to!").then(m => del(m, 7500));
 
         if (!permissions.has("SPEAK"))
-            return message.reply("I cannot connect to your voice channel, make sure I have permission to!").then(m => del(m, 7500));
+            return r(message.channel, message.author, "I cannot connect to your voice channel, make sure I have permission to!").then(m => del(m, 7500));
 
         if (!args[0] && !checkPlayer)
-            return message.reply("Please provide a song name or link to search.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a song name or link to search.").then(m => del(m, 7500));
 
         if (!args[0] && checkPlayer.voiceChannel == voiceChannel) {
             if (!checkPlayer.playing) {
                 checkPlayer.pause(checkPlayer.playing);
                 return message.reply(`Player is now ${checkPlayer.playing ? "resumed" : "paused"}.`).then(m => del(m, 7500));
-            } else return message.reply("Please provide a song name or link to search.").then(m => del(m, 7500));
+            } else return r(message.channel, message.author, "Please provide a song name or link to search.").then(m => del(m, 7500));
         } else if (!args[0] && checkPlayer.voiceChannel !== voiceChannel) {
             checkPlayer.setVoiceChannel(voiceChannel.id);
             if (!checkPlayer.playing) checkPlayer.pause(checkPlayer.playing);
@@ -94,7 +94,7 @@ module.exports = {
                     collector.on("end", (_, reason) => {
                         if (["time", "cancelled"].includes(reason)) {
                             del(selector, 0);
-                            return message.reply("Cancelled selection.").then(m => del(m, 15000));
+                            return r(message.channel, message.author, "Cancelled selection.").then(m => del(m, 15000));
                         }
                     });
                     break;

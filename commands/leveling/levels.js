@@ -16,7 +16,7 @@ module.exports = {
 
         if (args[0]) {
             if (isNaN(args[0]))
-                return message.reply("Please provide a valid level.").then(m => del(m, 7500));
+                return r(message.channel, message.author, "Please provide a valid level.").then(m => del(m, 7500));
             else
                 return message.reply(`${10 * Math.pow(args[0], 3) / 5 + 25} XP is required for level ${args[0]}`).then(m => del(m, 7500));
         } else {

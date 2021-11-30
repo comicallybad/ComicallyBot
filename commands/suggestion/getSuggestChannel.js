@@ -13,7 +13,7 @@ module.exports = {
             if (exists) {
                 let channel = await client.channels.cache.get(exists.channels.filter(x => x.command === "suggest")[0].channelID);
                 return message.reply(`The suggestion channel is: ${channel}.`).then(m => del(m, 30000));
-            } else return message.reply("There has been no suggestion channel set.").then(m => del(m, 7500));
+            } else return r(message.channel, message.author, "There has been no suggestion channel set.").then(m => del(m, 7500));
         });
     }
 }

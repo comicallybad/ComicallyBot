@@ -12,27 +12,27 @@ module.exports = {
     usage: "<messageID> <emote | emoteID> <@role | roleID> [type] Types: 'addonly', 'add/remove'. Type will default to addremove if not supplied.",
     run: async (client, message, args) => {
         if (!message.guild.me.permissions.has("MANAGE_ROLES"))
-            return message.reply("I don't have permission to manage roles!").then(m => del(m, 7500));
+            return r(message.channel, message.author, "I don't have permission to manage roles!").then(m => del(m, 7500));
 
         if (!args[0])
             return message.reply(`Please provide a message ID. Use \`${prefix}help reactionrole\` for guidance.`).then(m => del(m, 7500));
 
         if (!args[1])
-            return message.reply("Please provide an emote or emote ID.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide an emote or emote ID.").then(m => del(m, 7500));
 
         if (!args[2])
-            return message.reply("Please provide a role ID or at mention the role.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a role ID or at mention the role.").then(m => del(m, 7500));
 
         if (args[0] && args[1] && args[2]) {
             const msg = await message.channel.messages.fetch(args[0]).catch(err => err);
 
             if (!msg || msg.message == "Unknown Message" || !msg.id)
-                return message.reply("Could not find message in current channel.").then(m => del(m, 7500));
+                return r(message.channel, message.author, "Could not find message in current channel.").then(m => del(m, 7500));
 
             let reaction = await args[1];
 
             const role = await message.guild.roles.cache.find(r => r.id === findID(message, args[2], "role"));
-            if (!role) return message.reply("Could not find role.").then(m => del(m, 7500));
+            if (!role) return r(message.channel, message.author, "Could not find role.").then(m => del(m, 7500));
 
             let type;
             if (args[3]) {

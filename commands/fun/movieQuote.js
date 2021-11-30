@@ -20,15 +20,15 @@ module.exports = {
                 embed.setTitle(`Here's a quote from: ${args.join(' ')}`);
                 embed.setDescription(`${quote[0].quote}`);
                 embed.setFooter(`${args.join(' ')} ${quote[0].year}`, message.author.displayAvatarURL())
-                return message.reply(embed).then(m => del(m, 30000));
-            } else return message.reply("Could not find a quote from that movie.").then(m => del(m, 7500));
+                return r(message.channel, message.author, '', embed).then(m => del(m, 30000));
+            } else return r(message.channel, message.author, "Could not find a quote from that movie.").then(m => del(m, 7500));
         }
         else {
             let quote = movieQuote.getRandomQuote();
             embed.setTitle(`Here's a random movie quote`);
             embed.setDescription(`${quote}`);
             embed.setFooter(`Random movie quote`, message.author.displayAvatarURL())
-            return message.reply(embed).then(m => del(m, 30000));
+            return r(message.channel, message.author, '', embed).then(m => del(m, 30000));
         }
     }
 }

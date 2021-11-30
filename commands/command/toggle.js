@@ -24,19 +24,19 @@ module.exports = {
         let aliasList = [].concat.apply([], aliases)
 
         if (!args[0])
-            return message.reply("Please provide the command you wish to toggle.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide the command you wish to toggle.").then(m => del(m, 7500));
 
         if (!commands.includes(args[0]) && !aliasList.includes(args[0]))
-            return message.reply("Please provide a valid command.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a valid command.").then(m => del(m, 7500));
 
         if (invalidCommands.includes(args[0]) || invalidAliases.includes(args[0]))
-            return message.reply("You may not toggle this command.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "You may not toggle this command.").then(m => del(m, 7500));
 
         if (!args[1])
-            return message.reply("Please provide a true or false/enable or disable.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a true or false/enable or disable.").then(m => del(m, 7500));
 
         if (args[1] !== "true" && args[1] !== "false" && args[1] !== "enable" && args[1] !== "disable")
-            return message.reply("Please provide only true or false/enable or disable.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide only true or false/enable or disable.").then(m => del(m, 7500));
 
         if (commands.includes(args[0])) {
             let command = args[0];
@@ -76,5 +76,5 @@ function toggle(message, args, command) {
 
     s(logChannel, '', embed).catch(err => err);
 
-    return message.reply("Toggling command... this may take a second...").then(m => del(m, 7500));
+    return r(message.channel, message.author, "Toggling command... this may take a second...").then(m => del(m, 7500));
 }

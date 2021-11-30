@@ -24,7 +24,7 @@ module.exports = {
                     });
                     welcomeMSG = msgMap.join(" ");
                     return message.reply(welcomeMSG).then(m => del(m, 30000));
-                } else return message.reply("A welcome message has not been set.").then(m => del(m, 7500))
+                } else return r(message.channel, message.author, "A welcome message has not been set.").then(m => del(m, 7500))
             }
         }).catch(err => err);
     }

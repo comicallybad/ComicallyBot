@@ -16,7 +16,7 @@ module.exports = {
         let guildID = message.guild.id;
 
         db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "verify" } } }, async (err, exists) => {
-            if (!exists) return message.reply("A verification channel has not been set by a moderator.").then(m => del(m, 7500));
+            if (!exists) return r(message.channel, message.author, "A verification channel has not been set by a moderator.").then(m => del(m, 7500));
             if (exists) {
                 let channel = message.guild.channels.cache.get(exists.channels.filter(cmd => cmd.command == "verify")[0].channelID);
 
@@ -37,7 +37,7 @@ module.exports = {
                 const emoji = await promptMessage(msg, message.author, 30, emojis);
                 if (emoji == "❤️") {
                     del(msg, 0);
-                    message.reply("Congratuations, chose correctly!").then(m => del(m, 7500));
+                    r(message.channel, message.author, "Congratuations, chose correctly!").then(m => del(m, 7500));
 
                     const role = await message.guild.roles.cache.find(r => r.name === exists.verificationRole[0].roleName) || message.guild.roles.cache.find(r => r.id === exists.verificationRole[0].roleID);
 
@@ -61,7 +61,7 @@ module.exports = {
                     });
                 } else {
                     del(msg, 0);
-                    return message.reply("Sorry, you chose incorrectly. 😢").then(m => del(m, 7500));
+                    return r(message.channel, message.author, "Sorry, you chose incorrectly. 😢").then(m => del(m, 7500));
                 }
             }
         }).catch(err => err);

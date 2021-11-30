@@ -68,6 +68,6 @@ module.exports = {
             .setTimestamp()
             .setDescription(`${inspirationalMessages[Math.floor((Math.random() * 10))]}`);
 
-        return message.reply(embed).then(m => del(m, 30000));
+        return r(message.channel, message.author, '', embed).then(m => del(m, 30000));
     }
 }

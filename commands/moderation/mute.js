@@ -12,13 +12,13 @@ module.exports = {
         const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         if (!message.guild.me.permissions.has("MANAGE_ROLES") || !message.guild.me.permissions.has("MANAGE_CHANNELS"))
-            return message.reply("I don't have permission to manage roles or channels!").then(m => del(m, 7500));
+            return r(message.channel, message.author, "I don't have permission to manage roles or channels!").then(m => del(m, 7500));
 
         let mutee = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-        if (!mutee) return message.reply("Please provide a user to be muted!").then(m => del(m, 7500));
+        if (!mutee) return r(message.channel, message.author, "Please provide a user to be muted!").then(m => del(m, 7500));
 
         if (mutee.id === message.author.id)
-            return message.reply("You can't mute yourself...").then(m => del(m, 7500));
+            return r(message.channel, message.author, "You can't mute yourself...").then(m => del(m, 7500));
 
         let reason = args.slice(1).join(" ");
         if (!reason) reason = "No reason given"

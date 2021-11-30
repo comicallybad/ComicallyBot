@@ -10,7 +10,7 @@ module.exports = {
     run: (client, message, args) => {
         const player = client.music.players.get(message.guild.id);
         if (!player || !player.queue.current)
-            return message.reply("No song currently playing in this guild.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "No song currently playing in this guild.").then(m => del(m, 7500));
 
         let index = 1;
         let string = "";

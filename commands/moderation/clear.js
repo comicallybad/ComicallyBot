@@ -9,11 +9,11 @@ module.exports = {
     usage: "[@user | userID]<number of messages>",
     run: async (client, message, args) => {
         if (!message.guild.me.permissions.has("MANAGE_MESSAGES"))
-            return message.reply("I do not have permissions to delete messages.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "I do not have permissions to delete messages.").then(m => del(m, 7500));
 
         if (!args[1]) {
             if (isNaN(args[0]) || parseInt(args[0]) <= 0)
-                return message.reply("Please provide a valid number.").then(m => del(m, 7500));
+                return r(message.channel, message.author, "Please provide a valid number.").then(m => del(m, 7500));
 
             let deleteAmount;
 
@@ -24,7 +24,7 @@ module.exports = {
                 .catch(err => message.reply(`Something went wrong ${err}`).then(m => del(m, 7500)));
         } else if (args[1]) {
             if (isNaN(args[1]) || parseInt(args[1]) <= 0)
-                return message.reply("Please provide a valid number.").then(m => del(m, 7500));
+                return r(message.channel, message.author, "Please provide a valid number.").then(m => del(m, 7500));
 
             let deleteAmount;
 
@@ -32,7 +32,7 @@ module.exports = {
             else deleteAmount = parseInt(args[1]);
 
             if (parseInt(args[0]) > 1000000) {
-                let user = message.guild.members.fetch(`${args[0]}`).catch(err => message.reply("Could not find user with that ID.").then(m => del(m, 7500)));
+                let user = message.guild.members.fetch(`${args[0]}`).catch(err => r(message.channel, message.author, "Could not find user with that ID.").then(m => del(m, 7500)));
                 if (user) {
                     message.channel.messages.fetch({ limit: 100 }).then((messages) => {
                         const filterBy = user.id;
@@ -57,7 +57,7 @@ module.exports = {
 
                 if (user) {
                     if (isNaN(args[1]) || parseInt(args[1]) <= 0)
-                        return message.reply("Please provide a valid number.").then(m => del(m, 7500));
+                        return r(message.channel, message.author, "Please provide a valid number.").then(m => del(m, 7500));
 
                     let deleteAmount;
 
@@ -71,7 +71,7 @@ module.exports = {
                             return message.reply(`There was an error attempting to delete user messages: ${err}`)
                         });
                     });
-                } else return message.reply("Sorry, I could not find that user.").then(m => del(m, 7500));
+                } else return r(message.channel, message.author, "Sorry, I could not find that user.").then(m => del(m, 7500));
             }
         }
     }

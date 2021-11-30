@@ -20,7 +20,7 @@ module.exports = {
             }));
             return s(message.channel, invites).then(m => del(m, 30000));
         } else {
-            return message.reply("There are no server invites created.").then(m => del(m, 30000))
+            return r(message.channel, message.author, "There are no server invites created.").then(m => del(m, 30000))
         }
     }
 }

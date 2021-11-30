@@ -12,19 +12,19 @@ module.exports = {
         const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         if (!message.member.permissions.has("BAN_MEMBERS"))
-            return message.reply("You don't have the ban members permission to perform this command!").then(m => del(m, 7500));
+            return r(message.channel, message.author, "You don't have the ban members permission to perform this command!").then(m => del(m, 7500));
 
         if (!message.guild.me.permissions.has("BAN_MEMBERS"))
-            return message.reply("I don't have the permission to perform this command!").then(m => del(m, 7500));
+            return r(message.channel, message.author, "I don't have the permission to perform this command!").then(m => del(m, 7500));
 
         if (isNaN(args[0]))
-            return message.reply("You need to provide an ID.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "You need to provide an ID.").then(m => del(m, 7500));
 
         let bannedMember = await client.users.fetch(args[0])
             .catch(err => s(message.channel, `There was a problem fetching that user. ${err}`).then(m => del(m, 7500)));
 
         if (!bannedMember)
-            return message.reply("Please provide a user id to unban someone!").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a user id to unban someone!").then(m => del(m, 7500));
 
         let reason = args.slice(1).join(" ")
         if (!reason) reason = "No reason given!"

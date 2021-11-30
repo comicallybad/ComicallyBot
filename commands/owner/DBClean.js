@@ -9,7 +9,7 @@ module.exports = {
     permissions: "owner",
     run: (client, message, args) => {
         if (message.author.id != process.env.USERID)
-            return message.reply("You're not the bot the owner!").then(m => del(m, 7500));
+            return r(message.channel, message.author, "You're not the bot the owner!").then(m => del(m, 7500));
 
         const currentGuilds = client.guilds.cache.map(guild => guild.id)
 
@@ -21,7 +21,7 @@ module.exports = {
                         .catch(err => message.reply(`There was an error cleaning empty database listings. ${err}`).then(m => del(m, 7500)));
                 }
             });
-            return message.reply("DB database has been cleaned up.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "DB database has been cleaned up.").then(m => del(m, 7500));
         }).catch(err => message.reply(`There was an error cleaning guild database: ${err}`).then(m => del(m, 7500)));
     }
 }

@@ -9,7 +9,7 @@ module.exports = {
     usage: "[#channel] <message>",
     run: async (client, message, args) => {
         if (!args[0]) {
-            return message.reply("Please provide a channel and something to say, or just something to say.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a channel and something to say, or just something to say.").then(m => del(m, 7500));
         } else {
             if (message.mentions.channels.first() === args[0]) {
                 let toSay = args.slice(1).join(' ');

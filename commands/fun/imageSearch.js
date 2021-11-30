@@ -11,13 +11,13 @@ module.exports = {
     usage: "<image | description for search>",
     run: async (client, message, args) => {
         if (!args[0])
-            return message.reply("Please provide an image to search for.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide an image to search for.").then(m => del(m, 7500));
 
         gis(args.join(' '), logResults);
 
         function logResults(error, results) {
             if (error) {
-                return message.reply("Could not find any images.").then(m => del(m, 7500))
+                return r(message.channel, message.author, "Could not find any images.").then(m => del(m, 7500))
             }
             else {
                 s(message.channel, "Image: ").then(m => {
@@ -46,6 +46,6 @@ async function nextPicture(message, author, results) {
             }
         }).catch(err => console.log(`There was an error in imageSearch ${err}`));
     } else {
-        return message.reply("Sorry there was an error with that search, try again.").then(m => del(m, 7500));
+        return r(message.channel, message.author, "Sorry there was an error with that search, try again.").then(m => del(m, 7500));
     }
 }

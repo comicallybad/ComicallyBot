@@ -14,7 +14,7 @@ module.exports = {
         const name = args.join(" ");
 
         if (!name) {
-            return message.reply("Maybe it's useful to actually search for someone...!").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Maybe it's useful to actually search for someone...!").then(m => del(m, 7500));
         }
 
         const url = `https://instagram.com/${name}/?__a=1`;
@@ -24,13 +24,13 @@ module.exports = {
         try {
             res = await fetch(url).then(url => url.json());
         } catch (e) {
-            return message.reply("I couldn't find that account...").then(m => del(m, 7500));
+            return r(message.channel, message.author, "I couldn't find that account...").then(m => del(m, 7500));
         }
 
         let account;
 
         if (res.graphql) account = res.graphql.user;
-        else return message.reply("Sorry there was an error finding that account.").then(m => del(m, 7500));
+        else return r(message.channel, message.author, "Sorry there was an error finding that account.").then(m => del(m, 7500));
 
         const info = stripIndents`**- Username:** ${account.username}
         **- Full name:** ${account.full_name}
@@ -41,7 +41,7 @@ module.exports = {
         **- Private account:** ${account.is_private ? "Yes 🔐" : "Nope 🔓"}`
 
         if (info >= 1024)
-            return message.reply("Sorry, this profile must have a bio too large to fit inside of a message embed.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Sorry, this profile must have a bio too large to fit inside of a message embed.").then(m => del(m, 7500));
         else {
             const embed = new MessageEmbed()
                 .setColor("#0efefe")

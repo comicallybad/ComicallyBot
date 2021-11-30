@@ -178,7 +178,7 @@ module.exports = {
                     user.roles.add(role.roleID).then(() => {
                         return user.send(`Hello, you have been given the **${role.roleName}** role in ${message.guild.name} for: **Ranking up to level ${level}!**`).catch(err => err);
                     }).catch(err => {
-                        if (err) return message.reply(`There was an error assigning XP level role. ${err}`).then(m => del(m, 7500));
+                        if (err) return s(message.channel, `There was an error assigning XP level role. ${err}`).then(m => del(m, 7500));
                     });
                 }
             });

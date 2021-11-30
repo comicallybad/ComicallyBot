@@ -11,11 +11,11 @@ module.exports = {
         let guildID = message.guild.id;
 
         db.findOne({ guildID: guildID }, (err, exists) => {
-            if (exists.xpMultiplier) return message.reply("This server has a " + exists.xpMultiplier + "x multiplier").then(m => del(m, 15000));
+            if (exists.xpMultiplier) return r(message.channel, message.author, "This server has a " + exists.xpMultiplier + "x multiplier").then(m => del(m, 15000));
             else {
                 exists.xpMultiplier = 1;
                 exists.save().catch(err => console.log(err))
-                return message.reply("This server has a 1x multiplier").then(m => del(m, 7500));
+                return r(message.channel, message.author, "This server has a 1x multiplier").then(m => del(m, 7500));
             }
         })
     }

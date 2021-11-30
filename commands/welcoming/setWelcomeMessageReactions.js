@@ -15,10 +15,10 @@ module.exports = {
         const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         if (!args[0])
-            return message.reply("Please input at least one reaction emoji.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please input at least one reaction emoji.").then(m => del(m, 7500));
 
         if (args.length > 10)
-            return message.reply("A maximum of 10 reactions is allowed.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "A maximum of 10 reactions is allowed.").then(m => del(m, 7500));
 
         let charEmojis = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿']
 
@@ -31,7 +31,7 @@ module.exports = {
         });
 
         if (emojis.length === 0 || emojis.includes(null))
-            return message.reply("You included an invalid emoji.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "You included an invalid emoji.").then(m => del(m, 7500));
 
         db.findOne({ guildID: guildID }, (err, exists) => {
             if (exists) {

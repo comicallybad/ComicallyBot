@@ -27,7 +27,7 @@ module.exports = {
                 else if (!reacted) del(m, 0);
             });
         } catch {
-            return message.reply('You must have provided invalid syntax.').then(m => del(m, 7500));
+            return r(message.channel, message.author, "You must have provided invalid syntax.").then(m => del(m, 7500));
         }
     }
 }

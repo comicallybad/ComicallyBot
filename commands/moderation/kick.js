@@ -12,20 +12,20 @@ module.exports = {
         const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         if (!message.guild.me.permissions.has("KICK_MEMBERS"))
-            return message.reply("I don't have permission to kick members!").then(m => del(m, 7500));
+            return r(message.channel, message.author, "I don't have permission to kick members!").then(m => del(m, 7500));
 
         if (!args[0])
-            return message.reply("Please provide a user to be kicked!").then(m, del(m, 7500));
+            return r(message.channel, message.author, "Please provide a user to be kicked!").then(m, del(m, 7500));
 
         let toKick = message.mentions.members.first() || await message.guild.members.cache.get(args[0]);
         if (!toKick) toKick = await client.users.fetch(args[0]);
-        if (!toKick) return message.reply("Could not find that user!").then(m => del(m, 7500));
+        if (!toKick) return r(message.channel, message.author, "Could not find that user!").then(m => del(m, 7500));
 
         if (toKick.id === message.author.id)
-            return message.reply("You can't kick yourself...").then(m => del(m, 7500));
+            return r(message.channel, message.author, "You can't kick yourself...").then(m => del(m, 7500));
 
         if (!toKick.kickable)
-            return message.reply("I can't kick that person due to role hierarchy, I suppose.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "I can't kick that person due to role hierarchy, I suppose.").then(m => del(m, 7500));
 
         let reason = args.slice(1).join(" ");
         if (!reason) reason = "No reason given!";

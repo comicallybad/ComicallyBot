@@ -12,11 +12,11 @@ module.exports = {
     permissions: "member",
     run: (client, message, args) => {
         if (!args[0])
-            return message.reply("Please provide <search trerm> | <random>.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide <search trerm> | <random>.").then(m => del(m, 7500));
         let search = args[0] !== "random" ? urban(args.join("")) : urban.random();
         try {
             search.first(res => {
-                if (!res) return message.reply("No results found for this topic, sorry!").then(m => del(m, 7500));
+                if (!res) return r(message.channel, message.author, "No results found for this topic, sorry!").then(m => del(m, 7500));
                 let { word, definition, example, thumbs_up, thumbs_down, permalink, author } = res;
 
                 let description = stripIndents`**Defintion:** ${definition || "No definition"}
@@ -26,7 +26,7 @@ module.exports = {
                     **Link:** [link to ${word}](${permalink || "https://www.urbandictionary.com/"})`
 
                 if (description.length >= 1024)
-                    return message.reply("This definition is too long of a string for a message embed sorry!").then(m => del(m, 7500));
+                    return r(message.channel, message.author, "This definition is too long of a string for a message embed sorry!").then(m => del(m, 7500));
                 else {
                     let embed = new MessageEmbed()
                         .setColor("#0efefe")

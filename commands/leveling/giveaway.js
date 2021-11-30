@@ -14,22 +14,22 @@ module.exports = {
         const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         if (!args[0])
-            return message.reply("Please provide an amount of xp.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide an amount of xp.").then(m => del(m, 7500));
 
         if (!args[1])
-            return message.reply("Please provide an amount of time.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide an amount of time.").then(m => del(m, 7500));
 
         if (isNaN(args[0]))
-            return message.reply("Please provide a valid number of xp").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a valid number of xp").then(m => del(m, 7500));
 
         if (isNaN(args[1]))
-            return message.reply("Please provide a valid number for time.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a valid number for time.").then(m => del(m, 7500));
 
         let amount = Math.floor(args[0]);
         let time = Math.floor(args[1] * 60000);
 
         if (amount < 1 || time < 1)
-            return message.reply("Please provide numbers greater than or equal to 1.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide numbers greater than or equal to 1.").then(m => del(m, 7500));
 
         let embed = new MessageEmbed()
             .setTitle("**React below for the giveaway!**")

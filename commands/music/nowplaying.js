@@ -10,7 +10,7 @@ module.exports = {
     permissions: "member",
     run: (client, message, args) => {
         const player = client.music.players.get(message.guild.id);
-        if (!player || !player.queue.current) return message.reply("No song/s currently playing within this guild.").then(m => del(m, 7500));
+        if (!player || !player.queue.current) return r(message.channel, message.author, "No song/s currently playing within this guild.").then(m => del(m, 7500));
         const { title, author, duration, thumbnail } = player.queue.current;
 
         const embed = new MessageEmbed()

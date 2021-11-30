@@ -12,20 +12,20 @@ module.exports = {
         const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         if (!message.guild.me.permissions.has("MANAGE_ROLES"))
-            return message.reply("I don't have permission to manage roles!").then(m => del(m, 7500));
+            return r(message.channel, message.author, "I don't have permission to manage roles!").then(m => del(m, 7500));
 
         let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-        if (!user) return message.reply("Please provide a user to be added to a role!").then(m => del(m, 7500));
+        if (!user) return r(message.channel, message.author, "Please provide a user to be added to a role!").then(m => del(m, 7500));
 
         if (user.id === message.author.id)
-            return message.reply("You can't remove your own roles...").then(m => del(m, 7500));
+            return r(message.channel, message.author, "You can't remove your own roles...").then(m => del(m, 7500));
 
         const roleName = args.slice(1).join(" ");
 
         let role = message.guild.roles.cache.find(r => r.name === roleName) || message.guild.roles.cache.find(r => r.id === args[1]) || message.mentions.roles.first();
 
         if (!role)
-            return message.reply("Could not find role.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Could not find role.").then(m => del(m, 7500));
 
         const embed = new MessageEmbed()
             .setColor("#0efefe")

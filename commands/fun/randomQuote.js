@@ -18,7 +18,7 @@ module.exports = {
                 embed.setTitle(`Here's a quote from: ${quote.author}`);
                 embed.setDescription(`${quote.text}`);
                 embed.setFooter(`${quote.author}`, message.author.displayAvatarURL());
-                return message.reply(embed).then(m => del(m, 30000));
+                return r(message.channel, message.author, '', embed).then(m => del(m, 30000));
             }).catch(err => {
                 return message.reply(`Error finding random quote. ${err}`).then(m => del(m, 7500));
             });

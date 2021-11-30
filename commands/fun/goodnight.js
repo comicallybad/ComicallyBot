@@ -26,7 +26,7 @@ module.exports = {
 
             if (member.id !== message.member.id && args[1]) {
                 if (args.slice(1, args.length).join(' ').length >= 1024)
-                    return message.reply("You can only use a string less than 2048 characters!").then(m => del(m, 7500));
+                    return r(message.channel, message.author, "You can only use a string less than 2048 characters!").then(m => del(m, 7500));
                 else {
                     embed
                         .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
@@ -37,7 +37,7 @@ module.exports = {
                 }
             } else if (member.id == message.member.id && args[0]) {
                 if (args.join(' ').length >= 1024)
-                    return message.reply("You can only use a string less than 2048 characters!").then(m => del(m, 7500));
+                    return r(message.channel, message.author, "You can only use a string less than 2048 characters!").then(m => del(m, 7500));
                 else {
                     embed
                         .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)

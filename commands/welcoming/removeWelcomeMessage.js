@@ -25,9 +25,9 @@ module.exports = {
                         **Welcome message removed by:** ${message.author}`);
 
                     s(logChannel, '', embed).catch(err => err);
-                    return message.reply("Removed welcome message.").then(m => del(m, 7500));
+                    return r(message.channel, message.author, "Removed welcome message.").then(m => del(m, 7500));
                 }
-            } else return message.reply("There has been no welcome message set.").then(m => del(m, 7500));
+            } else return r(message.channel, message.author, "There has been no welcome message set.").then(m => del(m, 7500));
         });
     }
 }

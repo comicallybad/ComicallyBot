@@ -30,6 +30,6 @@ module.exports = {
 
         s(logChannel, '', embed).catch(err => err);
 
-        return message.reply("Welcome reactions removed.").then(m => del(m, 7500));
+        return r(message.channel, message.author, "Welcome reactions removed.").then(m => del(m, 7500));
     }
 }

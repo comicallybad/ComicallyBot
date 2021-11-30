@@ -14,7 +14,7 @@ module.exports = {
         let guildID = message.guild.id;
 
         if (!args[0])
-            return message.reply("Please provide a user/role.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a user/role.").then(m => del(m, 7500));
 
         let roleNames = message.guild.roles.cache.map(role => role.name);
         let roleIDs = message.guild.roles.cache.map(role => role.id);
@@ -24,7 +24,7 @@ module.exports = {
         let ID = findID(message, args[0])
 
         if (!ID)
-            return message.reply("user/role not found").then(m => del(m, 7500));
+            return r(message.channel, message.author, "user/role not found").then(m => del(m, 7500));
 
         //if it is a role
         if (roleIDs.includes(ID))
@@ -56,9 +56,9 @@ module.exports = {
 
                         s(logChannel, '', embed).catch(err => err);
 
-                        return message.reply("Adding member... this may take a second...").then(m => del(m, 7500));
+                        return r(message.channel, message.author, "Adding member... this may take a second...").then(m => del(m, 7500));
                     }).catch(err => console.log(err))
-                } else return message.reply("User/role already added.").then(m => del(m, 7500));
+                } else return r(message.channel, message.author, "User/role already added.").then(m => del(m, 7500));
             }).catch(err => console.log(err))
         }
     }

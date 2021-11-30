@@ -29,7 +29,7 @@ module.exports = {
                     return s(message.channel, '', embed).then(m => del(m, 7500));
                 }
             } else {
-                return message.reply("There have been no bad words set yet.")
+                return r(message.channel, message.author, "There have been no bad words set yet.")
             }
         });
     }

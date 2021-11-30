@@ -15,7 +15,7 @@ module.exports = {
         let roles = message.guild.roles.cache;
 
         if (!args[0])
-            return message.reply("Please provide a role to check.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a role to check.").then(m => del(m, 7500));
 
         if (message.mentions.roles.first()) {
             roleID = message.mentions.roles.first().id;
@@ -24,7 +24,7 @@ module.exports = {
         } else if (roleNames.includes(args.join(" "))) {
             roleID = roleIDs[roleNames.indexOf(args.join(" "))];
         } else {
-            return message.reply("Sorry, I could not find that role.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Sorry, I could not find that role.").then(m => del(m, 7500));
         }
 
         let role = roles.filter(role => role.id == roleID).map(role => role)[0];
