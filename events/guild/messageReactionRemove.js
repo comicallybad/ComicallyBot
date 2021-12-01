@@ -41,6 +41,8 @@ function checkReactionRole(message, user) {
     let messageID = message.message.id;
     let reaction;
 
+    if (!guildUser) return;
+
     if (!message._emoji.id) reaction = message._emoji.name;
     else reaction = message._emoji.id;
 
