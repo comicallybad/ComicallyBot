@@ -21,6 +21,8 @@ module.exports = {
                 } else {
                     return message.channel.send(args.join(' '));
                 }
+            } else {
+                return message.channel.send(args.join(' '));
             }
         }
     }
