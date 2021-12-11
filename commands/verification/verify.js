@@ -42,7 +42,7 @@ module.exports = {
                     const role = await message.guild.roles.cache.find(r => r.name === exists.verificationRole[0].roleName) || message.guild.roles.cache.find(r => r.id === exists.verificationRole[0].roleID);
 
                     const embed = new MessageEmbed()
-                        .setColor("#0efefe")
+                        .setColor("#00FF00")
                         .setTitle("Member Verified")
                         .setThumbnail(message.member.user.displayAvatarURL())
                         .setFooter(message.member.displayName, message.author.displayAvatarURL())

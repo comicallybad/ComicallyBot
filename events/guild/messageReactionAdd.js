@@ -29,7 +29,7 @@ function checkReactionRole(message, user) {
     else reaction = message._emoji.id;
 
     const embed = new MessageEmbed()
-        .setColor("#0efefe")
+        .setColor("#00FF00")
         .setTitle("Member joined role via Reaction Role")
         .setFooter(user.id, user.displayAvatarURL())
         .setThumbnail(guildUser.user.displayAvatarURL())
