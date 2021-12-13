@@ -17,10 +17,9 @@ module.exports = {
         let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         if (!user) return message.reply("Please provide a user to be added to a role!").then(m => del(m, 7500));
 
-        if (user.id === message.author.id) {
-            if (user.id === process.env.USERID) return;
-            else return message.reply("You can't give yourself roles...").then(m => del(m, 7500));
-        }
+        if (user.id === message.author.id)
+            if (user.id !== process.env.USERID)
+                return message.reply("You can't give yourself roles...").then(m => del(m, 7500));
 
         const roleName = args.slice(1).join(" ");
 
