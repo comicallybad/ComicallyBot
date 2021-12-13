@@ -3,12 +3,7 @@ const fs = require("fs");
 const { config } = require("dotenv");
 const intents = [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, Intents.FLAGS.GUILD_INVITES,
 Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_VOICE_STATES];
-const client = new Client({
-    intents: intents,
-    partials: ['GUILD_MEMBER', 'REACTION', 'CHANNEL', 'MESSAGE'],
-    allowedMentions: { parse: ['users', 'roles'], repliedUser: true }
-});
-
+const client = new Client({ intents: intents, partials: ['GUILD_MEMBER', 'REACTION', 'CHANNEL', 'MESSAGE'] });
 const { Manager } = require("erela.js");
 const AntiSpam = require('discord-anti-spam');
 
@@ -33,12 +28,12 @@ client.antiSpam = new AntiSpam({
 });
 
 config({ path: __dirname + "/.env" });
-global.prefix = "=";
+global.prefix = "_";
 global.voiceChannels = [], global.profanityUsers = [];
 
 ["aliases", "commands"].forEach(x => client[x] = new Collection());
 ["command", "event", "erela", "antiSpam"].forEach(x => require(`./handlers/${x}`)(client));
-// require(`./handlers/error`)(client, process);
+require(`./handlers/error`)(client, process);
 client.categories = new fs.readdirSync("./commands/");
 
 client.login(process.env.TOKEN);
