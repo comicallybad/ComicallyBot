@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { r, del } = require("../../functions.js");
 
 module.exports = {
     name: "reload",
@@ -25,9 +25,8 @@ module.exports = {
             const pull = require(`../${commandCategory}/${commandName}.js`)
             client.commands.set(commandName, pull)
         } catch (e) {
-            return message.reply(`Could not reload: \`${args[1].toUpperCase()}\``).then(m => del(m, 7500));
+            return r(message.channel, message.author, `Could not reload: \`${args[1].toUpperCase()}\``).then(m => del(m, 7500));
         }
-
-        message.reply(`The command \`${args[1].toUpperCase()}\` has been reloaded!`).then(m => del(m, 7500));
+        return r(message.channel, message.author, `The command \`${args[1].toUpperCase()}\` has been reloaded!`).then(m => del(m, 7500));
     }
 }

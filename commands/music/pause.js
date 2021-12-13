@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { r, del } = require("../../functions.js");
 
 module.exports = {
     name: "pause",
@@ -15,6 +15,6 @@ module.exports = {
             return r(message.channel, message.author, "You need to be in a voice channel to pause music.").then(m => del(m, 7500));
 
         player.pause(true);
-        return message.reply(`Player is now ${player.playing ? "resumed" : "paused"}.`).then(m => del(m, 7500));
+        return r(message.channel, message.author, `Player is now ${player.playing ? "resumed" : "paused"}.`).then(m => del(m, 7500));
     }
 }

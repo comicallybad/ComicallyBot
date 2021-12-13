@@ -1,4 +1,4 @@
-const { s, del } = require("../../functions.js");
+const { s, r, del } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
@@ -18,7 +18,7 @@ module.exports = {
             if (isNaN(args[0]))
                 return r(message.channel, message.author, "Please provide a valid level.").then(m => del(m, 7500));
             else
-                return message.reply(`${10 * Math.pow(args[0], 3) / 5 + 25} XP is required for level ${args[0]}`).then(m => del(m, 7500));
+                return r(message.channel, message.author, `${10 * Math.pow(args[0], 3) / 5 + 25} XP is required for level ${args[0]}`).then(m => del(m, 7500));
         } else {
             for (let i = 0; i < 10; i++) {
                 let XP = 10 * Math.pow(i + 1, 3) / 5 + 25;

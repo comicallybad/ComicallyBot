@@ -1,4 +1,4 @@
-const { s, del } = require("../../functions.js");
+const { s, r, del } = require("../../functions.js");
 const db = require('../../schemas/db.js');
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
@@ -15,7 +15,7 @@ module.exports = {
         const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         if (!args[0])
-            return message.reply(`Please input the welcome message you wish to set after ${prefix} `).then(m => del(m, 7500));
+            return r(message.channel, message.author, `Please input the welcome message you wish to set after ${prefix} `).then(m => del(m, 7500));
 
         if (args.join(' ') >= 1024)
             return r(message.channel, message.author, "Your welcome message must be 1024 characters or shorter.").then(m => del(m, 7500));
@@ -51,6 +51,6 @@ module.exports = {
 
         s(logChannel, '', embed).catch(err => err);
 
-        return message.reply(`Welcome message has been set to: ${welcomeMSG}`).then(m => del(m, 7500));
+        return r(message.channel, message.author, `Welcome message has been set to: ${welcomeMSG}`).then(m => del(m, 7500));
     }
 }

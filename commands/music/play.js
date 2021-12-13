@@ -1,4 +1,4 @@
-const { s, del } = require("../../functions.js");
+const { s, r, del } = require("../../functions.js");
 const humanizeDuration = require("humanize-duration");
 const { MessageEmbed } = require("discord.js");
 
@@ -32,12 +32,12 @@ module.exports = {
         if (!args[0] && checkPlayer.voiceChannel == voiceChannel) {
             if (!checkPlayer.playing) {
                 checkPlayer.pause(checkPlayer.playing);
-                return message.reply(`Player is now ${checkPlayer.playing ? "resumed" : "paused"}.`).then(m => del(m, 7500));
+                return r(message.channel, message.author, `Player is now ${checkPlayer.playing ? "resumed" : "paused"}.`).then(m => del(m, 7500));
             } else return r(message.channel, message.author, "Please provide a song name or link to search.").then(m => del(m, 7500));
         } else if (!args[0] && checkPlayer.voiceChannel !== voiceChannel) {
             checkPlayer.setVoiceChannel(voiceChannel.id);
             if (!checkPlayer.playing) checkPlayer.pause(checkPlayer.playing);
-            return message.reply(`Player has successfully joined.`).then(m => del(m, 7500));
+            return r(message.channel, message.author, `Player has successfully joined.`).then(m => del(m, 7500));
         }
 
         if (checkPlayer) {
@@ -60,7 +60,7 @@ module.exports = {
             switch (res.loadType) {
                 case "TRACK_LOADED":
                     player.queue.add(res.tracks[0]);
-                    message.reply(`Queuing \`${res.tracks[0].title}\` \`${humanizeDuration(res.tracks[0].duration)}\``).then(m => del(m, 15000));
+                    r(message.channel, message.author, `Queuing \`${res.tracks[0].title}\` \`${humanizeDuration(res.tracks[0].duration)}\``).then(m => del(m, 15000));
                     if (!player.playing) player.play();
                     break;
 
@@ -85,7 +85,7 @@ module.exports = {
                         }
                         const track = tracks[Number(m.content) - 1];
                         player.queue.add(track)
-                        message.reply(`Queuing \`${track.title}\` \`${humanizeDuration(track.duration)}\``).then(m => del(m, 15000));
+                        r(message.channel, message.author, `Queuing \`${track.title}\` \`${humanizeDuration(track.duration)}\``).then(m => del(m, 15000));
                         if (!player.playing) player.play();
                         del(m, 0);
                         del(selector, 0);
@@ -102,10 +102,10 @@ module.exports = {
                 case "PLAYLIST_LOADED":
                     res.tracks.forEach(track => player.queue.add(track));
                     const duration = humanizeDuration(res.tracks.reduce((acc, cur) => ({ duration: acc.duration + cur.duration })).duration);
-                    message.reply(`Queuing \`${res.tracks.length}\` \`${duration}\` tracks in playlist \`${res.playlist.name}\``).then(m => del(m, 15000));
+                    r(message.channel, message.author, `Queuing \`${res.tracks.length}\` \`${duration}\` tracks in playlist \`${res.playlist.name}\``).then(m => del(m, 15000));
                     if (!player.playing) player.play();
                     break;
             }
-        }).catch(err => message.reply(err.message).then(m => del(m, 7500)));
+        }).catch(err => r(message.channel, message.author, (err.message).then(m => del(m, 7500))));
     }
 }

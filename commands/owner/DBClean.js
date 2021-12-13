@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { r, del } = require("../../functions.js");
 const db = require("../../schemas/db.js");
 
 module.exports = {
@@ -18,10 +18,10 @@ module.exports = {
             guildIDs.forEach(ID => {
                 if (!currentGuilds.includes(ID)) {
                     db.deleteOne({ guildID: ID })
-                        .catch(err => message.reply(`There was an error cleaning empty database listings. ${err}`).then(m => del(m, 7500)));
+                        .catch(err => r(message.channel, message.author, `There was an error cleaning empty database listings. ${err}`).then(m => del(m, 7500)));
                 }
             });
             return r(message.channel, message.author, "DB database has been cleaned up.").then(m => del(m, 7500));
-        }).catch(err => message.reply(`There was an error cleaning guild database: ${err}`).then(m => del(m, 7500)));
+        }).catch(err => r(message.channel, message.author, `There was an error cleaning guild database: ${err}`).then(m => del(m, 7500)));
     }
 }

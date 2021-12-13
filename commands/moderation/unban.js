@@ -1,4 +1,4 @@
-const { s, del, promptMessage } = require("../../functions.js");
+const { s, r, del, promptMessage } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
@@ -52,14 +52,14 @@ module.exports = {
 
                 message.guild.members.unban(bannedMember).then(() => {
                     bannedMember.send(`Hello, you have been **unbanned** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
-                    message.reply(`${bannedMember.username} (${bannedMember.id}) was successfully unbanned.`).then(m => del(m, 7500));
+                    r(message.channel, message.author, `${bannedMember.username} (${bannedMember.id}) was successfully unbanned.`).then(m => del(m, 7500));
                     return s(logChannel, '', embed).catch(err => err);
                 }).catch(err => {
-                    if (err) return message.reply(`There was an error attempting to unban ${bannedMember} ${err}`).then(m => del(m, 7500));
+                    if (err) return r(message.channel, message.author, `There was an error attempting to unban ${bannedMember} ${err}`).then(m => del(m, 7500));
                 });
             } else if (emoji === "❌") {
                 del(msg, 0);
-                return message.reply(`Unban cancelled.`).then(m => del(m, 7500));
+                return r(message.channel, message.author, `Unban cancelled.`).then(m => del(m, 7500));
             } else return del(msg, 0)
         }).catch(err => err);
     }

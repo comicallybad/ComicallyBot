@@ -1,4 +1,4 @@
-const { s, del, findID } = require("../../functions.js");
+const { s, r, del, findID } = require("../../functions.js");
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
 const { addXP } = require("../../dbFunctions");
@@ -43,7 +43,7 @@ module.exports = {
 
             s(logChannel, '', embed).catch(err => err);
 
-            return message.reply(xpToAdd + " XP was added to the user.").then(m => del(m, 7500));
+            return r(message.channel, message.author, xpToAdd + " XP was added to the user.").then(m => del(m, 7500));
         }).catch(err => console.log(`There was an error in addXP ${err}`));
     }
 }

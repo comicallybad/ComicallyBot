@@ -1,4 +1,4 @@
-const { s, del } = require("../../functions");
+const { s, r, del } = require("../../functions");
 const db = require("../../schemas/db.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
@@ -45,6 +45,6 @@ module.exports = {
         }).catch(err => console.log(err))
 
         s(logChannel, '', embed).catch(err => err);
-        return message.reply(`The XP system has been toggled to ${args[0]}.`).then(m => del(m, 7500));
+        return r(message.channel, message.author, `The XP system has been toggled to ${args[0]}.`).then(m => del(m, 7500));
     }
 }

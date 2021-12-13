@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { r, del } = require("../../functions.js");
 
 module.exports = {
     name: "clear",
@@ -21,7 +21,7 @@ module.exports = {
             else deleteAmount = parseInt(args[0]);
 
             message.channel.bulkDelete(deleteAmount + 1, true)
-                .catch(err => message.reply(`Something went wrong ${err}`).then(m => del(m, 7500)));
+                .catch(err => r(message.channel, message.author, `Something went wrong ${err}`).then(m => del(m, 7500)));
         } else if (args[1]) {
             if (isNaN(args[1]) || parseInt(args[1]) <= 0)
                 return r(message.channel, message.author, "Please provide a valid number.").then(m => del(m, 7500));
@@ -38,7 +38,7 @@ module.exports = {
                         const filterBy = user.id;
                         messages = messages.filter(m => m.author.id === filterBy).array().slice(0, (deleteAmount + 1));
                         message.channel.bulkDelete(messages).catch(err => {
-                            return message.reply(`There was an error attempting to delete user messages: ${err}`)
+                            return r(message.channel, message.author, `There was an error attempting to delete user messages: ${err}`)
                         });
                     });
                 }
@@ -49,7 +49,7 @@ module.exports = {
                     const filterBy = message.mentions.users.first() ? message.mentions.users.first().id : Client.user.id;
                     messages = messages.filter(m => m.author.id === filterBy).array().slice(0, (deleteAmount + 1));
                     message.channel.bulkDelete(messages).catch(err => {
-                        return message.reply(`There was an error attempting to delete user messages: ${err}`)
+                        return r(message.channel, message.author, `There was an error attempting to delete user messages: ${err}`)
                     });
                 });
             } else {
@@ -68,7 +68,7 @@ module.exports = {
                         const filterBy = user ? user.id : Client.user.id;
                         messages = messages.filter(m => m.author.id === filterBy).array().slice(0, (deleteAmount + 1));
                         message.channel.bulkDelete(messages).catch(err => {
-                            return message.reply(`There was an error attempting to delete user messages: ${err}`)
+                            return r(message.channel, message.author, `There was an error attempting to delete user messages: ${err}`);
                         });
                     });
                 } else return r(message.channel, message.author, "Sorry, I could not find that user.").then(m => del(m, 7500));

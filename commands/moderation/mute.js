@@ -1,4 +1,4 @@
-const { s, del, promptMessage, checkMuteRole } = require("../../functions.js");
+const { s, r, del, promptMessage, checkMuteRole } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
@@ -60,62 +60,62 @@ module.exports = {
                         del(msg, 0);
                         mutee.roles.add(muterole.id).then(() => {
                             mutee.send(`Hello, you have been **muted** for **1 minute** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
-                            message.reply(`${mutee.user.username} was successfully muted for **1 minute**.`).then(m => del(m, 7500));
+                            r(message.channel, message.author, `${mutee.user.username} was successfully muted for **1 minute**.`).then(m => del(m, 7500));
                             embed.addField("Mute Time: ", "1 Minute");
                             s(logChannel, '', embed).catch(err => err);
                         }).catch(err => {
-                            if (err) return message.reply(`There was an error attempting to mute ${mutee} ${err}`).then(m => del(m, 7500));
+                            if (err) return r(message.channel, message.author, `There was an error attempting to mute ${mutee} ${err}`).then(m => del(m, 7500));
                         }).then(setTimeout(() => {
                             mutee.roles.remove(muterole.id).then(() => {
                                 mutee.send(`Hello, you have now been **unmuted** in ${message.guild.name} `).catch(err => err); //in case DM's are closed
-                                message.reply(`${mutee.user.username} was successfully unmuted.`).then(m => del(m, 7500));
+                                r(message.channel, message.author, `${mutee.user.username} was successfully unmuted.`).then(m => del(m, 7500));
                             }).catch(err => {
-                                if (err) return message.reply(`There was an error attempting to unmute ${mutee} ${err}`).then(m => del(m, 7500));
+                                if (err) return r(message.channel, message.author, `There was an error attempting to unmute ${mutee} ${err}`).then(m => del(m, 7500));
                             });
                         }, 60000));
                     } else if (emojiTime === "5️⃣") {
                         del(msg, 0);
                         mutee.roles.add(muterole.id).then(() => {
                             mutee.send(`Hello, you have been **muted** for **5 minutes** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
-                            message.reply(`${mutee.user.username} was successfully muted for **5 minutes**.`).then(m => del(m, 7500));
+                            r(message.channel, message.author, `${mutee.user.username} was successfully muted for **5 minutes**.`).then(m => del(m, 7500));
                             embed.addField("Mute Time: ", "5 Minutes");
                             s(logChannel, '', embed).catch(err => err);
                         }).catch(err => {
-                            if (err) return message.reply(`There was an error attempting to mute ${mutee} ${err}`).then(m => del(m, 7500));
+                            if (err) return r(message.channel, message.author, `There was an error attempting to mute ${mutee} ${err}`).then(m => del(m, 7500));
                         }).then(setTimeout(() => {
                             mutee.roles.remove(muterole.id).then(() => {
                                 mutee.send(`Hello, you have now been **unmuted** in ${message.guild.name} `).catch(err => err); //in case DM's are closed
-                                message.reply(`${mutee.user.username} was successfully unmuted.`).then(m => del(m, 7500));
+                                r(message.channel, message.author, `${mutee.user.username} was successfully unmuted.`).then(m => del(m, 7500));
                             }).catch(err => {
-                                if (err) return message.reply(`There was an error attempting to unmute ${mutee} ${err}`).then(m => del(m, 7500));
+                                if (err) return r(message.channel, message.author, `There was an error attempting to unmute ${mutee} ${err}`).then(m => del(m, 7500));
                             });
                         }, 300000));
                     } else if (emojiTime === "🔟") {
                         del(msg, 0);
                         mutee.roles.add(muterole.id).then(() => {
                             mutee.send(`Hello, you have been **muted** for **10 minutes** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
-                            message.reply(`${mutee.user.username} was successfully muted for **10 minutes**.`).then(m => del(m, 7500));
+                            r(message.channel, message.author, `${mutee.user.username} was successfully muted for **10 minutes**.`).then(m => del(m, 7500));
                             embed.addField("Mute Time: ", "10 Minutes");
                             s(logChannel, '', embed).catch(err => err);
                         }).catch(err => {
-                            if (err) return message.reply(`There was an error attempting to mute ${mutee} ${err}`).then(m => del(m, 7500));
+                            if (err) return r(message.channel, message.author, `There was an error attempting to mute ${mutee} ${err}`).then(m => del(m, 7500));
                         }).then(setTimeout(() => {
                             mutee.roles.remove(muterole.id).then(() => {
                                 mutee.send(`Hello, you have now been **unmuted** in ${message.guild.name} `).catch(err => err); //in case DM's are closed
-                                message.reply(`${mutee.user.username} was successfully unmuted.`).then(m => del(m, 7500));
+                                r(message.channel, message.author, `${mutee.user.username} was successfully unmuted.`).then(m => del(m, 7500));
                             }).catch(err => {
-                                if (err) return message.reply(`There was an error attempting to unmute ${mutee} ${err}`).then(m => del(m, 7500));
+                                if (err) return r(message.channel, message.author, `There was an error attempting to unmute ${mutee} ${err}`).then(m => del(m, 7500));
                             });
                         }, 600000));
                     } else if (emojiTime === "♾️") {
                         del(msg, 0);
                         mutee.roles.add(muterole.id).then(() => {
                             mutee.send(`Hello, you have been **muted** **indefinitely** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
-                            message.reply(`${mutee.user.username} was successfully muted **indefinitely**.`).then(m => del(m, 7500));
+                            r(message.channel, message.author, `${mutee.user.username} was successfully muted **indefinitely**.`).then(m => del(m, 7500));
                             embed.addField("Mute Time: ", "Indefinite");
                             s(logChannel, '', embed).catch(err => err);
                         }).catch(err => {
-                            if (err) return message.reply(`There was an error attempting to mute ${mutee} ${err}`).then(m => del(m, 7500));
+                            if (err) return r(message.channel, message.author, `There was an error attempting to mute ${mutee} ${err}`).then(m => del(m, 7500));
                         });
                     } else {
                         return del(msg, 0);
@@ -123,7 +123,7 @@ module.exports = {
                 }).catch(err => console.log(`There was an error in mute1 ${err}`));
             } else if (emoji === "❌") {
                 del(msg, 0);
-                return message.reply(`Mute cancelled.`).then(m => del(m, 7500));
+                return r(message.channel, message.author, `Mute cancelled.`).then(m => del(m, 7500));
             } else return del(msg, 0);
         }).catch(err => err);
     }

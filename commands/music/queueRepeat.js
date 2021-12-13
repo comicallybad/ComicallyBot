@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { r, del } = require("../../functions.js");
 
 module.exports = {
     name: "queuerepeat",
@@ -19,6 +19,6 @@ module.exports = {
         else
             player.setQueueRepeat(true);
 
-        return message.reply(`Queue reapeat is now ${player.queueRepeat ? "enabled" : "disabled"}.`).then(m => del(m, 7500));
+        return r(message.channel, message.author, `Queue reapeat is now ${player.queueRepeat ? "enabled" : "disabled"}.`).then(m => del(m, 7500));
     }
 }

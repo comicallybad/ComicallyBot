@@ -16,18 +16,18 @@ module.exports = {
     },
 
     s: function (channel, content, embeds) {  //New global send function due to discord.js changing it too much
-        if (!channel) return;
-        else if (!embeds) return channel.send({ content: content });
-        else if (!content) return channel.send({ embeds: [embeds] });
-        else if (content && embeds) return channel.send({ content: content, embeds: [embeds] });
+        if (!channel || !channel.me.permissions.has("SEND_MESSAGES")) return;
+        else if (!embeds) return channel.send({ content: content }).catch(err => console.log(err.stack));
+        else if (!content) return channel.send({ embeds: [embeds] }).catch(err => console.log(err.stack));
+        else if (content && embeds) return channel.send({ content: content, embeds: [embeds] }).catch(err => console.log(err.stack));
         else return;
     },
 
     r: function (channel, author, content, embeds) {  //New global send function due to discord.js changing it too much
-        if (!channel || !author) return;
-        else if (!embeds) return channel.send({ content: `${author} ${content}` });
-        else if (!content) return channel.send({ content: `${author}`, embeds: [embeds] });
-        else if (content && embeds) return channel.send({ content: `${author} ${content}`, embeds: [embeds] });
+        if (!channel || !author || !channel.me.permissions.has("SEND_MESSAGES")) return;
+        else if (!embeds) return channel.send({ content: `${author} ${content}` }).catch(err => console.log(err.stack));
+        else if (!content) return channel.send({ content: `${author}`, embeds: [embeds] }).catch(err => console.log(err.stack));
+        else if (content && embeds) return channel.send({ content: `${author} ${content}`, embeds: [embeds] }).catch(err => console.log(err.stack));
         else return;
     },
 

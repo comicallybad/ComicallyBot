@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { r, del } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const getRandomQuote = require('get-random-quote');
 
@@ -20,7 +20,7 @@ module.exports = {
                 embed.setFooter(`${quote.author}`, message.author.displayAvatarURL());
                 return r(message.channel, message.author, '', embed).then(m => del(m, 30000));
             }).catch(err => {
-                return message.reply(`Error finding random quote. ${err}`).then(m => del(m, 7500));
+                return r(message.channel, message.author, `Error finding random quote. ${err}`).then(m => del(m, 7500));
             });
     }
 }

@@ -1,4 +1,4 @@
-const { s, del, promptMessage } = require("../../functions.js");
+const { s, r, del, promptMessage } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
@@ -54,14 +54,14 @@ module.exports = {
 
                 toKick.kick(reason).then(() => {
                     toKick.send(`Hello, you have been **kicked** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
-                    message.reply(`${toKick.user.username}(${toKick.user.id}) was successfully kicked.`).then(m => del(m, 7500));
+                    r(message.channel, message.author, `${toKick.user.username}(${toKick.user.id}) was successfully kicked.`).then(m => del(m, 7500));
                     return s(logChannel, '', embed).catch(err => err);
                 }).catch(err => {
-                    if (err) return message.reply(`There was an error attempting to kick ${toKick} ${err}`).then(m => del(m, 7500));
+                    if (err) return r(message.channel, message.author, `There was an error attempting to kick ${toKick} ${err}`).then(m => del(m, 7500));
                 });
             } else if (emoji === "❌") {
                 del(msg, 0);
-                return message.reply(`Kick cancelled.`).then(m => del(m, 7500));
+                return r(message.channel, message.author, `Kick cancelled.`).then(m => del(m, 7500));
             } else return del(msg, 0);
         }).catch(err => err);
     }

@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { r, del } = require("../../functions.js");
 const translate = require('google-translate-free');
 
 module.exports = {
@@ -14,9 +14,9 @@ module.exports = {
         else {
             let translateToLanguage = args[0];
             translate(`${args.splice(1).join(' ')}`, { to: translateToLanguage }).then(res => {
-                return message.reply(`**Translation:** ${res.text} **Translated from:** \`${res.from.language.iso}\``);
+                return r(message.channel, message.author, `**Translation:** ${res.text} **Translated from:** \`${res.from.language.iso}\``);
             }).catch(err => {
-                return message.reply(`There was an error translating: ${err}`);
+                return r(message.channel, message.author, `There was an error translating: ${err}`);
             });
         }
     }

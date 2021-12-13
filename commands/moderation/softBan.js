@@ -1,4 +1,4 @@
-const { s, del, promptMessage } = require("../../functions.js");
+const { s, r, del, promptMessage } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
@@ -53,14 +53,14 @@ module.exports = {
                 message.guild.members.ban(toBan.id).then(() => {
                     message.guild.members.unban(toBan.id)
                     toBan.send(`Hello, you have been **soft banned** in ${message.guild.name} for: **${reason}**`).catch(err => err) //in case DM's are closed
-                    message.reply(`${toBan.username}(${toBan.id}) was successfully soft banned.`).then(m => del(m, 7500));
+                    r(message.channel, message.author, `${toBan.username}(${toBan.id}) was successfully soft banned.`).then(m => del(m, 7500));
                     return s(logChannel, '', embed);
                 }).catch(err => {
-                    if (err) return message.reply(`There was an error attempting to softban ${toBan} ${err}`).then(m => del(m, 7500));
+                    if (err) return r(message.channel, message.author, `There was an error attempting to softban ${toBan} ${err}`).then(m => del(m, 7500));
                 });
             } else if (emoji === "❌") {
                 del(msg, 0);
-                return message.reply(`Softban cancelled.`).then(m => del(m, 7500));
+                return r(message.channel, message.author, `Softban cancelled.`).then(m => del(m, 7500));
             } else return del(msg, 0)
         }).catch(err => err);
     }

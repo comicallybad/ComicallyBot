@@ -52,14 +52,14 @@ module.exports = {
 
                 user.roles.add(role.id).then(() => {
                     user.send(`Hello, you have been added to the **${role.name}** role in ${message.guild.name}`).catch(err => err); //in case DM's are closed
-                    message.reply(`${user} was successfully added to the **${role.name}** role.`).then(m => del(m, 7500));
+                    r(message.channel, message.author, `${user} was successfully added to the **${role.name}** role.`).then(m => del(m, 7500));
                     s(logChannel, '', embed).catch(err => err);
                 }).catch(err => {
-                    if (err) return message.reply(`There was an error attempting to add ${user} to the ${role.name} role: ${err}`).then(m => del(m, 7500));
+                    if (err) return r(message.channel, message.author, `There was an error attempting to add ${user} to the ${role.name} role: ${err}`).then(m => del(m, 7500));
                 });
             } else if (emoji === "❌") {
                 del(msg, 0);
-                return message.reply(`Role add cancelled.`).then(m => del(m, 7500));
+                return r(message.channel, message.author, `Role add cancelled.`).then(m => del(m, 7500));
             } else return del(msg, 0);
         }).catch(err => err);
     }

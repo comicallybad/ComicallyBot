@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { r, del } = require("../../functions.js");
 const db = require('../../schemas/db.js');
 
 module.exports = {
@@ -23,7 +23,7 @@ module.exports = {
                         } else return msgArray[index];
                     });
                     welcomeMSG = msgMap.join(" ");
-                    return message.reply(welcomeMSG).then(m => del(m, 30000));
+                    return r(message.channel, message.author, welcomeMSG).then(m => del(m, 30000));
                 } else return r(message.channel, message.author, "A welcome message has not been set.").then(m => del(m, 7500))
             }
         }).catch(err => err);

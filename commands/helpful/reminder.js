@@ -1,6 +1,6 @@
 const humanizeDuration = require("humanize-duration");
 const { MessageEmbed } = require("discord.js");
-const { s, del } = require("../../functions");
+const { s, r, del } = require("../../functions");
 
 module.exports = {
     name: "reminder",
@@ -24,7 +24,7 @@ module.exports = {
                 .setDescription(`${message.author}, your timer is finished!`)
                 .setFooter(`Time elapsed: ${humanizeDuration(time)}`, message.author.displayAvatarURL());
 
-            message.reply(`${humanizeDuration(time)} timer set`).then(m => del(m, 7500));
+            r(message.channel, message.author, `${humanizeDuration(time)} timer set`).then(m => del(m, 7500));
 
             return setTimeout(() => {
                 s(message.channel, '', embed);
@@ -44,7 +44,7 @@ module.exports = {
                 .setDescription(`${message.author}, I am reminding you: ${reminder}!`)
                 .setFooter(`Time elapsed: ${humanizeDuration(time)}`, message.author.displayAvatarURL());
 
-            message.reply(`You will be reminded in ${humanizeDuration(time)}.`).then(m => del(m, 7500));
+            r(message.channel, message.author, `You will be reminded in ${humanizeDuration(time)}.`).then(m => del(m, 7500));
 
             return setTimeout(() => {
                 s(message.channel, '', embed);

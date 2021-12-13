@@ -1,4 +1,4 @@
-const { s, del } = require("../../functions.js");
+const { s, r, del } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const db = require('../../schemas/db.js');
 
@@ -18,7 +18,7 @@ module.exports = {
                 let channel = message.guild.channels.cache.get(exists.channels.filter(cmd => cmd.command == "suggest")[0].channelID);
 
                 if (message.channel.id !== channel.id)
-                    return message.reply(`This command is only available in the ${channel} channel.`).then(m => del(m, 7500));
+                    return r(message.channel, message.author, `This command is only available in the ${channel} channel.`).then(m => del(m, 7500));
 
                 if (!args[0])
                     return r(message.channel, message.author, "Please provide a suggestion.").then(m => del(m, 7500));

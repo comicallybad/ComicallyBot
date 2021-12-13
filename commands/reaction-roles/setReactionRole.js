@@ -1,4 +1,4 @@
-const { s, findID, del } = require("../../functions");
+const { s, r, findID, del } = require("../../functions");
 const db = require("../../schemas/db.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
@@ -15,7 +15,7 @@ module.exports = {
             return r(message.channel, message.author, "I don't have permission to manage roles!").then(m => del(m, 7500));
 
         if (!args[0])
-            return message.reply(`Please provide a message ID. Use \`${prefix}help reactionrole\` for guidance.`).then(m => del(m, 7500));
+            return r(message.channel, message.author, `Please provide a message ID. Use \`${prefix}help reactionrole\` for guidance.`).then(m => del(m, 7500));
 
         if (!args[1])
             return r(message.channel, message.author, "Please provide an emote or emote ID.").then(m => del(m, 7500));
@@ -43,8 +43,8 @@ module.exports = {
 
             if (reaction.includes("<:")) {
                 let customEmoji = reaction.replace("<:", "").slice(reaction.replace("<:", "").indexOf(":") + 1, reaction.replace("<:", "").length - 1);
-                msg.react(customEmoji).then(() => addReactionRole(msg, customEmoji, role, type)).catch(err => message.reply(`Invalid emoji: ${err}`));
-            } else msg.react(reaction).then(() => addReactionRole(msg, reaction, role, type)).catch(err => message.reply(`Invalid emoji: ${err}`));
+                msg.react(customEmoji).then(() => addReactionRole(msg, customEmoji, role, type)).catch(err => r(message.channel, message.author, `Invalid emoji: ${err}`));
+            } else msg.react(reaction).then(() => addReactionRole(msg, reaction, role, type)).catch(err => r(message.channel, message.author, `Invalid emoji: ${err}`));
         }
     }
 }

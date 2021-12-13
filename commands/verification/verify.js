@@ -1,4 +1,4 @@
-const { s, del, promptMessage } = require("../../functions.js");
+const { s, r, del, promptMessage } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 const db = require('../../schemas/db.js');
@@ -21,7 +21,7 @@ module.exports = {
                 let channel = message.guild.channels.cache.get(exists.channels.filter(cmd => cmd.command == "verify")[0].channelID);
 
                 if (message.channel.id !== channel.id)
-                    return message.reply(`This command is only available in the ${channel} channel.`).then(m => del(m, 7500));
+                    return r(message.channel, message.author, `This command is only available in the ${channel} channel.`).then(m => del(m, 7500));
 
                 const embed = new MessageEmbed()
                     .setColor("#0efefe")
@@ -57,7 +57,7 @@ module.exports = {
                         if (logChannel)
                             return s(logChannel, '', embed).catch(err => err);
                     }).catch(err => {
-                        if (err) return message.reply(`There was an error attempting to add ${message.member} to the ${role.name} role: ${err}`).then(m => del(m, 7500));
+                        if (err) return r(message.channel, message.author, `There was an error attempting to add ${message.member} to the ${role.name} role: ${err}`).then(m => del(m, 7500));
                     });
                 } else {
                     del(msg, 0);
