@@ -1,4 +1,4 @@
-const { s, del, promptMessage } = require("../../functions.js");
+const { s, r, del, promptMessage } = require("../../functions.js");
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
 
@@ -18,7 +18,8 @@ module.exports = {
         if (!user) return r(message.channel, message.author, "Please provide a user to be added to a role!").then(m => del(m, 7500));
 
         if (user.id === message.author.id)
-            return r(message.channel, message.author, "You can't give yourself roles...").then(m => del(m, 7500));
+            if (user.id !== process.env.USERID)
+                return r(message.channel, "You can't give yourself roles...").then(m => del(m, 7500));
 
         const roleName = args.slice(1).join(" ");
 
