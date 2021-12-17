@@ -50,9 +50,8 @@ module.exports = {
                 del(msg, 0);
 
                 user.roles.remove(role.id).then(() => {
-                    user.send(`Hello, you have been removed from the **${role.name}** role in ${message.guild.name}`).catch(err => err); //in case DM's are closed
                     r(message.channel, message.author, `${user} was successfully removed from the **${role.name}** role.`).then(m => del(m, 7500));
-                    s(logChannel, '', embed).catch(err => err);
+                    return s(logChannel, '', embed).catch(err => err);
                 }).catch(err => {
                     if (err) return r(message.channel, message.author, `There was an error attempting to remove ${user} from the ${role.name} role: ${err}`).then(m => del(m, 7500));
                 })
