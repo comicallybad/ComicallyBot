@@ -46,15 +46,11 @@ function checkReactionRole(message, user) {
                     guildUser.roles.add(role.roleID).then(() => {
                         embed.setDescription(`${user} ${user.tag} **${role.roleName}**(${role.roleID})`);
                         if (logChannel) s(logChannel, '', embed).catch(err => err);
-                        guildUser.send(`Hello, you have been added to the **${role.roleName}** role in **${guildUser.guild.name}**`).catch(err => {
-                            s(message.message.channel, `${user} was added to the **${role.roleName}** role`).then(m => del(m, 7500))
-                        });
                     }).catch(err => {
-                        if (err) guildUser.send(`Hello, there was an issue assigning you the **${role.roleName}** in **${guildUser.guild.name}**, possibly due to role hierarchy: \`${err}\``).catch(e => {
-                            const channelPermissions = message.channel.permissionsFor(message.guild.me);
+                        if (err) {
                             if (!channelPermissions.has("SEND_MESSAGES")) return;
                             else return s(message.message.channel, `${user} there was an issue assigning you the **${role.roleName}**`).then(m => del(m, 7500));
-                        });
+                        }
                     });
                 }
             });

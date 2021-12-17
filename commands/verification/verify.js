@@ -52,7 +52,6 @@ module.exports = {
                         **Role added:** ${role.name} (${role.id})`);
 
                     message.member.roles.add(role.id).then(() => {
-                        message.member.send(`Hello, you have been added to the **${role.name}** role in ${message.guild.name}`).catch(err => err); //in case DM's are closed
                         s(message.channel, `${message.member} was successfully added to the **${role.name}** role.`).then(m => del(m, 7500));
                         if (logChannel)
                             return s(logChannel, '', embed).catch(err => err);
