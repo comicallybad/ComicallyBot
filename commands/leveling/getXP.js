@@ -1,4 +1,4 @@
-const { del, findID } = require("../../functions.js");
+const { del, r, findID } = require("../../functions.js");
 const xp = require('../../schemas/xp.js');
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
