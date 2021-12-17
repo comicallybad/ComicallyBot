@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 const xp = require("../../schemas/xp.js")
 
 module.exports = async (client, data) => {
-    activities = [`${client.guilds.cache.size} servers!`, `${client.channels.cache.size} channels!`, `${client.users.cache.size} users!`], i = 0;
+    activities = [`${client.guilds.cache.size} servers!`, `${client.channels.cache.size} channels!`, `${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} users!`], i = 0;
     let userID = data.user.id;
     let guildID = data.guild.id;
 
