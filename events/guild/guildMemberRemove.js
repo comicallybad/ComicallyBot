@@ -22,8 +22,8 @@ module.exports = async (client, member) => {
             .setFooter(`ID: ${member.user.id}`)
             .setTimestamp()
             .setDescription(stripIndents`
-            **User Kicked By:** Most likely leaving on their own will.
-            **UserBanned:** ${member} (${member.id}`);
+            **User Left By:** Most likely leaving on their own will.
+            **User Left:** ${member} (${member.id}`);
 
         return s(logChannel, '', embed).catch(err => err);
     }
@@ -40,7 +40,19 @@ module.exports = async (client, member) => {
                 .setTimestamp()
                 .setDescription(stripIndents`
                 **User Kicked By:** ${executor.user} (${executor.id}).
-                **UserBanned:** ${member.user} (${member.user.id}`);
+                **User Kicked:** ${member.user} (${member.user.id}`);
+
+            return s(logChannel, '', embed).catch(err => err);
+        }
+    } else {
+        if (logChannel) {
+            const embed = new MessageEmbed()
+                .setColor("#0efefe")
+                .setTitle("Member Left")
+                .setThumbnail(member.user.displayAvatarURL())
+                .setFooter(`ID: ${member.user.id}`)
+                .setTimestamp()
+                .setDescription(`${member} (${member.id})`);
 
             return s(logChannel, '', embed).catch(err => err);
         }

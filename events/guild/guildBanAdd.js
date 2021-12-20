@@ -20,7 +20,7 @@ module.exports = async (client, ban) => {
             .setTimestamp()
             .setDescription(stripIndents`
             **User Banned By:** No audit log could be found. Unknown User.
-            **UserBanned:** ${ban} (${ban.user.id}`);
+            **User Banned:** ${ban} (${ban.user.id}`);
 
         return s(logChannel, '', embed).catch(err => err);
     }
@@ -38,7 +38,19 @@ module.exports = async (client, ban) => {
                 .setTimestamp()
                 .setDescription(stripIndents`
                 **User Banned By:** ${executor} (${executor.id})
-                **UserBanned:** ${ban.user} (${ban.user.id}`);
+                **User Banned:** ${ban.user} (${ban.user.id}`);
+
+            return s(logChannel, '', embed).catch(err => err);
+        }
+    } else {
+        if (logChannel) {
+            const embed = new MessageEmbed()
+                .setColor("#0efefe")
+                .setTitle("Member Banned")
+                .setThumbnail(member.user.displayAvatarURL())
+                .setFooter(`ID: ${member.user.id}`)
+                .setTimestamp()
+                .setDescription(`${member} (${member.id})`);
 
             return s(logChannel, '', embed).catch(err => err);
         }
