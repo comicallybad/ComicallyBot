@@ -38,7 +38,8 @@ module.exports = async (client, ban) => {
                 .setTimestamp()
                 .setDescription(stripIndents`
                 **User Banned By:** ${executor} (${executor.id})
-                **User Banned:** ${ban.user} (${ban.user.id}`);
+                **User Banned:** ${ban.user} (${ban.user.id}
+                **Reason:** ${banLog.reason}`);
 
             return s(logChannel, '', embed).catch(err => err);
         }

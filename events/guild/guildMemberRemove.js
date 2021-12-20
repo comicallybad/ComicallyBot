@@ -41,7 +41,8 @@ module.exports = async (client, member) => {
                 .setTimestamp()
                 .setDescription(stripIndents`
                 **User Kicked By:** ${executor} (${executor.id}).
-                **User Kicked:** ${member.user} (${member.user.id}`);
+                **User Kicked:** ${member.user} (${member.user.id}
+                **Reason:** ${kickLog.reason}`);
 
             return s(logChannel, '', embed).catch(err => err);
         }
