@@ -1,4 +1,4 @@
-const { s, del, findID, pageList } = require("../../functions.js");
+const { s, e, del, findID, pageList } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
@@ -43,7 +43,7 @@ module.exports = {
             array.forEach((user, index) => {
                 embed.addField(`Role Member ${index}`, `${user}`);
             });
-            return m.edit(embed).then(m => del(m, 30000));
+            return e(m, m.channel, '', embed).then(m => del(m, 30000));
         }
         else {
             return pageList(m, message.author, array, embed, "Role Member:");

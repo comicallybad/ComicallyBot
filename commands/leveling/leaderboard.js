@@ -1,4 +1,4 @@
-const { s, del, pageList } = require("../../functions");
+const { s, e, del, pageList } = require("../../functions");
 const { MessageEmbed } = require("discord.js");
 const xp = require('../../schemas/xp.js');
 
@@ -37,14 +37,14 @@ module.exports = {
                         sorted.forEach((user, index) => {
                             embed.addField(`#${index + 1}:`, `**${user.userNickname != null ? user.userNickname : user.userName}, level: ${user.level}, XP: ${user.xp}**`)
                         });
-                        return m.edit(embed).then(del(m, 30000));
+                        return e(m, m.channel, '', embed).then(del(m, 30000));
                     } else {
                         let array = sorted.map(user => `**${user.userNickname != null ? user.userNickname : user.userName}, level: ${user.level}, XP: ${user.xp}**`);
                         pageList(m, message.author, array, embed, "#")
                     }
                 } else {
                     embed.setDescription("").addField("XP Leaderboards", "There are no users on the leaderboards.")
-                    return m.edit(embed).then(del(m, 30000));
+                    return e(m, m.channel, '', embed).then(del(m, 30000));
                 }
             }
         })

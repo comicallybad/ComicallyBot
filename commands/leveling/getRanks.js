@@ -1,4 +1,4 @@
-const { s, del } = require("../../functions.js");
+const { s, e, del } = require("../../functions.js");
 const db = require("../../schemas/db.js");
 const { MessageEmbed } = require("discord.js")
 
@@ -24,10 +24,10 @@ module.exports = {
             if (exists.xpRoles.length > 0) {
                 let rankList = exists.xpRoles.map(rank => "Name: " + `\`${rank.roleName}\`` + ", ID: " + `\`${rank.roleID}\`` + ", level: " + `\`${rank.level}\``);
                 embed.setDescription("").addField("Ranks: ", rankList);
-                return m.edit(embed).then(del(m, 30000));
+                return e(m, m.channel, '', embed).then(del(m, 30000));
             } else {
                 embed.setDescription("").addField("Ranks: ", "There have been no level ranks set");
-                return m.edit(embed).then(del(m, 30000));
+                return e(m, m.channel, '', embed).then(del(m, 30000));
             }
         }).catch(err => console.log(err))
     }

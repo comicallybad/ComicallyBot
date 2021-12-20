@@ -1,4 +1,4 @@
-const { s, promptMessage } = require("../../functions.js");
+const { s, e, promptMessage } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 
 const chooseArr = ["🗻", "📰", "✂"];
@@ -28,7 +28,7 @@ module.exports = {
             .setDescription("")
             .addField(result, `${reacted} vs ${botChoice}`);
 
-        m.edit(embed).catch(err => err)
+        e(m, m.channel, '', embed).catch(err => err)
         function getResult(me, clientChosen) {
             if ((me === "🗻" && clientChosen === "✂") ||
                 (me === "📰" && clientChosen === "🗻") ||

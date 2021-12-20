@@ -1,4 +1,4 @@
-const { s, del } = require("../../functions.js");
+const { s, e, del } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const db = require('../../schemas/db.js');
 
@@ -26,10 +26,10 @@ module.exports = {
                 if (exists.verificationRole.length > 0) {
                     let verificationRole = ` Name: ${exists.verificationRole[0].roleName} ID: ${exists.verificationRole[0].roleID}`;
                     embed.setDescription("").addField("Verification Role", verificationRole);
-                    return m.edit(embed).then(del(m, 30000));
+                    return e(m, m.channel, '', embed).then(del(m, 30000));
                 } else {
                     embed.setDescription("No verification role set");
-                    return m.edit(embed).then(del(m, 30000));
+                    return e(m, m.channel, '', embed).then(del(m, 30000));
                 }
             }
         }).catch(err => console.log(err))

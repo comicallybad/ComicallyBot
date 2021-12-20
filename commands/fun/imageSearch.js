@@ -1,4 +1,4 @@
-const { s, del, promptMessage } = require("../../functions.js");
+const { s, e, del, promptMessage } = require("../../functions.js");
 var gis = require('g-i-s');
 
 
@@ -31,7 +31,7 @@ module.exports = {
 async function nextPicture(message, author, results) {
     const num = Math.floor(Math.random() * results.length);
     if (results[num]) {
-        message.edit(results[num].url).then(async m => {
+        e(message, message.channel, `${results[num].url}`).then(async m => {
             const emoji = await promptMessage(m, author, 15, ["➡️", "🗑️", "❤️"]);
             if (emoji === "➡️") {
                 m.reactions.removeAll().then(() => {

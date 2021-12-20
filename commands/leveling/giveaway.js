@@ -1,4 +1,4 @@
-const { s, del, awaitReaction } = require("../../functions.js");
+const { s, e, del, awaitReaction } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 const { addXP } = require("../../dbFunctions.js");
@@ -66,7 +66,7 @@ module.exports = {
 
                     s(logChannel, '', logEmbed).catch(err => err);
 
-                    return msg.edit(embed).catch(err => err);
+                    return e(msg, message.channel, '', embed).catch(err => err);
                 }).catch(err => console.log(`There was an error in giveaway (addxp) ${err}`));
             } else {
                 msg.reactions.removeAll().catch(err => err);
@@ -75,7 +75,7 @@ module.exports = {
                     .setDescription(`There were no winners awarded, not enough reactions!`)
                     .setFooter(`No one won the ${amount} XP!`, message.author.displayAvatarURL());
 
-                return msg.edit(embed).catch(err => err);
+                return e(msg, msg.channel, '', embed).catch(err => err);
             }
         }).catch(err => console.log(`There was an error in giveaway ${err}`));
     }
