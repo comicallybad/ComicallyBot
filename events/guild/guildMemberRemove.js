@@ -47,6 +47,6 @@ module.exports = async (client, member) => {
         }
     }
 
-    xp.deleteOne({ guildID: message.guild.id, userID: member.user.id }, {
+    xp.deleteOne({ guildID: member.guild.id, userID: member.user.id }, {
     }).catch(err => console.log(err))
 }
