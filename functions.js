@@ -109,7 +109,7 @@ module.exports = {
 
         for (const reaction of validReactions) await message.react(reaction);
 
-        const filter = (reaction, user) => validReactions.includes(reaction.emoji.name) && user.id === author.id;
+        const filter = (reaction, user) => { return validReactions.includes(reaction.emoji.name) && user.id === author.id };
 
         return message
             .awaitReactions(filter, { max: 1, time: time })
@@ -120,7 +120,7 @@ module.exports = {
     awaitReaction: async function (message, max, time, emoji) {
         message.react(emoji).catch(err => err);
 
-        const filter = (reaction, user) => emoji == reaction.emoji.name && user.id !== message.author.id;
+        const filter = (reaction, user) => { return emoji == reaction.emoji.name && user.id !== message.author.id };
 
         return message
             .awaitReactions(filter, { max: max, time: time })
