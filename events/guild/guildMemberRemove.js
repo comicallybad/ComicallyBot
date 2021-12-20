@@ -1,6 +1,7 @@
 const { s } = require('../../functions.js');
 const { MessageEmbed } = require("discord.js");
 const xp = require("../../schemas/xp.js");
+const { stripIndents } = require("common-tags");
 
 module.exports = async (client, member) => {
     let logChannel = await member.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
@@ -16,7 +17,7 @@ module.exports = async (client, member) => {
 
     if (!kickLog) {
         const embed = new MessageEmbed()
-            .setColor("#0efefe")
+            .setColor("#FF0000")
             .setTitle("Member Left")
             .setThumbnail(member.user.displayAvatarURL())
             .setFooter(`ID: ${member.user.id}`)
@@ -33,13 +34,13 @@ module.exports = async (client, member) => {
     if (target.id === member.id) {
         if (logChannel) {
             const embed = new MessageEmbed()
-                .setColor("#0efefe")
-                .setTitle("Member Left")
+                .setColor("#FF0000")
+                .setTitle("Member Kicked")
                 .setThumbnail(member.user.displayAvatarURL())
                 .setFooter(`ID: ${member.user.id}`)
                 .setTimestamp()
                 .setDescription(stripIndents`
-                **User Kicked By:** ${executor.user} (${executor.id}).
+                **User Kicked By:** ${executor} (${executor.id}).
                 **User Kicked:** ${member.user} (${member.user.id}`);
 
             return s(logChannel, '', embed).catch(err => err);
@@ -47,7 +48,7 @@ module.exports = async (client, member) => {
     } else {
         if (logChannel) {
             const embed = new MessageEmbed()
-                .setColor("#0efefe")
+                .setColor("#FF0000")
                 .setTitle("Member Left")
                 .setThumbnail(member.user.displayAvatarURL())
                 .setFooter(`ID: ${member.user.id}`)

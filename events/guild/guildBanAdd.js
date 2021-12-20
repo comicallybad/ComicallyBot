@@ -1,8 +1,9 @@
 const { s } = require('../../functions.js');
 const { MessageEmbed } = require("discord.js");
+const { stripIndents } = require("common-tags");
 
 module.exports = async (client, ban) => {
-    let logChannel = await guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
+    let logChannel = await ban.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
 
     const fetchedLogs = await ban.guild.fetchAuditLogs({
         limit: 1,
@@ -10,30 +11,29 @@ module.exports = async (client, ban) => {
     });
 
     const banLog = fetchedLogs.entries.first();
-
+    console.log(logChannel);
     if (!banLog) {
         const embed = new MessageEmbed()
-            .setColor("#0efefe")
+            .setColor("#FF0000")
             .setTitle("Member Banned")
             .setThumbnail(ban.user.displayAvatarURL())
             .setFooter(`ID: ${ban.user.id}`)
             .setTimestamp()
             .setDescription(stripIndents`
             **User Banned By:** No audit log could be found. Unknown User.
-            **User Banned:** ${ban} (${ban.user.id}`);
+            **User Banned:** ${ban.user} (${ban.user.id}`);
 
         return s(logChannel, '', embed).catch(err => err);
     }
 
     const { executor, target } = banLog;
 
-    if (target.id === ban, user, id) {
+    if (target.id === ban.user.id) {
         if (logChannel) {
             const embed = new MessageEmbed()
-                .setColor("#0efefe")
+                .setColor("#FF0000")
                 .setTitle("Member Banned")
-                .setThumbnail(user.displayAvatarURL())
-                .addField(`User Banned:`, `${ban.user} ${ban, user.id}`)
+                .setThumbnail(ban.user.displayAvatarURL())
                 .setFooter(`ID: ${ban.user.id}`)
                 .setTimestamp()
                 .setDescription(stripIndents`
@@ -45,12 +45,12 @@ module.exports = async (client, ban) => {
     } else {
         if (logChannel) {
             const embed = new MessageEmbed()
-                .setColor("#0efefe")
+                .setColor("#FF0000")
                 .setTitle("Member Banned")
-                .setThumbnail(member.user.displayAvatarURL())
-                .setFooter(`ID: ${member.user.id}`)
+                .setThumbnail(ban.user.displayAvatarURL())
+                .setFooter(`ID: ${ban.user.id}`)
                 .setTimestamp()
-                .setDescription(`${member} (${member.id})`);
+                .setDescription(`${ban, user} (${ban.id})`);
 
             return s(logChannel, '', embed).catch(err => err);
         }
