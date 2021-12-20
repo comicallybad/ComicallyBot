@@ -1,7 +1,6 @@
 const { s } = require('../../functions.js');
 const { MessageEmbed } = require("discord.js");
 const xp = require("../../schemas/xp.js");
-const messageDelete = require('./messageDelete.js');
 
 module.exports = async (client, member) => {
     let logChannel = await member.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
