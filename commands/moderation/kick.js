@@ -24,16 +24,12 @@ module.exports = {
         if (toKick.id === message.author.id)
             return r(message.channel, message.author, "You can't kick yourself...").then(m => del(m, 7500));
 
-        if (!toKick.kickable)
-            return r(message.channel, message.author, "I can't kick that person due to role hierarchy, I suppose.").then(m => del(m, 7500));
-
         let reason = args.slice(1).join(" ");
         if (!reason) reason = "No reason given!";
-
         const embed = new MessageEmbed()
             .setColor("#ff0000")
             .setTitle("Member Kicked")
-            .setThumbnail(toKick.user.displayAvatarURL())
+            .setThumbnail(toKick.user ? toKick.user.displayAvatarURL() : toKick.displayAvatarURL())
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()
             .setDescription(stripIndents`
@@ -52,9 +48,9 @@ module.exports = {
             if (emoji === "✅") {
                 del(msg, 0);
 
-                toKick.kick(reason).then(() => {
+                message.guild.members.kick(toKick, reason).then(() => {
                     toKick.send(`Hello, you have been **kicked** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
-                    r(message.channel, message.author, `${toKick.user.username}(${toKick.user.id}) was successfully kicked.`).then(m => del(m, 7500));
+                    r(message.channel, message.author, `${toKick.username}(${toKick.id}) was successfully kicked.`).then(m => del(m, 7500));
                     return s(logChannel, '', embed).catch(err => err);
                 }).catch(err => {
                     if (err) return r(message.channel, message.author, `There was an error attempting to kick ${toKick} ${err}`).then(m => del(m, 7500));
