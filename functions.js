@@ -32,7 +32,6 @@ module.exports = {
     },
 
     e: function (message, channel, content, embeds) {
-        console.log(channel)
         if (!message || !channel.guild.me.permissionsIn(channel).has("SEND_MESSAGES")) return;
         else if (!embeds) return message.edit({ content: content }).catch(err => console.log(err.stack));
         else if (!content) return message.edit({ embeds: [embeds] }).catch(err => console.log(err.stack));
@@ -118,10 +117,10 @@ module.exports = {
 
         for (const reaction of validReactions) await message.react(reaction);
 
-        const filter = (reaction, user) => validReactions.includes(reaction.emoji.name) && user.id === author.id;
+        const filter = (reaction, user) => { return validReactions.includes(reaction.emoji.name) && user.id === author.id };
 
         return message
-            .awaitReactions(filter, { max: 1, time: time })
+            .awaitReactions({ filter, max: 1, time: time })
             .then(collected => collected.first() && collected.first().emoji.name).catch(err => console.log(`There was an error in prompMesssage ${err}`));
     },
 
@@ -129,10 +128,10 @@ module.exports = {
     awaitReaction: async function (message, max, time, emoji) {
         message.react(emoji).catch(err => err);
 
-        const filter = (reaction, user) => emoji == reaction.emoji.name && user.id !== message.author.id;
+        const filter = (reaction, user) => { return emoji == reaction.emoji.name && user.id !== message.author.id };
 
         return message
-            .awaitReactions(filter, { max: max, time: time })
+            .awaitReactions({ filter, max: max, time: time })
             .then(collected => {
                 if (collected.first()) return collected.first().users.cache.map(usr => usr).filter(usr => !usr.bot);
                 else return message.reactions.cache.get(`${emoji}`).users.cache.map(usr => usr).filter(usr => !usr.bot);

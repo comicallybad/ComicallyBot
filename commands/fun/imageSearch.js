@@ -1,6 +1,5 @@
-const { s, e, del, promptMessage } = require("../../functions.js");
+const { s, r, e, del, promptMessage } = require("../../functions.js");
 var gis = require('g-i-s');
-
 
 module.exports = {
     name: "imagesearch",

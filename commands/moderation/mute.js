@@ -34,7 +34,7 @@ module.exports = {
             .setTimestamp()
             .setDescription(stripIndents`
             **Muted member:** ${mutee} (${mutee.id})
-            **Muted by:** ${message.member}
+            **Muted by:** ${message.member} (${message.author.id})
             **Reason:** ${reason}`);
 
         const promptEmbed = new MessageEmbed()
@@ -62,13 +62,23 @@ module.exports = {
                             mutee.send(`Hello, you have been **muted** for **1 minute** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                             r(message.channel, message.author, `${mutee.user.username} was successfully muted for **1 minute**.`).then(m => del(m, 7500));
                             embed.addField("Mute Time: ", "1 Minute");
-                            s(logChannel, '', embed).catch(err => err);
+
+                            return s(logChannel, '', embed).catch(err => err);
                         }).catch(err => {
                             if (err) return r(message.channel, message.author, `There was an error attempting to mute ${mutee} ${err}`).then(m => del(m, 7500));
                         }).then(setTimeout(() => {
                             mutee.roles.remove(muterole.id).then(() => {
                                 mutee.send(`Hello, you have now been **unmuted** in ${message.guild.name} `).catch(err => err); //in case DM's are closed
-                                r(message.channel, message.author, `${mutee.user.username} was successfully unmuted.`).then(m => del(m, 7500));
+                                embed
+                                    .setColor("#00FF00")
+                                    .setTitle("Member Unmuted")
+                                    .setTimestamp()
+                                    .setDescription(stripIndents`
+                                    **Unmuted member:** ${mutee} (${mutee.id})
+                                    **Muted by:** ${message.member} (${message.author.id})
+                                    **Reason:** Mute time expired.`);
+
+                                return s(logChannel, '', embed);
                             }).catch(err => {
                                 if (err) return r(message.channel, message.author, `There was an error attempting to unmute ${mutee} ${err}`).then(m => del(m, 7500));
                             });
@@ -79,13 +89,23 @@ module.exports = {
                             mutee.send(`Hello, you have been **muted** for **5 minutes** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                             r(message.channel, message.author, `${mutee.user.username} was successfully muted for **5 minutes**.`).then(m => del(m, 7500));
                             embed.addField("Mute Time: ", "5 Minutes");
-                            s(logChannel, '', embed).catch(err => err);
+
+                            return s(logChannel, '', embed).catch(err => err);
                         }).catch(err => {
                             if (err) return r(message.channel, message.author, `There was an error attempting to mute ${mutee} ${err}`).then(m => del(m, 7500));
                         }).then(setTimeout(() => {
                             mutee.roles.remove(muterole.id).then(() => {
                                 mutee.send(`Hello, you have now been **unmuted** in ${message.guild.name} `).catch(err => err); //in case DM's are closed
-                                r(message.channel, message.author, `${mutee.user.username} was successfully unmuted.`).then(m => del(m, 7500));
+                                embed
+                                    .setColor("#00FF00")
+                                    .setTitle("Member Unmuted")
+                                    .setTimestamp()
+                                    .setDescription(stripIndents`
+                                    **Unmuted member:** ${mutee} (${mutee.id})
+                                    **Muted by:** ${message.member} (${message.author.id})
+                                    **Reason:** Mute time expired.`);
+
+                                return s(logChannel, '', embed);
                             }).catch(err => {
                                 if (err) return r(message.channel, message.author, `There was an error attempting to unmute ${mutee} ${err}`).then(m => del(m, 7500));
                             });
@@ -96,13 +116,23 @@ module.exports = {
                             mutee.send(`Hello, you have been **muted** for **10 minutes** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                             r(message.channel, message.author, `${mutee.user.username} was successfully muted for **10 minutes**.`).then(m => del(m, 7500));
                             embed.addField("Mute Time: ", "10 Minutes");
-                            s(logChannel, '', embed).catch(err => err);
+
+                            return s(logChannel, '', embed).catch(err => err);
                         }).catch(err => {
                             if (err) return r(message.channel, message.author, `There was an error attempting to mute ${mutee} ${err}`).then(m => del(m, 7500));
                         }).then(setTimeout(() => {
                             mutee.roles.remove(muterole.id).then(() => {
                                 mutee.send(`Hello, you have now been **unmuted** in ${message.guild.name} `).catch(err => err); //in case DM's are closed
-                                r(message.channel, message.author, `${mutee.user.username} was successfully unmuted.`).then(m => del(m, 7500));
+                                embed
+                                    .setColor("#00FF00")
+                                    .setTitle("Member Unmuted")
+                                    .setTimestamp()
+                                    .setDescription(stripIndents`
+                                    **Unmuted member:** ${mutee} (${mutee.id})
+                                    **Muted by:** ${message.member} (${message.author.id})
+                                    **Reason:** Mute time expired.`);
+
+                                return s(logChannel, '', embed);
                             }).catch(err => {
                                 if (err) return r(message.channel, message.author, `There was an error attempting to unmute ${mutee} ${err}`).then(m => del(m, 7500));
                             });
@@ -113,7 +143,8 @@ module.exports = {
                             mutee.send(`Hello, you have been **muted** **indefinitely** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                             r(message.channel, message.author, `${mutee.user.username} was successfully muted **indefinitely**.`).then(m => del(m, 7500));
                             embed.addField("Mute Time: ", "Indefinite");
-                            s(logChannel, '', embed).catch(err => err);
+
+                            return s(logChannel, '', embed).catch(err => err);
                         }).catch(err => {
                             if (err) return r(message.channel, message.author, `There was an error attempting to mute ${mutee} ${err}`).then(m => del(m, 7500));
                         });
