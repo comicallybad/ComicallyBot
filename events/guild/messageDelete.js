@@ -1,17 +1,22 @@
 const db = require("../../schemas/db.js");
 
 module.exports = async (client, message) => {
-    let messageID;
-    let guildID;
+    const fetchedLogs = await message.guild.fetchAuditLogs({
+        limit: 1,
+        type: 'MESSAGE_DELETE',
+    });
 
-    if (message) { //fix for cannot read property ID of null
-        if (message.id) {
-            messageID = message.id;
-        } else return;
-        if (message.guild) {
-            guildID = message.guild.id
-        } else return;
-    } else return;
+    const deletionLog = fetchedLogs.entries.first();
+
+    if (!deletionLog) return;
+
+    const { executor, target } = deletionLog;
+    let guildID, messageID;
+
+    if (target.id === message.author.id) {
+        guildID = message.guild.id;
+        messageID = message.id;
+    }
 
     db.updateOne({ guildID: guildID }, {
         $pull: { reactionRoles: { messageID: messageID } }
