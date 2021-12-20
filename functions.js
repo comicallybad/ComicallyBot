@@ -31,6 +31,15 @@ module.exports = {
         else return;
     },
 
+    e: function (message, channel, content, embeds) {
+        console.log(channel)
+        if (!message || !channel.guild.me.permissionsIn(channel).has("SEND_MESSAGES")) return;
+        else if (!embeds) return message.edit({ content: content }).catch(err => console.log(err.stack));
+        else if (!content) return message.edit({ embeds: [embeds] }).catch(err => console.log(err.stack));
+        else if (content && embeds) return message.edit({ content: content, embeds: [embeds] }).catch(err => console.log(err.stack));
+        else return;
+    },
+
     hasPermissions: async function (message, commandType) {
         let guildID = message.guild.id;
         let roleIDs = message.member.roles.cache.map(roles => roles.id);
@@ -138,7 +147,7 @@ module.exports = {
             embed.addField(`${parameter} ${i + 1}`, array[i]);
         }
 
-        message.edit(embed).catch(err => err);
+        module.exports.e(embed).catch(err => err);
 
         module.exports.pageTurn(message, author, array, embed, parameter, size, page);
     },
@@ -152,7 +161,7 @@ module.exports = {
             embed.addField(`${parameter} ${i + 1}`, array[i]);
         }
 
-        message.edit(embed).catch(err => err);
+        module.exports.e(embed).catch(err => err);
 
         if (newPage == 0) {
             const reacted = await module.exports.promptMessage(message, author, 15, ["➡️", "🗑️"])
