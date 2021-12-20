@@ -146,7 +146,7 @@ module.exports = {
             embed.addField(`${parameter} ${i + 1}`, array[i]);
         }
 
-        module.exports.e(embed).catch(err => err);
+        module.exports.e(message, message.channel, '', embed).catch(err => err);
 
         module.exports.pageTurn(message, author, array, embed, parameter, size, page);
     },
@@ -160,7 +160,7 @@ module.exports = {
             embed.addField(`${parameter} ${i + 1}`, array[i]);
         }
 
-        module.exports.e(embed).catch(err => err);
+        module.exports.e(message, message.channel, '', embed).catch(err => err);
 
         if (newPage == 0) {
             const reacted = await module.exports.promptMessage(message, author, 15, ["➡️", "🗑️"])
