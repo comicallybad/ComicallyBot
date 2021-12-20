@@ -1,6 +1,7 @@
 const { s } = require('../../functions.js');
 const { MessageEmbed } = require("discord.js");
-const xp = require("../../schemas/xp.js")
+const xp = require("../../schemas/xp.js");
+const messageDelete = require('./messageDelete.js');
 
 module.exports = async (client, member) => {
     let logChannel = await member.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
@@ -46,6 +47,6 @@ module.exports = async (client, member) => {
         }
     }
 
-    xp.deleteOne({ guildID: guildID, userID: member.user.id }, {
+    xp.deleteOne({ guildID: message.guild.id, userID: member.user.id }, {
     }).catch(err => console.log(err))
 }
