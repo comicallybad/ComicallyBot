@@ -5,6 +5,8 @@ const { stripIndents } = require("common-tags");
 module.exports = async (client, ban) => {
     let logChannel = await ban.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
 
+    activities = [`${client.guilds.cache.size} servers!`, `${client.channels.cache.size} channels!`, `${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} users!`], i = 0;
+
     const fetchedLogs = await ban.guild.fetchAuditLogs({
         limit: 1,
         type: 'MEMBER_BAN_ADD',
