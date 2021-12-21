@@ -8,7 +8,7 @@ module.exports = async (client, ban) => {
     const fetchedLogs = await ban.guild.fetchAuditLogs({
         limit: 1,
         type: 'MEMBER_BAN_ADD',
-    });
+    }).catch(err => { if (logChannel) s(logChannel, `I am missing permissions to view audit logs for logging guild activity: ${err}`).catch(err => err) });
 
     const banLog = fetchedLogs.entries.first();
     if (!banLog) {

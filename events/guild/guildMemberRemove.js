@@ -11,7 +11,7 @@ module.exports = async (client, member) => {
     const fetchedLogs = await member.guild.fetchAuditLogs({
         limit: 1,
         type: 'MEMBER_KICK',
-    });
+    }).catch(err => { if (logChannel) s(logChannel, `I am missing permissions to view audit logs for logging guild activity: ${err}`).catch(err => err) });
 
     const kickLog = fetchedLogs.entries.first()
 
