@@ -20,7 +20,7 @@ module.exports = async (client, member) => {
             .setColor("#FF0000")
             .setTitle("Member Left")
             .setThumbnail(member.user.displayAvatarURL())
-            .setFooter(`ID: ${member.user.id}`)
+            .setFooter(`${member.displayName}`, `${member.user.displayAvatarURL()}`)
             .setTimestamp()
             .setDescription(stripIndents`
             **User Left By:** Most likely leaving on their own will.
@@ -37,7 +37,7 @@ module.exports = async (client, member) => {
                 .setColor("#FF0000")
                 .setTitle("Member Kicked")
                 .setThumbnail(member.user.displayAvatarURL())
-                .setFooter(`ID: ${member.user.id}`)
+                .setFooter(`${member.displayName}`, `${member.user.displayAvatarURL()}`)
                 .setTimestamp()
                 .setDescription(stripIndents`
                 **User Kicked By:** ${executor} (${executor.id}).
@@ -52,9 +52,11 @@ module.exports = async (client, member) => {
                 .setColor("#FF0000")
                 .setTitle("Member Left")
                 .setThumbnail(member.user.displayAvatarURL())
-                .setFooter(`ID: ${member.user.id}`)
+                .setFooter(`${member.displayName}`, `${member.user.displayAvatarURL()}`)
                 .setTimestamp()
-                .setDescription(`${member} (${member.id})`);
+                .setDescription(stripIndents`
+                **User Left By:** Most likely leaving on their own will.
+                **User Left:** ${member} (${member.id}`);
 
             return s(logChannel, '', embed).catch(err => err);
         }

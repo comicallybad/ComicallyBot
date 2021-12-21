@@ -11,34 +11,32 @@ module.exports = async (client, ban) => {
     });
 
     const banLog = fetchedLogs.entries.first();
-    console.log(logChannel);
     if (!banLog) {
         const embed = new MessageEmbed()
             .setColor("#FF0000")
             .setTitle("Member Banned")
             .setThumbnail(ban.user.displayAvatarURL())
-            .setFooter(`ID: ${ban.user.id}`)
+            .setFooter(`${ban.user.tag}`, `${ban.user.displayAvatarURL()}`)
             .setTimestamp()
             .setDescription(stripIndents`
             **User Banned By:** No audit log could be found. Unknown User.
-            **User Banned:** ${ban.user} (${ban.user.id}`);
+            **User Banned:** ${ban.userName} (${ban.user.id})`);
 
         return s(logChannel, '', embed).catch(err => err);
     }
 
     const { executor, target } = banLog;
-
     if (target.id === ban.user.id) {
         if (logChannel) {
             const embed = new MessageEmbed()
                 .setColor("#FF0000")
                 .setTitle("Member Banned")
                 .setThumbnail(ban.user.displayAvatarURL())
-                .setFooter(`ID: ${ban.user.id}`)
+                .setFooter(`${ban.user.tag}`, `${ban.user.displayAvatarURL()}`)
                 .setTimestamp()
                 .setDescription(stripIndents`
                 **User Banned By:** ${executor} (${executor.id})
-                **User Banned:** ${ban.user} (${ban.user.id}
+                **User Banned:** ${ban.user} (${ban.user.id})
                 **Reason:** ${banLog.reason}`);
 
             return s(logChannel, '', embed).catch(err => err);
@@ -49,9 +47,9 @@ module.exports = async (client, ban) => {
                 .setColor("#FF0000")
                 .setTitle("Member Banned")
                 .setThumbnail(ban.user.displayAvatarURL())
-                .setFooter(`ID: ${ban.user.id}`)
+                .setFooter(`${ban.user.tag}`, `${ban.user.displayAvatarURL()}`)
                 .setTimestamp()
-                .setDescription(`${ban, user} (${ban.id})`);
+                .setDescription(`${ban.userName} (${ban.id})`);
 
             return s(logChannel, '', embed).catch(err => err);
         }

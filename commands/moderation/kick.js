@@ -28,14 +28,11 @@ module.exports = {
         if (!reason) reason = "No reason given!";
         const embed = new MessageEmbed()
             .setColor("#ff0000")
-            .setTitle("Member Kicked")
+            .setTitle("Kick Command Used")
             .setThumbnail(toKick.user ? toKick.user.displayAvatarURL() : toKick.displayAvatarURL())
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()
-            .setDescription(stripIndents`
-            **Kicked member:** ${toKick} (${toKick.id})
-            **Kicked by:** ${message.member}
-            **Reason:** ${reason}`);
+            .setDescription(`**Kick command used by:** ${message.author}`);
 
         const promptEmbed = new MessageEmbed()
             .setColor("GREEN")

@@ -30,14 +30,11 @@ module.exports = {
 
         const embed = new MessageEmbed()
             .setColor("#ff0000")
-            .setTitle("Member SoftBanned")
+            .setTitle("SoftBan Command Used")
             .setThumbnail(toBan.displayAvatarURL())
             .setFooter(message.member.displayName, message.author.displayAvatarURL())
             .setTimestamp()
-            .setDescription(stripIndents`
-                **SoftBanned member:** ${toBan} (${toBan.id})
-                **SoftBanned by:** ${message.member}
-                **Reason:** ${reason}`);
+            .setDescription(`**SoftBan command used by:** ${message.author}`);
 
         const promptEmbed = new MessageEmbed()
             .setColor("GREEN")
@@ -50,7 +47,7 @@ module.exports = {
             if (emoji === "✅") {
                 del(msg, 0);
 
-                message.guild.members.ban(toBan.id).then(() => {
+                message.guild.members.ban(toBan.id, { reason: `${reason}` }).then(() => {
                     message.guild.members.unban(toBan.id)
                     toBan.send(`Hello, you have been **soft banned** in ${message.guild.name} for: **${reason}**`).catch(err => err) //in case DM's are closed
                     r(message.channel, message.author, `${toBan.username}(${toBan.id}) was successfully soft banned.`).then(m => del(m, 7500));
