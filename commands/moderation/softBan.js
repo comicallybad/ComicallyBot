@@ -47,7 +47,7 @@ module.exports = {
             if (emoji === "✅") {
                 del(msg, 0);
 
-                message.guild.members.ban(toBan.id, { reason: `${reason}` }).then(() => {
+                message.guild.members.ban(toBan.id, { reason: `${reason}`, days: 7 }).then(() => {
                     message.guild.members.unban(toBan.id)
                     toBan.send(`Hello, you have been **soft banned** in ${message.guild.name} for: **${reason}**`).catch(err => err) //in case DM's are closed
                     r(message.channel, message.author, `${toBan.username}(${toBan.id}) was successfully soft banned.`).then(m => del(m, 7500));
