@@ -40,7 +40,7 @@ module.exports = {
         user.setNickname(nickName, '')
             .then(() => {
                 r(message.channel, message.author, "User's nickname was successfully changed.").then(m => del(m, 7500));
-                return s(logChannel, '', embed).catch(err => err);
+                return s(logChannel, '', embed);
             }).catch(err => r(message.channel, message.author, "I can't change that users nickname due to role hierarchy, I suppose.").then(m => del(m, 7500)));
     }
 }

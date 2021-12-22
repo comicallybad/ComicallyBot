@@ -14,7 +14,7 @@ module.exports = async (client, guild, user) => {
                 .setFooter(`ID: ${user.id}`)
                 .setTimestamp()
 
-            return s(logChannel, '', embed).catch(err => err);
+            return s(logChannel, '', embed);
         }
     }
 }

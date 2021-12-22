@@ -63,7 +63,7 @@ module.exports = {
                             r(message.channel, message.author, `${mutee.user.username} was successfully muted for **1 minute**.`).then(m => del(m, 7500));
                             embed.addField("Mute Time: ", "1 Minute");
 
-                            return s(logChannel, '', embed).catch(err => err);
+                            return s(logChannel, '', embed);
                         }).catch(err => {
                             if (err) return r(message.channel, message.author, `There was an error attempting to mute ${mutee} ${err}`).then(m => del(m, 7500));
                         }).then(setTimeout(() => {
@@ -90,7 +90,7 @@ module.exports = {
                             r(message.channel, message.author, `${mutee.user.username} was successfully muted for **5 minutes**.`).then(m => del(m, 7500));
                             embed.addField("Mute Time: ", "5 Minutes");
 
-                            return s(logChannel, '', embed).catch(err => err);
+                            return s(logChannel, '', embed);
                         }).catch(err => {
                             if (err) return r(message.channel, message.author, `There was an error attempting to mute ${mutee} ${err}`).then(m => del(m, 7500));
                         }).then(setTimeout(() => {
@@ -117,7 +117,7 @@ module.exports = {
                             r(message.channel, message.author, `${mutee.user.username} was successfully muted for **10 minutes**.`).then(m => del(m, 7500));
                             embed.addField("Mute Time: ", "10 Minutes");
 
-                            return s(logChannel, '', embed).catch(err => err);
+                            return s(logChannel, '', embed);
                         }).catch(err => {
                             if (err) return r(message.channel, message.author, `There was an error attempting to mute ${mutee} ${err}`).then(m => del(m, 7500));
                         }).then(setTimeout(() => {
@@ -144,7 +144,7 @@ module.exports = {
                             r(message.channel, message.author, `${mutee.user.username} was successfully muted **indefinitely**.`).then(m => del(m, 7500));
                             embed.addField("Mute Time: ", "Indefinite");
 
-                            return s(logChannel, '', embed).catch(err => err);
+                            return s(logChannel, '', embed);
                         }).catch(err => {
                             if (err) return r(message.channel, message.author, `There was an error attempting to mute ${mutee} ${err}`).then(m => del(m, 7500));
                         });

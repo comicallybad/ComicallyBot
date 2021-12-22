@@ -63,7 +63,7 @@ function checkReactionRole(message, user) {
                 if (guildUser.roles.cache.get(role.roleID)) {
                     guildUser.roles.remove(role.roleID).then(() => {
                         embed.setDescription(`${user} ${user.tag} **${role.roleName}**(${role.roleID})`);
-                        if (logChannel) s(logChannel, '', embed).catch(err => err);
+                        if (logChannel) s(logChannel, '', embed);
                     }).catch(err => {
                         if (err) {
                             if (!channelPermissions.has("SEND_MESSAGES")) return;

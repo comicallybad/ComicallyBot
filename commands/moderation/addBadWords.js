@@ -40,6 +40,6 @@ module.exports = {
 
         r(message.channel, message.author, "Adding bad word(s) to the list...").then(m => del(m, 7500));
 
-        return s(logChannel, '', embed).catch(err => err);
+        return s(logChannel, '', embed);
     }
 }

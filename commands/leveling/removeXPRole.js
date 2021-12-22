@@ -51,7 +51,7 @@ module.exports = {
                             **XP Role Removed by:** ${message.member.user}
                             **XP Role Removed:** ${roleName} (${roleID})`);
 
-                        s(logChannel, '', embed).catch(err => err);
+                        s(logChannel, '', embed);
 
                         return r(message.channel, message.author, "Removing XP level role.").then(m => del(m, 7500));
                     }).catch(err => console.log(err))

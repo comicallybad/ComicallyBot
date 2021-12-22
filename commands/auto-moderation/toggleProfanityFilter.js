@@ -47,7 +47,7 @@ module.exports = {
             $set: { profanityFilter: bool }
         }).catch(err => console.log(err))
 
-        s(logChannel, '', embed).catch(err => err);
+        s(logChannel, '', embed);
         return r(message.channel, message.author, `The profanity filter has been toggled to ${args[0]}.`).then(m => del(m, 7500));
     }
 }

@@ -49,7 +49,7 @@ module.exports = {
             **Welcome message reaction(s) changed to:** ${args.join(' ')}
             **Welcome message reaction(s) changed by:** ${message.author}`);
 
-        s(logChannel, '', embed).catch(err => err);
+        s(logChannel, '', embed);
 
         return r(message.channel, message.author, `Welcome message reaction(s) have been set to: ${args.join(' ')}`).then(m => del(m, 7500));
     }

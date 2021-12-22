@@ -146,7 +146,7 @@ module.exports = {
             embed.addField(`${parameter} ${i + 1}`, array[i]);
         }
 
-        module.exports.e(message, message.channel, '', embed).catch(err => err);
+        module.exports.e(message, message.channel, '', embed);
 
         module.exports.pageTurn(message, author, array, embed, parameter, size, page);
     },
@@ -160,7 +160,7 @@ module.exports = {
             embed.addField(`${parameter} ${i + 1}`, array[i]);
         }
 
-        module.exports.e(message, message.channel, '', embed).catch(err => err);
+        module.exports.e(message, message.channel, '', embed);
 
         if (newPage == 0) {
             const reacted = await module.exports.promptMessage(message, author, 15, ["➡️", "🗑️"])
@@ -253,19 +253,19 @@ module.exports = {
         if (userArray.some(user => user.id === message.author.id)) {
             userArray.find(user => user.id === message.author.id).offences += 1;
             if (userArray.some(user => user.id == message.author.id && user.offences < 3)) {
-                module.exports.s(logChannel, '', embed).catch(err => err);
+                module.exports.s(logChannel, '', embed);
                 return module.exports.r(message.channel, message.author, `You will be muted for ${type} if this continues.`).then(m => module.exports.del(m, 7500));
             } else if (userArray.some(user => user.id == message.author.id && user.offences == 3)) {
                 module.exports.punish(message, userArray, type);
             } else if (userArray.some(user => user.id == message.author.id && user.offences == 4)) {
-                module.exports.s(logChannel, '', embed).catch(err => err)
+                module.exports.s(logChannel, '', embed);
                 return module.exports.r(message.channel, message.author, `You will be muted for ${type} if this continues.`).then(m => module.exports.del(m, 7500));
             } else if (userArray.some(user => user.id == message.author.id && user.offences == 5)) {
                 module.exports.punish(message, userArray, type);
             }
         } else {
             userArray.push({ id: message.author.id, offences: 1 });
-            module.exports.s(logChannel, '', embed).catch(err => err);
+            module.exports.s(logChannel, '', embed);
             return module.exports.r(message.channel, message.author, `Your messages were deleted for ${type}.`).then(m => module.exports.del(m, 7500));
         }
     },
@@ -291,7 +291,7 @@ module.exports = {
                     message.member.send(`Hello, you have been **muted** **for 5 minutes** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                     module.exports.r(message.channel, message.author, `${message.member.user.username} was successfully muted **5 minutes** for **${reason}**.`).then(m => module.exports.del(m, 7500));
                     embed.addField("Mute Time: ", "5 minutes");
-                    module.exports.s(logChannel, '', embed).catch(err => err);
+                    module.exports.s(logChannel, '', embed);
                 }).catch(err => {
                     if (err) return module.exports.r(message.channel, message.author, `There was an error attempting to mute ${message.member} ${err}`).then(m => module.exports.del(m, 7500));
                 }).then(setTimeout(() => {
@@ -308,7 +308,7 @@ module.exports = {
                     message.member.send(`Hello, you have been **muted** **for 10 minutes** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                     module.exports.r(message.channel, message.author, `${message.member.user.username} was successfully muted **10 minutes** for **${reason}**.`).then(m => module.exports.del(m, 7500));
                     embed.addField("Mute Time: ", "10 minutes");
-                    module.exports.s(logChannel, '', embed).catch(err => err);
+                    module.exports.s(logChannel, '', embed);
                 }).catch(err => {
                     if (err) return module.exports.r(message.channel, message.author, `There was an error attempting to mute ${message.member} ${err}`).then(m => module.exports.del(m, 7500));
                 }).then(setTimeout(() => {

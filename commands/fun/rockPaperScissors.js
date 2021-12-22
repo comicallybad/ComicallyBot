@@ -28,7 +28,7 @@ module.exports = {
             .setDescription("")
             .addField(result, `${reacted} vs ${botChoice}`);
 
-        e(m, m.channel, '', embed).catch(err => err)
+        e(m, m.channel, '', embed);
         function getResult(me, clientChosen) {
             if ((me === "🗻" && clientChosen === "✂") ||
                 (me === "📰" && clientChosen === "🗻") ||

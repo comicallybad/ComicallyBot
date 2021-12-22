@@ -64,9 +64,9 @@ module.exports = {
                         **XP Giveaway won by:** <@${userID}> (${userID})
                         **XP Given:** ${amount}`);
 
-                    s(logChannel, '', logEmbed).catch(err => err);
+                    s(logChannel, '', logEmbed);
 
-                    return e(msg, message.channel, '', embed).catch(err => err);
+                    return e(msg, message.channel, '', embed);
                 }).catch(err => console.log(`There was an error in giveaway (addxp) ${err}`));
             } else {
                 msg.reactions.removeAll().catch(err => err);
@@ -75,7 +75,7 @@ module.exports = {
                     .setDescription(`There were no winners awarded, not enough reactions!`)
                     .setFooter(`No one won the ${amount} XP!`, message.author.displayAvatarURL());
 
-                return e(msg, msg.channel, '', embed).catch(err => err);
+                return e(msg, msg.channel, '', embed);
             }
         }).catch(err => console.log(`There was an error in giveaway ${err}`));
     }

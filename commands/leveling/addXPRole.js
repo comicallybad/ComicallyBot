@@ -61,7 +61,7 @@ module.exports = {
                             **XP Role Updated:** ${roleName} (${roleID})
                             **Level:** ${level}`);
 
-                        s(logChannel, '', embed).catch(err => err);
+                        s(logChannel, '', embed);
 
                         userIDs.forEach(ID => {
                             xp.findOne({ guildID: guildID, userID: ID }, (err, exists) => {
@@ -88,7 +88,7 @@ module.exports = {
                             **XP Role Added:** ${roleName} (${roleID})
                             **Level:** ${level}`);
 
-                        s(logChannel, '', embed).catch(err => err);
+                        s(logChannel, '', embed);
 
                         userIDs.forEach(ID => {
                             xp.findOne({ guildID: guildID, userID: ID }, (err, exists) => {

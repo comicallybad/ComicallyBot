@@ -33,7 +33,7 @@ module.exports = async (client, message) => {
                     fetch(url, settings)
                         .then(res => res.json()).catch(err => err)
                         .then((json) => {
-                            if (json.output) return s(message.channel, `${json.output}`).catch(err => err);
+                            if (json.output) return s(message.channel, `${json.output}`);
                         });
                 }
             } else return;

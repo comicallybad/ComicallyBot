@@ -26,7 +26,7 @@ module.exports = {
                     .setTimestamp()
                     .setDescription(`**Verification Role Removed by:** ${message.member.user}`);
 
-                s(logChannel, '', embed).catch(err => err);
+                s(logChannel, '', embed);
 
                 return r(message.channel, message.author, "Removing verification role... this may take a second...").then(m => del(m, 7500));
             } else return r(message.channel, message.author, "Role was never added, or it was already removed.").then(m => del(m, 7500));

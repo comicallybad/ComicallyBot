@@ -49,7 +49,7 @@ module.exports = {
                 message.guild.members.ban(toBan.id, { reason: `${reason}`, days: 7 }).then(() => {
                     toBan.send(`Hello, you have been **banned** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                     r(message.channel, message.author, `${toBan.username} (${toBan.id}) was successfully banned.`).then(m => del(m, 7500));
-                    return s(logChannel, '', embed).catch(err => err);
+                    return s(logChannel, '', embed);
                 }).catch(err => {
                     if (err) return r(message.channel, message.author, `There was an error attempting to ban ${toBan} ${err}`).then(m => del(m, 7500));
                 });

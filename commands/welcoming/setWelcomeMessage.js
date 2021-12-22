@@ -49,7 +49,7 @@ module.exports = {
             **Welcome message changed to:** ${welcomeMSG}
             **Welcome message changed by:** ${message.author}`);
 
-        s(logChannel, '', embed).catch(err => err);
+        s(logChannel, '', embed);
 
         return r(message.channel, message.author, `Welcome message has been set to: ${welcomeMSG}`).then(m => del(m, 7500));
     }

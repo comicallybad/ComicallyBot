@@ -46,7 +46,7 @@ module.exports = {
                         $push: { channels: { command: "welcome", channelID: channelID, channelName: channelName } }
                     }).catch(err => console.log(err));
 
-                    s(logChannel, '', embed).catch(err => err);
+                    s(logChannel, '', embed);
                     return r(message.channel, message.author, "Welcome channel has been set!").then(m => del(m, 7500));
                 } else {
                     ///update channel if it does exist
@@ -63,7 +63,7 @@ module.exports = {
                         $set: { 'channels.$.channelID': channelID, 'channels.$.channelName': channelName }
                     }).catch(err => console.log(err));
 
-                    s(logChannel, '', embed).catch(err => err);
+                    s(logChannel, '', embed);
                     return r(message.channel, message.author, "Updated welcome channel.").then(m => del(m, 7500));
                 }
             }).catch(err => console.log(err));

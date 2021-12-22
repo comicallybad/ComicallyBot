@@ -74,7 +74,7 @@ function toggle(message, args, command) {
         **Command Toggled by:** ${message.member.user}
         **Command Toggled:** ${command}`);
 
-    s(logChannel, '', embed).catch(err => err);
+    s(logChannel, '', embed);
 
     return r(message.channel, message.author, "Toggling command... this may take a second...").then(m => del(m, 7500));
 }

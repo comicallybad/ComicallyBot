@@ -44,7 +44,7 @@ module.exports = {
             $set: { xpSystem: bool }
         }).catch(err => console.log(err))
 
-        s(logChannel, '', embed).catch(err => err);
+        s(logChannel, '', embed);
         return r(message.channel, message.author, `The XP system has been toggled to ${args[0]}.`).then(m => del(m, 7500));
     }
 }

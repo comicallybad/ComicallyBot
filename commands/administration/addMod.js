@@ -53,7 +53,7 @@ module.exports = {
                             **Mod Added by:** ${message.member.user}
                             **Role/User Added:** ${roleName} (${roleID})`);
 
-                        s(logChannel, '', embed).catch(err => err);
+                        s(logChannel, '', embed);
 
                         return r(message.channel, message.author, "Adding mod... this may take a second...").then(m => del(m, 7500));
                     }).catch(err => console.log(err))

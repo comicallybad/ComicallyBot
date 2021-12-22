@@ -52,7 +52,7 @@ module.exports = {
 
                 user.roles.add(role.id).then(() => {
                     r(message.channel, message.author, `${user} was successfully added to the **${role.name}** role.`).then(m => del(m, 7500));
-                    return s(logChannel, '', embed).catch(err => err);
+                    return s(logChannel, '', embed);
                 }).catch(err => {
                     if (err) return r(message.channel, message.author, `There was an error attempting to add ${user} to the ${role.name} role: ${err}`).then(m => del(m, 7500));
                 });

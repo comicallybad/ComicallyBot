@@ -28,7 +28,7 @@ module.exports = {
             **Welcome message reaction(s) were removed**
             **Welcome message reaction(s) removed by:** ${message.author}`);
 
-        s(logChannel, '', embed).catch(err => err);
+        s(logChannel, '', embed);
 
         return r(message.channel, message.author, "Welcome reactions removed.").then(m => del(m, 7500));
     }

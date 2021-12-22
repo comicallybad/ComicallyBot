@@ -44,7 +44,7 @@ module.exports = {
                         **Verification Role Added by:** ${message.member.user}
                         **Role Added:** ${roleName} (${roleID})`);
 
-                    s(logChannel, '', embed).catch(err => err);
+                    s(logChannel, '', embed);
 
                     return r(message.channel, message.author, "Adding/updating verification role... this may take a second...").then(m => del(m, 7500));
                 }
