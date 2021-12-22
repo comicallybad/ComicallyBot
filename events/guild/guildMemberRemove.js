@@ -8,46 +8,18 @@ module.exports = async (client, member) => {
 
     activities = [`${client.guilds.cache.size} servers!`, `${client.channels.cache.size} channels!`, `${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} users!`], i = 0;
 
-    const fetchedLogs = await member.guild.fetchAuditLogs({
-        limit: 1,
-        type: 'MEMBER_KICK',
-    }).catch(err => { if (logChannel) s(logChannel, `I am missing permissions to view audit logs for logging guild activity: ${err}`).catch(err => err) });
+    xp.deleteOne({ guildID: member.guild.id, userID: member.user.id }, {
+    }).catch(err => console.log(err))
 
-    const kickLog = fetchedLogs.entries.first()
+    try {
+        const fetchedLogs = await member.guild.fetchAuditLogs({
+            limit: 1,
+            type: 'MEMBER_KICK',
+        });
 
-    if (!kickLog) {
-        const embed = new MessageEmbed()
-            .setColor("#FF0000")
-            .setTitle("Member Left")
-            .setThumbnail(member.user.displayAvatarURL())
-            .setFooter(`${member.displayName}`, `${member.user.displayAvatarURL()}`)
-            .setTimestamp()
-            .setDescription(stripIndents`
-            **User Left By:** Most likely leaving on their own will.
-            **User Left:** ${member} (${member.id}`);
+        let kickLog = fetchedLogs.entries.first().catch(err => err);
 
-        return s(logChannel, '', embed).catch(err => err);
-    }
-
-    const { executor, target } = kickLog;
-
-    if (target.id === member.id) {
-        if (logChannel) {
-            const embed = new MessageEmbed()
-                .setColor("#FF0000")
-                .setTitle("Member Kicked")
-                .setThumbnail(member.user.displayAvatarURL())
-                .setFooter(`${member.displayName}`, `${member.user.displayAvatarURL()}`)
-                .setTimestamp()
-                .setDescription(stripIndents`
-                **User Kicked By:** ${executor} (${executor.id}).
-                **User Kicked:** ${member.user} (${member.user.id}
-                **Reason:** ${kickLog.reason}`);
-
-            return s(logChannel, '', embed).catch(err => err);
-        }
-    } else {
-        if (logChannel) {
+        if (!kickLog) {
             const embed = new MessageEmbed()
                 .setColor("#FF0000")
                 .setTitle("Member Left")
@@ -58,10 +30,42 @@ module.exports = async (client, member) => {
                 **User Left By:** Most likely leaving on their own will.
                 **User Left:** ${member} (${member.id}`);
 
-            return s(logChannel, '', embed).catch(err => err);
+            return s(logChannel, '', embed);
         }
-    }
 
-    xp.deleteOne({ guildID: member.guild.id, userID: member.user.id }, {
-    }).catch(err => console.log(err))
+        const { executor, target } = kickLog;
+
+        if (target.id === member.id) {
+            if (logChannel) {
+                const embed = new MessageEmbed()
+                    .setColor("#FF0000")
+                    .setTitle("Member Kicked")
+                    .setThumbnail(member.user.displayAvatarURL())
+                    .setFooter(`${member.displayName}`, `${member.user.displayAvatarURL()}`)
+                    .setTimestamp()
+                    .setDescription(stripIndents`
+                    **User Kicked By:** ${executor} (${executor.id}).
+                    **User Kicked:** ${member.user} (${member.user.id}
+                    **Reason:** ${kickLog.reason}`);
+
+                return s(logChannel, '', embed);
+            }
+        } else {
+            if (logChannel) {
+                const embed = new MessageEmbed()
+                    .setColor("#FF0000")
+                    .setTitle("Member Left")
+                    .setThumbnail(member.user.displayAvatarURL())
+                    .setFooter(`${member.displayName}`, `${member.user.displayAvatarURL()}`)
+                    .setTimestamp()
+                    .setDescription(stripIndents`
+                    **User Left By:** Most likely leaving on their own will.
+                    **User Left:** ${member} (${member.id}`);
+
+                return s(logChannel, '', embed);
+            }
+        }
+    } catch (err) {
+        return;
+    }
 }
