@@ -27,19 +27,19 @@ module.exports = {
             let embed = new MessageEmbed()
                 .setColor("#00FF00")
                 .setTimestamp()
-                .setFooter(client.user.username, client.user.displayAvatarURL())
+                .setFooter(`${client.user.username}`, `${client.user.displayAvatarURL()}`)
                 .setTitle("Eval")
                 .addField("Code to evaluate", `\`\`\`js\n${beautify(args.join(' '), { format: "js" })}\n\`\`\``)
-                .addField("Evaluated: ", evaluated)
-                .addField("Type of: ", typeof (evaluated))
+                .addField("Evaluated: ", `${evaluated}`)
+                .addField("Type of: ", `${typeof (evaluated)}`)
 
             return s(message.channel, '', embed).then(m => del(m, 15000));
         } catch (err) {
             let embed = new MessageEmbed()
                 .setColor("#FF0000")
                 .setTitle("\:x: Error!")
-                .setDescription(err)
-                .setFooter(client.user.username, client.user.displayAvatarURL())
+                .setDescription(`${err}`)
+                .setFooter(`${client.user.username}`, `${client.user.displayAvatarURL()}`)
 
             return s(message.channel, '', embed).then(m => del(m, 15000));
         }
