@@ -17,25 +17,25 @@ module.exports = {
 
     s: function (channel, content, embeds) {  //New global send function due to discord.js changing it too much
         if (!channel || !channel.guild.me.permissionsIn(channel).has("SEND_MESSAGES")) return;
-        else if (!embeds) return channel.send({ content: content }).catch(err => console.log(err.stack));
-        else if (!content) return channel.send({ embeds: [embeds] }).catch(err => console.log(err.stack));
-        else if (content && embeds) return channel.send({ content: content, embeds: [embeds] }).catch(err => console.log(err.stack));
+        else if (!embeds) return channel.send({ content: content });
+        else if (!content) return channel.send({ embeds: [embeds] });
+        else if (content && embeds) return channel.send({ content: content, embeds: [embeds] });
         else return;
     },
 
     r: function (channel, author, content, embeds) {  //New global send function due to discord.js changing it too much
         if (!channel || !author || !channel.guild.me.permissionsIn(channel).has("SEND_MESSAGES")) return;
-        else if (!embeds) return channel.send({ content: `${author} ${content}` }).catch(err => console.log(err.stack));
-        else if (!content) return channel.send({ content: `${author}`, embeds: [embeds] }).catch(err => console.log(err.stack));
-        else if (content && embeds) return channel.send({ content: `${author} ${content}`, embeds: [embeds] }).catch(err => console.log(err.stack));
+        else if (!embeds) return channel.send({ content: `${author} ${content}` });
+        else if (!content) return channel.send({ content: `${author}`, embeds: [embeds] });
+        else if (content && embeds) return channel.send({ content: `${author} ${content}`, embeds: [embeds] });
         else return;
     },
 
     e: function (message, channel, content, embeds) {
         if (!message || !channel.guild.me.permissionsIn(channel).has("SEND_MESSAGES")) return;
-        else if (!embeds) return message.edit({ content: content }).catch(err => console.log(err.stack));
-        else if (!content) return message.edit({ embeds: [embeds] }).catch(err => console.log(err.stack));
-        else if (content && embeds) return message.edit({ content: content, embeds: [embeds] }).catch(err => console.log(err.stack));
+        else if (!embeds) return message.edit({ content: content });
+        else if (!content) return message.edit({ embeds: [embeds] });
+        else if (content && embeds) return message.edit({ content: content, embeds: [embeds] });
         else return;
     },
 
