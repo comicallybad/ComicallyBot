@@ -33,7 +33,7 @@ global.voiceChannels = [], global.profanityUsers = [];
 
 ["aliases", "commands"].forEach(x => client[x] = new Collection());
 ["command", "event", "erela", "antiSpam"].forEach(x => require(`./handlers/${x}`)(client));
-// require(`./handlers/error`)(client, process);
+require(`./handlers/error`)(client, process);
 client.categories = new fs.readdirSync("./commands/");
 
 client.login(process.env.TOKEN);
