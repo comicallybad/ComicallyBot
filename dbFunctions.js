@@ -1,4 +1,4 @@
-const { s, del, warn, hasPermissions } = require('./functions.js');
+const { s, r, del, warn, hasPermissions } = require('./functions.js');
 const mongoose = require("mongoose");
 const db = require('./schemas/db.js');
 const xp = require('./schemas/xp.js');
