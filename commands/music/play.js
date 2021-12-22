@@ -106,6 +106,6 @@ module.exports = {
                     if (!player.playing) player.play();
                     break;
             }
-        }).catch(err => r(message.channel, message.author, (err.message).then(m => del(m, 7500))));
+        }).catch(err => r(message.channel, message.author, `${(err.message)}`).then(m => del(m, 7500)));
     }
 }
