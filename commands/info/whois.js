@@ -39,9 +39,6 @@ module.exports = {
             **Created at: ${created}**`)
             .setTimestamp()
 
-        if (member.user.presence.game)
-            embed.addField('Currently playing', stripIndents`**Name: ${member.user.presence.game.name}**`);
-
         return s(message.channel, '', embed).then(m => del(m, 15000));
     }
 }
