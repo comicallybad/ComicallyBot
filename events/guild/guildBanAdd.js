@@ -12,6 +12,7 @@ module.exports = async (client, ban) => {
         });
 
         const banLog = fetchedLogs.entries.first();
+
         if (!banLog) {
             const embed = new MessageEmbed()
                 .setColor("#FF0000")
@@ -50,7 +51,7 @@ module.exports = async (client, ban) => {
                     .setThumbnail(ban.user.displayAvatarURL())
                     .setFooter(`${ban.user.tag}`, `${ban.user.displayAvatarURL()}`)
                     .setTimestamp()
-                    .setDescription(`${ban.userName} (${ban.id})`);
+                    .setDescription(`${ban.user} (${ban.user.d})`);
 
                 return s(logChannel, '', embed);
             }
