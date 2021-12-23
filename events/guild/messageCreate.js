@@ -1,4 +1,4 @@
-const { s, del, getCommandStatus, hasPermissions, } = require("../../functions.js");
+const { s, r, del, getCommandStatus, hasPermissions, } = require("../../functions.js");
 const { messageXP, checkBadWords, checkSpam } = require("../../dbFunctions.js");
 const db = require("../../schemas/db.js");
 const fetch = require('node-fetch');
