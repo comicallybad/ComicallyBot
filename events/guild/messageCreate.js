@@ -56,7 +56,7 @@ module.exports = async (client, message) => {
             if (!channelPermissions.has("VIEW_CHANNEL")) return;
 
             if (!channelPermissions.has("SEND_MESSAGES"))
-                return message.author.send("I am missing permissions to `SEND_MESSAGES`").then(m => del(m, 60000));
+                return message.author.send("I am missing permissions to `SEND_MESSAGES`").catch(err => err);
 
             if (!channelPermissions.has("EMBED_LINKS"))
                 return r(message.channel, message.author, "I am missing permissions to `EMBED_LINKS` for certain commands.").then(m => del(m, 30000));
