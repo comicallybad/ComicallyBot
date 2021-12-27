@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { r, del } = require("../../functions.js");
 
 module.exports = {
     name: "leave",
