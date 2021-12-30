@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { r, del } = require("../../functions.js");
 const db = require('../../schemas/db.js');
 
 module.exports = {

@@ -1,4 +1,4 @@
-const { s, del, findID } = require("../../functions.js");
+const { s, r, del, findID } = require("../../functions.js");
 const db = require("../../schemas/db.js");
 const xp = require("../../schemas/xp.js");
 const { stripIndents } = require("common-tags");

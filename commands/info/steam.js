@@ -1,4 +1,4 @@
-const { s, del, formatDate } = require("../../functions.js");
+const { s, r, del, formatDate } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const fetch = require("node-fetch");
 const { stripIndents } = require("common-tags");

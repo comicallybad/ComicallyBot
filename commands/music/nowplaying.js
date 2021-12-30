@@ -1,4 +1,4 @@
-const { s, del } = require("../../functions.js");
+const { s, r, del } = require("../../functions.js");
 const humanizeDuration = require("humanize-duration");
 const { MessageEmbed } = require("discord.js")
 

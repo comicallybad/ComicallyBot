@@ -1,4 +1,4 @@
-const { s, del, promptMessage } = require("../../functions.js");
+const { s, r, del, promptMessage } = require("../../functions.js");
 const { evaluate } = require("mathjs");
 const { MessageEmbed } = require("discord.js");
 

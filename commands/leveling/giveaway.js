@@ -1,4 +1,4 @@
-const { s, e, del, awaitReaction } = require("../../functions.js");
+const { s, r, e, del, awaitReaction } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 const { addXP } = require("../../dbFunctions.js");

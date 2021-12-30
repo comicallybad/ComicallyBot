@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { r, del } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const movieQuote = require("popular-movie-quotes");
 
