@@ -322,7 +322,7 @@ module.exports = {
                 }, 600000)).catch(err => err) //5 Minute punishment 600000
             }
         } else {
-            return module.exports.s(message.channel, "I am missing permissions to `MANAGE_ROLES` to mute users for spam/profanity.").then(m => module.exports.del(m, 7500).catch(err => err));
+            return module.exports.s(message.channel, "I am missing permissions to `MANAGE_ROLES` to mute users for spam/profanity.").then(m => module.exports.del(m, 7500));
         }
     }
 }
