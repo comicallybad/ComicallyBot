@@ -106,7 +106,7 @@ module.exports = {
                                 rankupXP = rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 + 25 - exists.xp;
                                 if (rankupXP >= 0)
                                     if (rankChannel)
-                                        s(rankChannel, `${user} You leveled up! You are now level: ${exists.level}`).catch(err => err);
+                                        s(rankChannel, `${user} You leveled up! You are now level: ${exists.level}`);
                             }
                             exists.save().catch(err => console.log(err));
                         }
@@ -150,7 +150,7 @@ module.exports = {
                     rankupXP = rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 + 25 - exists.xp;
                     if (rankupXP >= 0)
                         if (rankChannel)
-                            s(rankChannel, `${user} You leveled up! You are now level: ${exists.level}`).catch(err => err);
+                            s(rankChannel, `${user} You leveled up! You are now level: ${exists.level}`);
                 }
                 exists.save().catch(err => console.log(err));
             }
@@ -174,9 +174,9 @@ module.exports = {
             roles.forEach(role => {
                 if (!user.roles.cache.get(role.roleID)) {
                     embed.setDescription(`${user} ${user.user.tag} joined the **${role.roleName}**(${role.roleID})`);
-                    if (logChannel) s(logChannel, '', embed).catch(err => err);
+                    if (logChannel) s(logChannel, '', embed);
                     user.roles.add(role.roleID).then(() => {
-                        return r(message.channel, message.author, `, you have been given the **${role.roleName}** role for: **Ranking up to level ${level}!**`).catch(err => err);
+                        return r(message.channel, message.author, `, you have been given the **${role.roleName}** role for: **Ranking up to level ${level}!**`);
                     }).catch(err => {
                         if (err) return s(message.channel, `There was an error assigning XP level role. ${err}`).then(m => del(m, 7500));
                     });
