@@ -69,14 +69,14 @@ module.exports = {
                     const tracks = res.tracks.slice(0, 5);
                     const embed = new MessageEmbed()
                         .setAuthor("Song Selection.", message.author.displayAvatarURL())
-                        .setDescription(tracks.map(video => `**${index++} -** ${video.title}`))
+                        .setDescription(`${tracks.map(video => `**${index++} -** ${video.title}\n`).join('')}`)
                         .setFooter("Your response time closes within the next 30 seconds. Type 'cancel' to cancel the selection");
 
                     const selector = await s(message.channel, '', embed);
 
-                    const collector = message.channel.createMessageCollector(m => {
+                    const collector = message.channel.createMessageCollector({ time: 30000, max: 1 }, m => {
                         return m.author.id === message.author.id && new RegExp(`^([1-5]|cancel)$`, "i").test(m.content)
-                    }, { time: 30000, max: 1 });
+                    });
 
                     collector.on("collect", m => {
                         if (/cancel/i.test(m.content)) {
