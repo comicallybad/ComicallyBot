@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "softban",
-    aliases: ["sban"],
+    aliases: ["sban", "tempban"],
     category: "moderation",
     description: "Soft ban a member.",
     permissions: "moderator",
