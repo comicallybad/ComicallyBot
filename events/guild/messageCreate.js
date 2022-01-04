@@ -10,7 +10,7 @@ module.exports = async (client, message) => {
     if (!message) return;
     if (message.author.bot) return;
     if (!message.guild) return;
-    if (!message.member) message.member = await message.guild.fetchMember(message).catch(err => err);
+    if (!message.member) message.member = await message.guild.members.fetch(message).catch(err => err);
 
     checkBadWords(message);
     checkSpam(client, message);
