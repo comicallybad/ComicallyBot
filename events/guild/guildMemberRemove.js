@@ -46,7 +46,7 @@ module.exports = async (client, member) => {
                     .setDescription(stripIndents`
                     **User Kicked By:** ${executor} (${executor.id}).
                     **User Kicked:** ${member.user} (${member.user.id}
-                    **Reason:** ${kickLog.reason}`);
+                    **Reason:** ${kickLog.reason ? kickLog.reason : "No reason given!"}`);
 
                 return s(logChannel, '', embed);
             }
