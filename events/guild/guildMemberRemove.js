@@ -66,6 +66,6 @@ module.exports = async (client, member) => {
             }
         }
     } catch (err) {
-        console.log(err);
+        return;
     }
 }
