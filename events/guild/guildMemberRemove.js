@@ -18,7 +18,6 @@ module.exports = async (client, member) => {
         });
 
         let kickLog = fetchedLogs.entries.first();
-        let member = await member.guild.members.fetch(member.id);
 
         if (!kickLog) {
             const embed = new MessageEmbed()
