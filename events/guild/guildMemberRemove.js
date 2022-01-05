@@ -26,7 +26,7 @@ module.exports = async (client, member) => {
                 .setThumbnail(member.user.displayAvatarURL())
                 .setFooter(`${member.displayName}`, `${member.user.displayAvatarURL()}`)
                 .setTimestamp()
-                .setDescription(`**User Left:** ${member} (${member.id}`);
+                .setDescription(`**User Left:** ${member} (${member.id})`);
 
             return s(logChannel, '', embed);
         }
@@ -43,7 +43,7 @@ module.exports = async (client, member) => {
                     .setTimestamp()
                     .setDescription(stripIndents`
                     **User Kicked By:** ${executor} (${executor.id}).
-                    **User Kicked:** ${member.user} (${member.user.id}
+                    **User Kicked:** ${member.user} (${member.user.id})
                     **Reason:** ${kickLog.reason ? kickLog.reason : "No reason given!"}`);
 
                 return s(logChannel, '', embed);
@@ -56,7 +56,7 @@ module.exports = async (client, member) => {
                     .setThumbnail(member.user.displayAvatarURL())
                     .setFooter(`${member.displayName}`, `${member.user.displayAvatarURL()}`)
                     .setTimestamp()
-                    .setDescription(`**User Left:** ${member} (${member.id}`);
+                    .setDescription(`**User Left:** ${member} (${member.id})`);
 
                 return s(logChannel, '', embed);
             }
