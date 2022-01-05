@@ -1,5 +1,5 @@
 const { s } = require('../../functions.js');
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, CommandInteractionOptionResolver } = require("discord.js");
 const xp = require("../../schemas/xp.js");
 const { stripIndents } = require("common-tags");
 
@@ -17,7 +17,8 @@ module.exports = async (client, member) => {
             type: 'MEMBER_KICK',
         });
 
-        let kickLog = fetchedLogs.entries.first().catch(err => err);
+        let kickLog = fetchedLogs.entries.first();
+        let member = await member.guild.members.fetch(member.id);
 
         if (!kickLog) {
             const embed = new MessageEmbed()
@@ -66,6 +67,6 @@ module.exports = async (client, member) => {
             }
         }
     } catch (err) {
-        return;
+        console.log(err);
     }
 }
