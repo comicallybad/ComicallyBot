@@ -21,14 +21,12 @@ module.exports = async (client, member) => {
 
         if (!kickLog) {
             const embed = new MessageEmbed()
-                .setColor("#FF0000")
+                .setColor("#0EFEFE")
                 .setTitle("Member Left")
                 .setThumbnail(member.user.displayAvatarURL())
                 .setFooter(`${member.displayName}`, `${member.user.displayAvatarURL()}`)
                 .setTimestamp()
-                .setDescription(stripIndents`
-                **User Left By:** Most likely leaving on their own will.
-                **User Left:** ${member} (${member.id}`);
+                .setDescription(`**User Left:** ${member} (${member.id}`);
 
             return s(logChannel, '', embed);
         }
