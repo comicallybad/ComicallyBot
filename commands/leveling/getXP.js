@@ -1,4 +1,4 @@
-const { del, r, findID } = require("../../functions.js");
+const { del, s, r, findID } = require("../../functions.js");
 const xp = require('../../schemas/xp.js');
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
@@ -23,7 +23,7 @@ module.exports = {
 
         function getRank(usrID) {
             xp.findOne({ guildID: guildID, userID: usrID }, (err, exists) => {
-                if (!exists) return r(message.channel, message.author, "User doesn't have a rank yet.").then(m => del(m, 7500));
+                if (!exists) return s(message.channel, "User doesn't have a rank yet.").then(m => del(m, 7500));
                 if (exists) {
                     let rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 + 25 - exists.xp;
                     const embed = new MessageEmbed()
@@ -37,8 +37,8 @@ module.exports = {
                         **User has:** ${exists.xp} XP
                         **XP Until Next Level:** ${rankupXP}`);
 
-                    return r(message.channel, message.author, '', embed).then(m => del(m, 30000));
-                } else return r(message.channel, message.author, "User has no rank").then(m => del(m, 7500));
+                    return s(message.channel, '', embed).then(m => del(m, 30000));
+                } else return s(message.channel, "User has no rank").then(m => del(m, 7500));
             })
         }
     }
