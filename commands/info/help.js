@@ -54,14 +54,22 @@ function getSpecific(client, message, input) {
             if (res === false) info += '\n**Status**: ❌';
             if (res === true) info += '\n**Status**: ✅';
             return s(message.channel, '', embed.setColor("#0efefe").setDescription(info)).then(m => del(m, 30000));
-        }).catch(err => console.log(`There was an error in help ${err}`));;
+        }).catch(err => console.log(`There was an error in help ${err}`));
     } else if (cat.includes(input.toLowerCase())) {
+        info = "";
+        embed.setTitle(`${input} category`);
         const cmds = client.commands
             .filter(cmd => cmd.category === input.toLowerCase())
-            .map(cmd => ` \`${prefix}${cmd.name}\``)
-            .join(",");
-
-        info = `**${input[0].toUpperCase() + input.slice(1).toLowerCase()}** \n ${cmds}`;
+            .map(cmd => {
+                if (cmd.name) info += `**Command name**: \`${cmd.name}\``;
+                if (cmd.aliases) info += `\n**Aliases**: ${cmd.aliases.map(a => `\`${a}\``).join(", ")}`;
+                if (cmd.description) info += `\n**Description**: \`${cmd.description}\``;
+                if (cmd.permissions) info += `\n**Permissions**: \`${cmd.permissions}\``
+                if (cmd.usage) {
+                    info += `\n**Usage**: \`${cmd.usage}\`\n\n`;
+                } else info += "\n\n"
+                embed.setFooter(`Syntax: <> = required, [] = optional`);
+            });
         return s(message.channel, '', embed.setColor("#0efefe").setDescription(info)).then(m => del(m, 30000));
     } else return s(message.channel, '', embed.setColor("#ff0000").setDescription(info)).then(m => del(m, 30000));
 }
