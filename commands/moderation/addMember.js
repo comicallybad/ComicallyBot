@@ -43,7 +43,6 @@ module.exports = {
                     db.updateOne({ guildID: guildID }, {
                         $push: { memberRoles: { roleName: roleName, roleID: roleID } }
                     }).then(() => {
-
                         const embed = new MessageEmbed()
                             .setColor("#0efefe")
                             .setTitle("Member Added")

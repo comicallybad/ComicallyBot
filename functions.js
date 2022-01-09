@@ -16,7 +16,7 @@ module.exports = {
     },
 
     s: function (channel, content, embeds) {  //New global send function due to discord.js changing it too much
-        if (!channel || !channel.guild.me.permissionsIn(channel).has("SEND_MESSAGES")) return;
+        if (!channel || !channel.guild.me.permissionsIn(channel).has("VIEW_CHANNEL") || !channel.guild.me.permissionsIn(channel).has("SEND_MESSAGES")) return;
         else if (!embeds) return channel.send({ content: content });
         else if (!content) return channel.send({ embeds: [embeds] });
         else if (content && embeds) return channel.send({ content: content, embeds: [embeds] });
@@ -24,7 +24,7 @@ module.exports = {
     },
 
     r: function (channel, author, content, embeds) {  //New global send function due to discord.js changing it too much
-        if (!channel || !author || !channel.guild.me.permissionsIn(channel).has("SEND_MESSAGES")) return;
+        if (!channel || !author || !channel.guild.me.permissionsIn(channel).has("VIEW_CHANNEL") || !channel.guild.me.permissionsIn(channel).has("SEND_MESSAGES")) return;
         else if (!embeds) return channel.send({ content: `${author} ${content}` });
         else if (!content) return channel.send({ content: `${author}`, embeds: [embeds] });
         else if (content && embeds) return channel.send({ content: `${author} ${content}`, embeds: [embeds] });
