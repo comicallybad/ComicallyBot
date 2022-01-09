@@ -17,8 +17,7 @@ module.exports = {
             return r(message.channel, message.author, "You need to provide code to evaluate").then(m => del(m, 7500));
 
         try {
-            if (args.join(" ").toLowerCase().includes("token") || args.join(" ").toLowerCase().includes("fortnite")
-                || args.join(" ").toLowerCase().includes("steam") || args.join(" ").toLowerCase().includes("erela"))
+            if (args.join(" ").toLowerCase().includes("token") || args.join(" ").toLowerCase().includes("steam") || args.join(" ").toLowerCase().includes("erela"))
                 return r(message.channel, message.author, "You cannot find my token :)").then(m => del(m, 7500));
 
             const toEval = args.join(" ");
