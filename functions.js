@@ -246,7 +246,7 @@ module.exports = {
             **Warned by:** ${message.guild.me}`)
 
         if (type === "profanity") {
-            embed.addField("Channel:", message.channel);
+            embed.addField("Channel:", `${message.channel}`);
             embed.addField("Message Deleted", `||${message.content}||`);
         }
 
