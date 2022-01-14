@@ -28,38 +28,42 @@ module.exports = {
         if (!role)
             return r(message.channel, message.author, "Could not find role.").then(m => del(m, 7500));
 
-        const embed = new MessageEmbed()
-            .setColor("#0efefe")
-            .setTitle("Member Added To Role")
-            .setThumbnail(user.user.displayAvatarURL())
-            .setFooter(message.member.displayName, message.author.displayAvatarURL())
-            .setTimestamp()
-            .setDescription(stripIndents`
-            **Role added to:** ${user} (${user.id})
-            **Role added by:** ${message.member}
-            **Role added:** ${role} (${role.id})`);
+        try {
+            const embed = new MessageEmbed()
+                .setColor("#0efefe")
+                .setTitle("Member Added To Role")
+                .setThumbnail(user.user.displayAvatarURL())
+                .setFooter(message.member.displayName, message.author.displayAvatarURL())
+                .setTimestamp()
+                .setDescription(stripIndents`
+                **Role added to:** ${user} (${user.id})
+                **Role added by:** ${message.member}
+                **Role added:** ${role} (${role.id})`);
 
-        const promptEmbed = new MessageEmbed()
-            .setColor("GREEN")
-            .setAuthor(`This verification becomes invalid after 30s.`)
-            .setDescription(`Do you want to add ${user} to then **${role.name}** role?`)
+            const promptEmbed = new MessageEmbed()
+                .setColor("GREEN")
+                .setAuthor(`This verification becomes invalid after 30s.`)
+                .setDescription(`Do you want to add ${user} to then **${role.name}** role?`)
 
-        await s(message.channel, '', promptEmbed).then(async msg => {
-            const emoji = await promptMessage(msg, message.author, 30, ["✅", "❌"]);
+            await s(message.channel, '', promptEmbed).then(async msg => {
+                const emoji = await promptMessage(msg, message.author, 30, ["✅", "❌"]);
 
-            if (emoji === "✅") {
-                del(msg, 0);
+                if (emoji === "✅") {
+                    del(msg, 0);
 
-                user.roles.add(role.id).then(() => {
-                    r(message.channel, message.author, `${user} was successfully added to the **${role.name}** role.`).then(m => del(m, 7500));
-                    return s(logChannel, '', embed);
-                }).catch(err => {
-                    if (err) return r(message.channel, message.author, `There was an error attempting to add ${user} to the ${role.name} role: ${err}`).then(m => del(m, 7500));
-                });
-            } else if (emoji === "❌") {
-                del(msg, 0);
-                return r(message.channel, message.author, `Role add cancelled.`).then(m => del(m, 7500));
-            } else return del(msg, 0);
-        }).catch(err => err);
+                    user.roles.add(role.id).then(() => {
+                        r(message.channel, message.author, `${user} was successfully added to the **${role.name}** role.`).then(m => del(m, 7500));
+                        return s(logChannel, '', embed);
+                    }).catch(err => {
+                        if (err) return r(message.channel, message.author, `There was an error attempting to add ${user} to the ${role.name} role: ${err}`).then(m => del(m, 7500));
+                    });
+                } else if (emoji === "❌") {
+                    del(msg, 0);
+                    return r(message.channel, message.author, `Role add cancelled.`).then(m => del(m, 7500));
+                } else return del(msg, 0);
+            }).catch(err => err);
+        } catch (err) {
+            if (err) return r(message.channel, message.author, `There was an error attempting to add the role to that user: ${err}`).then(m => del(m, 7500));
+        }
     }
 }
