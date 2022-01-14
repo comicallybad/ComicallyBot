@@ -19,9 +19,18 @@ module.exports = {
         try {
             if (args.join(" ").toLowerCase().includes("token") || args.join(" ").toLowerCase().includes("steam") || args.join(" ").toLowerCase().includes("erela"))
                 return r(message.channel, message.author, "You cannot find my token :)").then(m => del(m, 7500));
+            try {
+                const toEval = args.join(" ");
+                const evaluated = eval(toEval);
+            } catch (err) {
+                let embed = new MessageEmbed()
+                    .setColor("#FF0000")
+                    .setTitle("\:x: Error!")
+                    .setDescription(`${err}`)
+                    .setFooter(`${client.user.username}`, `${client.user.displayAvatarURL()}`)
 
-            const toEval = args.join(" ");
-            const evaluated = eval(toEval);
+                return s(message.channel, '', embed).then(m => del(m, 15000));
+            }
 
             let embed = new MessageEmbed()
                 .setColor("#00FF00")
