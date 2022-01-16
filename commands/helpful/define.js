@@ -27,9 +27,9 @@ module.exports = {
                         .setFooter(`Category of type: ${result.category}`)
                         .setTimestamp()
 
-                    return s(message.channel, message.author, '', embed).then(m => del(m, 30000));
+                    return s(message.channel, '', embed).then(m => del(m, 30000));
                 }
-            } else return s(message.channel, message.author, "Sorry, I could not find that word.").then(m => del(m, 7500));
+            } else return s(message.channel, "Sorry, I could not find that word.").then(m => del(m, 7500));
         });
     }
 }
