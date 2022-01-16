@@ -207,7 +207,7 @@ module.exports = {
                 name: "Muted", color: "#778899", permissions: []
             }).catch(err => module.exports.s(message.channel, `${err}`));
             message.guild.channels.cache.forEach(async (channel, id) => {
-                await channel.createOverwrite(muterole, {
+                await channel.permissionOverwrites.create(muterole, {
                     SEND_MESSAGES: false,
                     ADD_REACTIONS: false,
                     SPEAK: false,
