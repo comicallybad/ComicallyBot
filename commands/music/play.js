@@ -83,16 +83,14 @@ module.exports = {
                             del(m, 0)
                             return collector.stop("cancelled")
                         }
-                        try {
-                            const track = tracks[Number(m.content) - 1];
+                        const track = tracks[Number(m.content) - 1];
+                        if (track) {
                             player.queue.add(track)
                             r(message.channel, message.author, `Queuing \`${track.title}\` \`${humanizeDuration(track.duration)}\``).then(m => del(m, 15000));
                             if (!player.playing) player.play();
                             del(m, 0);
                             del(selector, 0);
-                        } catch (err) {
-                            r(message.chanel, message.author, `There was an error queuing that track: ${err}`);
-                        }
+                        } else r(message.chanel, message.author, `There was an error queuing that track`);
                     });
 
                     collector.on("end", (_, reason) => {
