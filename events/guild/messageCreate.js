@@ -1,4 +1,4 @@
-const { del, getCommandStatus, hasPermissions, } = require("../../functions.js");
+const { s, r, del, getCommandStatus, hasPermissions, } = require("../../functions.js");
 const { messageXP, checkBadWords, checkSpam } = require("../../dbFunctions.js");
 const db = require("../../schemas/db.js");
 const fetch = require('node-fetch');
@@ -10,7 +10,7 @@ module.exports = async (client, message) => {
     if (!message) return;
     if (message.author.bot) return;
     if (!message.guild) return;
-    if (!message.member) message.member = await message.guild.fetchMember(message).catch(err => err);
+    if (!message.member) message.member = await message.guild.members.fetch(message).catch(err => err);
 
     checkBadWords(message);
     checkSpam(client, message);
@@ -33,7 +33,7 @@ module.exports = async (client, message) => {
                     fetch(url, settings)
                         .then(res => res.json()).catch(err => err)
                         .then((json) => {
-                            if (json.output) return message.channel.send(json.output).catch(err => err);
+                            if (json.output) return s(message.channel, `${json.output}`);
                         });
                 }
             } else return;
@@ -56,19 +56,20 @@ module.exports = async (client, message) => {
             if (!channelPermissions.has("VIEW_CHANNEL")) return;
 
             if (!channelPermissions.has("SEND_MESSAGES"))
-                return message.author.send("I am missing permissions to `SEND_MESSAGES`").then(m => del(m, 60000));
+                return message.author.send("I am missing permissions to `SEND_MESSAGES`").catch(err => err);
 
             if (!channelPermissions.has("EMBED_LINKS"))
-                return message.reply("I am missing permissions to `EMBED_LINKS` for certain commands.").then(m => del(m, 30000));
+                return r(message.channel, message.author, "I am missing permissions to `EMBED_LINKS` for certain commands.").then(m => del(m, 30000));
 
             if (!channelPermissions.has("READ_MESSAGE_HISTORY"))
-                return message.reply("I am missing permissions to `READ_MESSAGE_HISTORY` for certain commands.").then(m => del(m, 30000));
+                return r(message.channel, message.author, "I am missing permissions to `READ_MESSAGE_HISTORY` for certain commands.").then(m => del(m, 30000));
 
-            if (!message.guild.me.hasPermission("MANAGE_ROLES"))
-                return message.reply("I am missing permissions to `MANAGE_ROLES` for auto-moderation.").then(m => del(m, 30000));
+            if (!message.guild.me.permissions.has("MANAGE_ROLES") || !message.guild.me.permissions.has("VIEW_AUDIT_LOG"))
+                return r(message.channel, message.author, "I am missing permissions to `MANAGE_ROLES` for moderation/auto-moderation/reaction-roles "
+                    + "and/or `VIEW_AUDIT_LOG` for logging.").then(m => del(m, 30000));
 
             if (!channelPermissions.has("MANAGE_MESSAGES") || !channelPermissions.has("ADD_REACTIONS"))
-                return message.reply("I am missing permissions to `MANAGE_MESSAGES` for a clean command experience"
+                return r(message.channel, message.author, "I am missing permissions to `MANAGE_MESSAGES` for a clean command experience"
                     + " and/or permissions for `ADD_REACTIONS` for essential commands.").then(m => del(m, 30000));
 
 
@@ -78,11 +79,11 @@ module.exports = async (client, message) => {
             del(message, 0);
 
             if (command.category !== 'command' && command.category !== "owner" && command.category !== "support") {
-                if (!cmdStatus) return message.reply("This command is currently disabled.").then(m => del(m, 7500));
-                if (!perms) return message.reply("You do not have permissions for this command.").then(m => del(m, 7500))
+                if (!cmdStatus) return r(message.channel, message.author, "This command is currently disabled.").then(m => del(m, 7500));
+                if (!perms) return r(message.channel, message.author, "You do not have permissions for this command.").then(m => del(m, 7500))
                 else return command.run(client, message, args);
             } else {
-                if (!perms) return message.reply("You do not have permissions for this command.").then(m => del(m, 7500));
+                if (!perms) return r(message.channel, message.author, "You do not have permissions for this command.").then(m => del(m, 7500));
                 else return command.run(client, message, args);
             }
         }

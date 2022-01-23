@@ -1,4 +1,4 @@
-const { del, formatDate } = require("../../functions.js");
+const { s, del, formatDate } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
@@ -39,9 +39,6 @@ module.exports = {
             **Created at: ${created}**`)
             .setTimestamp()
 
-        if (member.user.presence.game)
-            embed.addField('Currently playing', stripIndents`**Name: ${member.user.presence.game.name}**`);
-
-        message.channel.send(embed).then(m => del(m, 15000));
+        return s(message.channel, '', embed).then(m => del(m, 15000));
     }
 }

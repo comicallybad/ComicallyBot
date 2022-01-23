@@ -1,11 +1,12 @@
-const { MessageEmbed, Message } = require("discord.js");
+const { s } = require('../../functions.js');
+const { MessageEmbed } = require("discord.js");
 const humanizeDuration = require('humanize-duration');
 const xp = require('../../schemas/xp.js');
 const mongoose = require("mongoose");
 const db = require("../../schemas/db.js");
 
 module.exports = async (client, data) => {
-    activities = [`${client.guilds.cache.size} servers!`, `${client.channels.cache.size} channels!`, `${client.users.cache.size} users!`], i = 0;
+    activities = [`${client.guilds.cache.size} servers!`, `${client.channels.cache.size} channels!`, `${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} users!`], i = 0;
     let guildID = data.guild.id;
     let guildName = data.guild.name;
     let userID = data.user.id;
@@ -29,9 +30,9 @@ module.exports = async (client, data) => {
 
                 if (time <= 604800000) { //604800000  is 7 days in MS
                     embed.addField("**Warning** new user account:", `Account created ${accountTime} ago.`);
-                    logChannel.send(embed).catch(err => err);
+                    s(logChannel, '', embed);
                 } else {
-                    logChannel.send(embed).catch(err => err);
+                    s(logChannel, '', embed);
                 }
             }
             let welcomeCH;
@@ -54,17 +55,17 @@ module.exports = async (client, data) => {
                         });
                         welcomeMSG = msgMap.join(" ");
                         if (welcomeCH && welcomeMSG) {
-                            welcomeCH.send(`${welcomeMSG}`).then(m => {
+                            s(welcomeCH, `${welcomeMSG}`).then(m => {
                                 if (exists.welcomeMessageReactions.length > 0) {
                                     try {
                                         let i = 0;
                                         while (i < exists.welcomeMessageReactions.length)
                                             m.react(exists.welcomeMessageReactions[i]).then(i++);
                                     } catch (err) {
-                                        if (logChannel) return logChannel.send(`There was an issue with welcome message reactions: ${err}`);
+                                        if (logChannel) return s(logChannel, `There was an issue with welcome message reactions: ${err}`);
                                     }
                                 }
-                            }).catch(err => logChannel.send(`There was an error in sending a welcome message: ${err}`));
+                            }).catch(err => s(logChannel, `There was an error in sending a welcome message: ${err}`));
                         }
                     }
                 }

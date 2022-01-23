@@ -1,3 +1,4 @@
+const { s } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
@@ -31,6 +32,6 @@ module.exports = {
             .addField(`☁ **${person.displayName}** loves **${message.member.displayName}** this much:`,
                 `💟 ${Math.floor(love)}%\n\n${loveLevel}`).setTimestamp();
 
-        message.channel.send(embed);
+        return s(message.channel, '', embed);
     }
 }

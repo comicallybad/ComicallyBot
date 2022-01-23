@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, r, del } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js")
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
     run: (client, message, args) => {
         const player = client.music.players.get(message.guild.id);
         if (!player || !player.queue.current)
-            return message.reply("No song currently playing in this guild.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "No song currently playing in this guild.").then(m => del(m, 7500));
 
         let index = 1;
         let string = "";
@@ -23,6 +23,6 @@ module.exports = {
             .setThumbnail(player.queue.current.thumbnail)
             .setDescription(string);
 
-        return message.channel.send(embed).then(m => del(m, 30000));
+        return s(message.channel, '', embed).then(m => del(m, 30000));
     }
 }

@@ -1,3 +1,4 @@
+const { s } = require('../../functions.js');
 const { MessageEmbed } = require('discord.js');
 const { stripIndents } = require("common-tags");
 
@@ -14,7 +15,7 @@ module.exports = (client, member) => {
             **Warned member:** ${member} (${member.id})
             **Warned by:** ${member.guild.me}
             **Reason:** Spam`)
-        logChannel.send(embed);
+        s(logChannel, '', embed);
     }
     setTimeout(() => {
         let userIndex = client.antiSpam.cache.warnedUsers.indexOf(`${member.id}`);

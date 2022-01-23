@@ -1,4 +1,4 @@
-const { del, getCommandStatus } = require("../../functions.js");
+const { s, del, getCommandStatus } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
@@ -31,7 +31,7 @@ async function getAll(client, message) {
         .map(cat => stripIndents`**${cat[0].toUpperCase() + cat.slice(1)}** \n\`${prefix}help ${cat}\` to view ${cat} commands`)
         .reduce((string, category) => string + "\n" + category);
 
-    return message.channel.send(embed.setDescription(info)).then(m => del(m, 30000));
+    return s(message.channel, '', embed.setDescription(info)).then(m => del(m, 30000));
 }
 
 function getSpecific(client, message, input) {
@@ -53,15 +53,23 @@ function getSpecific(client, message, input) {
         getCommandStatus(message, cmd.name).then(async function (res) {
             if (res === false) info += '\n**Status**: ❌';
             if (res === true) info += '\n**Status**: ✅';
-            return message.channel.send(embed.setColor("#0efefe").setDescription(info)).then(m => del(m, 30000));
-        }).catch(err => console.log(`There was an error in help ${err}`));;
+            return s(message.channel, '', embed.setColor("#0efefe").setDescription(info)).then(m => del(m, 30000));
+        }).catch(err => console.log(`There was an error in help ${err}`));
     } else if (cat.includes(input.toLowerCase())) {
+        info = "";
+        embed.setTitle(`${input} category`);
         const cmds = client.commands
             .filter(cmd => cmd.category === input.toLowerCase())
-            .map(cmd => ` \`${prefix}${cmd.name}\``)
-            .join(",");
-
-        info = `**${input[0].toUpperCase() + input.slice(1).toLowerCase()}** \n ${cmds}`;
-        return message.channel.send(embed.setColor("#0efefe").setDescription(info)).then(m => del(m, 30000));
-    } else return message.channel.send(embed.setColor("#ff0000").setDescription(info)).then(m => del(m, 30000));
+            .map(cmd => {
+                if (cmd.name) info += `**Command name**: \`${cmd.name}\``;
+                if (cmd.aliases) info += `\n**Aliases**: ${cmd.aliases.map(a => `\`${a}\``).join(", ")}`;
+                if (cmd.description) info += `\n**Description**: \`${cmd.description}\``;
+                if (cmd.permissions) info += `\n**Permissions**: \`${cmd.permissions}\``
+                if (cmd.usage) {
+                    info += `\n**Usage**: \`${cmd.usage}\`\n\n`;
+                } else info += "\n\n"
+                embed.setFooter(`Syntax: <> = required, [] = optional`);
+            });
+        return s(message.channel, '', embed.setColor("#0efefe").setDescription(info)).then(m => del(m, 30000));
+    } else return s(message.channel, '', embed.setColor("#ff0000").setDescription(info)).then(m => del(m, 30000));
 }

@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const randomPuppy = require("random-puppy");
 
@@ -22,6 +22,6 @@ module.exports = {
             .setURL(`https://reddit.com/r/${random}`)
             .setTimestamp();
 
-        message.channel.send(embed);
+        return s(message.channel, '', embed);
     }
 }

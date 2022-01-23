@@ -1,4 +1,4 @@
-const { del, findID } = require("../../functions.js");
+const { s, r, del, findID } = require("../../functions.js");
 const db = require("../../schemas/db.js");
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
@@ -15,7 +15,7 @@ module.exports = {
         let guildID = message.guild.id;
 
         if (!args[0])
-            return message.reply("Please provide a role.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a role.").then(m => del(m, 7500));
 
         let roleIDs = message.guild.roles.cache.map(role => role.id);
         let roleNames = message.guild.roles.cache.map(role => role.name);
@@ -30,7 +30,7 @@ module.exports = {
             if (!isNaN(args[0]))
                 removeRole(args[0]);
             else
-                return message.reply("Please provide a valid role, if you are trying to remove a deleted role, attempt the command again with the role ID from the getroles command").then(m => del(m, 7500));
+                return r(message.channel, message.author, "Please provide a valid role, if you are trying to remove a deleted role, attempt the command again with the role ID from the getroles command").then(m => del(m, 7500));
 
         function removeRole(roleID) {
             let roleName = roleNames[roleIDs.indexOf(roleID)]
@@ -51,11 +51,11 @@ module.exports = {
                             **XP Role Removed by:** ${message.member.user}
                             **XP Role Removed:** ${roleName} (${roleID})`);
 
-                        logChannel.send(embed).catch(err => err);
+                        s(logChannel, '', embed);
 
-                        return message.reply("Removing XP level role.").then(m => del(m, 7500));
+                        return r(message.channel, message.author, "Removing XP level role.").then(m => del(m, 7500));
                     }).catch(err => console.log(err))
-                } if (!exists) return message.reply("This role was never added, or it was removed already.").then(m => del(m, 7500));
+                } if (!exists) return r(message.channel, message.author, "This role was never added, or it was removed already.").then(m => del(m, 7500));
             }).catch(err => console.log(err))
         }
     }

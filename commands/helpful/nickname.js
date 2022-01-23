@@ -1,4 +1,4 @@
-const { del } = require("../../functions");
+const { s, r, del } = require("../../functions");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
@@ -11,18 +11,18 @@ module.exports = {
     usage: "<@user | userID> <nickname>",
     run: async (client, message, args) => {
         if (!args[0])
-            return message.reply("Please provide a user.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a user.").then(m => del(m, 7500));
 
         if (!args[1])
-            return message.reply("Please provide a new nickname.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a new nickname.").then(m => del(m, 7500));
 
         const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
-        if (!message.guild.me.hasPermission("MANAGE_NICKNAMES"))
-            return message.reply("I don't have permission to manage nicknames!").then(m => del(m, 7500));
+        if (!message.guild.me.permissions.has("MANAGE_NICKNAMES"))
+            return r(message.channel, message.author, "I don't have permission to manage nicknames!").then(m => del(m, 7500));
 
         let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-        if (!user) return message.reply("Please supply a user to be banned!").then(m => del(m, 7500));
+        if (!user) return r(message.channel, message.author, "Please supply a user to be banned!").then(m => del(m, 7500));
 
         let nickName = args.splice(1).join(' ');
 
@@ -39,8 +39,8 @@ module.exports = {
 
         user.setNickname(nickName, '')
             .then(() => {
-                message.reply("User's nickname was successfully changed.").then(m => del(m, 7500));
-                logChannel.send(embed).catch(err => err);
-            }).catch(err => message.reply("I can't change that users nickname due to role hierarchy, I suppose.").then(m => del(m, 7500)));
+                r(message.channel, message.author, "User's nickname was successfully changed.").then(m => del(m, 7500));
+                return s(logChannel, '', embed);
+            }).catch(err => r(message.channel, message.author, "I can't change that users nickname due to role hierarchy, I suppose.").then(m => del(m, 7500)));
     }
 }

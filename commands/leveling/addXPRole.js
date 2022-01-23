@@ -1,4 +1,4 @@
-const { del, findID } = require("../../functions.js");
+const { s, r, del, findID } = require("../../functions.js");
 const db = require("../../schemas/db.js");
 const xp = require("../../schemas/xp.js");
 const { stripIndents } = require("common-tags");
@@ -13,17 +13,17 @@ module.exports = {
     permissions: "moderator",
     usage: "<@role|roleID> <level>",
     run: (client, message, args) => {
-        if (!message.guild.me.hasPermission("MANAGE_ROLES"))
-            return message.reply("I don't have permission to manage roles!").then(m => del(m, 7500));
+        if (!message.guild.me.permissions.has("MANAGE_ROLES"))
+            return r(message.channel, message.author, "I don't have permission to manage roles!").then(m => del(m, 7500));
 
         const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
         let guildID = message.guild.id;
 
         if (!args[0])
-            return message.reply("Please provide a role.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a role.").then(m => del(m, 7500));
 
         if (!args[1])
-            return message.reply("Please provide a XP level.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a XP level.").then(m => del(m, 7500));
 
         let roleNames = message.guild.roles.cache.map(role => role.name);
         let roleIDs = message.guild.roles.cache.map(role => role.id);
@@ -31,11 +31,11 @@ module.exports = {
         let ID = findID(message, args[0], "role");
 
         if (!ID)
-            return message.reply("Role not found").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Role not found").then(m => del(m, 7500));
 
         if (ID)
             if (isNaN(args[1]) || parseInt(args[1]) <= 0)
-                return message.reply("Please provide a valid XP level.").then(m => del(m, 7500));
+                return r(message.channel, message.author, "Please provide a valid XP level.").then(m => del(m, 7500));
             else addRole(roleNames[roleIDs.indexOf(ID)], ID, parseInt(args[1]));
 
 
@@ -61,7 +61,7 @@ module.exports = {
                             **XP Role Updated:** ${roleName} (${roleID})
                             **Level:** ${level}`);
 
-                        logChannel.send(embed).catch(err => err);
+                        s(logChannel, '', embed);
 
                         userIDs.forEach(ID => {
                             xp.findOne({ guildID: guildID, userID: ID }, (err, exists) => {
@@ -71,7 +71,7 @@ module.exports = {
                             });
                         });
 
-                        return message.reply("Updating XP role level.").then(m => del(m, 7500));
+                        return r(message.channel, message.author, "Updating XP role level.").then(m => del(m, 7500));
                     }).catch(err => console.log(err))
                 } if (!exists) {
                     db.updateOne({ guildID: guildID }, {
@@ -88,7 +88,7 @@ module.exports = {
                             **XP Role Added:** ${roleName} (${roleID})
                             **Level:** ${level}`);
 
-                        logChannel.send(embed).catch(err => err);
+                        s(logChannel, '', embed);
 
                         userIDs.forEach(ID => {
                             xp.findOne({ guildID: guildID, userID: ID }, (err, exists) => {
@@ -98,7 +98,7 @@ module.exports = {
                             });
                         });
 
-                        return message.reply("Adding XP level role.").then(m => del(m, 7500));
+                        return r(message.channel, message.author, "Adding XP level role.").then(m => del(m, 7500));
                     }).catch(err => console.log(err))
                 }
             }).catch(err => console.log(err))

@@ -1,4 +1,4 @@
-const { del, findID } = require("../../functions.js");
+const { s, r, del, findID } = require("../../functions.js");
 const db = require('../../schemas/db.js');
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
@@ -15,7 +15,7 @@ module.exports = {
         let guildID = message.guild.id;
 
         if (!args[0])
-            return message.reply("Please provide a role.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a role.").then(m => del(m, 7500));
 
         let roleNames = message.guild.roles.cache.map(role => role.name);
         let roleIDs = message.guild.roles.cache.map(role => role.id);
@@ -23,7 +23,7 @@ module.exports = {
         let ID = findID(message, args[0])
 
         if (!ID)
-            return message.reply("Role not found").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Role not found").then(m => del(m, 7500));
 
         if (roleIDs.includes(ID))
             addVerificationRole(roleNames[roleIDs.indexOf(ID)], ID)
@@ -44,9 +44,9 @@ module.exports = {
                         **Verification Role Added by:** ${message.member.user}
                         **Role Added:** ${roleName} (${roleID})`);
 
-                    logChannel.send(embed).catch(err => err);
+                    s(logChannel, '', embed);
 
-                    return message.reply("Adding/updating verification role... this may take a second...").then(m => del(m, 7500));
+                    return r(message.channel, message.author, "Adding/updating verification role... this may take a second...").then(m => del(m, 7500));
                 }
             }).catch(err => console.log(err))
         }

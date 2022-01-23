@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, r, del } = require("../../functions.js");
 const db = require('../../schemas/db.js');
 const { MessageEmbed } = require("discord.js");
 
@@ -23,13 +23,13 @@ module.exports = {
                 if (exists.badWordList.length > 0) {
                     badWordList = exists.badWordList.map(word => `\`${word}\``).join(',');
                     embed.setDescription(badWordList);
-                    return message.channel.send(embed).then(m => del(m, 30000));
+                    return s(message.channel, '', embed).then(m => del(m, 30000));
                 } else {
                     embed.setDescription("No bad words have been set.");
-                    return message.channel.send(embed).then(m => del(m, 7500));
+                    return s(message.channel, '', embed).then(m => del(m, 7500));
                 }
             } else {
-                return message.reply("There have been no bad words set yet.")
+                return r(message.channel, message.author, "There have been no bad words set yet.")
             }
         });
     }

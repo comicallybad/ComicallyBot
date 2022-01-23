@@ -1,4 +1,4 @@
-const { del, pageList } = require("../../functions.js");
+const { s, r, e, del } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const db = require('../../schemas/db.js');
 
@@ -18,18 +18,18 @@ module.exports = {
             .setDescription("Verification Role")
             .setTimestamp();
 
-        const m = await message.channel.send(embed);
+        const m = await s(message.channel, '', embed);
 
         db.findOne({ guildID: guildID }, (err, exists) => {
-            if (!exists) return message.reply("Error within database").then(m => del(m, 7500));
+            if (!exists) return r(message.channel, message.author, "Error within database").then(m => del(m, 7500));
             else {
                 if (exists.verificationRole.length > 0) {
                     let verificationRole = ` Name: ${exists.verificationRole[0].roleName} ID: ${exists.verificationRole[0].roleID}`;
                     embed.setDescription("").addField("Verification Role", verificationRole);
-                    return m.edit(embed).then(del(m, 30000));
+                    return e(m, m.channel, '', embed).then(del(m, 30000));
                 } else {
                     embed.setDescription("No verification role set");
-                    return m.edit(embed).then(del(m, 30000));
+                    return e(m, m.channel, '', embed).then(del(m, 30000));
                 }
             }
         }).catch(err => console.log(err))

@@ -1,6 +1,5 @@
-const { del, findID } = require("../../functions.js");
+const { s, r, del } = require("../../functions.js");
 const db = require('../../schemas/db.js');
-const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
@@ -27,10 +26,10 @@ module.exports = {
                     .setTimestamp()
                     .setDescription(`**Verification Role Removed by:** ${message.member.user}`);
 
-                logChannel.send(embed).catch(err => err);
+                s(logChannel, '', embed);
 
-                return message.reply("Removing verification role... this may take a second...").then(m => del(m, 7500));
-            } else return message.reply("Role was never added, or it was already removed.").then(m => del(m, 7500));
+                return r(message.channel, message.author, "Removing verification role... this may take a second...").then(m => del(m, 7500));
+            } else return r(message.channel, message.author, "Role was never added, or it was already removed.").then(m => del(m, 7500));
         }).catch(err => console.log(err))
     }
 }

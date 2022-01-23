@@ -1,5 +1,5 @@
 const db = require("../../schemas/db.js");
-const { del } = require('../../functions.js');
+const { s, del } = require('../../functions.js');
 const { MessageEmbed } = require("discord.js");
 
 module.exports = async (client, message, user) => {
@@ -63,16 +63,12 @@ function checkReactionRole(message, user) {
                 if (guildUser.roles.cache.get(role.roleID)) {
                     guildUser.roles.remove(role.roleID).then(() => {
                         embed.setDescription(`${user} ${user.tag} **${role.roleName}**(${role.roleID})`);
-                        if (logChannel) logChannel.send(embed).catch(err => err);
-                        guildUser.send(`Hello, you have been removed from the **${role.roleName}** role in **${guildUser.guild.name}**`).catch(err => {
-                            message.message.channel.send(`${user} was removed from the **${role.roleName}** role`).then(m => del(m, 7500))
-                        });
+                        if (logChannel) s(logChannel, '', embed);
                     }).catch(err => {
-                        if (err) guildUser.send(`Hello, there was an issue removing you from the **${role.roleName}** in **${guildUser.guild.name}**, possibly due to role hierarchy: \`${err}\``).catch(e => {
-                            const channelPermissions = message.channel.permissionsFor(message.guild.me);
+                        if (err) {
                             if (!channelPermissions.has("SEND_MESSAGES")) return;
-                            message.message.channel.send(`${user} there was an issue removing you from the **${role.roleName}**`).then(m => del(m, 7500));
-                        });
+                            else return s(message.message.channel, `${user} there was an issue removing you from the **${role.roleName}**`).then(m => del(m, 7500));
+                        }
                     });
                 }
             });

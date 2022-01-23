@@ -1,3 +1,4 @@
+const { s } = require('../../functions.js');
 const { MessageEmbed } = require("discord.js");
 
 module.exports = async (client, guild, user) => {
@@ -13,7 +14,7 @@ module.exports = async (client, guild, user) => {
                 .setFooter(`ID: ${user.id}`)
                 .setTimestamp()
 
-            logChannel.send(embed).catch(err => err);
+            return s(logChannel, '', embed);
         }
     }
 }

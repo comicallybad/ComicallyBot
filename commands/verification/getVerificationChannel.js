@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { r, del } = require("../../functions.js");
 const db = require('../../schemas/db.js');
 
 module.exports = {
@@ -12,8 +12,8 @@ module.exports = {
         db.findOne({ guildID: message.guild.id, channels: { $elemMatch: { command: "verify" } } }, async (err, exists) => {
             if (exists) {
                 let channel = await client.channels.cache.get(exists.channels.filter(x => x.command === "verify")[0].channelID);
-                return message.reply(`The verification channel is: ${channel}.`).then(m => del(m, 30000));
-            } else return message.reply("There has been no verification channel set.").then(m => del(m, 7500));
+                return r(message.channel, message.author, `The verification channel is: ${channel}.`).then(m => del(m, 30000));
+            } else return r(message.channel, message.author, "There has been no verification channel set.").then(m => del(m, 7500));
         });
     }
 }

@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { r, del } = require("../../functions.js");
 
 module.exports = {
     name: "donate",
@@ -7,6 +7,6 @@ module.exports = {
     permissions: "member",
     run: (client, message, args) => {
         const donationLink = "https://www.paypal.me/comicallybad";
-        return message.reply(`The donation link to support the bot creator is: ${donationLink}`).then(m => del(m, 15000));
+        return r(message.channel, message.author, `The donation link to support the bot creator is: ${donationLink}`).then(m => del(m, 15000));
     }
 }

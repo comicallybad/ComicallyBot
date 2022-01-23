@@ -1,6 +1,6 @@
+const { s, r, del, promptMessage } = require("../../functions.js");
 const algebra = require("algebra.js");
 const { MessageEmbed } = require("discord.js");
-const { del, promptMessage } = require("../../functions.js");
 
 module.exports = {
     name: "solveexpression",
@@ -20,14 +20,14 @@ module.exports = {
                 .addField("Solved expression: ", algebra.parse(expression).solveFor("x").toString().length > 0 ? `\`${algebra.parse(expression).solveFor("x").toString()}\`` : `\`Could not solve. Possible imaginary solutions.\``)
                 .setFooter("React ❤️ to save or 🗑️ to delete.\n No reaction will then delete after 30s", message.author.displayAvatarURL())
 
-            message.channel.send(embed).then(async m => {
+            s(message.channel, '', embed).then(async m => {
                 let reacted = await promptMessage(m, message.author, 30, ["❤️", "🗑️"]);
                 if (reacted == "❤️") m.reactions.removeAll();
                 else if (reacted == "🗑️") del(m, 0);
                 else if (!reacted) del(m, 0);
             });
         } catch {
-            message.reply('You must have provided invalid syntax, or this expression cannot be solved.').then(m => del(m, 7500));
+            return r(message.channel, message.author, "You must have provided invalid syntax, or this expression cannot be solved.").then(m => del(m, 7500));
         }
     }
 }

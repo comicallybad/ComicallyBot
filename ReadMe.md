@@ -12,7 +12,7 @@ Create a discord text channel named "**reports**"
 **FOR:** Logging reports from the `_report` command if you wish to log these events separately.
 
 **NOTE:** These channels **require** the bot to have at least: 
-`view channel, send messages, and embed links and mention` permissions.
+`view channel, send messages, embed links, mentions, and view audit log` permissions.
 
 SETUP 2:
 -----------------------------------------------------------------------

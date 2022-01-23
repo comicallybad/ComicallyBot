@@ -1,4 +1,4 @@
-const { del, findID } = require("../../functions.js");
+const { s, r, del, findID } = require("../../functions.js");
 const db = require('../../schemas/db.js');
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
@@ -15,12 +15,12 @@ module.exports = {
         let guildID = message.guild.id;
 
         if (!args[0])
-            return message.reply("Please provide a user/role.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a user/role.").then(m => del(m, 7500));
 
         let ID = findID(message, args[0]);
 
         if (!ID)
-            return message.reply("user/role not found").then(m => del(m, 7500));
+            return r(message.channel, message.author, "user/role not found").then(m => del(m, 7500));
         else removeMember(ID);
 
         function removeMember(roleID) {
@@ -43,11 +43,11 @@ module.exports = {
                             **Member Removed by:** ${message.member.user}
                             **Role/User ID Removed:** (${roleID})`);
 
-                        logChannel.send(embed).catch(err => err);
+                        s(logChannel, '', embed);
 
-                        return message.reply("Removing member... this may take a second...").then(m => del(m, 7500));
+                        return r(message.channel, message.author, "Removing member... this may take a second...").then(m => del(m, 7500));
                     }).catch(err => console.log(err))
-                } else return message.reply("User/role was never added, or it was already removed.").then(m => del(m, 7500));
+                } else return r(message.channel, message.author, "User/role was never added, or it was already removed.").then(m => del(m, 7500));
             }).catch(err => console.log(err))
         }
     }

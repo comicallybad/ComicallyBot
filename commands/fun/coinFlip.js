@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, del } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
@@ -18,6 +18,6 @@ module.exports = {
         if (number === 0) embed.addField("Result", "\`Heads\`")
         else embed.addField("Result", "\`Tails\`")
 
-        message.channel.send(embed).then(m => del(m, 30000));
+        return s(message.channel, '', embed).then(m => del(m, 30000));
     }
 }

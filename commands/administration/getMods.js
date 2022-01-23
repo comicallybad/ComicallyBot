@@ -1,4 +1,4 @@
-const { del, pageList } = require("../../functions.js");
+const { s, r, e, del, pageList } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const db = require('../../schemas/db.js');
 
@@ -18,20 +18,20 @@ module.exports = {
             .setDescription("List of server bot moderators")
             .setTimestamp();
 
-        const m = await message.channel.send(embed);
+        const m = await s(message.channel, '', embed);
 
         db.findOne({ guildID: guildID }, (err, exists) => {
-            if (!exists) return message.reply("Error within database").then(m => del(m, 7500));
+            if (!exists) return r(message.channel, message.author, "Error within database").then(m => del(m, 7500));
             else {
                 let modRoles = exists.modRoles.map(role => " Name: " + `\`${role.roleName}\`` + "  ID: " + `\`${role.roleID}\``)
                 if (modRoles.length > 0 && modRoles.length <= 10) {
-                    embed.setDescription("").addField("Mod Roles", modRoles)
-                    return m.edit(embed).then(del(m, 30000));
+                    embed.setDescription("").addField("Mod Roles", `${modRoles}`)
+                    return e(m, m.channel, '', embed).then(del(m, 30000));
                 } else if (modRoles.length > 10) {
-                    return pageList(m, message.author, modRoles, embed, "Mod:")
+                    return pageList(m, message.author, `${modRoles}`, embed, "Mod:")
                 } else {
                     embed.setDescription("").addField("Mod Roles", "There have been no bot mods set.")
-                    return m.edit(embed).then(del(m, 30000));
+                    return e(m, m.channel, '', embed).then(del(m, 30000));
                 }
             }
         }).catch(err => console.log(err))

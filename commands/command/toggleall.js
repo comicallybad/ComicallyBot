@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, r, del } = require("../../functions.js");
 const db = require('../../schemas/db.js');
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
@@ -15,10 +15,10 @@ module.exports = {
         let guildID = message.guild.id;
 
         if (!args[0])
-            return message.reply("Please provide an on/off, true/false or enable/disable.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide an on/off, true/false or enable/disable.").then(m => del(m, 7500));
 
         if (args[0] !== "true" && args[0] !== "false" && args[0] !== "enable" && args[0] !== "disable")
-            return message.reply("Please provide only true or false/enable or disable.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide only true or false/enable or disable.").then(m => del(m, 7500));
 
         if (args[0] === "true" || args[0] === "enable" || args[0] === "on") {
             client.commands.forEach((element, cmdIndex) => {
@@ -37,9 +37,9 @@ module.exports = {
                 **Commands Toggled by:** ${message.member.user}
                 **Commands Toggled:** ON`);
 
-            logChannel.send(embed).catch(err => err);
+            s(logChannel, '', embed);
 
-            return message.reply("Toggling all commands on... this may take a second...").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Toggling all commands on... this may take a second...").then(m => del(m, 7500));
         }
 
         if (args[0] === "false" || args[0] === "disable" || args[0] === "off") {
@@ -59,9 +59,9 @@ module.exports = {
                 **Commands Toggled by: ${message.member.user}
                 **Commands Toggled:** OFF`);
 
-            logChannel.send(embed).catch(err => err);
+            s(logChannel, '', embed);
 
-            return message.reply("Toggling all commands off... this may take a second...").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Toggling all commands off... this may take a second...").then(m => del(m, 7500));
         }
     }
 }

@@ -1,4 +1,4 @@
-const { del, awaitReaction } = require("../../functions.js");
+const { s, r, e, del, awaitReaction } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 const { addXP } = require("../../dbFunctions.js");
@@ -14,22 +14,22 @@ module.exports = {
         const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         if (!args[0])
-            return message.reply("Please provide an amount of xp.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide an amount of xp.").then(m => del(m, 7500));
 
         if (!args[1])
-            return message.reply("Please provide an amount of time.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide an amount of time.").then(m => del(m, 7500));
 
         if (isNaN(args[0]))
-            return message.reply("Please provide a valid number of xp").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a valid number of xp").then(m => del(m, 7500));
 
         if (isNaN(args[1]))
-            return message.reply("Please provide a valid number for time.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a valid number for time.").then(m => del(m, 7500));
 
         let amount = Math.floor(args[0]);
         let time = Math.floor(args[1] * 60000);
 
         if (amount < 1 || time < 1)
-            return message.reply("Please provide numbers greater than or equal to 1.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide numbers greater than or equal to 1.").then(m => del(m, 7500));
 
         let embed = new MessageEmbed()
             .setTitle("**React below for the giveaway!**")
@@ -37,7 +37,7 @@ module.exports = {
             .setFooter(`${amount} xp for ${Math.floor(args[1])} minute(s)`, message.author.displayAvatarURL())
             .setTimestamp();
 
-        message.channel.send(embed).then(async msg => {
+        s(message.channel, '', embed).then(async msg => {
             const users = await awaitReaction(msg, null, time, "💯");
 
             if (users.length > 0) {
@@ -64,9 +64,9 @@ module.exports = {
                         **XP Giveaway won by:** <@${userID}> (${userID})
                         **XP Given:** ${amount}`);
 
-                    logChannel.send(logEmbed).catch(err => err);
+                    s(logChannel, '', logEmbed);
 
-                    msg.edit(embed).catch(err => err);
+                    return e(msg, message.channel, '', embed);
                 }).catch(err => console.log(`There was an error in giveaway (addxp) ${err}`));
             } else {
                 msg.reactions.removeAll().catch(err => err);
@@ -75,7 +75,7 @@ module.exports = {
                     .setDescription(`There were no winners awarded, not enough reactions!`)
                     .setFooter(`No one won the ${amount} XP!`, message.author.displayAvatarURL());
 
-                msg.edit(embed).catch(err => err);
+                return e(msg, msg.channel, '', embed);
             }
         }).catch(err => console.log(`There was an error in giveaway ${err}`));
     }

@@ -1,4 +1,4 @@
-const { del, promptMessage } = require("../../functions.js");
+const { s, r, del, promptMessage } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 const db = require('../../schemas/db.js');
@@ -16,12 +16,12 @@ module.exports = {
         let guildID = message.guild.id;
 
         db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "verify" } } }, async (err, exists) => {
-            if (!exists) return message.reply("A verification channel has not been set by a moderator.").then(m => del(m, 7500));
+            if (!exists) return r(message.channel, message.author, "A verification channel has not been set by a moderator.").then(m => del(m, 7500));
             if (exists) {
                 let channel = message.guild.channels.cache.get(exists.channels.filter(cmd => cmd.command == "verify")[0].channelID);
 
                 if (message.channel.id !== channel.id)
-                    return message.reply(`This command is only available in the ${channel} channel.`).then(m => del(m, 7500));
+                    return r(message.channel, message.author, `This command is only available in the ${channel} channel.`).then(m => del(m, 7500));
 
                 const embed = new MessageEmbed()
                     .setColor("#0efefe")
@@ -33,11 +33,11 @@ module.exports = {
 
                 emojis = emojis.sort(() => Math.random() - 0.5);
 
-                const msg = await message.channel.send(embed);
+                const msg = await s(message.channel, '', embed);
                 const emoji = await promptMessage(msg, message.author, 30, emojis);
                 if (emoji == "❤️") {
                     del(msg, 0);
-                    message.reply("Congratuations, chose correctly!").then(m => del(m, 7500));
+                    r(message.channel, message.author, "Congratuations, chose correctly!").then(m => del(m, 7500));
 
                     const role = await message.guild.roles.cache.find(r => r.name === exists.verificationRole[0].roleName) || message.guild.roles.cache.find(r => r.id === exists.verificationRole[0].roleID);
 
@@ -52,16 +52,15 @@ module.exports = {
                         **Role added:** ${role.name} (${role.id})`);
 
                     message.member.roles.add(role.id).then(() => {
-                        message.member.send(`Hello, you have been added to the **${role.name}** role in ${message.guild.name}`).catch(err => err); //in case DM's are closed
-                        message.channel.send(`${message.member} was successfully added to the **${role.name}** role.`).then(m => del(m, 7500));
+                        s(message.channel, `${message.member} was successfully added to the **${role.name}** role.`).then(m => del(m, 7500));
                         if (logChannel)
-                            return logChannel.send(embed).catch(err => err);
+                            return s(logChannel, '', embed);
                     }).catch(err => {
-                        if (err) return message.reply(`There was an error attempting to add ${message.member} to the ${role.name} role: ${err}`).then(m => del(m, 7500));
+                        if (err) return r(message.channel, message.author, `There was an error attempting to add ${message.member} to the ${role.name} role: ${err}`).then(m => del(m, 7500));
                     });
                 } else {
                     del(msg, 0);
-                    return message.reply("Sorry, you chose incorrectly. 😢").then(m => del(m, 7500));
+                    return r(message.channel, message.author, "Sorry, you chose incorrectly. 😢").then(m => del(m, 7500));
                 }
             }
         }).catch(err => err);

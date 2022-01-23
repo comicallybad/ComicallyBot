@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, r, del } = require("../../functions.js");
 const db = require('../../schemas/db.js');
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
@@ -15,7 +15,7 @@ module.exports = {
         let guildID = message.guild.id;
 
         if (!args[0])
-            return message.reply("Please provide a word or words separated by a space you wish to remove from the list.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a word or words separated by a space you wish to remove from the list.").then(m => del(m, 7500));
 
         const embed = new MessageEmbed()
             .setColor("#0efefe")
@@ -32,8 +32,8 @@ module.exports = {
                 $pull: { badWordList: `${word}` }
             }).catch(err => console.log(err))
         })
-        message.reply("Removing bad word(s) from the list...").then(m => del(m, 7500));
+        r(message.channel, message.author, "Removing bad word(s) from the list...").then(m => del(m, 7500));
 
-        return logChannel.send(embed).catch(err => err);
+        return s(logChannel, '', embed);
     }
 }

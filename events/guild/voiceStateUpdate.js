@@ -1,6 +1,6 @@
 module.exports = (client, voiceStateStart, voiceStateEnd) => {
-    let startChannel = voiceStateStart.channelID;
-    let endChannel = voiceStateEnd.channelID;
+    let startChannel = voiceStateStart.channelId;
+    let endChannel = voiceStateEnd.channelId;
 
     if (!startChannel && endChannel) { //If user joins a channel
         if (voiceStateEnd.id == client.user.id) { //If the user is the bot

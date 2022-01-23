@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, r, del } = require("../../functions.js");
 const db = require('../../schemas/db.js');
 const { stripIndents } = require("common-tags");
 const { MessageEmbed } = require("discord.js");
@@ -17,19 +17,19 @@ module.exports = {
         let commands = client.commands
 
         if (!args[0])
-            return message.reply("Please provide a category.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a category.").then(m => del(m, 7500));
 
         if (!categories.includes(args[0]))
-            return message.reply("Category not found.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Category not found.").then(m => del(m, 7500));
 
         if (args[0] == "command" || args[0] == "owner" || args[0] == "support")
-            return message.reply("You may not toggle this category.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "You may not toggle this category.").then(m => del(m, 7500));
 
         if (!args[1])
-            return message.reply("Please provide an on/off, true/false or enable/disable.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide an on/off, true/false or enable/disable.").then(m => del(m, 7500));
 
         if (!args[1] === "true" || !args[1] === "false" || !args[1] === "enable" || !args[1] === "disable" || !args[1] === "on" || !args[1] === "off")
-            return message.reply("Please provide only on/off, true/false or enable/disable.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide only on/off, true/false or enable/disable.").then(m => del(m, 7500));
 
         if (args[1] === "true" || args[1] === "enable" || args[1] === "on") {
             commands = commands.map(function (command) {
@@ -52,9 +52,9 @@ module.exports = {
                 **Commands Category:** ${args[0]}
                 **Commands Toggled:** ON`);
 
-            logChannel.send(embed).catch(err => err);
+            s(logChannel, '', embed)
 
-            return message.reply("Enabling category... this may take a second...").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Enabling category... this may take a second...").then(m => del(m, 7500));
         }
 
         if (args[1] === "false" || args[1] === "disable" || args[1] === "off") {
@@ -78,9 +78,9 @@ module.exports = {
                 **Commands Category:** ${args[0]}
                 **Commands Toggled:** OFF`);
 
-            logChannel.send(embed).catch(err => err);
+            s(logChannel, '', embed);
 
-            return message.reply("Disabling category... this may take a second...").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Disabling category... this may take a second...").then(m => del(m, 7500));
         }
     }
 }

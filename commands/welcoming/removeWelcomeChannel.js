@@ -1,5 +1,5 @@
 const db = require("../../schemas/db.js");
-const { del } = require("../../functions.js")
+const { s, r, del } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
@@ -23,9 +23,9 @@ module.exports = {
                     .setDescription(stripIndents`
                     **Welcome channel removed by:** ${message.author}`);
 
-                logChannel.send(embed).catch(err => err);
-                return message.reply("Removed welcome channel.").then(m => del(m, 7500));
-            } else return message.reply("There has been no welcome channel set.").then(m => del(m, 7500));
+                s(logChannel, '', embed);
+                return r(message.channel, message.author, "Removed welcome channel.").then(m => del(m, 7500));
+            } else return r(message.channel, message.author, "There has been no welcome channel set.").then(m => del(m, 7500));
         });
     }
 }

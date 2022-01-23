@@ -1,4 +1,4 @@
-const { del } = require("../../functions.js");
+const { s, r, del } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const db = require('../../schemas/db.js');
 
@@ -13,20 +13,20 @@ module.exports = {
         let guildID = message.guild.id;
 
         db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "suggest" } } }, async (err, exists) => {
-            if (!exists) return message.reply("A suggestion channel has not been set by a moderator.").then(m => del(m, 7500));
+            if (!exists) return r(message.channel, message.author, "A suggestion channel has not been set by a moderator.").then(m => del(m, 7500));
             if (exists) {
                 let channel = message.guild.channels.cache.get(exists.channels.filter(cmd => cmd.command == "suggest")[0].channelID);
 
                 if (message.channel.id !== channel.id)
-                    return message.reply(`This command is only available in the ${channel} channel.`).then(m => del(m, 7500));
+                    return r(message.channel, message.author, `This command is only available in the ${channel} channel.`).then(m => del(m, 7500));
 
                 if (!args[0])
-                    return message.reply("Please provide a suggestion.").then(m => del(m, 7500));
+                    return r(message.channel, message.author, "Please provide a suggestion.").then(m => del(m, 7500));
 
                 let suggestion = args.join(" ");
 
                 if (suggestion.length >= 1024)
-                    return message.reply("You can only use a string less than 2048 characters!").then(m => del(m, 7500));
+                    return r(message.channel, message.author, "You can only use a string less than 2048 characters!").then(m => del(m, 7500));
                 else {
                     const embed = new MessageEmbed()
                         .setColor("#0efefe")
@@ -36,8 +36,8 @@ module.exports = {
                         .setTimestamp()
 
                     if (args[0]) {
-                        let m = await message.channel.send(embed);
-                        m.react("✅").then(m.react("❌"));
+                        let m = await s(message.channel, '', embed);
+                        return m.react("✅").then(m.react("❌"));
                     }
                 }
             }
