@@ -25,10 +25,10 @@ module.exports = {
 
                 const embed = new MessageEmbed()
                     .setColor("#0efefe")
-                    .setAuthor(`${message.member.user.tag}`, `${message.author.displayAvatarURL()}`)
+                    .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL() })
                     .setDescription(`**Please select the correct reaction below. The correction reaction will be: ♥️**`)
                     .addField('Task:', '**Wait for all emojis to appear. Then, select the correct reaction below or you will have to wait 5 minutes to attempt again.**')
-                    .setFooter('This message expires in 30 seconds.')
+                    .setFooter({ text: 'This message expires in 30 seconds.' })
                     .setTimestamp();
 
                 emojis = emojis.sort(() => Math.random() - 0.5);
@@ -45,7 +45,7 @@ module.exports = {
                         .setColor("#00FF00")
                         .setTitle("Member Verified")
                         .setThumbnail(message.member.user.displayAvatarURL())
-                        .setFooter(message.member.displayName, message.author.displayAvatarURL())
+                        .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                         .setTimestamp()
                         .setDescription(stripIndents`
                         **Verified Member:** ${message.member} (${message.member.id})

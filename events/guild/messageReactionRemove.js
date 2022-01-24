@@ -49,7 +49,7 @@ function checkReactionRole(message, user) {
     const embed = new MessageEmbed()
         .setColor("#FF0000")
         .setTitle("Member left role via Reaction Role")
-        .setFooter(user.id, user.displayAvatarURL())
+        .setFooter({ text: user.id, iconURL: user.displayAvatarURL() })
         .setThumbnail(guildUser.user.displayAvatarURL())
         .setTimestamp()
 

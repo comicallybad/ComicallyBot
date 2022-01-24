@@ -21,10 +21,10 @@ module.exports = {
                 else {
                     const embed = new MessageEmbed()
                         .setColor("#0efefe")
-                        .setAuthor(`${message.member.user.tag}`, `${message.author.displayAvatarURL()}`)
+                        .setAuthor({ name: `${message.member.displayName}`, iconURL: message.author.displayAvatarURL() })
                         .setTitle(`Definition of: ${args[0]}`)
                         .setDescription(result.definition)
-                        .setFooter(`Category of type: ${result.category}`)
+                        .setFooter({ text: `Category of type: ${result.category}` })
                         .setTimestamp()
 
                     return s(message.channel, '', embed).then(m => del(m, 30000));

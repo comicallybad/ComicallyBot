@@ -25,7 +25,7 @@ module.exports = {
         const created = formatDate(member.user.createdAt);
 
         const embed = new MessageEmbed()
-            .setFooter(member.displayName, member.user.displayAvatarURL())
+            .setFooter({ text: member.displayName, iconURL: member.user.displayAvatarURL() })
             .setThumbnail(member.user.displayAvatarURL())
             .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
             .addField('Member information:', stripIndents`

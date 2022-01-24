@@ -9,7 +9,7 @@ module.exports = (client, member) => {
             .setColor("#ff0000")
             .setTitle("Member Warned")
             .setThumbnail(member.guild.me.user.displayAvatarURL())
-            .setFooter(member.guild.me.displayName, member.guild.me.user.displayAvatarURL())
+            .setFooter({ text: member.guild.me.displayName, iconURL: member.guild.me.user.displayAvatarURL() })
             .setTimestamp()
             .setDescription(stripIndents`
             **Warned member:** ${member} (${member.id})

@@ -31,7 +31,7 @@ module.exports = {
                 .setColor("#ff0000")
                 .setTitle("Member Muted")
                 .setThumbnail(mutee.user.displayAvatarURL())
-                .setFooter(message.member.displayName, message.author.displayAvatarURL())
+                .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                 .setTimestamp()
                 .setDescription(stripIndents`
                 **Muted member:** ${mutee} (${mutee.id})
@@ -40,12 +40,12 @@ module.exports = {
 
             const promptEmbed = new MessageEmbed()
                 .setColor("GREEN")
-                .setAuthor(`This verification becomes invalid after 30s.`)
+                .setAuthor({ name: `This verification becomes invalid after 30s.` })
                 .setDescription(`Do you want to mute ${mutee}?`)
 
             const promptEmbedTimer = new MessageEmbed()
                 .setColor("#0efefe")
-                .setAuthor(`This verification becomes invalid after 30s.`)
+                .setAuthor({ name: `This verification becomes invalid after 30s.` })
                 .setDescription(`How long do you wish to mute ${mutee}? (in minutes)`)
 
             await s(message.channel, '', promptEmbed).then(async msg => {

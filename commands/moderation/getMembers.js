@@ -14,7 +14,7 @@ module.exports = {
         const embed = new MessageEmbed()
             .setColor("#0efefe")
             .setTitle("Server Bot Members")
-            .setFooter(message.guild.me.displayName, client.user.displayAvatarURL())
+            .setFooter({ text: message.guild.me.displayName, iconURL: client.user.displayAvatarURL() })
             .setDescription("List of server bot members")
             .setTimestamp();
 

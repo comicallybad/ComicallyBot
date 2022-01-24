@@ -30,7 +30,7 @@ module.exports = {
             .setColor("#0efefe")
             .setTitle("Member Nickname Changed")
             .setThumbnail(user.user.displayAvatarURL())
-            .setFooter(message.member.displayName, message.author.displayAvatarURL())
+            .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
             .setTimestamp()
             .setDescription(stripIndents`
             **Member changed:** ${user} (${user.id})

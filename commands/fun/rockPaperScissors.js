@@ -12,7 +12,7 @@ module.exports = {
     run: async (client, message, args) => {
         const embed = new MessageEmbed()
             .setColor("#ffffff")
-            .setFooter(message.guild.me.displayName, client.user.displayAvatarURL())
+            .setFooter({ text: message.guild.me.displayName, iconURL: client.user.displayAvatarURL() })
             .setDescription("Add a reaction to one of these emojis to play the game!")
             .setTimestamp();
 

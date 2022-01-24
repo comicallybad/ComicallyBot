@@ -22,7 +22,7 @@ module.exports = {
                     .setColor("#0efefe")
                     .setTitle("Verification Role Removed")
                     .setThumbnail(message.author.displayAvatarURL())
-                    .setFooter(message.member.displayName, message.author.displayAvatarURL())
+                    .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                     .setTimestamp()
                     .setDescription(`**Verification Role Removed by:** ${message.member.user}`);
 

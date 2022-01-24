@@ -11,7 +11,7 @@ module.exports = async (client, guild, user) => {
                 .setTitle("Member Unbanned")
                 .setThumbnail(user.displayAvatarURL())
                 .setDescription(`${user} ${user.tag}`)
-                .setFooter(`ID: ${user.id}`)
+                .setFooter({ text: `ID: ${user.id}` })
                 .setTimestamp()
 
             return s(logChannel, '', embed);

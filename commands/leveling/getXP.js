@@ -31,7 +31,7 @@ module.exports = {
                         .setTitle(`${exists.userNickname != null ? exists.userNickname : exists.userName}'s rank`)
                         .setTimestamp()
                         .setThumbnail(exists.userDisplayAvatarURL)
-                        .setFooter(exists.userID)
+                        .setFooter({ text: exists.userID })
                         .setDescription(stripIndents`
                         **User is level:** ${exists.level}
                         **User has:** ${exists.xp} XP

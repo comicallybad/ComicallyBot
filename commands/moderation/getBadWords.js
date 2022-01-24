@@ -13,16 +13,17 @@ module.exports = {
         let badWordList;
 
         const embed = new MessageEmbed()
-            .setColor("#0efefe")
             .setTitle("Bad Word List")
-            .setFooter(message.member.displayName, message.author.displayAvatarURL())
+            .setColor("#0efefe")
+            .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
             .setTimestamp()
+            .setDescription("Bad Word List.");
 
         db.findOne({ guildID: guildID }, (err, exists) => {
             if (exists) {
                 if (exists.badWordList.length > 0) {
-                    badWordList = exists.badWordList.map(word => `\`${word}\``).join(',');
-                    embed.setDescription(badWordList);
+                    badWordList = exists.badWordList.map(word => `\`${word}\``);
+                    embed.setDescription(`${badWordList}`);
                     return s(message.channel, '', embed).then(m => del(m, 30000));
                 } else {
                     embed.setDescription("No bad words have been set.");

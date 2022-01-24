@@ -18,7 +18,7 @@ module.exports = {
                 .setColor("#0efefe")
                 .addField(`Original expression:`, `\`${expression}\``)
                 .addField("Simplified expression: ", `\`${simplify(expression).toString()}\``)
-                .setFooter("React ❤️ to save or 🗑️ to delete.\n No reaction will then delete after 30s", message.author.displayAvatarURL())
+                .setFooter({ text: "React ❤️ to save or 🗑️ to delete.\n No reaction will then delete after 30s", iconURL: message.author.displayAvatarURL() });
 
             s(message.channel, '', embed).then(async m => {
                 let reacted = await promptMessage(m, message.author, 30, ["❤️", "🗑️"]);

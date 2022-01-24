@@ -9,7 +9,7 @@ module.exports = (client, member) => {
             .setColor("#ff0000")
             .setTitle("Member Muted")
             .setThumbnail(member.guild.me.user.displayAvatarURL())
-            .setFooter(member.guild.me.displayName, member.guild.me.user.displayAvatarURL())
+            .setFooter({ text: member.guild.me.displayName, iconURL: member.guild.me.user.displayAvatarURL() })
             .setTimestamp()
             .setDescription(stripIndents`
             **Muted member:** ${member} (${member.id})
@@ -26,7 +26,7 @@ module.exports = (client, member) => {
                     .setColor("#00ff00")
                     .setTitle("Member Unmuted")
                     .setThumbnail(member.guild.me.user.displayAvatarURL())
-                    .setFooter(member.guild.me.displayName, member.guild.me.user.displayAvatarURL())
+                    .setFooter({ text: member.guild.me.displayName, iconURL: member.guild.me.user.displayAvatarURL() })
                     .setTimestamp()
                     .setDescription(stripIndents`
                     **Unmuted member:** ${member} (${member.id})

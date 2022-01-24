@@ -43,7 +43,7 @@ module.exports = {
         const embed = new MessageEmbed()
             .setColor("#0efefe")
             .setTitle("Welcome Message Reaction(s) Changed")
-            .setFooter(message.member.displayName, message.author.displayAvatarURL())
+            .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
             .setTimestamp()
             .setDescription(stripIndents`
             **Welcome message reaction(s) changed to:** ${args.join(' ')}

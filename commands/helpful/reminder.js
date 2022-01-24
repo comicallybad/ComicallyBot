@@ -22,7 +22,7 @@ module.exports = {
                 .setColor("#0efefe")
                 .setTitle(`**Timer**`)
                 .setDescription(`${message.author}, your timer is finished!`)
-                .setFooter(`Time elapsed: ${humanizeDuration(time)}`, message.author.displayAvatarURL());
+                .setFooter({ text: `Time elapsed: ${humanizeDuration(time)}`, iconURL: message.author.displayAvatarURL() });
 
             r(message.channel, message.author, `${humanizeDuration(time)} timer set`).then(m => del(m, 7500));
 
@@ -42,7 +42,7 @@ module.exports = {
                 .setColor("#0efefe")
                 .setTitle(`**Reminder**`)
                 .setDescription(`${message.author}, I am reminding you: ${reminder}!`)
-                .setFooter(`Time elapsed: ${humanizeDuration(time)}`, message.author.displayAvatarURL());
+                .setFooter({ text: `Time elapsed: ${humanizeDuration(time)}`, iconURL: message.author.displayAvatarURL() });
 
             r(message.channel, message.author, `You will be reminded in ${humanizeDuration(time)}.`).then(m => del(m, 7500));
 

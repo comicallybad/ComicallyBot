@@ -10,7 +10,7 @@ module.exports = {
     usage: "[@user] [Give a goodnight message]",
     run: async (client, message, args) => {
         const embed = new MessageEmbed()
-            .setFooter(`Message from: ${message.member.displayName}`, message.member.user.displayAvatarURL())
+            .setFooter({ text: `Message from: ${message.member.displayName}`, iconURL: message.member.user.displayAvatarURL() })
             .setTimestamp();
 
         if (!args[0]) {

@@ -33,8 +33,8 @@ module.exports = {
             .setColor("RED")
             .setTitle("Report")
             .setTimestamp()
-            .setFooter(message.guild.name, message.guild.iconURL)
-            .setAuthor("Reported Member", rMember.user.displayAvatarURL())
+            .setFooter({ text: message.guild.name, iconURL: message.guild.iconURL })
+            .setAuthor({ name: "Reported Member", iconURL: rMember.user.displayAvatarURL() })
             .setDescription(stripIndents`**Member: ${rMember} (${rMember.id})**
             **Reported by:** ${message.member}
             **Reported in:** ${message.channel}

@@ -25,7 +25,7 @@ module.exports = async (client, data) => {
                     .setTitle("Member Joined")
                     .setThumbnail(data.user.displayAvatarURL())
                     .setDescription(`${data.user} ${data.user.tag}`)
-                    .setFooter(`ID: ${data.user.id}`)
+                    .setFooter({ text: `ID: ${data.user.id}` })
                     .setTimestamp();
 
                 if (time <= 604800000) { //604800000  is 7 days in MS

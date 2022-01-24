@@ -30,10 +30,10 @@ module.exports = {
                 else {
                     let embed = new MessageEmbed()
                         .setColor("#0efefe")
-                        .setAuthor(`Urban Dictionary | ${word}`)
+                        .setAuthor({ name: `Urban Dictionary | ${word}` })
                         .setDescription(description)
                         .setTimestamp()
-                        .setFooter(`Written by ${author || "unknown"}`);
+                        .setFooter({ text: `Written by ${author || "unknown"}` });
 
                     return s(message.channel, '', embed);
                 }

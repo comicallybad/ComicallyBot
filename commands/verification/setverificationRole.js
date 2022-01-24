@@ -38,7 +38,7 @@ module.exports = {
                         .setColor("#0efefe")
                         .setTitle("Verification Role Added")
                         .setThumbnail(message.author.displayAvatarURL())
-                        .setFooter(message.member.displayName, message.author.displayAvatarURL())
+                        .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                         .setTimestamp()
                         .setDescription(stripIndents`
                         **Verification Role Added by:** ${message.member.user}

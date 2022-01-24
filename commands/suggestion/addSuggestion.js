@@ -30,9 +30,9 @@ module.exports = {
                 else {
                     const embed = new MessageEmbed()
                         .setColor("#0efefe")
-                        .setAuthor(`${message.member.user.tag}`, `${message.author.displayAvatarURL()}`)
-                        .setDescription(suggestion)
-                        .setFooter(`Select a reaction below to vote on ${message.author.username}'s suggestion`)
+                        .setAuthor({ name: `${message.member.user.tag}`, iconURL: message.author.displayAvatarURL() })
+                        .setDescription(`${suggestion}`)
+                        .setFooter({ text: `Select a reaction below to vote on ${message.author.username}'s suggestion` })
                         .setTimestamp()
 
                     if (args[0]) {

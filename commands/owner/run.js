@@ -26,7 +26,7 @@ module.exports = {
             let embed = new MessageEmbed()
                 .setColor("#00FF00")
                 .setTimestamp()
-                .setFooter(`${client.user.username}`, `${client.user.displayAvatarURL()}`)
+                .setFooter({ text: client.user.username, iconURL: client.user.displayAvatarURL() })
                 .setTitle("Eval")
                 .addField("Code to evaluate", `\`\`\`js\n${beautify(args.join(' '), { format: "js" })}\n\`\`\``)
                 .addField("Evaluated: ", `${evaluated}`)
@@ -38,7 +38,7 @@ module.exports = {
                 .setColor("#FF0000")
                 .setTitle("\:x: Error!")
                 .setDescription(`${err}`)
-                .setFooter(`${client.user.username}`, `${client.user.displayAvatarURL()}`)
+                .setFooter({ text: client.user.username, iconURL: client.user.displayAvatarURL() })
 
             return s(message.channel, '', embed).then(m => del(m, 15000));
         }

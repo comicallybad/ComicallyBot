@@ -14,7 +14,7 @@ module.exports = {
         const { title, author, duration, thumbnail } = player.queue.current;
 
         const embed = new MessageEmbed()
-            .setAuthor("Current Song Playing.", message.author.displayAvatarURL())
+            .setAuthor({ name: "Current Song Playing.", iconURL: message.author.displayAvatarURL() })
             .setThumbnail(thumbnail)
             .setDescription(`${player.playing ? "▶️" : "⏸️"} **${title}** \`${humanizeDuration(duration)}\` by ${author}`)
 

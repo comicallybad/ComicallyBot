@@ -18,7 +18,7 @@ module.exports = {
                 .setColor("#0efefe")
                 .addField(`Original expression:`, `\`${expression}\``)
                 .addField("Solved expression: ", algebra.parse(expression).solveFor("x").toString().length > 0 ? `\`${algebra.parse(expression).solveFor("x").toString()}\`` : `\`Could not solve. Possible imaginary solutions.\``)
-                .setFooter("React ❤️ to save or 🗑️ to delete.\n No reaction will then delete after 30s", message.author.displayAvatarURL())
+                .setFooter({ text: "React ❤️ to save or 🗑️ to delete.\n No reaction will then delete after 30s", iconURL: message.author.displayAvatarURL() })
 
             s(message.channel, '', embed).then(async m => {
                 let reacted = await promptMessage(m, message.author, 30, ["❤️", "🗑️"]);

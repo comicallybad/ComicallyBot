@@ -34,7 +34,7 @@ module.exports = {
         let embed = new MessageEmbed()
             .setTitle("**React below for the giveaway!**")
             .setDescription(`The giveaway is for ${amount} xp, and is going for ${Math.floor(args[1])} minute(s)`)
-            .setFooter(`${amount} xp for ${Math.floor(args[1])} minute(s)`, message.author.displayAvatarURL())
+            .setFooter({ text: `${amount} xp for ${Math.floor(args[1])} minute(s)`, iconURL: message.author.displayAvatarURL() })
             .setTimestamp();
 
         s(message.channel, '', embed).then(async msg => {
@@ -51,13 +51,13 @@ module.exports = {
                 embed
                     .setDescription(`Congrats <@${userID}>, you are the winner of the ${amount} xp giveaway!`)
                     .setThumbnail(displayAvatar)
-                    .setFooter(`${userName} won ${amount} xp!`, displayAvatar);
+                    .setFooter({ text: `${userName} won ${amount} xp!`, iconURL: displayAvatar });
 
                 addXP(message, userID, amount).then(() => {
                     const logEmbed = new MessageEmbed()
                         .setColor("#00ff00")
                         .setThumbnail(message.author.displayAvatarURL())
-                        .setFooter(message.member.displayName, message.author.displayAvatarURL())
+                        .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                         .setTimestamp()
                         .setDescription(stripIndents`
                         **XP Giveaway by:** <@${message.member.id}> ${message.member.user.username} (${message.member.id})
@@ -73,7 +73,7 @@ module.exports = {
 
                 embed
                     .setDescription(`There were no winners awarded, not enough reactions!`)
-                    .setFooter(`No one won the ${amount} XP!`, message.author.displayAvatarURL());
+                    .setFooter({ text: `No one won the ${amount} XP!`, iconURL: message.author.displayAvatarURL() });
 
                 return e(msg, msg.channel, '', embed);
             }

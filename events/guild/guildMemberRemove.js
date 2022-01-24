@@ -24,7 +24,7 @@ module.exports = async (client, member) => {
                 .setColor("#0EFEFE")
                 .setTitle("Member Left")
                 .setThumbnail(member.user.displayAvatarURL())
-                .setFooter(`${member.displayName}`, `${member.user.displayAvatarURL()}`)
+                .setFooter({ text: member.displayName, iconURL: member.user.displayAvatarURL() })
                 .setTimestamp()
                 .setDescription(`**User Left:** ${member} (${member.id})`);
 
@@ -39,7 +39,7 @@ module.exports = async (client, member) => {
                     .setColor("#FF0000")
                     .setTitle("Member Kicked")
                     .setThumbnail(member.user.displayAvatarURL())
-                    .setFooter(`${member.displayName}`, `${member.user.displayAvatarURL()}`)
+                    .setFooter({ text: member.displayName, iconURL: member.user.displayAvatarURL() })
                     .setTimestamp()
                     .setDescription(stripIndents`
                     **User Kicked By:** ${executor} (${executor.id}).
@@ -54,7 +54,7 @@ module.exports = async (client, member) => {
                     .setColor("#0EFEFE")
                     .setTitle("Member Left")
                     .setThumbnail(member.user.displayAvatarURL())
-                    .setFooter(`${member.displayName}`, `${member.user.displayAvatarURL()}`)
+                    .setFooter({ text: member.displayName, iconURL: member.user.displayAvatarURL() })
                     .setTimestamp()
                     .setDescription(`**User Left:** ${member} (${member.id})`);
 

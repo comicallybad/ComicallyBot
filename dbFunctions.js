@@ -165,7 +165,7 @@ module.exports = {
             .setColor("#00FF00")
             .setTitle("Member joined role via Leveling Up")
             .setThumbnail(user.user.displayAvatarURL())
-            .setFooter(user.id, user.user.displayAvatarURL())
+            .setFooter({ text: user.id, iconURL: user.user.displayAvatarURL() })
             .setTimestamp()
 
         let exists = await db.findOne({ guildID: guildID, xpRoles: { $elemMatch: { level: level } } });

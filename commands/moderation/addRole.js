@@ -32,7 +32,7 @@ module.exports = {
             .setColor("#0efefe")
             .setTitle("Member Added To Role")
             .setThumbnail(user.user.displayAvatarURL())
-            .setFooter(message.member.displayName, message.author.displayAvatarURL())
+            .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
             .setTimestamp()
             .setDescription(stripIndents`
             **Role added to:** ${user} (${user.id})
@@ -41,7 +41,7 @@ module.exports = {
 
         const promptEmbed = new MessageEmbed()
             .setColor("GREEN")
-            .setAuthor(`This verification becomes invalid after 30s.`)
+            .setAuthor({ name: `This verification becomes invalid after 30s.` })
             .setDescription(`Do you want to add ${user} to then **${role.name}** role?`)
 
         await s(message.channel, '', promptEmbed).then(async msg => {

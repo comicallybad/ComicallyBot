@@ -239,7 +239,7 @@ module.exports = {
             .setColor("#ff0000")
             .setTitle("Member Warned")
             .setThumbnail(message.guild.me.user.displayAvatarURL())
-            .setFooter(message.guild.me.displayName, message.guild.me.user.displayAvatarURL())
+            .setFooter({ text: message.guild.me.displayName, iconURL: message.guild.me.displayAvatarURL() })
             .setTimestamp()
             .setDescription(stripIndents`
             **Member warned for ${type}:** ${message.member} (${message.author.id})
@@ -277,7 +277,7 @@ module.exports = {
             .setColor("#ff0000")
             .setTitle("Member Muted")
             .setThumbnail(message.guild.me.user.displayAvatarURL())
-            .setFooter(message.guild.me.displayName, message.guild.me.user.displayAvatarURL())
+            .setFooter({ text: message.guild.me.displayName, iconURL: message.guild.me.displayAvatarURL() })
             .setTimestamp()
             .setDescription(stripIndents`
             **Muted member:** ${message.member} (${message.author.id})

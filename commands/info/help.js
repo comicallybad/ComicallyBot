@@ -48,7 +48,7 @@ function getSpecific(client, message, input) {
         if (cmd.permissions) info += `\n**Permissions**: ${cmd.permissions}`
         if (cmd.usage) {
             info += `\n**Usage**: ${cmd.usage}`;
-            embed.setFooter(`Syntax: <> = required, [] = optional`);
+            embed.setFooter({ text: `Syntax: <> = required, [] = optional` });
         }
         getCommandStatus(message, cmd.name).then(async function (res) {
             if (res === false) info += '\n**Status**: ❌';
@@ -68,7 +68,7 @@ function getSpecific(client, message, input) {
                 if (cmd.usage) {
                     info += `\n**Usage**: \`${cmd.usage}\`\n\n`;
                 } else info += "\n\n"
-                embed.setFooter(`Syntax: <> = required, [] = optional`);
+                embed.setFooter({ text: `Syntax: <> = required, [] = optional` });
             });
         return s(message.channel, '', embed.setColor("#0efefe").setDescription(info)).then(m => del(m, 30000));
     } else return s(message.channel, '', embed.setColor("#ff0000").setDescription(info)).then(m => del(m, 30000));

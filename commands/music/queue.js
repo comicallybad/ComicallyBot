@@ -19,7 +19,7 @@ module.exports = {
         if (player.queue[0]) string += `__**Rest of queue:**__\n ${player.queue.slice(0, 10).map(x => `**${index++})** ${x.title} - **Requested by ${x.requester.username}**.`).join("\n")}`;
 
         const embed = new MessageEmbed()
-            .setAuthor(`Current Queue for ${message.guild.name}`, message.guild.iconURL)
+            .setAuthor({ name: `Current Queue for ${message.guild.name}`, iconURL: message.guild.iconURL })
             .setThumbnail(player.queue.current.thumbnail)
             .setDescription(string);
 

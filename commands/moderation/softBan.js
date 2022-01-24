@@ -32,13 +32,13 @@ module.exports = {
                 .setColor("#ff0000")
                 .setTitle("SoftBan Command Used")
                 .setThumbnail(toBan.displayAvatarURL())
-                .setFooter(message.member.displayName, message.author.displayAvatarURL())
+                .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                 .setTimestamp()
                 .setDescription(`**SoftBan command used by:** ${message.author}`);
 
             const promptEmbed = new MessageEmbed()
                 .setColor("GREEN")
-                .setAuthor(`This verification becomes invalid after 30s.`)
+                .setAuthor({ name: `This verification becomes invalid after 30s.` })
                 .setDescription(`Do you want to softban ${toBan}?`)
 
             await s(message.channel, '', promptEmbed).then(async msg => {

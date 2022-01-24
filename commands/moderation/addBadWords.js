@@ -21,7 +21,7 @@ module.exports = {
             .setColor("#0efefe")
             .setTitle("Bad Word Added")
             .setThumbnail(message.author.displayAvatarURL())
-            .setFooter(message.member.displayName, message.author.displayAvatarURL())
+            .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
             .setTimestamp()
             .setDescription(stripIndents`
             **Bad Word(s) Added by:** ${message.member.user}

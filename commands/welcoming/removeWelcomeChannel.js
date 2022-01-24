@@ -18,7 +18,7 @@ module.exports = {
                 const embed = new MessageEmbed()
                     .setColor("#0efefe")
                     .setTitle("Welcome Channel Removed")
-                    .setFooter(message.member.displayName, message.author.displayAvatarURL())
+                    .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                     .setTimestamp()
                     .setDescription(stripIndents`
                     **Welcome channel removed by:** ${message.author}`);

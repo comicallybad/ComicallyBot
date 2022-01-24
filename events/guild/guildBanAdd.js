@@ -18,7 +18,7 @@ module.exports = async (client, ban) => {
                 .setColor("#FF0000")
                 .setTitle("Member Banned")
                 .setThumbnail(ban.user.displayAvatarURL())
-                .setFooter(`${ban.user.tag}`, `${ban.user.displayAvatarURL()}`)
+                .setFooter({ text: ban.user.tag, iconURL: ban.user.displayAvatarURL() })
                 .setTimestamp()
                 .setDescription(stripIndents`
                 **User Banned By:** No audit log could be found. Unknown User.
@@ -34,7 +34,7 @@ module.exports = async (client, ban) => {
                     .setColor("#FF0000")
                     .setTitle("Member Banned")
                     .setThumbnail(ban.user.displayAvatarURL())
-                    .setFooter(`${ban.user.tag}`, `${ban.user.displayAvatarURL()}`)
+                    .setFooter({ text: ban.user.tag, iconURL: ban.user.displayAvatarURL() })
                     .setTimestamp()
                     .setDescription(stripIndents`
                     **User Banned By:** ${executor} (${executor.id})
@@ -49,7 +49,7 @@ module.exports = async (client, ban) => {
                     .setColor("#FF0000")
                     .setTitle("Member Banned")
                     .setThumbnail(ban.user.displayAvatarURL())
-                    .setFooter(`${ban.user.tag}`, `${ban.user.displayAvatarURL()}`)
+                    .setFooter({ text: ban.user.tag, iconURL: ban.user.displayAvatarURL() })
                     .setTimestamp()
                     .setDescription(`${ban.user} (${ban.user.d})`);
 

@@ -11,7 +11,7 @@ module.exports = {
     run: async (client, message, args) => {
         if (!args[0]) {
             const embed = new MessageEmbed()
-                .setAuthor(`${message.member.user.tag}`, `${message.author.displayAvatarURL()}`)
+                .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL() })
                 .setColor("#000000")
                 .setTitle(`**Avatar**`)
                 .setImage(`${message.author.displayAvatarURL({ size: 4096, dynamic: true })}`);
@@ -21,7 +21,7 @@ module.exports = {
             if (!member) return r(message.channel, message.author, "User not found.").then(m => del(m, 7500));
             else {
                 const embed = new MessageEmbed()
-                    .setAuthor(`${member.user.tag}}`, `${member.user.displayAvatarURL()}`)
+                    .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL() })
                     .setColor("#000000")
                     .setTitle(`**Avatar**`)
                     .setImage(`${member.user.displayAvatarURL({ size: 4096, dynamic: true })}`);
