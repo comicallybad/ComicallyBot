@@ -87,7 +87,7 @@ function disconnect(client, channelID) {
             const guildID = client.channels.cache.get(channelID).guild.id;
             const player = client.music.players.get(guildID);
             if (player) client.music.players.get(guildID).destroy();
-            else client.channels.cache.get(channelID).leave()
+            else getVoiceConnection(guildID).destroy();
             if (channelsSome(channelID)) channelsSplice(channelID)
         }
 }
