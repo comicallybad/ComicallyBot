@@ -1,5 +1,5 @@
 const { r, del } = require("../../functions.js");
-const translate = require('google-translate-free');
+const translate = require('@vitalets/google-translate-api');
 
 module.exports = {
     name: "translate",
