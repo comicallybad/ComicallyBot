@@ -36,7 +36,7 @@ module.exports = {
                 if (user) {
                     message.channel.messages.fetch({ limit: 100 }).then((messages) => {
                         const filterBy = user.id;
-                        messages = messages.filter(m => m.author.id === filterBy).array().slice(0, (deleteAmount + 1));
+                        messages = messages.filter(m => m.author.id === filterBy).map(x => x).slice(0, (deleteAmount + 1));
                         message.channel.bulkDelete(messages).catch(err => {
                             return r(message.channel, message.author, `There was an error attempting to delete user messages: ${err}`)
                         });
@@ -47,7 +47,7 @@ module.exports = {
             if (message.mentions.users.first()) {
                 message.channel.messages.fetch({ limit: 100 }).then((messages) => {
                     const filterBy = message.mentions.users.first() ? message.mentions.users.first().id : Client.user.id;
-                    messages = messages.filter(m => m.author.id === filterBy).array().slice(0, (deleteAmount + 1));
+                    messages = messages.filter(m => m.author.id === filterBy).map(x => x).slice(0, (deleteAmount + 1));
                     message.channel.bulkDelete(messages).catch(err => {
                         return r(message.channel, message.author, `There was an error attempting to delete user messages: ${err}`)
                     });
@@ -66,7 +66,7 @@ module.exports = {
 
                     message.channel.messages.fetch({ limit: 100 }).then((messages) => {
                         const filterBy = user ? user.id : Client.user.id;
-                        messages = messages.filter(m => m.author.id === filterBy).array().slice(0, (deleteAmount + 1));
+                        messages = messages.filter(m => m.author.id === filterBy).map(x => x).slice(0, (deleteAmount + 1));
                         message.channel.bulkDelete(messages).catch(err => {
                             return r(message.channel, message.author, `There was an error attempting to delete user messages: ${err}`);
                         });
