@@ -9,19 +9,23 @@ module.exports = {
     description: "Get a random meme.",
     permissions: "member",
     run: async (client, message, args) => {
-        const subReddits = ["dankmeme", "meme", "PrequelMemes", "EdgelordMemes", "ProgrammerHumor"];
-        const random = subReddits[Math.floor(Math.random() * subReddits.length)];
+        try {
+            const subReddits = ["dankmeme", "meme", "PrequelMemes", "EdgelordMemes", "ProgrammerHumor"];
+            const random = subReddits[Math.floor(Math.random() * subReddits.length)];
 
-        const img = await randomPuppy(random)
-        while (img == undefined) await randomPuppy(random);
+            const img = await randomPuppy(random)
+            while (img == undefined) await randomPuppy(random);
 
-        const embed = new MessageEmbed()
-            .setColor("#0efefe")
-            .setImage(img)
-            .setTitle(`From /r/${random}`)
-            .setURL(`https://reddit.com/r/${random}`)
-            .setTimestamp();
+            const embed = new MessageEmbed()
+                .setColor("#0efefe")
+                .setImage(img)
+                .setTitle(`From /r/${random}`)
+                .setURL(`https://reddit.com/r/${random}`)
+                .setTimestamp();
 
-        return s(message.channel, '', embed);
+            return s(message.channel, '', embed);
+        } catch (err) {
+            return r(message.channel, message.author, `There was an error attempting to find a new meme: ${err}`);
+        }
     }
 }
