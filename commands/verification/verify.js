@@ -37,7 +37,7 @@ module.exports = {
                 const emoji = await promptMessage(msg, message.author, 30, emojis);
                 if (emoji == "❤️") {
                     del(msg, 0);
-                    r(message.channel, message.author, "Congratuations, chose correctly!").then(m => del(m, 7500));
+                    r(message.channel, message.author, "Congratuations, you chose correctly!").then(m => del(m, 7500));
 
                     const role = await message.guild.roles.cache.find(r => r.name === exists.verificationRole[0].roleName) || message.guild.roles.cache.find(r => r.id === exists.verificationRole[0].roleID);
 
