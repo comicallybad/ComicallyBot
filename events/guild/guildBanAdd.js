@@ -39,7 +39,7 @@ module.exports = async (client, ban) => {
                     .setDescription(stripIndents`
                     **User Banned By:** ${executor} (${executor.id})
                     **User Banned:** ${ban.user} (${ban.user.id})
-                    **Reason:** ${banLog.reason}`);
+                    **Reason:** ${banLog.reason ? banLog.reason : "No reason given!"}`);
 
                 return s(logChannel, '', embed);
             }
