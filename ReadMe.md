@@ -3,7 +3,7 @@ Let's just say this bot does everything... including keep a conversation if you 
 SETUP 1:
 -----------------------------------------------------------------------
 Create a discord text channel named "**mod-logs**"
-**FOR:** Logging moderator command uses and server events (user join/leave/mute/unmute/kick/ban). 
+**FOR:** Logging moderator command uses and server events (user join/leave/timed out/timeout removed/kick/ban). 
 
 Create a discord text channel named "**reaction-logs**"
 **FOR:** Logging reaction role events (user join/leave role via reaction role) if you wish to log these events separately.
