@@ -1,4 +1,4 @@
-const { s } = require("../../functions.js");
+const { s, r } = require("../../functions.js");
 const { MessageEmbed } = require("discord.js");
 const randomPuppy = require("random-puppy");
 
