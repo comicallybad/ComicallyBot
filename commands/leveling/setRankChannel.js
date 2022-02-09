@@ -42,7 +42,7 @@ module.exports = {
                     }).catch(err => console.log(err));
                     return r(message.channel, message.author, "Updated rank response channel.").then(m => del(m, 7500));
                 }
-            }).catch(err => console.log(err));
+            }).clone().catch(err => console.log(err));
         }
     }
 }

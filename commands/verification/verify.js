@@ -49,7 +49,7 @@ module.exports = {
                         .setTimestamp()
                         .setDescription(stripIndents`
                         **Verified Member:** ${message.member} (${message.member.id})
-                        **Role added:** ${role.name} (${role.id})`);
+                        **Role Added:** ${role.name} (${role.id})`);
 
                     message.member.roles.add(role.id).then(() => {
                         s(message.channel, `${message.member} was successfully added to the **${role.name}** role.`).then(m => del(m, 7500));
@@ -63,6 +63,6 @@ module.exports = {
                     return r(message.channel, message.author, "Sorry, you chose incorrectly. 😢").then(m => del(m, 7500));
                 }
             }
-        }).catch(err => err);
+        }).clone().catch(err => err);
     }
 }

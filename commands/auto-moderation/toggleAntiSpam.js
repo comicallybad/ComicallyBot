@@ -40,8 +40,8 @@ module.exports = {
             .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
             .setTimestamp()
             .setDescription(stripIndents`
-            **Anti-Spam toggled by:** ${message.member.user}
-            **Anti-Spam toggled to:** ${bool}`);
+            **Anti-Spam toggled By:** ${message.member.user}
+            **Anti-Spam toggled To:** ${bool}`);
 
         db.updateOne({ guildID: guildID }, {
             $set: { antiSpam: bool }

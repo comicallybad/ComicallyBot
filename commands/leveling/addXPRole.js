@@ -57,7 +57,7 @@ module.exports = {
                             .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                             .setTimestamp()
                             .setDescription(stripIndents`
-                            **XP Role Updated by:** ${message.member.user}
+                            **XP Role Updated By:** ${message.member.user}
                             **XP Role Updated:** ${roleName} (${roleID})
                             **Level:** ${level}`);
 
@@ -68,7 +68,7 @@ module.exports = {
                                 if (exists) {
                                     if (exists.level >= level) checkXPRankup(message, ID, level);
                                 }
-                            });
+                            }).clone().catch(err => err);
                         });
 
                         return r(message.channel, message.author, "Updating XP role level.").then(m => del(m, 7500));
@@ -84,7 +84,7 @@ module.exports = {
                             .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                             .setTimestamp()
                             .setDescription(stripIndents`
-                            **XP Role Added by:** ${message.member.user}
+                            **XP Role Added By:** ${message.member.user}
                             **XP Role Added:** ${roleName} (${roleID})
                             **Level:** ${level}`);
 
@@ -96,12 +96,12 @@ module.exports = {
                                     if (exists.level >= level) checkXPRankup(message, ID, level);
                                 }
                             });
-                        });
+                        }).clone().catch(err => err);
 
                         return r(message.channel, message.author, "Adding XP level role.").then(m => del(m, 7500));
                     }).catch(err => console.log(err))
                 }
-            }).catch(err => console.log(err))
+            }).clone().catch(err => console.log(err))
         }
     }
 }

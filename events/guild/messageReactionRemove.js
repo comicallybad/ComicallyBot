@@ -73,5 +73,5 @@ function checkReactionRole(message, user) {
                 }
             });
         }
-    });
+    }).clone().catch(err => err);
 }

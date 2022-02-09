@@ -37,8 +37,8 @@ module.exports = {
                 .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                 .setTimestamp()
                 .setDescription(stripIndents`
-                **XP Added by:** ${message.member.user}
-                **XP Given to:** <@${ID}> (${ID})
+                **XP Added By:** ${message.member.user}
+                **XP Given To:** <@${ID}> (${ID})
                 **XP Given:** ${xpToAdd}`);
 
             s(logChannel, '', embed);

@@ -49,8 +49,8 @@ module.exports = {
                                 console.log(`A new warning has been logged to: ${formatDate} ${formatTime} warning.log`);
                             });
                         });
-                    });
-                });
+                    }).clone().catch(err => err);
+                }).clone().catch(err => err);
             });
             return r(message.channel, message.author, "Your dbs database and xps database have been backed up.").then(m => del(m, 7500));
         } catch (err) {

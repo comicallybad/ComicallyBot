@@ -32,6 +32,6 @@ module.exports = {
             } else {
                 return r(message.channel, message.author, "There have been no bad words set yet.")
             }
-        });
+        }).clone().catch(err => err);
     }
 }

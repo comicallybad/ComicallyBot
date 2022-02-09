@@ -48,7 +48,7 @@ module.exports = {
         else if (message.member.permissions.has("ADMINISTRATOR")
             || message.author.id == process.env.USERID) return true;
         else {
-            let permissions = await db.findOne({ guildID: guildID })
+            let permissions = await db.findOne({ guildID: guildID }).clone().catch(err => err);
             if (!permissions) return false
             else {
                 let modRolesIDs = permissions.modRoles.map(role => role.roleID);
@@ -74,7 +74,7 @@ module.exports = {
             db.findOne({
                 guildID: guildID,
                 commands: { $elemMatch: { name: command } }
-            });
+            }).clone().catch(err => err);
         if (commandStatus) {
             if (commandStatus.commands[commandStatus.commands.map(cmd => cmd.name).indexOf(command)].status === true) return true;
             else return false;
@@ -225,7 +225,7 @@ module.exports = {
             .setTimestamp()
             .setDescription(stripIndents`
             **Member warned for ${type}:** ${message.member} (${message.author.id})
-            **Warned by:** ${message.guild.me}`)
+            **Warned By:** ${message.guild.me}`)
 
         if (type === "profanity") {
             embed.addField("Channel:", `${message.channel}`);
@@ -263,7 +263,7 @@ module.exports = {
             .setTimestamp()
             .setDescription(stripIndents`
             **Timeout Member:** ${message.member} (${message.author.id})
-            **Timed Out by:** ${message.guild.me}
+            **Timed Out By:** ${message.guild.me}
             **Reason:** ${reason}`)
 
         if (message.guild.me.permissions.has("MANAGE_ROLES")) {

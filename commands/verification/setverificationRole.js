@@ -41,14 +41,14 @@ module.exports = {
                         .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                         .setTimestamp()
                         .setDescription(stripIndents`
-                        **Verification Role Added by:** ${message.member.user}
+                        **Verification Role Added By:** ${message.member.user}
                         **Role Added:** ${roleName} (${roleID})`);
 
                     s(logChannel, '', embed);
 
                     return r(message.channel, message.author, "Adding/updating verification role... this may take a second...").then(m => del(m, 7500));
                 }
-            }).catch(err => console.log(err))
+            }).clone().catch(err => console.log(err))
         }
     }
 }

@@ -24,7 +24,7 @@ module.exports = {
             .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
             .setTimestamp()
             .setDescription(stripIndents`
-            **Bad Word(s) Removed by:** ${message.member.user}
+            **Bad Word(s) Removed By:** ${message.member.user}
             **Bad Word(s) Removed:** ${args.map(word => `\`${word}\``).join(',')}`);
 
         args.forEach(word => {

@@ -48,7 +48,7 @@ module.exports = {
                             .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                             .setTimestamp()
                             .setDescription(stripIndents`
-                            **XP Role Removed by:** ${message.member.user}
+                            **XP Role Removed By:** ${message.member.user}
                             **XP Role Removed:** ${roleName} (${roleID})`);
 
                         s(logChannel, '', embed);
@@ -56,7 +56,7 @@ module.exports = {
                         return r(message.channel, message.author, "Removing XP level role.").then(m => del(m, 7500));
                     }).catch(err => console.log(err))
                 } if (!exists) return r(message.channel, message.author, "This role was never added, or it was removed already.").then(m => del(m, 7500));
-            }).catch(err => console.log(err))
+            }).clone().catch(err => console.log(err))
         }
     }
 }

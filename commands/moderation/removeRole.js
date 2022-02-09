@@ -35,7 +35,7 @@ module.exports = {
             .setTimestamp()
             .setDescription(stripIndents`
             **Role removed from:** ${user} (${user.id})
-            **Role removed by:** ${message.member}
+            **Role removed By:** ${message.member}
             **Role removed:** ${role} (${role.id})`);
 
         const promptEmbed = new MessageEmbed()

@@ -36,6 +36,6 @@ module.exports = {
                     return e(m, m.channel, '', embed).then(del(m, 30000));
                 }
             }
-        }).catch(err => console.log(err))
+        }).clone().catch(err => console.log(err))
     }
 }

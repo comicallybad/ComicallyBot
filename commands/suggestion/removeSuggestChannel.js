@@ -16,6 +16,6 @@ module.exports = {
                 return r(message.channel, message.author, "Removed verify channel.").then(m => del(m, 7500));
             }
             else return r(message.channel, message.author, "There has been no verify channel set.").then(m => del(m, 7500));
-        });
+        }).clone().catch(err => err);
     }
 }

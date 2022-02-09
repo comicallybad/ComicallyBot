@@ -24,7 +24,7 @@ module.exports = {
             .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
             .setTimestamp()
             .setDescription(stripIndents`
-            **Bad Word(s) Added by:** ${message.member.user}
+            **Bad Word(s) Added By:** ${message.member.user}
             **Bad Word(s) Added:** ${args.map(word => `\`${word}\``).join(',')}`);
 
         args.forEach(word => {
@@ -36,7 +36,7 @@ module.exports = {
                     }).catch(err => console.log(err))
                 }
             })
-        })
+        }).clone().catch(err => err);
 
         r(message.channel, message.author, "Adding bad word(s) to the list...").then(m => del(m, 7500));
 

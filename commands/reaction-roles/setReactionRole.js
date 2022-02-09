@@ -73,7 +73,7 @@ function addReactionRole(message, reaction, role, type) {
                 $push: { reactionRoles: { messageID: messageID, reaction: reaction, roleID: roleID, roleName: roleName, type: type } }
             }).catch(err => console.log(err))
             embed.setDescription(stripIndents`
-            **Reaction role create by:** ${message.member.user}
+            **Reaction role create By:** ${message.member.user}
             **Reaction role:** ${role}(${role.id})
             **Reaction emoji/ID:** ${reaction}
             **Reaction role messasge ID:** ${messageID}
@@ -90,7 +90,7 @@ function addReactionRole(message, reaction, role, type) {
             }).catch(err => console.log(err));
 
             embed.setDescription(stripIndents`
-            **Reaction role updated by:** ${message.member.user}
+            **Reaction role updated By:** ${message.member.user}
             **Reaction role:** ${role}(${role.id})
             **Reaction emoji/ID:** ${reaction}
             **Reaction role messasge ID:** ${messageID}
@@ -98,5 +98,5 @@ function addReactionRole(message, reaction, role, type) {
 
             return s(logChannel, '', embed);
         }
-    }).catch(err => console.log(err))
+    }).clone().catch(err => console.log(err))
 }

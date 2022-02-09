@@ -14,6 +14,6 @@ module.exports = {
                 let channel = await client.channels.cache.get(exists.channels.filter(x => x.command === "verify")[0].channelID);
                 return r(message.channel, message.author, `The verification channel is: ${channel}.`).then(m => del(m, 30000));
             } else return r(message.channel, message.author, "There has been no verification channel set.").then(m => del(m, 7500));
-        });
+        }).clone().catch(err => err);
     }
 }

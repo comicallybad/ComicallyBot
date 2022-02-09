@@ -38,7 +38,7 @@ module.exports = {
                 exists.welcomeMessageReactions = args;
             }
             exists.save().catch(err => console.log(err));
-        }).catch(err => err);
+        }).clone().catch(err => err);
 
         const embed = new MessageEmbed()
             .setColor("#0efefe")
@@ -46,8 +46,8 @@ module.exports = {
             .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
             .setTimestamp()
             .setDescription(stripIndents`
-            **Welcome message reaction(s) changed to:** ${args.join(' ')}
-            **Welcome message reaction(s) changed by:** ${message.author}`);
+            **Welcome message reaction(s) changed To:** ${args.join(' ')}
+            **Welcome message reaction(s) changed By:** ${message.author}`);
 
         s(logChannel, '', embed);
 

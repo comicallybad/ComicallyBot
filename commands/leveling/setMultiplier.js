@@ -35,8 +35,8 @@ module.exports = {
                     .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                     .setTimestamp()
                     .setDescription(stripIndents`
-                    **Multiplier Set by:** ${message.member.user}
-                    **Multiplier Set to:** ${args[0]}`);
+                    **Multiplier Set By:** ${message.member.user}
+                    **Multiplier Set To:** ${args[0]}`);
 
                 s(logChannel, '', embed);
 

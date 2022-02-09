@@ -15,6 +15,6 @@ module.exports = {
                 }).catch(err => console.log(err));
                 return r(message.channel, message.author, "Removed bot chatting channel.").then(m => del(m, 7500));
             } else return r(message.channel, message.author, "There has been no bot chat channel set.").then(m => del(m, 7500));
-        });
+        }).clone().catch(err => err);
     }
 }

@@ -25,7 +25,7 @@ module.exports = {
                 exists.welcomeMessage = `${args.join(' ')}`;
             }
             exists.save().catch(err => console.log(err));
-        }).catch(err => err);
+        }).clone().catch(err => err);
 
 
         let welcomeMSG;
@@ -46,8 +46,8 @@ module.exports = {
             .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
             .setTimestamp()
             .setDescription(stripIndents`
-            **Welcome message changed to:** ${welcomeMSG}
-            **Welcome message changed by:** ${message.author}`);
+            **Welcome message changed To:** ${welcomeMSG}
+            **Welcome message changed By:** ${message.author}`);
 
         s(logChannel, '', embed);
 
