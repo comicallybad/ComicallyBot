@@ -39,7 +39,7 @@ module.exports = {
 
                     return s(message.channel, '', embed).then(m => del(m, 30000));
                 } else return s(message.channel, "User has no rank").then(m => del(m, 7500));
-            })
+            }).clone().catch(err => err);
         }
     }
 }

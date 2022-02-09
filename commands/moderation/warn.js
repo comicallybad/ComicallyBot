@@ -43,7 +43,7 @@ module.exports = {
 
                 logEmbed.setDescription(stripIndents`
                         **User warned:** ${user} (${user.id})
-                        **User warned by:** ${message.author} (${message.author.id})
+                        **User warned By:** ${message.author} (${message.author.id})
                         **User warned in channel:** ${channel} (${channel.id})
                         **User warned for:** ${args.slice(2).join(' ')}`)
                     .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() });
@@ -65,7 +65,7 @@ module.exports = {
 
             logEmbed.setDescription(stripIndents`
                     **User warned:** ${user} (${user.id})
-                    **User warned by:** ${message.author} (${message.author.id})
+                    **User warned By:** ${message.author} (${message.author.id})
                     **User warned for:** ${args.slice(1).join(' ')}`)
                 .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() });
 

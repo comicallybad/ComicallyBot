@@ -35,9 +35,9 @@ module.exports = {
             .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
             .setTimestamp()
             .setDescription(stripIndents`
-            **Role added to:** ${user} (${user.id})
-            **Role added by:** ${message.member}
-            **Role added:** ${role} (${role.id})`);
+            **Role Added To:** ${user} (${user.id})
+            **Role Added By:** ${message.member}
+            **Role Added:** ${role} (${role.id})`);
 
         const promptEmbed = new MessageEmbed()
             .setColor("GREEN")

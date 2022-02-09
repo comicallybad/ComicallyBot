@@ -26,7 +26,7 @@ module.exports = {
                     }).catch(err => console.log(err));
                     return r(message.channel, message.author, "Successfully added bot chat channel.").then(m => del(m, 7500));
                 }
-            });
+            }).clone().catch(err => err);
         }
     }
 }

@@ -34,8 +34,8 @@ module.exports = {
             .setTimestamp()
             .setDescription(stripIndents`
             **Member changed:** ${user} (${user.id})
-            **Nickname changed to:** ${nickName}
-            **Nickname changed by:** ${message.author}`);
+            **Nickname changed To:** ${nickName}
+            **Nickname changed By:** ${message.author}`);
 
         user.setNickname(nickName, '')
             .then(() => {

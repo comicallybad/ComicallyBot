@@ -34,7 +34,7 @@ module.exports = {
                 .setThumbnail(toBan.displayAvatarURL())
                 .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                 .setTimestamp()
-                .setDescription(`**SoftBan command used by:** ${message.author}`);
+                .setDescription(`**SoftBan command used By:** ${message.author}`);
 
             const promptEmbed = new MessageEmbed()
                 .setColor("GREEN")

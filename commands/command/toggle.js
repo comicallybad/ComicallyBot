@@ -71,7 +71,7 @@ function toggle(message, args, command) {
         .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
         .setTimestamp()
         .setDescription(stripIndents`
-        **Command Toggled by:** ${message.member.user}
+        **Command Toggled By:** ${message.member.user}
         **Command Toggled:** ${command}`);
 
     s(logChannel, '', embed);

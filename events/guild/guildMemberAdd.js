@@ -39,7 +39,7 @@ module.exports = async (client, data) => {
             db.findOne({ guildID: data.guild.id, channels: { $elemMatch: { command: "welcome" } } }, async (err, exists) => {
                 if (exists)
                     welcomeCH = await client.channels.cache.get(exists.channels.filter(x => x.command === "welcome")[0].channelID);
-            });
+            }).clone().catch(err => err);
 
             let welcomeMSG;
             db.findOne({ guildID: guildID }, async (err, exists) => {
@@ -69,7 +69,7 @@ module.exports = async (client, data) => {
                         }
                     }
                 }
-            }).catch(err => err);
+            }).clone().catch(err => err);
         }
     }
 

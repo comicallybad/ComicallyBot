@@ -41,6 +41,6 @@ module.exports = {
 
                 return s(message.channel, '', embed.setDescription(info)).then(m => del(m, 30000));
             }
-        });
+        }).clone().catch(err => err);
     }
 }

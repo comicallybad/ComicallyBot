@@ -39,8 +39,8 @@ module.exports = {
                         .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                         .setTimestamp()
                         .setDescription(stripIndents`
-                        **Welcome channel set to:** ${args[0]}
-                        **Welcome channel changed by:** ${message.author}`);
+                        **Welcome channel set To:** ${args[0]}
+                        **Welcome channel changed By:** ${message.author}`);
 
                     db.updateOne({ guildID: guildID }, {
                         $push: { channels: { command: "welcome", channelID: channelID, channelName: channelName } }
@@ -56,8 +56,8 @@ module.exports = {
                         .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                         .setTimestamp()
                         .setDescription(stripIndents`
-                        **Welcome channel changed to:** ${args[0]}
-                        **Welcome channel changed by:** ${message.author}`);
+                        **Welcome channel changed To:** ${args[0]}
+                        **Welcome channel changed By:** ${message.author}`);
 
                     db.updateOne({ guildID: guildID, 'channels.command': "welcome" }, {
                         $set: { 'channels.$.channelID': channelID, 'channels.$.channelName': channelName }
@@ -66,7 +66,7 @@ module.exports = {
                     s(logChannel, '', embed);
                     return r(message.channel, message.author, "Updated welcome channel.").then(m => del(m, 7500));
                 }
-            }).catch(err => console.log(err));
+            }).clone().catch(err => console.log(err));
         }
     }
 }

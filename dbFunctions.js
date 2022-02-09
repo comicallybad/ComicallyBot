@@ -37,7 +37,7 @@ module.exports = {
                     exists.guildName = guildsName[guildIndex]; //in case name changed
                     exists.save().catch(err => console.log(err));
                 }
-            }).then(() => {
+            }).clone().then(() => {
                 commands.forEach((element, cmdIndex) => {
                     db.findOne({
                         guildID: guildsID[guildIndex],
@@ -76,12 +76,12 @@ module.exports = {
                         db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "rank" } } }, (err, exists) => {
                             if (exists)
                                 rankChannel = client.channels.cache.get(exists.channels[exists.channels.map(cmd => cmd.command).indexOf("rank")].channelID);
-                        }).catch(err => console.log(err))
+                        }).clone().catch(err => console.log(err))
                     } else {
                         exists.xpMultiplier = 1;
                         exists.save().catch(err => console.log(err));
                     }
-                }).catch(err => console.log(err)).then(() => {
+                }).clone().catch(err => console.log(err)).then(() => {
                     xp.findOne({ guildID: guildID, userID: userID }, (err, exists) => {
                         if (!exists) {
                             const newXP = new xp({
@@ -110,10 +110,10 @@ module.exports = {
                             }
                             exists.save().catch(err => console.log(err));
                         }
-                    }).catch(err => console.log(err));
+                    }).clone().catch(err => console.log(err));
                 });
             }
-        }).catch(err => console.log(err));
+        }).clone().catch(err => console.log(err));
     },
 
     addXP: async function (message, userID, xpToAdd) {
@@ -128,7 +128,7 @@ module.exports = {
         db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "rank" } } }, (err, exists) => {
             if (exists)
                 rankChannel = message.guild.channels.cache.get(exists.channels[exists.channels.map(cmd => cmd.command).indexOf("rank")].channelID);
-        }).catch(err => console.log(err));
+        }).clone().catch(err => console.log(err));
 
         xp.findOne({ guildID: guildID, userID: userID }, async (err, exists) => {
             if (!exists) {
@@ -154,7 +154,7 @@ module.exports = {
                 }
                 exists.save().catch(err => console.log(err));
             }
-        }).catch(err => console.log(err));
+        }).clone().catch(err => console.log(err));
     },
 
     checkXPRankup: async function (message, userID, level) {
@@ -206,7 +206,7 @@ module.exports = {
                     }
                 }
             }
-        });
+        }).clone().catch(err => err);
     },
 
     checkSpam: function (client, message) {
@@ -219,6 +219,6 @@ module.exports = {
                 if (isMod) return;
                 else client.antiSpam.message(message).catch(err => err);
             }
-        }).catch(err => console.log(err));
+        }).clone().catch(err => console.log(err));
     },
 }

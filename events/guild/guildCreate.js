@@ -27,9 +27,9 @@ module.exports = (client, guild) => {
                 if (!exists) {
                     db.updateOne({ guildID: guild.id }, {
                         $push: { commands: { name: commands[cmdIndex], status: true } }
-                    }).catch(err => console.log(err))
+                    }).clone().catch(err => console.log(err))
                 }
             })
         });
-    }).catch(err => console.log(err))
+    }).clone().catch(err => console.log(err))
 }

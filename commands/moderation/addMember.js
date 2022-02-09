@@ -50,7 +50,7 @@ module.exports = {
                             .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                             .setTimestamp()
                             .setDescription(stripIndents`
-                            **Member Added by:** ${message.member.user}
+                            **Member Added By:** ${message.member.user}
                             **Role/User Added:** ${roleName} (${roleID})`);
 
                         s(logChannel, '', embed);
@@ -58,7 +58,7 @@ module.exports = {
                         return r(message.channel, message.author, "Adding member... this may take a second...").then(m => del(m, 7500));
                     }).catch(err => console.log(err))
                 } else return r(message.channel, message.author, "User/role already added.").then(m => del(m, 7500));
-            }).catch(err => console.log(err))
+            }).clone().catch(err => console.log(err))
         }
     }
 }

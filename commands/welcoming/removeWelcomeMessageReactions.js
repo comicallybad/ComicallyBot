@@ -17,7 +17,7 @@ module.exports = {
                 exists.welcomeMessageReactions = [];
             }
             exists.save().catch(err => console.log(err));
-        }).catch(err => err);
+        }).clone().catch(err => err);
 
         const embed = new MessageEmbed()
             .setColor("#0efefe")
@@ -26,7 +26,7 @@ module.exports = {
             .setTimestamp()
             .setDescription(stripIndents`
             **Welcome message reaction(s) were removed**
-            **Welcome message reaction(s) removed by:** ${message.author}`);
+            **Welcome message reaction(s) removed By:** ${message.author}`);
 
         s(logChannel, '', embed);
 

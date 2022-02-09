@@ -22,12 +22,12 @@ module.exports = {
                         .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                         .setTimestamp()
                         .setDescription(stripIndents`
-                        **Welcome message removed by:** ${message.author}`);
+                        **Welcome message removed By:** ${message.author}`);
 
                     s(logChannel, '', embed);
                     return r(message.channel, message.author, "Removed welcome message.").then(m => del(m, 7500));
                 }
             } else return r(message.channel, message.author, "There has been no welcome message set.").then(m => del(m, 7500));
-        });
+        }).clone().catch(err => err);
     }
 }

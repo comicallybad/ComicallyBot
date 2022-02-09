@@ -37,7 +37,7 @@ module.exports = async (client, message) => {
                         });
                 }
             } else return;
-        });
+        }).clone().catch(err => err);
         return;
     }
 

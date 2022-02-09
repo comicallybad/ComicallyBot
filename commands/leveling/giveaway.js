@@ -60,8 +60,8 @@ module.exports = {
                         .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                         .setTimestamp()
                         .setDescription(stripIndents`
-                        **XP Giveaway by:** <@${message.member.id}> ${message.member.user.username} (${message.member.id})
-                        **XP Giveaway won by:** <@${userID}> (${userID})
+                        **XP Giveaway By:** <@${message.member.id}> ${message.member.user.username} (${message.member.id})
+                        **XP Giveaway Won By:** <@${userID}> (${userID})
                         **XP Given:** ${amount}`);
 
                     s(logChannel, '', logEmbed);

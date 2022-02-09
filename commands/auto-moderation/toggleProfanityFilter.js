@@ -40,8 +40,8 @@ module.exports = {
             .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
             .setTimestamp()
             .setDescription(stripIndents`
-            **Profanity filtering toggled by:** ${message.member.user}
-            **Profanity filtering toggled to:** ${bool}`);
+            **Profanity filtering toggled By:** ${message.member.user}
+            **Profanity filtering toggled To:** ${bool}`);
 
         db.updateOne({ guildID: guildID }, {
             $set: { profanityFilter: bool }

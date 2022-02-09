@@ -27,6 +27,6 @@ module.exports = {
                 embed.addField("XP System: ", `\`${xpSystem}\``)
                 return s(message.channel, '', embed).then(m => del(m, 30000));
             }
-        }).catch(err => err)
+        }).clone().catch(err => err)
     }
 }

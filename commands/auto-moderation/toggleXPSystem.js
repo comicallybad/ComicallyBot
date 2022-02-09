@@ -37,8 +37,8 @@ module.exports = {
             .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
             .setTimestamp()
             .setDescription(stripIndents`
-            **XP system toggled by:** ${message.member.user}
-            **XP system toggled to:** ${bool}`);
+            **XP system toggled By:** ${message.member.user}
+            **XP system toggled To:** ${bool}`);
 
         db.updateOne({ guildID: guildID }, {
             $set: { xpSystem: bool }
