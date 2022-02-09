@@ -48,7 +48,7 @@ module.exports = {
                     .setTimestamp()
                     .setDescription(stripIndents`
                     **Timeout Member:** ${mutee} (${mutee.id})
-                    **Timed Out by:** ${message.member} (${message.author.id})
+                    **Timed Out By:** ${message.member} (${message.author.id})
                     **Reason:** ${reason}`);
 
                 await s(message.channel, '', promptEmbedTimer).then(async msg => {

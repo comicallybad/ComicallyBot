@@ -33,7 +33,7 @@ module.exports = {
                 .setThumbnail(toBan.user ? toBan.user.displayAvatarURL() : toBan.displayAvatarURL())
                 .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                 .setTimestamp()
-                .setDescription(`**Ban command used by:** ${message.author}`);
+                .setDescription(`**Ban command used By:** ${message.author}`);
 
             const promptEmbed = new MessageEmbed()
                 .setColor("GREEN")

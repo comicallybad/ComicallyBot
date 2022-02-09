@@ -43,7 +43,7 @@ module.exports = {
                     .setTimestamp()
                     .setDescription(stripIndents`
                     **Timed Out Member:** ${mutee} (${mutee.id})
-                    **Timeout Removed by:** ${message.member}
+                    **Timeout Removed By:** ${message.member}
                     **Reason:** ${reason}`);
 
                 mutee.timeout(null, `${reason}`).then(() => {

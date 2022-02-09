@@ -37,7 +37,7 @@ module.exports = {
                 .setTimestamp()
                 .setDescription(stripIndents`
                 **Unbanned member:** ${bannedMember} (${bannedMember.id})
-                **Unbanned by:** ${message.member}
+                **Unbanned By:** ${message.member}
                 **Reason:** ${reason}`);
 
             const promptEmbed = new MessageEmbed()

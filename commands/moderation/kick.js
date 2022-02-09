@@ -32,7 +32,7 @@ module.exports = {
                 .setThumbnail(toKick.user ? toKick.user.displayAvatarURL() : toKick.displayAvatarURL())
                 .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                 .setTimestamp()
-                .setDescription(`**Kick command used by:** ${message.author}`);
+                .setDescription(`**Kick command used By:** ${message.author}`);
 
             const promptEmbed = new MessageEmbed()
                 .setColor("GREEN")
