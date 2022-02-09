@@ -37,7 +37,7 @@ module.exports = {
                     exists.guildName = guildsName[guildIndex]; //in case name changed
                     exists.save().catch(err => console.log(err));
                 }
-            }).clone().then(() => {
+            }).then(() => {
                 commands.forEach((element, cmdIndex) => {
                     db.findOne({
                         guildID: guildsID[guildIndex],
@@ -48,9 +48,9 @@ module.exports = {
                                 $push: { commands: { name: commands[cmdIndex], status: true } }
                             }).catch(err => console.log(err));
                         }
-                    })
+                    }).clone().catch(err => console.log(err));
                 });
-            }).catch(err => console.log(err));
+            }).clone().catch(err => console.log(err));
         });
     },
 
@@ -168,7 +168,7 @@ module.exports = {
             .setFooter({ text: user.id, iconURL: user.user.displayAvatarURL() })
             .setTimestamp()
 
-        let exists = await db.findOne({ guildID: guildID, xpRoles: { $elemMatch: { level: level } } });
+        let exists = await db.findOne({ guildID: guildID, xpRoles: { $elemMatch: { level: level } } }).clone().catch(err => console.log(err));
         if (exists) {
             roles = exists.xpRoles.filter(role => role.level == level);
             roles.forEach(role => {
