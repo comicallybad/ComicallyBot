@@ -37,7 +37,7 @@ module.exports = {
                     exists.guildName = guildsName[guildIndex]; //in case name changed
                     exists.save().catch(err => console.log(err));
                 }
-            }).then(() => {
+            }).clone().then(() => {
                 commands.forEach((element, cmdIndex) => {
                     db.findOne({
                         guildID: guildsID[guildIndex],
@@ -50,7 +50,7 @@ module.exports = {
                         }
                     }).clone().catch(err => console.log(err));
                 });
-            }).clone().catch(err => console.log(err));
+            }).catch(err => console.log(err));
         });
     },
 
