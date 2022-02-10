@@ -10,7 +10,7 @@ module.exports = {
         return s(message.channel, "Pinging...").then(msg => {
             let ping = msg.createdTimestamp - message.createdTimestamp
 
-            e, (msg, msg.channel, `🏓 Pong!
+            e(msg, msg.channel, `🏓 Pong!
                         Latency is ${ping}ms
                         API Latency is ${Math.round(client.ws.ping)}ms`);
         }).catch(err => console.log(`There was an error in ping ${err}`));
