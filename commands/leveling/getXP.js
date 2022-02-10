@@ -36,6 +36,8 @@ module.exports = {
                         .setRequiredXP(rankupXP)
                         .setStatus("online", true, 0)
                         .setProgressBar("#0EFEFE", "COLOR")
+                        .renderEmojis(true)
+                        .setOverlay("#111111", 0.5, true)
                         .setUsername(`${member.nickname ? member.nickname : member.user.username}`)
                         .setDiscriminator(member.user.discriminator);
 
