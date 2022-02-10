@@ -25,15 +25,15 @@ module.exports = {
             xp.findOne({ guildID: guildID, userID: usrID }, async (err, exists) => {
                 if (!exists) return s(message.channel, "User doesn't have a rank yet.").then(m => del(m, 7500));
                 if (exists) {
-                    const rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 + 25 - exists.xp;
+                    const rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 + 25
                     const member = await message.guild.members.fetch(usrID);
                     const rank = new canvacord.Rank()
                         .setAvatar(member.user.displayAvatarURL({ dynamic: false, format: 'png' }))
                         .setBackground("IMAGE", `${process.env.LEVELBACKGROUNDURL}`)
                         .setRank(1, 'RANK', false)
                         .setLevel(exists.level)
-                        .setCurrentXP(rankupXP)
-                        .setRequiredXP(exists.xp)
+                        .setCurrentXP(exists.xp)
+                        .setRequiredXP(rankupXP)
                         .setStatus("online", true, 0)
                         .setProgressBar("#0EFEFE", "COLOR")
                         .setUsername(`${member.nickname ? member.nickname : member.user.username}`)
