@@ -15,9 +15,9 @@ client.music = new Manager({
 });
 
 client.antiSpam = new AntiSpam({
-    warnThreshold: 5, muteThreshold: 7, kickThreshold: 99, banThreshold: 99, maxInterval: 2000,
-    warnMessage: '{@user}, Please stop spamming or you will be timed out.',
-    muteMessage: '**{user_tag}** has been muted for spamming.',
+    warnThreshold: 3, muteThreshold: 4, kickThreshold: 99, banThreshold: 99, maxInterval: 2000,
+    warnMessage: '{@user}, **Please stop spamming or you will be timed out.**',
+    muteMessage: '{@user} has been **timed out** for **spamming.**',
     maxDuplicatesWarning: 6, maxDuplicatesKick: 99, maxDuplicatesBan: 99, maxDuplicatesMute: 8,
     ignoredPermissions: ['MANAGE_NICKNAMES'],
     ignoreBots: true, verbose: true, unMuteTime: 10, removeMessages: true,

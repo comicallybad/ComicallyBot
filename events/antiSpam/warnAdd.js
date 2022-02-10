@@ -4,10 +4,14 @@ const { stripIndents } = require("common-tags");
 
 module.exports = (client, member) => {
     client.antiSpam.cache.messages.forEach(async msg => {
-        let channel = await member.guild.channels.cache.get(msg.channelID);
-        if (channel) {
-            let message = await channel.messages.fetch(msg.messageID);
-            del(message, 0);
+        try {
+            let channel = await member.guild.channels.cache.get(msg.channelID);
+            if (channel) {
+                let message = await channel.messages.fetch(msg.messageID);
+                del(message, 0);
+            }
+        } catch (err) {
+            return;
         }
     });
     const logChannel = member.guild.channels.cache.find(c => c.name.includes("mod-logs"));
