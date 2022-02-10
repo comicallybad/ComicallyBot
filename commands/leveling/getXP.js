@@ -42,7 +42,7 @@ module.exports = {
                     rank.build()
                         .then(data => {
                             const attachment = new Discord.MessageAttachment(data, "RankCard.png");
-                            message.channel.send({ files: [attachment] });
+                            message.channel.send({ files: [attachment] }).then(m => del(m, 15000));
                         });
                 }
             }).clone().catch(err => err);
