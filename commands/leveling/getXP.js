@@ -1,7 +1,7 @@
 const { del, s, r, findID } = require("../../functions.js");
 const xp = require('../../schemas/xp.js');
-const { stripIndents } = require("common-tags");
-const { MessageEmbed } = require("discord.js");
+const Discord = require("discord.js");
+const canvacord = require("canvacord");
 
 module.exports = {
     name: "getxp",
@@ -22,23 +22,29 @@ module.exports = {
         }
 
         function getRank(usrID) {
-            xp.findOne({ guildID: guildID, userID: usrID }, (err, exists) => {
+            xp.findOne({ guildID: guildID, userID: usrID }, async (err, exists) => {
                 if (!exists) return s(message.channel, "User doesn't have a rank yet.").then(m => del(m, 7500));
                 if (exists) {
-                    let rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 + 25 - exists.xp;
-                    const embed = new MessageEmbed()
-                        .setColor("#0efefe")
-                        .setTitle(`${exists.userNickname != null ? exists.userNickname : exists.userName}'s rank`)
-                        .setTimestamp()
-                        .setThumbnail(exists.userDisplayAvatarURL)
-                        .setFooter({ text: exists.userID })
-                        .setDescription(stripIndents`
-                        **User is level:** ${exists.level}
-                        **User has:** ${exists.xp} XP
-                        **XP Until Next Level:** ${rankupXP}`);
+                    const rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 + 25 - exists.xp;
+                    const member = await message.guild.members.fetch(usrID);
+                    const rank = new canvacord.Rank()
+                        .setAvatar(member.user.displayAvatarURL({ dynamic: false, format: 'png' }))
+                        .setBackground("IMAGE", `${process.env.LEVELBACKGROUNDURL}`)
+                        .setRank(1, 'RANK', false)
+                        .setLevel(exists.level)
+                        .setCurrentXP(rankupXP)
+                        .setRequiredXP(exists.xp)
+                        .setStatus("online", true, 0)
+                        .setProgressBar("#0EFEFE", "COLOR")
+                        .setUsername(`${member.nickname ? member.nickname : member.user.username}`)
+                        .setDiscriminator(member.user.discriminator);
 
-                    return s(message.channel, '', embed).then(m => del(m, 30000));
-                } else return s(message.channel, "User has no rank").then(m => del(m, 7500));
+                    rank.build()
+                        .then(data => {
+                            const attachment = new Discord.MessageAttachment(data, "RankCard.png");
+                            message.channel.send({ files: [attachment] });
+                        });
+                }
             }).clone().catch(err => err);
         }
     }
