@@ -18,7 +18,7 @@ module.exports = (client, guild) => {
             exists.guildName = guild.name; //in case name changed
             exists.save().catch(err => console.log(err))
         }
-    }).then(() => {
+    }).clone().then(() => {
         commands.forEach((element, cmdIndex) => {
             db.findOne({
                 guildID: guild.id,
@@ -31,5 +31,5 @@ module.exports = (client, guild) => {
                 }
             })
         });
-    }).clone().catch(err => console.log(err))
+    }).catch(err => console.log(err))
 }
