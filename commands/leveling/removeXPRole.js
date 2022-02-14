@@ -10,7 +10,7 @@ module.exports = {
     description: "Removes an assignable XP level role.",
     permissions: "moderator",
     usage: "<@role | roleID>",
-    run: (client, message, args) => {
+    run: async (client, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
         let guildID = message.guild.id;
 
@@ -21,7 +21,7 @@ module.exports = {
         let roleNames = message.guild.roles.cache.map(role => role.name);
 
 
-        let ID = findID(message, args[0], "role");
+        let ID = await findID(message, args[0], "role");
 
         if (ID)
             removeRole(ID);

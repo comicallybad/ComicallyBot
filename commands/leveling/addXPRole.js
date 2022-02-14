@@ -12,7 +12,7 @@ module.exports = {
     description: "Adds a role that can be assigned with XP levels.",
     permissions: "moderator",
     usage: "<@role|roleID> <level>",
-    run: (client, message, args) => {
+    run: async (client, message, args) => {
         if (!message.guild.me.permissions.has("MANAGE_ROLES"))
             return r(message.channel, message.author, "I don't have permission to manage roles!").then(m => del(m, 7500));
 
@@ -28,7 +28,7 @@ module.exports = {
         let roleNames = message.guild.roles.cache.map(role => role.name);
         let roleIDs = message.guild.roles.cache.map(role => role.id);
 
-        let ID = findID(message, args[0], "role");
+        let ID = await findID(message, args[0], "role");
 
         if (!ID)
             return r(message.channel, message.author, "Role not found").then(m => del(m, 7500));

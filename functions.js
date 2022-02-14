@@ -81,24 +81,18 @@ module.exports = {
         } else return;
     },
 
-    findID: function (message, input, type) {
-        let roleIDs = message.guild.roles.cache.map(role => role.id);
-        let userIDs = message.guild.members.cache.map(user => user.user.id);
-        let mention = input.replace(/\D/g, '');
-
-        if (!type || type === "either") {
-            if (roleIDs.includes(input)) return input
-            else if (roleIDs.includes(mention)) return mention;
-            else if (userIDs.includes(input)) return input;
-            else if (userIDs.includes(mention)) return mention;
-            else return undefined;
-        } else if (type === "user") {
-            if (userIDs.includes(input)) return input;
-            else if (userIDs.includes(mention)) return mention;
+    findID: async function (message, input, type) {
+        if (type === "user") {
+            let user = await message.guild.members.fetch(input);
+            let userMention = await message.guild.members.fetch(input.replace(/\D/g, ''));
+            if (user) return input;
+            else if (userMention) return userMention.id;
             else return undefined;
         } else if (type === "role") {
-            if (roleIDs.includes(input)) return input
-            else if (roleIDs.includes(mention)) return mention;
+            let role = await message.guild.roles.fetch(input);
+            let roleMention = await message.guild.roles.fetch(input.replace(/\D/g, ''));
+            if (role) return input
+            else if (roleMention) return roleMention.id;
             else return undefined;
         }
     },

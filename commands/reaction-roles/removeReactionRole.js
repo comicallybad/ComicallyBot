@@ -20,7 +20,7 @@ module.exports = {
 
         let guildID = message.guild.id;
         let messageID = args[0];
-        let roleID = findID(message, args[1], "role");
+        let roleID = await findID(message, args[1], "role");
 
         db.updateOne({ guildID: guildID }, {
             $pull: { reactionRoles: { messageID: messageID, roleID: roleID } }

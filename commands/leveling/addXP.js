@@ -10,7 +10,7 @@ module.exports = {
     description: "Add XP to user.",
     permissions: "moderator",
     usage: "<@user|userID> <amount>",
-    run: (client, message, args) => {
+    run: async (client, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         if (!args[0])
@@ -25,7 +25,7 @@ module.exports = {
         if (parseInt(args[1]) > 10000)
             return r(message.channel, message.author, "You may not add more than 10,000 XP to a user").then(m => del(m, 7500));
 
-        let ID = findID(message, args[0], "user");
+        let ID = await findID(message, args[0], "user");
         let xpToAdd = Math.floor(parseInt(args[1]));
 
         if (!ID) return r(message.channel, message.author, "User not found.").then(m => del(m, 7500));

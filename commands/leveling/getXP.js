@@ -10,13 +10,13 @@ module.exports = {
     description: "Get members rank.",
     permissions: "member",
     usage: "[@user | userID]",
-    run: (client, message, args) => {
+    run: async (client, message, args) => {
         let guildID = message.guild.id;
         let userID = message.member.id;
 
         if (!args[0]) getRank(userID);
         else {
-            let ID = findID(message, args[0], "user");
+            let ID = await findID(message, args[0], "user");
             if (!ID) return r(message.channel, message.author, "User not found.").then(m => del(m, 7500));
             else getRank(ID);
         }

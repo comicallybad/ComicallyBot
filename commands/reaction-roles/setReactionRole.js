@@ -31,7 +31,7 @@ module.exports = {
 
             let reaction = await args[1];
 
-            const role = await message.guild.roles.cache.find(r => r.id === findID(message, args[2], "role"));
+            const role = await message.guild.roles.cache.find(async r => r.id === await findID(message, args[2], "role"));
             if (!role) return r(message.channel, message.author, "Could not find role.").then(m => del(m, 7500));
 
             let type;

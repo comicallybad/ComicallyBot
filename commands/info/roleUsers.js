@@ -19,8 +19,8 @@ module.exports = {
 
         if (message.mentions.roles.first()) {
             roleID = message.mentions.roles.first().id;
-        } else if (findID(message, args[0], "role")) {
-            roleID = findID(message, args[0], "role");
+        } else if (await findID(message, args[0], "role")) {
+            roleID = await findID(message, args[0], "role");
         } else if (roleNames.includes(args.join(" "))) {
             roleID = roleIDs[roleNames.indexOf(args.join(" "))];
         } else return r(message.channel, message.author, "Sorry, I could not find that role.").then(m => del(m, 7500));
