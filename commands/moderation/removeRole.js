@@ -43,7 +43,7 @@ module.exports = {
             .setAuthor({ name: `This verification becomes invalid after 30s.` })
             .setDescription(`Do you want to remove ${user} to the **${role.name}** role?`)
 
-        await s(message.chanel, '', promptEmbed).then(async msg => {
+        await s(message.channel, '', promptEmbed).then(async msg => {
             const emoji = await promptMessage(msg, message.author, 30, ["✅", "❌"]);
 
             if (emoji === "✅") {
