@@ -41,5 +41,5 @@ module.exports = (client, member) => {
             **Timeout Removed By:** ${member.guild.me}
             **Reason:** 10 Minute mute expired`)
         if (logChannel) return s(logChannel, '', embed2);
-    }, 300000)
+    }, 600000)
 }
