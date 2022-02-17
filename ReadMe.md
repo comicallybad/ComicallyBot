@@ -53,7 +53,7 @@ Hover over the top ![alt text](https://cdn.discordapp.com/attachments/4188170982
 
 Place lavalink .zip contents into a lavalink folder inside the project.
 
-2. Create a .env file with a `TOKEN` for a discord token, `STEAM` for steam API key, `ERELA` for erela password, and `USERID` for discord User ID for owner commands
+2. Create a .env file with a `TOKEN` for a discord token, `STEAM` for steam API key, `ERELA` for erela password, `USERID` for discord User ID for owner commands, and `LEVELBACKGROUNDURL` for xp rank cards
 3. Create a application.yml file inside lavalink 
 
 ex: https://github.com/stuyy/Lavalink-Discordpy-Example/blob/master/application.yml
