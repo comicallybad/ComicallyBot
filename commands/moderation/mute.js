@@ -15,7 +15,7 @@ module.exports = {
         if (!message.guild.me.permissions.has("MODERATE_MEMBERS"))
             return r(message.channel, message.author, "I don't have permission to timeout users!").then(m => del(m, 7500));
 
-        let mutee = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
+        let mutee = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
         if (!mutee) return r(message.channel, message.author, "Please provide a user to be timed out!").then(m => del(m, 7500));
 
         if (mutee.id === message.author.id)

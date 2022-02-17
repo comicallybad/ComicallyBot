@@ -8,11 +8,11 @@ module.exports = {
     description: "Reports a member.",
     permissions: "member",
     usage: "<@user | userID>",
-    run: (client, message, args) => {
+    run: async (client, message, args) => {
         if (!args[0])
             return r(message.channel, message.author, "Please provide a user").then(m => del(m, 7500));
 
-        let rMember = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
+        let rMember = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
 
         if (!rMember)
             return r(message.channel, message.author, "Couldn't find that user").then(m => del(m, 7500));
