@@ -21,7 +21,10 @@ module.exports = {
         let userNames = message.guild.members.cache.map(user => user.user.username);
         let userIDs = message.guild.members.cache.map(user => user.user.id);
 
-        let ID = await findID(message, args[0])
+        let ID = await findID(message, args[0], "user");
+
+        if (!ID)
+            ID = await findID(message, args[0], "role");
 
         if (!ID)
             return r(message.channel, message.author, "user/role not found").then(m => del(m, 7500));

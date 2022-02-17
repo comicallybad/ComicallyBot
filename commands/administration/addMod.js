@@ -10,7 +10,7 @@ module.exports = {
     description: "Add permitted role(s)/user(s) for mod commands.",
     permissions: "admin",
     usage: "<@user | userID | @role | roleID>",
-    run: (client, message, args) => {
+    run: async (client, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
         let guildID = message.guild.id;
 
@@ -22,7 +22,10 @@ module.exports = {
         let userNames = message.guild.members.cache.map(user => user.user.username);
         let userIDs = message.guild.members.cache.map(user => user.user.id);
 
-        let ID = findID(message, args[0])
+        let ID = await findID(message, args[0], "user");
+
+        if (!ID)
+            ID = await findID(message, args[0], "role");
 
         if (!ID)
             return r(message.channel, message.author, "user/role not found").then(m => del(m, 7500));
