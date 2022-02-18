@@ -11,7 +11,7 @@ module.exports = {
     run: (client, message, args) => {
         db.findOne({ guildID: message.guild.id, channels: { $elemMatch: { command: "suggest" } } }, async (err, exists) => {
             if (exists) {
-                let channel = await client.channels.cache.get(exists.channels.filter(x => x.command === "suggest")[0].channelID);
+                let channel = await client.channels.fetch(exists.channels.filter(x => x.command === "suggest")[0].channelID);
                 return r(message.channel, message.author, `The suggestion channel is: ${channel}.`).then(m => del(m, 30000));
             } else return r(message.channel, message.author, "There has been no suggestion channel set.").then(m => del(m, 7500));
         }).clone().catch(err => err);

@@ -9,13 +9,13 @@ module.exports = {
     description: "Sends a message with a suggestion users can vote on.",
     permissions: "member",
     usage: "<suggestion>",
-    run: (client, message, args) => {
+    run: async (client, message, args) => {
         let guildID = message.guild.id;
 
         db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "suggest" } } }, async (err, exists) => {
             if (!exists) return r(message.channel, message.author, "A suggestion channel has not been set by a moderator.").then(m => del(m, 7500));
             if (exists) {
-                let channel = message.guild.channels.cache.get(exists.channels.filter(cmd => cmd.command == "suggest")[0].channelID);
+                let channel = message.guild.channels.fetch(exists.channels.filter(cmd => cmd.command == "suggest")[0].channelID);
 
                 if (message.channel.id !== channel.id)
                     return r(message.channel, message.author, `This command is only available in the ${channel} channel.`).then(m => del(m, 7500));

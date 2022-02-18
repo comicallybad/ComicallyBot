@@ -25,6 +25,6 @@ module.exports = async (client, process, error) => {
         console.log(`A new warning has been logged to: ${formatDate} warning.log`)
     });
 
-    let owner = await client.users.cache.get(`${process.env.USERID}`);
+    let owner = await client.users.fetch(`${process.env.USERID}`);
     owner.send(`New warning ${error.stack}`).catch(err => console.log(`Could not send warning error message to owner. ${err}`));
 }

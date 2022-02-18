@@ -32,9 +32,9 @@ module.exports = {
 
                 console.log("inside first if")
 
-                let user = message.mentions.members.first() || await message.guild.members.cache.get(args[0]);
+                let user = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
                 if (!user) return r(message.channel, message.author, "Please provide a user to be to be warned!").then(m => del(m, 7500));
-                let channel = await message.guild.channels.cache.get(message.mentions.channels.first().id);
+                let channel = await message.guild.channels.fetch(message.mentions.channels.first().id);
 
                 embed
                     .addField("You have been warned: ", `${user}`)
@@ -55,7 +55,7 @@ module.exports = {
             if (!args[1])
                 return r(message.channel, message.author, "Please provide a reason for the warning").then(m => del(m, 7500));
 
-            let user = message.mentions.members.first() || await message.guild.members.cache.get(args[0]);
+            let user = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
             if (!user) return r(message.channel, message.author, "Please provide a user to be to be warned!").then(m => del(m, 7500));
 
             embed

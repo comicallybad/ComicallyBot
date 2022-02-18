@@ -67,7 +67,7 @@ function addReactionRole(message, reaction, role, type) {
     db.findOne({
         guildID: guildID,
         reactionRoles: { $elemMatch: { messageID: messageID, roleID: roleID } }
-    }, (err, exists) => {
+    }, async (err, exists) => {
         if (!exists) {
             db.updateOne({ guildID: guildID }, {
                 $push: { reactionRoles: { messageID: messageID, reaction: reaction, roleID: roleID, roleName: roleName, type: type } }
@@ -83,7 +83,7 @@ function addReactionRole(message, reaction, role, type) {
         } else {
             const currentReaction = exists.reactionRoles.filter(rr => rr.messageID == messageID && rr.roleID == roleID)[0].reaction
             if (reaction !== currentReaction)
-                message.reactions.cache.get(currentReaction).remove().catch(err => err); //remove old reaction if emote changes
+                await message.reactions.fetch(currentReaction).remove().catch(err => err); //remove old reaction if emote changes
 
             db.updateOne({ guildID: guildID, 'reactionRoles.messageID': messageID, 'reactionRoles.roleID': roleID }, {
                 $set: { 'reactionRoles.$.roleName': roleName, 'reactionRoles.$.reaction': reaction, 'reactionRoles.$.type': type }
