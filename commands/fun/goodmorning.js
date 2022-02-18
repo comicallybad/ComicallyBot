@@ -22,7 +22,7 @@ module.exports = {
             return s(message.channel, '', embed);
         }
         if (args[0]) {
-            let member = await message.mentions.users.first() ? message.guild.members.cache.get(message.mentions.users.first().id) : message.member;
+            let member = await message.mentions.users.first() ? await message.guild.members.fetch(args[0]) : message.member;
 
             if (member.id !== message.member.id && args[1]) {
                 if (args.slice(1, args.length).join(' ').length >= 1024)
