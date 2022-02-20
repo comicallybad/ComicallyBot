@@ -2,8 +2,8 @@ const { r, del } = require("../../functions.js");
 const db = require('../../schemas/db.js');
 
 module.exports = {
-    name: "getsuggestchannel",
-    aliases: ["getsuggestch", "gsc"],
+    name: "getsuggestionchannel",
+    aliases: ["getsuggestch", "getsuggestchannel", "gsc"],
     category: "suggestion",
     description: "Get the channel for suggest command.",
     permissions: "moderator",
