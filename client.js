@@ -20,7 +20,7 @@ client.antiSpam = new AntiSpam({
     muteMessage: '{@user} has been **timed out** for **spamming.**',
     maxDuplicatesWarning: 6, maxDuplicatesKick: 99, maxDuplicatesBan: 99, maxDuplicatesMute: 8,
     ignoredPermissions: ['MANAGE_NICKNAMES'],
-    ignoreBots: true, verbose: true, unMuteTime: 10, removeMessages: true,
+    ignoreBots: true, verbose: false, unMuteTime: 10, removeMessages: true,
 });
 
 config({ path: __dirname + "/.env" });
