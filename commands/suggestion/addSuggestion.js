@@ -10,18 +10,18 @@ module.exports = {
     permissions: "member",
     usage: "<suggestion>",
     run: async (client, message, args) => {
+        if (!args[0])
+            return r(message.channel, message.author, "Please provide a suggestion.").then(m => del(m, 7500));
+
         let guildID = message.guild.id;
 
         db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "suggest" } } }, async (err, exists) => {
             if (!exists) return r(message.channel, message.author, "A suggestion channel has not been set by a moderator.").then(m => del(m, 7500));
             if (exists) {
-                let channel = message.guild.channels.fetch(exists.channels.filter(cmd => cmd.command == "suggest")[0].channelID);
+                let channel = await message.guild.channels.fetch(exists.channels.filter(cmd => cmd.command == "suggest")[0].channelID);
 
                 if (message.channel.id !== channel.id)
                     return r(message.channel, message.author, `This command is only available in the ${channel} channel.`).then(m => del(m, 7500));
-
-                if (!args[0])
-                    return r(message.channel, message.author, "Please provide a suggestion.").then(m => del(m, 7500));
 
                 let suggestion = args.join(" ");
 
