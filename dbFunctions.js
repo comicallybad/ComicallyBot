@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const db = require('./schemas/db.js');
 const xp = require('./schemas/xp.js');
 const { MessageEmbed } = require('discord.js');
+const { antiPhishing } = require('discord-anti-phishing')
 
 module.exports = {
     dbSetup: async function (client) {
@@ -27,6 +28,7 @@ module.exports = {
                         xpSystem: false,
                         profanityFilter: false,
                         antiSpam: false,
+                        antiPhishing: false,
                         reactionRoles: [],
                         badWordList: [],
                         welcomeMessage: [],
@@ -212,12 +214,38 @@ module.exports = {
     checkSpam: function (client, message) {
         client.antiSpam.message(message);
         let guildID = message.guild.id;
-        db.findOne({ guildID: guildID }, (err, exists) => {
+        db.findOne({ guildID: guildID }, async (err, exists) => {
             if (!exists) return;
             if (exists.antiSpam) {
-                let isMod = hasPermissions(message, "moderator");
+                let isMod = await hasPermissions(message, "moderator");
                 if (isMod) return;
                 else client.antiSpam.message(message).catch(err => err);
+            }
+        }).clone().catch(err => console.log(err));
+    },
+
+    checkAntiPhishing: function (message) {
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
+        let guildID = message.guild.id;
+        let embed = new MessageEmbed()
+            .setColor("#FF0000")
+            .setTitle("Phishing Link Detected")
+            .setThumbnail(message.author.displayAvatarURL())
+            .setDescription("Phishing link detected. **DO NOT** open this link!")
+            .setFooter({ text: `Phishing link sent by ${message.member.displayName}`, iconURL: message.author.displayAvatarURL() })
+            .setTimestamp();
+        db.findOne({ guildID: guildID }, async (err, exists) => {
+            if (!exists) return;
+            if (exists.antiPhishing) {
+                let isMod = await hasPermissions(message, "moderator");
+                if (isMod) return;
+                else {
+                    antiPhishing(message, embed).then(msg => {
+                        del(msg, 0);
+                        embed.setTitle("Phishing Link Detected And Deleted");
+                        s(logChannel, '', embed);
+                    }).catch(err => console.log(err))
+                }
             }
         }).clone().catch(err => console.log(err));
     },

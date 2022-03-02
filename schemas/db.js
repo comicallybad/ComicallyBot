@@ -15,6 +15,7 @@ const dbSchema = mongoose.Schema({
     xpSystem: Boolean,
     profanityFilter: Boolean,
     antiSpam: Boolean,
+    antiPhishing: Boolean,
     badWordList: [String],
     welcomeMessage: [String],
     welcomeMessageReactions: [String],

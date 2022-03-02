@@ -1,5 +1,5 @@
 const { s, r, del, getCommandStatus, hasPermissions, } = require("../../functions.js");
-const { messageXP, checkBadWords, checkSpam } = require("../../dbFunctions.js");
+const { messageXP, checkBadWords, checkSpam, checkAntiPhishing } = require("../../dbFunctions.js");
 const db = require("../../schemas/db.js");
 const fetch = require('node-fetch');
 
@@ -14,6 +14,7 @@ module.exports = async (client, message) => {
 
     checkBadWords(message);
     checkSpam(client, message);
+    checkAntiPhishing(message);
 
     if (!cooldown.has(message.author.id))
         messageXP(message, client);
