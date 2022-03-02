@@ -239,13 +239,7 @@ module.exports = {
             if (exists.antiPhishing) {
                 let isMod = await hasPermissions(message, "moderator");
                 if (isMod) return;
-                else {
-                    antiPhishing(message, embed).then(msg => {
-                        del(msg, 0);
-                        embed.setTitle("Phishing Link Detected And Deleted");
-                        s(logChannel, '', embed);
-                    }).catch(err => console.log(err))
-                }
+                else antiPhishing(message, embed);
             }
         }).clone().catch(err => console.log(err));
     },
