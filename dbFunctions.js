@@ -178,7 +178,7 @@ module.exports = {
                     embed.setDescription(`${user} ${user.user.tag} joined the **${role.roleName}**(${role.roleID})`);
                     if (logChannel) s(logChannel, '', embed);
                     user.roles.add(role.roleID).then(() => {
-                        return r(message.channel, user, `, you have been given the **${role.roleName}** role for: **Ranking up to level ${level}!**`);
+                        return r(message.channel, user, `You have been given the **${role.roleName}** role for: **Ranking up to level ${level}!**`);
                     }).catch(err => {
                         if (err) return s(message.channel, `There was an error assigning XP level role. ${err}`).then(m => del(m, 7500));
                     });
