@@ -11,13 +11,12 @@ module.exports = {
         if (message.author.id != process.env.USERID)
             return r(message.channel, message.author, "You're not the bot the owner!").then(m => del(m, 7500));
 
-        const currentGuilds = client.guilds.cache.map(guild => guild.id)
+        const currentGuilds = client.guilds.cache.map(guild => guild.id);
 
-        db.find().then(guild => {
-            const guildIDs = guild.map(guild => guild.guildID)
-            guildIDs.forEach(ID => {
-                if (!currentGuilds.includes(ID)) {
-                    db.deleteOne({ guildID: ID })
+        db.find().then(guilds => {
+            guilds.forEach(guild => {
+                if (!currentGuilds.includes(guild.guildID)) {
+                    db.deleteOne({ guildID: guild.guildID })
                         .catch(err => r(message.channel, message.author, `There was an error cleaning empty database listings. ${err}`).then(m => del(m, 7500)));
                 }
             });
