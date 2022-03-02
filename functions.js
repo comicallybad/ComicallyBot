@@ -83,13 +83,13 @@ module.exports = {
 
     findID: async function (message, input, type) {
         if (type === "user") {
-            let user = await message.guild.members.fetch(input);
+            let user = await message.guild.members.fetch(input).catch(err => err);
             let userMention = await message.guild.members.fetch(input.replace(/\D/g, ''));
             if (user) return input;
             else if (userMention) return userMention.id;
             else return undefined;
         } else if (type === "role") {
-            let role = await message.guild.roles.fetch(input);
+            let role = await message.guild.roles.fetch(input).catch(err => err);
             let roleMention = await message.guild.roles.fetch(input.replace(/\D/g, ''));
             if (role) return input
             else if (roleMention) return roleMention.id;
