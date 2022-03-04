@@ -212,7 +212,6 @@ module.exports = {
     },
 
     checkSpam: function (client, message) {
-        client.antiSpam.message(message);
         let guildID = message.guild.id;
         db.findOne({ guildID: guildID }, async (err, exists) => {
             if (!exists) return;
@@ -225,7 +224,6 @@ module.exports = {
     },
 
     checkAntiPhishing: function (message) {
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
         let guildID = message.guild.id;
         let embed = new MessageEmbed()
             .setColor("#FF0000")

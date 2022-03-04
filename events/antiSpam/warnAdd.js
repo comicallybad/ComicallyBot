@@ -3,17 +3,6 @@ const { MessageEmbed } = require('discord.js');
 const { stripIndents } = require("common-tags");
 
 module.exports = (client, member) => {
-    client.antiSpam.cache.messages.forEach(async msg => {
-        try {
-            let channel = await member.guild.channels.fetch(msg.channelID);
-            if (channel) {
-                let message = await channel.messages.fetch(msg.messageID);
-                del(message, 0);
-            }
-        } catch (err) {
-            return;
-        }
-    });
     const logChannel = member.guild.channels.cache.find(c => c.name.includes("mod-logs"));
     if (logChannel) {
         const embed = new MessageEmbed()

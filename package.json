@@ -17,7 +17,7 @@
     "canvacord": "^5.2.3",
     "common-tags": "^1.8.2",
     "discord-anti-phishing": "^1.0.6",
-    "discord-anti-spam": "^2.7.2",
+    "discord-anti-spam": "^2.7.3",
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
     "erela.js": "^2.3.3",
