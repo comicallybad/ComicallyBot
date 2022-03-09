@@ -2,6 +2,9 @@ const { s } = require('../../functions.js');
 const { MessageEmbed } = require("discord.js");
 
 module.exports = async (client, guild, user) => {
+    if (!guild.me.permissions.has("VIEW_AUDIT_LOG"))
+        return;
+
     if (guild.channels) {
         let logChannel = await guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
 

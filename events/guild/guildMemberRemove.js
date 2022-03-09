@@ -11,6 +11,9 @@ module.exports = async (client, member) => {
     xp.deleteOne({ guildID: member.guild.id, userID: member.user.id }, {
     }).catch(err => console.log(err))
 
+    if (!message.guild.me.permissions.has("VIEW_AUDIT_LOG"))
+        return;
+
     try {
         const fetchedLogs = await member.guild.fetchAuditLogs({
             limit: 1,

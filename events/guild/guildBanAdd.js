@@ -3,6 +3,9 @@ const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
 module.exports = async (client, ban) => {
+    if (!message.guild.me.permissions.has("VIEW_AUDIT_LOG"))
+        return;
+
     let logChannel = await ban.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
 
     try {
