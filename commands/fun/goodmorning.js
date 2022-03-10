@@ -22,7 +22,8 @@ module.exports = {
             return s(message.channel, '', embed);
         }
         if (args[0]) {
-            let member = message.mentions.members.first() || await message.guild.members.fetch(args[0]) | message.member;
+            let member = message.mentions.members.first() || await message.guild.members.fetch(args[0]).catch(() => { return undefined });
+            if (!member) member = message.member;
 
             if (member.id !== message.member.id && args[1]) {
                 if (args.slice(1, args.length).join(' ').length >= 1024)
@@ -41,7 +42,7 @@ module.exports = {
                 else {
                     embed
                         .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
-                        .setThumbnail(message.author.displayAvatarURL())
+                        .setThumbnail(message.member.user.displayAvatarURL())
                         .addField('Goodmorning Message:', `${args.join(' ')}`);
 
                     return s(message.channel, '', embed);
