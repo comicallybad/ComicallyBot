@@ -19,6 +19,8 @@ const dbSchema = mongoose.Schema({
     badWordList: [String],
     welcomeMessage: [String],
     welcomeMessageReactions: [String],
+    logging: Boolean,
+    logChannelID: String,
 });
 
 module.exports = mongoose.model("db", dbSchema)
