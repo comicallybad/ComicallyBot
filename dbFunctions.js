@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const db = require('./schemas/db.js');
 const xp = require('./schemas/xp.js');
 const { MessageEmbed } = require('discord.js');
-const { antiPhishing } = require('discord-anti-phishing')
+const { antiPhishing } = require('discord-antiphishinglinks')
 
 module.exports = {
     dbSetup: async function (client) {
@@ -223,22 +223,33 @@ module.exports = {
         }).clone().catch(err => console.log(err));
     },
 
-    checkAntiPhishing: function (message) {
+    checkAntiPhishing: async function (message) {
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
         let guildID = message.guild.id;
-        let embed = new MessageEmbed()
-            .setColor("#FF0000")
-            .setTitle("Phishing Link Detected")
-            .setThumbnail(message.author.displayAvatarURL())
-            .setDescription("Phishing link detected. **DO NOT** open this link!")
-            .setFooter({ text: `Phishing link sent by ${message.member.displayName}`, iconURL: message.author.displayAvatarURL() })
-            .setTimestamp();
-        db.findOne({ guildID: guildID }, async (err, exists) => {
-            if (!exists) return;
-            if (exists.antiPhishing) {
-                let isMod = await hasPermissions(message, "moderator");
-                if (isMod) return;
-                else antiPhishing(message, embed);
+        let check = await db.findOne({ guildID: guildID }).clone().catch(err => console.log(err));
+        if (!check) return undefined;
+        if (check) {
+            let isMod = await hasPermissions(message, "moderator");
+            if (isMod) return undefined;
+            else {
+                return antiPhishing(message).then(res => {
+                    let embed = new MessageEmbed()
+                        .setColor("#FF0000")
+                        .setTitle("Phishing Link Detected")
+                        .setThumbnail(message.author.displayAvatarURL())
+                        .setDescription(`Phishing link detected **DO NOT** open this link!`)
+                        .addField('Link', `||${res.link}||`)
+                        .setFooter({ text: `Phishing link sent by ${message.member.displayName}`, iconURL: message.author.displayAvatarURL() })
+                        .setTimestamp();
+
+                    s(message.channel, '', embed);
+
+                    if (logChannel) {
+                        embed.addField('User', `Link sent by ${res.message.author} (${res.message.author.id})`);
+                        s(logChannel, '', embed);
+                    }
+                });
             }
-        }).clone().catch(err => console.log(err));
+        }
     },
 }
