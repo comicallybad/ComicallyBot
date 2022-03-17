@@ -12,6 +12,7 @@ module.exports = {
     run: async (client, message, args) => {
         if (!args[0])
             return r(message.channel, message.author, "Please provide a time!");
+
         if (args[0].match(/^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$/) == null)
             return r(message.channel, message.author, "Please provide a valid time: Ex: hh:mm:ss").then(m => del(m, 7500));
         else if (args[0] && !args[1]) {

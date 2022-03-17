@@ -13,7 +13,6 @@ module.exports = {
         if (!args[0])
             return r(message.channel, message.author, "Please provide a word to be searched.").then(m => del(m, 7500));
 
-
         wd.getDef(`${args[0]}`, "en", null, function (result) {
             if (result.definition) {
                 if (result.definition.length >= 1024)

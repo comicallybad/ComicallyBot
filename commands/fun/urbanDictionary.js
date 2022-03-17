@@ -13,7 +13,9 @@ module.exports = {
     run: (client, message, args) => {
         if (!args[0])
             return r(message.channel, message.author, "Please provide <search trerm> | <random>.").then(m => del(m, 7500));
+
         let search = args[0] !== "random" ? urban(args.join("")) : urban.random();
+
         try {
             search.first(res => {
                 if (!res) return r(message.channel, message.author, "No results found for this topic, sorry!").then(m => del(m, 7500));
