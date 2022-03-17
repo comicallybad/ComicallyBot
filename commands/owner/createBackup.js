@@ -11,6 +11,9 @@ module.exports = {
     description: "Creates a backup JSON file for the xps and dbs databases.",
     permissions: "owner",
     run: async (client, message, args) => {
+        if (message.author.id != process.env.USERID)
+            return r(message.channel, message.author, "You're not the bot the owner!").then(m => del(m, 7500));
+
         try {
             if (message.author.id != process.env.USERID)
                 return r(message.channel, message.author, "You're not the bot the owner!").then(m => del(m, 7500));

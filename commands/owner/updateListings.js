@@ -7,6 +7,9 @@ module.exports = {
     description: "Update server listing info.",
     permissions: "owner",
     run: async (client, message, args) => {
+        if (message.author.id != process.env.USERID)
+            return r(message.channel, message.author, "You're not the bot the owner!").then(m => del(m, 7500));
+
         const discordbotlistngBot = await fetch('https://discordbotlist.com/api/v1/bots/492495421822730250/stats', {
             method: 'post',
             headers: { 'Authorization': process.env.DISCORDBOTLISTING, 'content-type': 'application/json' },
