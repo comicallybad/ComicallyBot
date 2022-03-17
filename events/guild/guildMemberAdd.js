@@ -12,9 +12,6 @@ module.exports = async (client, data) => {
     let userID = data.user.id;
     let userName = data.user.username;
 
-    if (!data.guild.me.permissions.has("VIEW_AUDIT_LOG"))
-        return;
-
     if (data.user.id !== client.user.id) {
         if (data.guild.channels) {
             let logChannel = await data.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
