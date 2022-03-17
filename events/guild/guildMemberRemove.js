@@ -1,5 +1,5 @@
 const { s } = require('../../functions.js');
-const { MessageEmbed, CommandInteractionOptionResolver } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const xp = require("../../schemas/xp.js");
 const { stripIndents } = require("common-tags");
 
