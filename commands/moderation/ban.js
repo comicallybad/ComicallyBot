@@ -8,10 +8,10 @@ module.exports = {
     permissions: "moderator",
     usage: "<@user | userID> [reason]",
     run: async (client, message, args) => {
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
-
         if (!message.guild.me.permissions.has("BAN_MEMBERS"))
             return r(message.channel, message.author, "I don't have permission to ban members!").then(m => del(m, 7500));
+
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         try {
             if (!args[0])

@@ -11,13 +11,10 @@ module.exports = {
     permissions: "admin",
     usage: "<category> <on/true/enable | off/false/disable>",
     run: (client, message, args) => {
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
-        let guildID = message.guild.id;
-        let categories = client.commands.map(command => command.category)
-        let commands = client.commands
-
         if (!args[0])
             return r(message.channel, message.author, "Please provide a category.").then(m => del(m, 7500));
+
+        let categories = client.commands.map(command => command.category)
 
         if (!categories.includes(args[0]))
             return r(message.channel, message.author, "Category not found.").then(m => del(m, 7500));
@@ -30,6 +27,10 @@ module.exports = {
 
         if (!args[1] === "true" || !args[1] === "false" || !args[1] === "enable" || !args[1] === "disable" || !args[1] === "on" || !args[1] === "off")
             return r(message.channel, message.author, "Please provide only on/off, true/false or enable/disable.").then(m => del(m, 7500));
+
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
+        let guildID = message.guild.id;
+        let commands = client.commands
 
         if (args[1] === "true" || args[1] === "enable" || args[1] === "on") {
             commands = commands.map(function (command) {

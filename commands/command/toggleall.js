@@ -11,14 +11,14 @@ module.exports = {
     permissions: "admin",
     usage: "<on/true/enable | off/false/disable>",
     run: (client, message, args) => {
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
-        let guildID = message.guild.id;
-
         if (!args[0])
             return r(message.channel, message.author, "Please provide an on/off, true/false or enable/disable.").then(m => del(m, 7500));
 
         if (args[0] !== "true" && args[0] !== "false" && args[0] !== "enable" && args[0] !== "disable")
             return r(message.channel, message.author, "Please provide only true or false/enable or disable.").then(m => del(m, 7500));
+
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
+        let guildID = message.guild.id;
 
         if (args[0] === "true" || args[0] === "enable" || args[0] === "on") {
             client.commands.forEach((element, cmdIndex) => {

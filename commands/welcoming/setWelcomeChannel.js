@@ -11,10 +11,10 @@ module.exports = {
     permissions: "moderator",
     usage: "<#channel | channelID>",
     run: (client, message, args) => {
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
         if (!args[0])
             return r(message.channel, message.author, "Please provide a channel.").then(m => del(m, 7500));
 
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
         let guildID = message.guild.id;
         let serverChannels = client.channels.cache.map(channel => channel).filter(channel => channel.type === "text").filter(channel => channel.guild.id === guildID)
         let channelNames = serverChannels.map(channel => channel.name)

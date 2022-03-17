@@ -11,15 +11,14 @@ module.exports = {
     permissions: "moderator",
     useage: "<emoji(s)>",
     run: async (client, message, args) => {
-        let guildID = message.guild.id;
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
-
         if (!args[0])
             return r(message.channel, message.author, "Please input at least one reaction emoji.").then(m => del(m, 7500));
 
         if (args.length > 10)
             return r(message.channel, message.author, "A maximum of 10 reactions is allowed.").then(m => del(m, 7500));
 
+        let guildID = message.guild.id;
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
         let charEmojis = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿']
 
         let emojis = args.map(emoji => {

@@ -9,11 +9,10 @@ module.exports = {
     permissions: "moderator",
     usage: "<@user | userID> <@role | roleID>",
     run: async (client, message, args) => {
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
-
         if (!message.guild.me.permissions.has("MANAGE_ROLES"))
             return r(message.channel, message.author, "I don't have permission to manage roles!").then(m => del(m, 7500));
 
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
         let user = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
         if (!user) return r(message.channel, message.author, "Please provide a user to be added to a role!").then(m => del(m, 7500));
 

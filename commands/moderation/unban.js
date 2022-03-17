@@ -9,8 +9,6 @@ module.exports = {
     permissions: "moderator",
     usage: "<userID> [reason]",
     run: async (client, message, args) => {
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
-
         if (!message.member.permissions.has("BAN_MEMBERS"))
             return r(message.channel, message.author, "You don't have the ban members permission to perform this command!").then(m => del(m, 7500));
 
@@ -27,6 +25,7 @@ module.exports = {
             return r(message.channel, message.author, "Please provide a user id to unban someone!").then(m => del(m, 7500));
 
         try {
+            const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
             let reason = args.slice(1).join(" ")
             if (!reason) reason = "No reason given!"
 

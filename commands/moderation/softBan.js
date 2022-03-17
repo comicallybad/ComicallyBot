@@ -9,8 +9,6 @@ module.exports = {
     permissions: "moderator",
     usage: "<@user | userID> [reason]",
     run: async (client, message, args) => {
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
-
         if (!message.guild.me.permissions.has("BAN_MEMBERS"))
             return r(message.channel, message.author, "I don't have the permission to perform this command!").then(m => del(m, 7500));
 
@@ -18,6 +16,7 @@ module.exports = {
             return r(message.channel, message.author, "Please provide a user to softban.").then(m => del(m, 7500));
 
         try {
+            const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
             let toBan = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
             if (!toBan) toBan = await client.users.fetch(args[0]);
             if (!toBan) return r(message.channel, message.author, "Could not find that user!").then(m => del(m, 7500));

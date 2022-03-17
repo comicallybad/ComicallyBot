@@ -10,10 +10,10 @@ module.exports = {
     permissions: "moderator",
     usage: "<@user | userID> [reason]",
     run: async (client, message, args) => {
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
-
         if (!message.guild.me.permissions.has("MODERATE_MEMBERS"))
             return r(message.channel, message.author, "I don't have permission to timeout users!").then(m => del(m, 7500));
+
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         let mutee = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
         if (!mutee) return r(message.channel, message.author, "Please provide a user to be timed out!").then(m => del(m, 7500));

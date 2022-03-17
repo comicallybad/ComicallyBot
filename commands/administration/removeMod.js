@@ -11,12 +11,11 @@ module.exports = {
     permissions: "admin",
     usage: "<@user | userID | @role | roleID>",
     run: async (client, message, args) => {
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
-        let guildID = message.guild.id;
-
         if (!args[0])
             return r(message.channel, message.author, "Please provide a user/role.").then(m => del(m, 7500));
 
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
+        let guildID = message.guild.id;
         let ID = await findID(message, args[0]);
 
         if (!ID)

@@ -11,14 +11,14 @@ module.exports = {
     permissions: "moderator",
     usage: "<message> Include [user] to mention the new user. Use [Some channelID] to add a mention to a channel",
     run: async (client, message, args) => {
-        let guildID = message.guild.id;
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
-
         if (!args[0])
             return r(message.channel, message.author, `Please input the welcome message you wish to set after ${prefix} `).then(m => del(m, 7500));
 
         if (args.join(' ') >= 1024)
             return r(message.channel, message.author, "Your welcome message must be 1024 characters or shorter.").then(m => del(m, 7500));
+
+        let guildID = message.guild.id;
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         db.findOne({ guildID: guildID }, (err, exists) => {
             if (exists) {
