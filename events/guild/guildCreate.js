@@ -4,14 +4,28 @@ const db = require("../../schemas/db.js");
 module.exports = (client, guild) => {
     activities = [`${client.guilds.cache.size} servers!`, `${client.channels.cache.size} channels!`, `${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} users!`], i = 0;
     let commands = (client.commands.map(cmd => cmd.name));
+
     db.findOne({ guildID: guild.id }, (err, exists) => {
         if (!exists) {
             const newDB = new db({
                 _id: mongoose.Types.ObjectId(),
                 guildID: guild.id,
                 guildName: guild.name,
+                memberRoles: [],
+                modRoles: [],
+                verificationRole: [],
                 commands: [],
-                coinsMultiplier: 1
+                channels: [],
+                xpRoles: [],
+                xpMultiplier: 1,
+                xpSystem: false,
+                profanityFilter: false,
+                antiSpam: false,
+                antiPhishing: false,
+                reactionRoles: [],
+                badWordList: [],
+                welcomeMessage: [],
+                welcomeMessageReactions: [],
             })
             newDB.save().catch(err => console.log(err))
         } else {
