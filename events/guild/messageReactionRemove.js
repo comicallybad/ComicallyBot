@@ -3,6 +3,9 @@ const { s, del } = require('../../functions.js');
 const { MessageEmbed } = require("discord.js");
 
 module.exports = async (client, message, user) => {
+    if (!message.guild.me.permissions.has("MANAGE_ROLES"))
+        return;
+
     if (user.id !== client.user.id) {
         if (message.partial) {
             message.fetch().then(fullMessage => {
