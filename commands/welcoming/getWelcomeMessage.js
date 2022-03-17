@@ -9,8 +9,8 @@ module.exports = {
     permissions: "moderator",
     run: (client, message, args) => {
         let guildID = message.guild.id;
-
         let welcomeMSG;
+
         db.findOne({ guildID: guildID }, async (err, exists) => {
             if (exists) {
                 if (exists.welcomeMessage.length > 0) {
