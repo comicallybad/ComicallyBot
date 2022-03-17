@@ -34,11 +34,11 @@ UPDATES:
 -----------------------------------------------------------------------
 **ALL** automoderation will **DEFAULT** to disabled. To enable these tools USE: `_help auto-moderation`.
 
-**Added:** Welcome messaging. USE: `_help welcoming` to view this.
+**Added:** Welcome messaging. **USE:** `_help welcoming` to view this.
 
-**Added:** Autochat. USE: `_help autochat`
+**Added:** Autochat. **USE:** `_help autochat`
 
-**Added:** Anti-Phishing. USE: `_help auto-moderation`
+**Added:** Anti-Phishing. **USE:** `_help auto-moderation`
 ________________________________________________________________________________
 To clone and use ComicallyBot2.0 you will have to do a few things:
 1. Install mongodb and compass for mongodb. Install Java v11 and lavalink from
