@@ -9,7 +9,7 @@ module.exports = {
     usage: "<volume>",
     run: (client, message, args) => {
         const player = client.music.players.get(message.guild.id);
-        if (!player)
+        if (!player || !player.queue.current)
             return r(message.channel, message.author, "No song/s currently playing within this guild.").then(m => del(m, 7500));
         const voiceChannel = message.member.voice.channel;
 

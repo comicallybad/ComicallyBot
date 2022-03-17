@@ -10,7 +10,8 @@ module.exports = {
         const voiceChannel = message.member.voice.channel;
         const player = client.music.players.get(message.guild.id);
 
-        if (!player) return r(message.channel, message.author, "No song/s currently playing in this guild.").then(m => del(m, 7500));
+        if (!player || !player.queue.current)
+            return r(message.channel, message.author, "No song/s currently playing in this guild.").then(m => del(m, 7500));
 
         if (!player.voiceChannel) {
             player.destroy();
