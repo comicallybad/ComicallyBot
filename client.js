@@ -23,7 +23,7 @@ client.antiSpam = new AntiSpam({
 });
 
 config({ path: __dirname + "/.env" });
-global.prefix = "=";
+global.prefix = "_";
 global.voiceChannels = [], global.warnUsers = [];
 
 ["aliases", "commands"].forEach(x => client[x] = new Collection());
