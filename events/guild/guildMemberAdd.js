@@ -6,7 +6,6 @@ const mongoose = require("mongoose");
 const db = require("../../schemas/db.js");
 
 module.exports = async (client, data) => {
-    console.log("inside guildMemberAdd")
     activities = [`${client.guilds.cache.size} servers!`, `${client.channels.cache.size} channels!`, `${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} users!`], i = 0;
     let guildID = data.guild.id;
     let guildName = data.guild.name;
@@ -36,14 +35,12 @@ module.exports = async (client, data) => {
         } else s(logChannel, '', embed);
     }
 
-    let existsDB = await db.findOne({ guildID: guildID }).catch(err => err);
-    if (!existsDB) return;
-    let welcomeCH = await client.channels.cache.get(existsDB.channels.filter(x => x.command === "welcome")[0].channelID);
-    console.log("after welcomeCH")
-    let welcomeMSG;
     let exists = await db.findOne({ guildID: guildID }).catch(err => err);
-    if (!exists) return;
-    if (!(exists.welcomeMessage.length > 0)) return;
+    if (!exists || !exists.channels.find(ch => ch.command == "welcome") || !(exists.welcomeMessage.length > 0)) return;
+    let welcomeCH = await data.guild.channels.fetch(exists.channels.find(ch => ch.command == "welcome").channelID).catch(err => { return; });
+    if (!welcomeCH) return;
+
+    let welcomeMSG;
     let msg = exists.welcomeMessage.toString().replace(/\[user\]/g, `${data.user}`);
     let msgArray = msg.split(" ");
     let msgMap = await msgArray.map((guild, index) => {
@@ -52,7 +49,7 @@ module.exports = async (client, data) => {
             return msgArray[index] = `${channel}`;
         } else return msgArray[index];
     });
-    console.log("before welcomeMSG")
+
     welcomeMSG = msgMap.join(" ");
     if (welcomeCH && welcomeMSG) s(welcomeCH, `${welcomeMSG}`).then(m => {
         if (!(exists.welcomeMessageReactions.length > 0)) return;
