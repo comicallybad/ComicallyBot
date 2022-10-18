@@ -169,7 +169,7 @@ module.exports = {
         embed.setFooter({ text: "React with \`⬅️\` & \`➡️\` to navigate, \`🗑️\` to discard, \`❤️\` to save." }).fields = [];
 
         for (let i = newPage * size; i < (newPage + 1) * size && i < array.length; i++) {
-            embed.addField(`${parameter} ${i + 1}`, array[i]);
+            embed.addFields({ name: `${parameter} ${i + 1}`, value: `${array[i]}` });
         }
 
         module.exports.e(message, message.channel, '', embed);
@@ -226,7 +226,7 @@ module.exports = {
 
         if (!warnUsers || !warnUsers.find(user => user.id === message.author.id)) {
             warnUsers.push({ id: message.author.id, offences: 1 });
-            if (reason == "Phishing Link") embed.addField('__**DO NOT**__ use/open this link:', `||${extra}||`);
+            if (reason == "Phishing Link") embed.addFields({ name: '__**DO NOT**__ use/open this link:', value: `||${extra}||` });
             embed.setDescription(`**Warning:** ${message.member} will receive a __**timeout**__ if this continues.`);
 
             module.exports.s(message.channel, '', embed);
@@ -237,15 +237,15 @@ module.exports = {
                 **Member Warned:** ${message.member} (${message.member.id})
                 **Channel:** ${message.channel}
                 **Warning: __#1__**`);
-            if (reason == "Phishing Link") embed.addField('__**DO NOT**__ use/open this link:', `||${extra}||`);
-            embed.addField("Message Deleted: ", `||${message.content}||`);
+            if (reason == "Phishing Link") embed.addFields({ name: '__**DO NOT**__ use/open this link:', value: `||${extra}||` });
+            embed.addFields({ name: "Message Deleted: ", value: `||${message.content}||` });
 
             module.exports.s(logChannel, '', embed);
         } else {
             warnUsers.find(user => user.id === message.author.id).offences += 1;
             if (warnUsers.find(user => user.id == message.author.id && user.offences < 3)) {
                 const offence = warnUsers.find(user => user.id === message.author.id).offences;
-                if (reason == "Phishing Link") embed.addField('__**DO NOT**__ use/open this link:', `||${extra}||`);
+                if (reason == "Phishing Link") embed.addFields({ name: '__**DO NOT**__ use/open this link:', value: `||${extra}||` });
                 embed.setDescription(`**Warning:** ${message.member} will receive a __**timeout**__ if this continues.`);
 
                 module.exports.s(message.channel, '', embed);
@@ -256,8 +256,8 @@ module.exports = {
                     **Member Warned:** ${message.member} (${message.member.id})
                     **Channel:** ${message.channel}
                     **Warning: __#${offence}__**`);
-                if (reason == "Phishing Link") embed.addField('__**DO NOT**__ use/open this link:', `||${extra}||`);
-                embed.addField("Message Deleted: ", `||${message.content}||`);
+                if (reason == "Phishing Link") embed.addFields({ name: '__**DO NOT**__ use/open this link:', value: `||${extra}||` });
+                embed.addFields({ name: "Message Deleted: ", value: `||${message.content}||` });
 
                 module.exports.s(logChannel, '', embed);
             } else if (warnUsers.find(user => user.id == message.author.id && user.offences))
@@ -284,7 +284,7 @@ module.exports = {
         if (warnUsers.find(user => user.id == message.author.id && user.offences == 3)) {
             message.member.timeout(300000, `${reason}`).then(() => {
                 message.member.send(`Hello, you received a **5 minute __timeout__** in **${message.guild.name}** for: __**${reason}**__.`).catch(err => err); //in case DM's are closed
-                if (reason == "Phishing Link") embed.addField('__**DO NOT**__ use/open this link:', `||${extra}||`);
+                if (reason == "Phishing Link") embed.addFields({ name: '__**DO NOT**__ use/open this link:', value: `||${extra}||` });
                 embed.setDescription(`**Timeout Time:** ${message.member} received a __**5 minute timeout**__.`);
 
                 module.exports.s(message.channel, '', embed);
@@ -296,8 +296,8 @@ module.exports = {
                         **Channel:** ${message.channel}
                         **Warning: __#${offence}__**
                         **Timeout Time: __5 minutes__**`);
-                if (reason == "Phishing Link") embed.addField('__**DO NOT**__ use/open this link:', `||${extra}||`);
-                embed.addField("**Message Deleted:**", `||${message.content}||`);
+                if (reason == "Phishing Link") embed.addFields({ name: '__**DO NOT**__ use/open this link:', value: `||${extra}||` });
+                embed.addFields({ name: "Message Deleted: ", value: `||${message.content}||` });
 
                 return module.exports.s(logChannel, '', embed);
             }).catch(err => {
@@ -319,7 +319,7 @@ module.exports = {
         } else if (warnUsers.find(user => user.id == message.author.id && user.offences == 4)) {
             message.member.timeout(600000, `${reason}`).then(() => {
                 message.member.send(`Hello, you received a **10 minute __timeout__** in **${message.guild.name}** for: __**${reason}**__.`).catch(err => err); //in case DM's are closed
-                if (reason == "Phishing Link") embed.addField('__**DO NOT**__ use/open this link:', `||${extra}||`);
+                if (reason == "Phishing Link") embed.addFields({ name: '__**DO NOT**__ use/open this link:', value: `||${extra}||` });
                 embed.setDescription(`**Timeout Time:** ${message.member} received a __**10 minute timeout**__.`);
 
                 module.exports.s(message.channel, '', embed);
@@ -331,8 +331,8 @@ module.exports = {
                         **Channel:** ${message.channel}
                         **Warning: __#${offence}__**
                         **Timeout Time: __10 minutes__**`);
-                if (reason == "Phishing Link") embed.addField('__**DO NOT**__ use/open this link:', `||${extra}||`);
-                embed.addField("**Message Deleted:**", `||${message.content}||`);
+                if (reason == "Phishing Link") embed.addFields({ name: '__**DO NOT**__ use/open this link:', value: `||${extra}||` });
+                embed.addFields({ name: "Message Deleted: ", value: `||${message.content}||` });
 
                 return module.exports.s(logChannel, '', embed);
             }).catch(err => {

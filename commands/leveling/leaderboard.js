@@ -25,7 +25,7 @@ module.exports = {
             if (sorted.length > 0) {
                 if (sorted.length <= 10) {
                     sorted.forEach((user, index) => {
-                        embed.addField(`Rank ${index + 1}:`, `**${user.userNickname ? user.userNickname : user.userName}, level: ${user.level}, XP: ${user.xp}**`);
+                        embed.addFields({ name: `Rank ${index + 1}:`, value: `**${user.userNickname ? user.userNickname : user.userName}, level: ${user.level}, XP: ${user.xp}**` });
                     });
                     return e(m, m.channel, '', embed).then(del(m, 30000));
                 } else {
@@ -33,7 +33,7 @@ module.exports = {
                     pageList(m, message.author, array, embed, "Rank", 10, 0);
                 }
             } else {
-                embed.setDescription("").addField("XP Leaderboards", "There are no users on the leaderboards.");
+                embed.setDescription("").addFields({ name: "XP Leaderboards", value: "There are no users on the leaderboards." });
                 return e(m, m.channel, '', embed).then(del(m, 30000));
             }
         }).catch(err => err);

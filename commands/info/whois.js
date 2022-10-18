@@ -30,16 +30,22 @@ module.exports = {
             .setFooter({ text: member.displayName, iconURL: member.user.displayAvatarURL() })
             .setThumbnail(member.user.displayAvatarURL())
             .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
-            .addField('Member information:', stripIndents`
-            **Display name: ${member.displayName}**
-            **Joined at: ${joined}**
-            **Roles: ${roles}**`, true)
-            .addField('User information:', stripIndents`
-            **ID: ${member.user.id}**
-            **Username: ${member.user.username}**
-            **Tag: ${member.user.tag}**
-            **Created at: ${created}**`)
-            .setTimestamp()
+            .addFields({
+                name: 'Member information:',
+                value: stripIndents`
+                **Display name: ${member.displayName}**
+                **Joined at: ${joined}**
+                **Roles: ${roles}**`
+            })
+            .addFields({
+                name: 'User information:',
+                value: stripIndents`
+                **ID: ${member.user.id}**
+                **Username: ${member.user.username}**
+                **Tag: ${member.user.tag}**
+                **Created at: ${created}**`
+            })
+            .setTimestamp();
 
         return s(message.channel, '', embed).then(m => del(m, 15000));
     }

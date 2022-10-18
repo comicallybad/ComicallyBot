@@ -25,7 +25,7 @@ module.exports = {
                 .setColor("#0efefe")
                 .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL() })
                 .setDescription(`**Please select the correct reaction below. The correction reaction will be: ♥️**`)
-                .addField('Task:', '**Wait for all emojis to appear. Then, select the correct reaction below or you will have to wait 5 minutes to attempt again.**')
+                .addFields({ name: 'Task:', value: '**Wait for all emojis to appear. Then, select the correct reaction below or you will have to wait 5 minutes to attempt again.**' })
                 .setFooter({ text: 'This message expires in 30 seconds.' })
                 .setTimestamp();
 

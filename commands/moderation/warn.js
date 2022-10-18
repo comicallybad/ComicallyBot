@@ -35,7 +35,7 @@ module.exports = {
                 let channel = await message.guild.channels.fetch(message.mentions.channels.first().id);
 
                 embed.setDescription(`${args.slice(2).join(' ')}`)
-                    .addField("You have been warned: ", `${member}`)
+                    .addFields({ name: "You have been warned: ", value: `${member}` })
                     .setFooter({ text: member.displayName, iconURL: member.user.displayAvatarURL() });
 
                 logEmbed.setDescription(stripIndents`
@@ -56,7 +56,7 @@ module.exports = {
             if (!member) return r(message.channel, message.author, "Please provide a member to be to be warned!").then(m => del(m, 7500));
 
             embed.setDescription(`${args.slice(1).join(' ')}`)
-                .addField("You have been warned: ", `${member}`)
+                .addFields({ name: "You have been warned: ", value: `${member}` })
                 .setFooter({ text: member.displayName, iconURL: member.user.displayAvatarURL() });
 
             logEmbed.setDescription(stripIndents`

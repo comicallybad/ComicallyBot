@@ -25,13 +25,13 @@ module.exports = {
             if (!exists) return r(message.channel, message.author, "Error within database").then(m => del(m, 7500));
             if (rankList.length > 0 && rankList.length <= 10) {
                 rankList.forEach((rank, index) => {
-                    embed.addField(`Rank: ${index + 1}`, `Name: \`${rank.roleName}\`  ID: \`${rank.roleID}\` Level: \`${rank.level}\``);
+                    embed.addFields({ name: `Rank: ${index + 1}`, value: `Name: \`${rank.roleName}\`  ID: \`${rank.roleID}\` Level: \`${rank.level}\`` });
                 });
                 return e(m, m.channel, '', embed).then(del(m, 30000));
             } else if (rankList.length > 10) {
                 return pageList(m, message.author, `${rankList}`, embed, "Rank:", 10, 0);
             } else {
-                embed.setDescription("").addField("Ranks", "There have been no ranks set.");
+                embed.setDescription("").addFields({ name: "Ranks", value: "There have been no ranks set." });
                 return e(m, m.channel, '', embed).then(del(m, 30000));
             }
         }).catch(err => err)

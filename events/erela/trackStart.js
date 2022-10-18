@@ -90,8 +90,8 @@ function editFields(message, embed, player, title, text) {
         const vol = player.volume / 10, volFloor = Math.floor(player.volume / 10);
         const volLevel = vol > volFloor ? `${"🔊".repeat(volFloor)} 🔉 ${"🔈".repeat(10 - vol)}`
             : `${"🔊".repeat(volFloor)} ${"🔈".repeat(10 - vol)}`;
-        embed.addField("Volume Level: ", `**${player.volume}%** ${volLevel}`);
+        embed.addFields({ name: "Volume Level: ", value: `**${player.volume}%** ${volLevel}` });
         return e(message, message.channel, '', embed);
-    } else if (title) return e(message, message.channel, '', embed.addField(title, text));
+    } else if (title) return e(message, message.channel, '', embed.addFields({ name: `${title}`, value: `${text}` }));
     else return e(message, message.channel, '', embed);
 }

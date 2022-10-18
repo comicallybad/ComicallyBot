@@ -26,7 +26,7 @@ module.exports = {
 
         embed
             .setDescription("")
-            .addField(result, `${reacted} vs ${botChoice}`);
+            .addFields({ name: `${result}`, value: `${reacted} vs ${botChoice}` });
 
         return e(m, m.channel, '', embed);
     }

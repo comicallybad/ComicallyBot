@@ -26,7 +26,7 @@ module.exports = {
             if (reactionRoles.length > 0) {
                 if (reactionRoles.length <= 10) {
                     reactionRoles.forEach((rr, index) => {
-                        embed.addField(`Reaction Role: ${index + 1}`, `MessageID: \`${rr.messageID}\`  Reaction: \`${rr.reaction}\` Role: \`${rr.roleName}(${rr.roleID})\` Type: \`${rr.type}\`,`);
+                        embed.addFields({ name: `Reaction Role: ${index + 1}`, value: `MessageID: \`${rr.messageID}\`  Reaction: \`${rr.reaction}\` Role: \`${rr.roleName}(${rr.roleID})\` Type: \`${rr.type}\`,` });
                     });
                     return e(m, m.channel, '', embed).then(del(m, 30000));
                 } else {
@@ -34,7 +34,7 @@ module.exports = {
                     pageList(m, message.author, array, embed, "Reaction Role:", 10, 0);
                 }
             } else {
-                embed.setDescription("").addField("Reaction Roles", "There have been no reaction roles set.");
+                embed.setDescription("").addFields({ name: "Reaction Roles", value: "There have been no reaction roles set." });
                 return e(m, m.channel, '', embed).then(del(m, 30000));
             }
         }).catch(err => err)

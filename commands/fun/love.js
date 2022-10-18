@@ -28,8 +28,10 @@ module.exports = {
 
         const embed = new MessageEmbed()
             .setColor("#ffb6c1")
-            .addField(`☁ **${person.displayName}** loves **${message.member.displayName}** this much:`,
-                `💟 ${Math.floor(love)}%\n\n${loveLevel}`).setTimestamp();
+            .addFields({
+                name: `☁ **${person.displayName}** loves **${message.member.displayName}** this much:`,
+                value: `💟 ${Math.floor(love)}%\n\n${loveLevel}`
+            }).setTimestamp();
 
         return s(message.channel, '', embed);
     }

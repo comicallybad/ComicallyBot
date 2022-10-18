@@ -13,7 +13,6 @@ module.exports = {
         let roleID;
         let roleNames = message.guild.roles.cache.map(role => role.name);
         let roleIDs = message.guild.roles.cache.map(role => role.id);
-        let roles = message.guild.roles.cache;
 
         if (!args[0])
             return r(message.channel, message.author, "Please provide a role to check.").then(m => del(m, 7500));
@@ -28,17 +27,20 @@ module.exports = {
             return r(message.channel, message.author, "Sorry, I could not find that role.").then(m => del(m, 7500));
         }
 
-        let role = roles.filter(role => role.id == roleID).map(role => role)[0];
+        let role = await message.guild.roles.fetch(roleID);
 
         const embed = new MessageEmbed()
             .setColor(`${role.hexColor}`)
             .setTitle(role.name)
-            .addField("Role information:", stripIndents`
-            **Role name: ${role.name}**
-            **Role ID: ${role.id}**
-            **Mentionable: ${role.mentionable}**
-            **Hierarchy position: ${role.rawPosition + 1} (from bottom up)**
-            **Number of users in role: ${role.members.size}**`)
+            .addFields({
+                name: "Role information:",
+                value: stripIndents`
+                **Role name: ${role.name}**
+                **Role ID: ${role.id}**
+                **Mentionable: ${role.mentionable}**
+                **Hierarchy position: ${role.rawPosition + 1} (from bottom up)**
+                **Number of users in role: ${role.members.size}**`
+            })
             .setTimestamp()
 
         return s(message.channel, '', embed).then(m => del(m, 30000));

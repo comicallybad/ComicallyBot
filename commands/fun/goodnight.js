@@ -17,7 +17,7 @@ module.exports = {
             embed
                 .setThumbnail(message.member.user.displayAvatarURL())
                 .setColor(message.member.displayHexColor === '#000000' ? '#ffffff' : message.member.displayHexColor)
-                .addField('Goodnight Message:', `Goodnight ${message.member.displayName} sleep tight!`)
+                .addFields({ name: 'Goodnight Message:', value: `Goodnight ${message.member.displayName} sleep tight!` });
 
             return s(message.channel, '', embed);
         }
@@ -32,7 +32,7 @@ module.exports = {
                 embed
                     .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
                     .setThumbnail(member.user.displayAvatarURL())
-                    .addField('Goodnight Message:', `${args.slice(1, args.length).join(' ')}`);
+                    .addFields({ name: 'Goodnight Message:', value: `${args.slice(1, args.length).join(' ')}` });
 
                 return s(message.channel, '', embed);
             } else if (member.id == message.member.id && args[0]) {
@@ -42,14 +42,14 @@ module.exports = {
                 embed
                     .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
                     .setThumbnail(message.member.user.displayAvatarURL())
-                    .addField('Goodnight Message:', `${args.join(' ')}`);
+                    .addFields({ name: 'Goodnight Message:', value: `${args.join(' ')}` });
 
                 return s(message.channel, '', embed);
             } else {
                 embed
                     .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
                     .setThumbnail(member.user.displayAvatarURL())
-                    .addField('Goodnight Message:', `Goodnight ${member.displayName} sleep tight!`);
+                    .addFields({ name: 'Goodnight Message:', value: `Goodnight ${member.displayName} sleep tight!` });
 
                 return s(message.channel, '', embed);
             }

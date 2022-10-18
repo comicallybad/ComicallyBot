@@ -64,7 +64,7 @@ module.exports = {
                             }).catch(err => err);
                         });
                         return s(message.channel, "Updated rank name and/or level.").then(m => del(m, 7500));
-                    }).catch(err => r(message.channel, message.author, `There was an error updating this rank: ${err}`).then(m => del(m, 7500)));
+                    }).catch(err => err);
                 } if (!exists) {
                     db.updateOne({ guildID: guildID }, {
                         $push: { xpRoles: { roleName: roleName, roleID: roleID, level: level } }
@@ -85,10 +85,10 @@ module.exports = {
                         userIDs.forEach(ID => {
                             xp.findOne({ guildID: guildID, userID: ID }, (err, exists) => {
                                 if (exists && exists.level >= level) checkXPRankup(message, ID, level);
-                            });
+                            }).catch(err => err);
                         });
                         return s(message.channel, "Rank added.").then(m => del(m, 7500));
-                    }).catch(err => r(message.channel, message.author, `There was an error adding this rank: ${err}`).then(m => del(m, 7500)));
+                    }).catch(err => err);
                 }
             }).catch(err => err);
         }

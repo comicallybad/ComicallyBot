@@ -59,7 +59,7 @@ module.exports = {
                         mutee.timeout(60000, `${reason}`).then(() => {
                             mutee.send(`Hello, you have been **timed out** for **1 minute** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                             r(message.channel, message.author, `${mutee.user.username} was successfully timed out for **1 minute**.`).then(m => del(m, 7500));
-                            embed.addField("Timeout Time: ", "**1 Minute**");
+                            embed.addFields({ name: "Timeout Time: ", value: "**1 Minute**" });
 
                             s(logChannel, '', embed);
                         }).catch(err => r(message.channel, message.author, `There was an error attempting to timeout ${mutee}: ${err}`).then(m => del(m, 7500)));
@@ -68,7 +68,7 @@ module.exports = {
                         mutee.timeout(300000, `${reason}`).then(() => {
                             mutee.send(`Hello, you have been **timed out** for **5 minutes** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                             r(message.channel, message.author, `${mutee.user.username} was successfully timed out for **5 minutes**.`).then(m => del(m, 7500));
-                            embed.addField("Timeout Time: ", "**5 Minutes**");
+                            embed.addFields({ name: "Timeout Time: ", value: "**5 Minutes**" });
 
                             return s(logChannel, '', embed);
                         }).catch(err => r(message.channel, message.author, `There was an error attempting to timeout ${mutee}: ${err}`).then(m => del(m, 7500)));
@@ -77,7 +77,7 @@ module.exports = {
                         mutee.timeout(600000, `${reason}`).then(() => {
                             mutee.send(`Hello, you have been **timed out** for **10 minutes** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
                             r(message.channel, message.author, `${mutee.user.username} was successfully timed out for **10 minutes**.`).then(m => del(m, 7500));
-                            embed.addField("Timeout Time: ", "**10 Minutes**");
+                            embed.addFields({ name: "Timeout Time: ", value: "**10 Minutes**" });
 
                             return s(logChannel, '', embed);
                         }).catch(err => r(message.channel, message.author, `There was an error attempting to timeout ${mutee}: ${err}`).then(m => del(m, 7500)));

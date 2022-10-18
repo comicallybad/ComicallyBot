@@ -1,5 +1,5 @@
 const { s, r, del, getCommandStatus, hasPermissions, } = require("../../functions.js");
-const { messageXP, checkWarn } = require("../../dbFunctions.js");
+const { addXP, checkWarn } = require("../../dbFunctions.js");
 const db = require("../../schemas/db.js");
 const fetch = require('node-fetch');
 
@@ -15,7 +15,7 @@ module.exports = async (client, message) => {
     checkWarn(client, message);
 
     if (!cooldown.has(message.author.id))
-        messageXP(message, client);
+        addXP(message, message.author.id);
 
     cooldown.add(message.author.id);
 

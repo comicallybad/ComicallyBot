@@ -28,9 +28,10 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({ text: client.user.username, iconURL: client.user.displayAvatarURL() })
                 .setTitle("Eval")
-                .addField("Code to evaluate", `\`\`\`js\n${beautify(args.join(' '), { format: "js" })}\n\`\`\``)
-                .addField("Evaluated: ", `${evaluated}`)
-                .addField("Type of: ", `${typeof (evaluated)}`)
+                .addFields(
+                    { name: "Code to evaluate", value: `\`\`\`js\n${beautify(toEval, { format: "js" }).length < 1014 ? beautify(toEval, { format: "js" }) : beautify(toEval, { format: "js" }).substring(0, 1004) + "..."}\n\`\`\`` },
+                    { name: "Evaluated: ", value: `${evaluated}` },
+                    { name: "Type of: ", value: `${typeof (evaluated)}` });
 
             return s(message.channel, '', embed).then(m => del(m, 15000));
         } catch (err) {
