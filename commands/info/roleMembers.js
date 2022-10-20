@@ -42,7 +42,7 @@ module.exports = {
 
         if (array.length <= 10) {
             array.forEach((user, index) => {
-                embed.addField(`Role Member: ${index + 1}`, `${user}`);
+                embed.addFields({ name: `Role Member: ${index + 1}`, value: `${user}` });
             });
             return e(m, m.channel, '', embed).then(del(m, 30000));
         }

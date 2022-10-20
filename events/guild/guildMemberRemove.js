@@ -8,8 +8,7 @@ module.exports = async (client, member) => {
 
     activities = [`${client.guilds.cache.size} servers!`, `${client.channels.cache.size} channels!`, `${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} users!`], i = 0;
 
-    xp.deleteOne({ guildID: member.guild.id, userID: member.user.id }, {
-    }).catch(err => err);
+    xp.deleteOne({ guildID: member.guild.id, userID: member.user.id }).catch(err => err);
 
     try {
         const fetchedLogs = await member.guild.fetchAuditLogs({
@@ -20,15 +19,17 @@ module.exports = async (client, member) => {
         let kickLog = fetchedLogs.entries.first();
 
         if (!kickLog) {
-            const embed = new MessageEmbed()
-                .setColor("#0EFEFE")
-                .setTitle("Member Left")
-                .setThumbnail(member.user.displayAvatarURL())
-                .setFooter({ text: member.displayName, iconURL: member.user.displayAvatarURL() })
-                .setTimestamp()
-                .setDescription(`**User Left:** ${member} (${member.id})`);
+            if (logChannel) {
+                const embed = new MessageEmbed()
+                    .setColor("#0EFEFE")
+                    .setTitle("Member Left")
+                    .setThumbnail(member.user.displayAvatarURL())
+                    .setFooter({ text: `${member.user.tag}`, iconURL: member.user.displayAvatarURL() })
+                    .setTimestamp()
+                    .setDescription(`**User Left:** ${member} (${member.id})`);
 
-            return s(logChannel, '', embed);
+                return s(logChannel, '', embed);
+            }
         }
 
         const { executor, target } = kickLog;
@@ -39,11 +40,11 @@ module.exports = async (client, member) => {
                     .setColor("#FF0000")
                     .setTitle("Member Kicked")
                     .setThumbnail(member.user.displayAvatarURL())
-                    .setFooter({ text: member.displayName, iconURL: member.user.displayAvatarURL() })
+                    .setFooter({ text: `${member.user.tag}`, iconURL: member.user.displayAvatarURL() })
                     .setTimestamp()
                     .setDescription(stripIndents`
-                    **User Kicked By:** ${executor} (${executor.id}).
                     **User Kicked:** ${member.user} (${member.user.id})
+                    **User Kicked By:** ${executor} (${executor.id}).
                     **Reason:** ${kickLog.reason ? kickLog.reason : "No reason given!"}`);
 
                 return s(logChannel, '', embed);
@@ -54,9 +55,9 @@ module.exports = async (client, member) => {
                     .setColor("#0EFEFE")
                     .setTitle("Member Left")
                     .setThumbnail(member.user.displayAvatarURL())
-                    .setFooter({ text: member.displayName, iconURL: member.user.displayAvatarURL() })
+                    .setFooter({ text: `${member.user.tag}`, iconURL: member.user.displayAvatarURL() })
                     .setTimestamp()
-                    .setDescription(`**User Left:** ${member} (${member.id})`);
+                    .setDescription(`${member} (${member.id})`);
 
                 return s(logChannel, '', embed);
             }

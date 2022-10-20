@@ -22,10 +22,11 @@ module.exports = {
             let antiSpam = exists.antiSpam;
             let profanityFilter = exists.profanityFilter;
             let xpSystem = exists.xpSystem;
-            embed.addField("Anti-Phisihng:", `\`${antiSpam}\``)
-                .addField("Anti-Spam:", `\`${profanityFilter}\``)
-                .addField("Profanity Filter:", `\`${profanityFilter}\``)
-                .addField("XP System: ", `\`${xpSystem}\``);
+            embed.addFields(
+                { name: "Anti-Phisihng:", value: `\`${antiSpam}\`` },
+                { name: "Anti-Spam:", value: `\`${profanityFilter}\`` },
+                { name: "Profanity Filter:", value: `\`${profanityFilter}\`` },
+                { name: "XP System: ", value: `\`${xpSystem}\`` });
             return s(message.channel, '', embed).then(m => del(m, 30000));
         }).catch(err => err);
     }

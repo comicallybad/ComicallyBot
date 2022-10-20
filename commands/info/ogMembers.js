@@ -23,8 +23,10 @@ module.exports = {
             if (sorted.length > 0) {
                 if (sorted.length <= 10) {
                     sorted.forEach((user, index) => {
-                        embed.addField(`OG Member #${index + 1}:`, `**${user.nickname ? user.nickname : user.user.username}** *(${user.user.tag})*
-                            **Joined:** ${user.joinedAt.toDateString()} (***${Math.round((date.getTime() - user.joinedAt.getTime()) / 86400000).toLocaleString("en-US")} DAYS AGO!***)`);
+                        embed.addFields({
+                            name: `OG Member #${index + 1}:`, value: `**${user.nickname ? user.nickname : user.user.username}** *(${user.user.tag})*
+                            **Joined:** ${user.joinedAt.toDateString()} (***${Math.round((date.getTime() - user.joinedAt.getTime()) / 86400000).toLocaleString("en-US")} DAYS AGO!***)`
+                        });
                     });
                     return e(m, m.channel, '', embed).then(del(m, 30000));
                 } else {
@@ -33,7 +35,7 @@ module.exports = {
                     pageList(m, message.author, array, embed, "OG Member #", 10, 0);
                 }
             } else {
-                embed.setDescription("").addField("OG Members", "There must have been an error.");
+                embed.setDescription("").addFields({ name: "OG Members", value: "There must have been an error." });
                 return e(m, m.channel, '', embed).then(del(m, 30000));
             }
         });

@@ -51,7 +51,7 @@ module.exports = async (client, ban) => {
                 .setColor("#FF0000")
                 .setTitle("Member Banned")
                 .setThumbnail(ban.user.displayAvatarURL())
-                .setFooter({ text: ban.user.tag, iconURL: ban.user.displayAvatarURL() })
+                .setFooter({ text: `${ban.user.tag}`, iconURL: ban.user.displayAvatarURL() })
                 .setTimestamp()
                 .setDescription(`Member Banned: ${ban.user} (${ban.user.id})`);
 

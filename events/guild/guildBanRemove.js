@@ -1,23 +1,19 @@
 const { s } = require('../../functions.js');
 const { MessageEmbed } = require("discord.js");
 
-module.exports = async (client, guild, member) => {
-    if (!guild.guild.me.permissions.has("VIEW_AUDIT_LOG"))
-        return;
+module.exports = async (client, data) => {
+    if (!data.guild) return;
+    let logChannel = await data.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
 
-    if (guild.channels) {
-        let logChannel = await guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
+    if (logChannel) {
+        const embed = new MessageEmbed()
+            .setColor("#0efefe")
+            .setTitle("Member Unbanned")
+            .setThumbnail(data.user.displayAvatarURL())
+            .setDescription(`${data.user} (${data.user.id})`)
+            .setFooter({ text: `${data.user.tag}` })
+            .setTimestamp()
 
-        if (logChannel) {
-            const embed = new MessageEmbed()
-                .setColor("#0efefe")
-                .setTitle("Member Unbanned")
-                .setThumbnail(member.displayAvatarURL())
-                .setDescription(`Member Unbanned: ${member} (${member.id})`)
-                .setFooter({ text: `ID: ${member.id}` })
-                .setTimestamp()
-
-            return s(logChannel, '', embed);
-        }
+        return s(logChannel, '', embed);
     }
 }

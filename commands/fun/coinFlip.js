@@ -15,8 +15,8 @@ module.exports = {
 
         let number = Math.floor(Math.random() * 2);
 
-        if (number === 0) embed.addField("Result", "\`Heads\`")
-        else embed.addField("Result", "\`Tails\`")
+        if (number === 0) embed.addFields({ name: "Result", value: "\`Heads\`" });
+        else embed.addFields({ name: "Result", value: "\`Tails\`" });
 
         return s(message.channel, '', embed).then(m => del(m, 30000));
     }

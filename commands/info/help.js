@@ -17,11 +17,13 @@ module.exports = {
 
 async function getAll(client, message) {
     const embed = new MessageEmbed()
-        .addField("__Additional information__", stripIndents`
+        .addFields({
+            name: "__Additional information__",
+            value: stripIndents`
             Members must be added to gain access to \`member\` commands via \`${prefix}addmember\`.
             Moderators must be added to gain access to \`moderator\` commands via \`${prefix}addmod\`.
             Use \`${prefix}help <category | command name | alias>\` to view help/permissions for commands.
-            **NOTE:** Add a \`🛑\` reaction to bot messages to prevent them from being deleted.`)
+            **NOTE:** Add a \`🛑\` reaction to bot messages to prevent them from being deleted.`})
         .setColor("#0efefe")
         .setTitle("Help")
         .setTimestamp();

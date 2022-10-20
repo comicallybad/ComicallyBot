@@ -22,7 +22,7 @@ module.exports = {
         } else {
             for (let i = 0; i < 10; i++) {
                 let XP = 10 * Math.pow(i + 1, 3) / 5 + 25;
-                embed.addField(`XP for level ${i + 1}`, `${XP} XP`)
+                embed.addFields({ name: `XP for level ${i + 1}`, value: `${XP} XP` });
             }
             return s(message.channel, '', embed).then(m => del(m, 30000));
         }

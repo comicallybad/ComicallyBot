@@ -24,7 +24,7 @@ module.exports = {
             if (!exists) return r(message.channel, message.author, "Error within database").then(m => del(m, 7500));
             if (exists.verificationRole.length > 0) {
                 let verificationRole = ` Name: ${exists.verificationRole[0].roleName} ID: ${exists.verificationRole[0].roleID}`;
-                embed.setDescription("").addField("Verification Role", verificationRole);
+                embed.setDescription("").addFields({ name: "Verification Role", value: `${verificationRole}` });
                 return e(m, m.channel, '', embed).then(del(m, 30000));
             } else {
                 embed.setDescription("No verification role set");

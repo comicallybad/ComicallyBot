@@ -17,7 +17,7 @@ module.exports = {
             embed
                 .setColor(message.member.displayHexColor === '#000000' ? '#ffffff' : message.member.displayHexColor)
                 .setThumbnail(message.author.displayAvatarURL())
-                .addField('Goodmorning Message:', `Goodmorning ${message.member.displayName} rise and shine!`)
+                .addFields({ name: 'Goodmorning Message:', value: `Goodmorning ${message.member.displayName} rise and shine!` });
 
             return s(message.channel, '', embed);
         }
@@ -32,7 +32,7 @@ module.exports = {
                 embed
                     .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
                     .setThumbnail(member.user.displayAvatarURL())
-                    .addField('Goodmorning Message:', `${args.slice(1, args.length).join(' ')}`);
+                    .addFields({ name: 'Goodmorning Message:', value: `${args.slice(1, args.length).join(' ')}` });
 
                 return s(message.channel, '', embed);
             } else if (member.id == message.member.id && args[0]) {
@@ -42,14 +42,14 @@ module.exports = {
                 embed
                     .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
                     .setThumbnail(message.member.user.displayAvatarURL())
-                    .addField('Goodmorning Message:', `${args.join(' ')}`);
+                    .addFields({ name: 'Goodmorning Message:', value: `${args.join(' ')}` });
 
                 return s(message.channel, '', embed);
             } else {
                 embed
                     .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
                     .setThumbnail(member.user.displayAvatarURL())
-                    .addField('Goodmorning Message:', `Goodmorning ${member.displayName} rise and shine!`);
+                    .addFields({ name: 'Goodmorning Message:', value: `Goodmorning ${member.displayName} rise and shine!` });
 
                 return s(message.channel, '', embed);
             }

@@ -24,13 +24,13 @@ module.exports = {
             if (!exists) return r(message.channel, message.author, "Error within database").then(m => del(m, 7500));
             if (modRoles.length > 0 && modRoles.length <= 10) {
                 modRoles.forEach((role, index) => {
-                    embed.addField(`Mod: ${index + 1}`, `Name: \`${role.roleName}\`  ID: \`${role.roleID}\``);
+                    embed.addFields({ name: `Mod: ${index + 1}`, value: `Name: \`${role.roleName}\`  ID: \`${role.roleID}\`` });
                 });
                 return e(m, m.channel, '', embed).then(del(m, 30000));
             } else if (modRoles.length > 10) {
                 return pageList(m, message.author, `${modRoles}`, embed, "Mod:", 10, 0);
             } else {
-                embed.setDescription("").addField("Mod Roles", "There have been no bot mods set.");
+                embed.setDescription("").addFields({ name: "Mod Roles", value: "There have been no bot mods set." });
                 return e(m, m.channel, '', embed).then(del(m, 30000));
             }
         }).catch(err => err)
