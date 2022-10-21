@@ -6,10 +6,10 @@ const { MessageEmbed } = require('discord.js');
 const { antiPhishing } = require('discord-antiphishinglinks')
 
 module.exports = {
+    //Setup guild in DB, if guild exists: update guild name, then call cmdSetup 
     dbSetup: async function (client) {
         let guildsID = await client.guilds.cache.map(guild => guild.id);
         let guildsName = await client.guilds.cache.map(guild => guild.name);
-        let commands = await client.commands.map(cmd => cmd.name);
 
         guildsID.forEach(async (element, guildIndex) => { //for each guild
             let exists = await db.findOne({ guildID: guildsID[guildIndex] }).catch(err => err);
@@ -25,12 +25,23 @@ module.exports = {
                 reactionRoles: [], badWordList: [],
                 welcomeMessage: [],
                 welcomeMessageReactions: []
-            }).save().catch(err => err);
+            }).save().then(() => {
+                module.exports.cmdSetup(client, guildsID[guildIndex]);
+            }).catch(err => err);
             else {
                 //in case name changed
                 exists.guildName = guildsName[guildIndex];
+                module.exports.cmdSetup(client, guildsID[guildIndex])
                 exists.save().catch(err => err);
             }
+        });
+    },
+
+    //Add all commands to guild in DB, toggled on, then delete duplicate cmd's or deleted cmd's
+    cmdSetup: async function (client, guildID) {
+        let commands = await client.commands.map(cmd => cmd.name);
+        let exists = await db.findOne({ guildID: guildID }).catch(err => err);
+        if (exists) {
             exists.commands.forEach((cmd, index) => {
                 //in case a command is deleted, delete the command from db
                 if (!commands.includes(cmd.name)) exists.commands.splice(index, 1);
@@ -43,7 +54,7 @@ module.exports = {
                     exists.commands.splice(indexOf(exists.commands.map(c => c.name == cmd), 1));
                 exists.save().catch(err => err);
             });
-        });
+        }
     },
 
     addXP: async function (message, userID, xpToAdd) {

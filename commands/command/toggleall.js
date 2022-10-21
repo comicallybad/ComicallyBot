@@ -13,8 +13,8 @@ module.exports = {
         if (!args[0])
             return r(message.channel, message.author, "Please provide an on/off, true/false or enable/disable.").then(m => del(m, 7500));
 
-        if (!args[0] === "true" || !args[0] === "false" || !args[0] === "enable" || !args[0] === "disable" || !args[0] === "on" || !args[0] === "off")
-            return r(message.channel, message.author, "Please provide only true or false/enable or disable.").then(m => del(m, 7500));
+        if (args[0] !== "true" && args[0] !== "false" && args[0] !== "enable" && args[0] !== "disable" && args[0] !== "on" && args[0] !== "off")
+            return r(message.channel, message.author, "Please provide only true or false/enable or disable/on or off option.").then(m => del(m, 7500));
 
         const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
         const guildID = message.guild.id;
@@ -24,14 +24,15 @@ module.exports = {
         if (args[0] === "false" || args[0] === "disable" || args[0] === "off") bool = "OFF";
 
         if (args[0] === "true" || args[0] === "enable" || args[0] === "on")
-            client.commands.forEach((element, cmdIndex) => {
-                db.updateOne({ guildID: guildID, 'commands.name': cmdIndex }, {
+            client.commands.forEach(cmd => {
+                return db.updateOne({ guildID: guildID, 'commands.name': cmd.name }, {
                     $set: { 'commands.$.status': true }
                 }).catch(err => err);
             });
         else if (args[0] === "false" || args[0] === "disable" || args[0] === "off")
-            client.commands.forEach((element, cmdIndex) => {
-                db.updateOne({ guildID: guildID, 'commands.name': cmdIndex }, {
+            client.commands.forEach(cmd => {
+                if (cmd.category == "command" || cmd.category == "owner" || cmd.category == "support" || cmd.name == "help") return;
+                else return db.updateOne({ guildID: guildID, 'commands.name': cmd.name }, {
                     $set: { 'commands.$.status': false }
                 }).catch(err => err);
             });

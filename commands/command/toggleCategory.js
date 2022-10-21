@@ -25,8 +25,8 @@ module.exports = {
         if (!args[1])
             return r(message.channel, message.author, "Please provide an on/off, true/false or enable/disable.").then(m => del(m, 7500));
 
-        if (!args[1] === "true" || !args[1] === "false" || !args[1] === "enable" || !args[1] === "disable" || !args[1] === "on" || !args[1] === "off")
-            return r(message.channel, message.author, "Please provide only on/off, true/false or enable/disable.").then(m => del(m, 7500));
+        if (args[1] !== "true" && args[1] !== "false" && args[1] !== "enable" && args[1] !== "disable" && args[1] !== "on" && args[1] !== "off")
+            return r(message.channel, message.author, "Please provide only true or false/enable or disable/on or off option.").then(m => del(m, 7500));
 
         const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
         const guildID = message.guild.id;
@@ -41,7 +41,7 @@ module.exports = {
             commands = commands.map(command => {
                 if (command.category === args[0]) return command.name
             }).filter(m => m)
-            commands.forEach((element) => {
+            commands.forEach(element => {
                 db.updateOne({ guildID: guildID, 'commands.name': element }, {
                     $set: { 'commands.$.status': true }
                 }).catch(err => err);
@@ -49,10 +49,10 @@ module.exports = {
         } else if (args[1] === "false" || args[1] === "disable" || args[1] === "off") {
             commands = commands.map(command => {
                 if (command.category === args[0]) return command.name
-            }).filter(m => m)
-            commands.forEach((element) => {
+            }).filter(m => m !== "help")
+            commands.forEach(element => {
                 db.updateOne({ guildID: guildID, 'commands.name': element }, {
-                    $set: { 'commands.$.status': true }
+                    $set: { 'commands.$.status': false }
                 }).catch(err => err);
             });
         }

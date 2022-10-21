@@ -13,7 +13,7 @@ module.exports = {
     run: (client, message, args) => {
         let commands = client.commands.map(cmd => cmd.name);
         let invalidCommands = client.commands.map(function (cmd) {
-            if (cmd.category == "command" || cmd.category == "owner" || cmd.category == "support") return cmd.name;
+            if (cmd.category == "command" || cmd.category == "owner" || cmd.category == "support" || cmd.name == "help") return cmd.name;
         }).filter(cmd => cmd);
         let catCommandAliases = (client.commands.map(function (cmd) {
             if (cmd.category == "command" || cmd.category == "owner" || cmd.category == "support") return cmd.aliases;
@@ -33,17 +33,17 @@ module.exports = {
             return r(message.channel, message.author, "You may not toggle this command.").then(m => del(m, 7500));
 
         if (!args[1])
-            return r(message.channel, message.author, "Please provide a true or false/enable or disable.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide a true or false/enable or disable/on or off option.").then(m => del(m, 7500));
 
-        if (args[1] !== "true" && args[1] !== "false" && args[1] !== "enable" && args[1] !== "disable")
-            return r(message.channel, message.author, "Please provide only true or false/enable or disable.").then(m => del(m, 7500));
+        if (args[1] !== "true" && args[1] !== "false" && args[1] !== "enable" && args[1] !== "disable" && args[1] !== "on" && args[1] !== "off")
+            return r(message.channel, message.author, "Please provide only true or false/enable or disable/on or off option.").then(m => del(m, 7500));
 
         if (commands.includes(args[0])) {
             let command = args[0];
             return toggle(message, args, command)
         } else if (aliasList.includes(args[0])) {
             let command = client.commands.map(cmd => {
-                if (cmd.aliases && cmd.aliases.includes(args[0]) && cmd.category !== "command")
+                if (cmd.aliases && cmd.aliases.includes(args[0]))
                     return cmd.name
             }).filter(cmd => cmd)[0]
             return toggle(message, args, command)
@@ -60,7 +60,7 @@ function toggle(message, args, command) {
     if (args[1] === "false" || args[1] === "disable" || args[1] === "off") bool = "OFF";
 
     db.updateOne({ guildID: guildID, 'commands.name': command }, {
-        $set: { 'commands.$.status': bool }
+        $set: { 'commands.$.status': bool == "ON" ? true : false }
     }).catch(err => err);
 
     const embed = new MessageEmbed()
