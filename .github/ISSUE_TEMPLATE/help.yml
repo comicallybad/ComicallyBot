@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Before you submit an issue we recommend to read the [README.md](https://github.com/comicallybad/ComicallyBot2.0/blob/master/ReadMe.md).
+        Before you submit an issue we recommend to read the [README.md](https://github.com/comicallybad/comicallybot/blob/master/ReadMe.md).
 
   - type: checkboxes
     id: prerequisites

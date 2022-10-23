@@ -40,7 +40,7 @@ UPDATES:
 
 **Added:** Anti-Phishing. **USE:** `_help auto-moderation`
 ________________________________________________________________________________
-To clone and use ComicallyBot2.0 you will have to do a few things:
+To clone and use ComicallyBot you will have to do a few things:
 1. Install mongodb and compass for mongodb. Install Java v11 and lavalink from
 
 https://www.azul.com/downloads/zulu-community/?version=java-11-lts&os=&os=windows&architecture=x86-64-bit&package=jdk 

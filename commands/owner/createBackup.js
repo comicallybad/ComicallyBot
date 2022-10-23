@@ -21,9 +21,9 @@ module.exports = {
                         .toString().padStart(4, '0')}`
 
         const dbsBackup = spawn('mongoexport', [
-            '--db', 'ComicallyBOT2',
+            '--db', 'ComicallyBot',
             '--collection', 'dbs',
-            '--out', `../ComicallyBOT-DB-Backups/dbs-${formatDate}.json`,
+            '--out', `../ComicallyBot-Backups/dbs-${formatDate}.json`,
         ]);
 
         dbsBackup.on('exit', (code, signal) => {
@@ -33,9 +33,9 @@ module.exports = {
         });
 
         const xpsBackup = spawn('mongoexport', [
-            '--db', 'ComicallyBOT2',
+            '--db', 'ComicallyBot',
             '--collection', 'xps',
-            '--out', `../ComicallyBOT-DB-Backups/xps-${formatDate}.json`,
+            '--out', `../ComicallyBot-Backups/xps-${formatDate}.json`,
         ]);
 
         return xpsBackup.on('exit', (code, signal) => {
