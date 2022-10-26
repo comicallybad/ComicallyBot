@@ -24,44 +24,39 @@ module.exports = {
         if (!bannedMember)
             return r(message.channel, message.author, "Please provide a member id to unban someone!").then(m => del(m, 7500));
 
-        try {
-            const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
-            let reason = args.slice(1).join(" ")
-            if (!reason) reason = "No reason given!"
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
+        let reason = args.slice(1).join(" ")
+        if (!reason) reason = "No reason given!"
 
-            const embed = new MessageEmbed()
-                .setColor("#00ff00")
-                .setTitle("Member Unbanned")
-                .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
-                .setTimestamp()
-                .setDescription(stripIndents`
-                **Member Unbanned:** ${bannedMember} (${bannedMember.id})
-                **Unbanned By:** ${message.member}
-                **Reason:** ${reason}`);
+        const embed = new MessageEmbed()
+            .setColor("#00ff00")
+            .setTitle("Member Unbanned")
+            .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
+            .setTimestamp()
+            .setDescription(stripIndents`
+            **Member Unbanned:** ${bannedMember} (${bannedMember.id})
+            **Unbanned By:** ${message.member}
+            **Reason:** ${reason}`);
 
-            const promptEmbed = new MessageEmbed()
-                .setColor("GREEN")
-                .setAuthor({ name: `This verification becomes invalid after 30s.` })
-                .setDescription(`Do you want to unban ${bannedMember}?`)
+        const promptEmbed = new MessageEmbed()
+            .setColor("GREEN")
+            .setAuthor({ name: `This verification becomes invalid after 30s.` })
+            .setDescription(`Do you want to unban ${bannedMember}?`)
 
-            return s(message.channel, '', promptEmbed).then(async msg => {
-                const emoji = await messagePrompt(msg, message.author, 30, ["✅", "❌"]);
+        return s(message.channel, '', promptEmbed).then(async msg => {
+            const emoji = await messagePrompt(msg, message.author, 30, ["✅", "❌"]);
 
-                if (emoji === "✅") {
-                    del(msg, 0);
+            if (emoji === "✅") {
+                del(msg, 0);
 
-                    message.guild.members.unban(bannedMember).then(() => {
-                        bannedMember.send(`Hello, you have been **unbanned** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
-                        r(message.channel, message.author, `${bannedMember.username} (${bannedMember.id}) was successfully unbanned.`).then(m => del(m, 7500));
-                        return s(logChannel, '', embed);
-                    }).catch(err => r(message.channel, message.author, `There was an error attempting to unban ${bannedMember} ${err}`).then(m => del(m, 7500)));
-                } else if (emoji === "❌") {
-                    del(msg, 0);
-                    return r(message.channel, message.author, `Unban cancelled.`).then(m => del(m, 7500));
-                } else return del(msg, 0)
-            }).catch(err => err);
-        } catch (err) {
-            if (err) return r(message.channel, message.author, `There was an error attempting to unban that member: ${err}`).then(m => del(m, 7500));
-        }
+                message.guild.members.unban(bannedMember).then(() => {
+                    s(message.channel, `${bannedMember} (${bannedMember.id}) was successfully unbanned.`).then(m => del(m, 7500));
+                    return s(logChannel, '', embed);
+                }).catch(err => r(message.channel, message.author, `There was an error attempting to unban that member: ${err}`).then(m => del(m, 7500)));
+            } else if (emoji === "❌") {
+                del(msg, 0);
+                return r(message.channel, message.author, `Unban cancelled.`).then(m => del(m, 7500));
+            } else return del(msg, 0)
+        }).catch(err => err);
     }
 }

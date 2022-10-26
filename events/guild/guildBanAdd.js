@@ -11,7 +11,7 @@ module.exports = async (client, ban) => {
     try {
         const fetchedLogs = await ban.guild.fetchAuditLogs({
             limit: 1,
-            type: 'MEMBER_BAN_ADD',
+            type: 'MemberBanAdd',
         });
 
         const banLog = fetchedLogs.entries.first();
