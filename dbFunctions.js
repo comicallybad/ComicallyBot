@@ -63,7 +63,7 @@ module.exports = {
         if (!existsDB || !existsDB.xpSystem) return;
 
         let user = await message.guild.members.fetch(userID);
-        let rankChannel = await message.guild.channels.fetch(existsDB.channels.find(ch => ch.command == "rank").channelID);
+        let rankChannel = await message.guild.channels.fetch(existsDB.channels.find(ch => ch.command == "rank").channelID).catch(err => { return; });
         if (!rankChannel) rankChannel = message.channel;
         if (!xpToAdd) xpToAdd = existsDB.xpMultiplier ? Math.floor(Math.random() * 10) + 1 * existsDB.xpMultiplier : Math.floor(Math.random() * 10) + 1;
 
