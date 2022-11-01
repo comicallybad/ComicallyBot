@@ -63,7 +63,9 @@ module.exports = {
         if (!existsDB || !existsDB.xpSystem) return;
 
         let user = await message.guild.members.fetch(userID);
-        let rankChannel = await message.guild.channels.fetch(existsDB.channels.find(ch => ch.command == "rank").channelID).catch(err => { return; });
+        let rankChannel = existsDB.channels.find(ch => ch.command == "rank")
+            ? await message.guild.channels.fetch(existsDB.channels.find(ch => ch.command == "rank").channelID).catch(err => { return; })
+            : undefined;
         if (!rankChannel) rankChannel = message.channel;
         if (!xpToAdd) xpToAdd = existsDB.xpMultiplier ? Math.floor(Math.random() * 10) + 1 * existsDB.xpMultiplier : Math.floor(Math.random() * 10) + 1;
 
@@ -101,7 +103,9 @@ module.exports = {
         if (!exists || !exists.xpSystem) return;
 
         let user = await message.guild.members.fetch(userID);
-        let rankChannel = await message.guild.channels.fetch(exists.channels.find(ch => ch.command == "rank").channelID);
+        let rankChannel = existsDB.channels.find(ch => ch.command == "rank")
+            ? await message.guild.channels.fetch(exists.channels.find(ch => ch.command == "rank").channelID).catch(err => { return; })
+            : undefined;
         if (!rankChannel) rankChannel = message.channel;
         const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
