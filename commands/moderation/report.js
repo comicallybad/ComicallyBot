@@ -23,8 +23,8 @@ module.exports = {
         if (!args[1])
             return r(message.channel, message.author, "Please provide a reason for the report").then(m => del(m, 7500));
 
-        let logChannel = message.guild.channels.cache.find(c => c.name.includes("reports"));
-        if (!logChannel) message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
+        let logChannel = message.guild.channels.cache.find(c => c.name.includes("reports"))
+            || message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
 
         if (!logChannel)
             return r(message.channel, message.author, "Couldn't find a \`#reports\` or \`#mod-logs\` channel").then(m => del(m, 7500));

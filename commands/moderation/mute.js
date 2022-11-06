@@ -58,16 +58,16 @@ module.exports = {
                         del(msg, 0);
                         mutee.timeout(60000, `${reason}`).then(() => {
                             mutee.send(`Hello, you have been **timed out** for **1 minute** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
-                            r(message.channel, message.author, `${mutee.user.username} was successfully timed out for **1 minute**.`).then(m => del(m, 7500));
+                            s(message.channel, `${mutee} was successfully timed out for **1 minute**.`).then(m => del(m, 7500));
                             embed.addFields({ name: "Timeout Time: ", value: "**1 Minute**" });
 
-                            s(logChannel, '', embed);
+                            return s(logChannel, '', embed);
                         }).catch(err => r(message.channel, message.author, `There was an error attempting to timeout ${mutee}: ${err}`).then(m => del(m, 7500)));
                     } else if (emojiTime === "5️⃣") {
                         del(msg, 0);
                         mutee.timeout(300000, `${reason}`).then(() => {
                             mutee.send(`Hello, you have been **timed out** for **5 minutes** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
-                            r(message.channel, message.author, `${mutee.user.username} was successfully timed out for **5 minutes**.`).then(m => del(m, 7500));
+                            s(message.channel, `${mutee} was successfully timed out for **5 minutes**.`).then(m => del(m, 7500));
                             embed.addFields({ name: "Timeout Time: ", value: "**5 Minutes**" });
 
                             return s(logChannel, '', embed);
@@ -76,7 +76,7 @@ module.exports = {
                         del(msg, 0);
                         mutee.timeout(600000, `${reason}`).then(() => {
                             mutee.send(`Hello, you have been **timed out** for **10 minutes** in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
-                            r(message.channel, message.author, `${mutee.user.username} was successfully timed out for **10 minutes**.`).then(m => del(m, 7500));
+                            s(message.channel, `${mutee} was successfully timed out for **10 minutes**.`).then(m => del(m, 7500));
                             embed.addFields({ name: "Timeout Time: ", value: "**10 Minutes**" });
 
                             return s(logChannel, '', embed);
