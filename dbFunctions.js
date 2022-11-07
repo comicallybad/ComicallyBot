@@ -103,7 +103,7 @@ module.exports = {
         if (!exists || !exists.xpSystem) return;
 
         let user = await message.guild.members.fetch(userID);
-        let rankChannel = existsDB.channels.find(ch => ch.command == "rank")
+        let rankChannel = exists.channels.find(ch => ch.command == "rank")
             ? await message.guild.channels.fetch(exists.channels.find(ch => ch.command == "rank").channelID).catch(err => { return; })
             : undefined;
         if (!rankChannel) rankChannel = message.channel;
