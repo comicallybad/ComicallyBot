@@ -41,7 +41,7 @@ module.exports = {
                 .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                 .setTimestamp()
                 .setDescription(stripIndents`
-                **Delete Reaction Set To:** ${reaction.length == 1 ? reaction : message.guild.emojis.cache.get(reaction)} 
+                **Delete Reaction Set To:** ${reaction.length <= 17 ? reaction : message.guild.emojis.cache.get(reaction)} 
                 **Delete Reaction Set By:** ${message.member}`);
 
             return s(logChannel, '', embed);

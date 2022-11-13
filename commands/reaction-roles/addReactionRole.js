@@ -75,7 +75,7 @@ function addReactionRole(message, reaction, role, type) {
             embed.setTitle("Reaction Role Added").setDescription(stripIndents`
             **Reaction Role Created By:** ${message.member.user}
             **Reaction Role:** ${role} (${role.id})
-            **Reaction Emoji/ID:** ${reaction.length == 1 ? reaction : message.guild.emojis.cache.get(reaction)}
+            **Reaction Emoji/ID:** ${reaction.length <= 17 ? reaction : message.guild.emojis.cache.get(reaction)}
             **Reaction Role Messasge ID:** ${messageID}
             **Reaction Role Type: **${type}`);
 
@@ -89,7 +89,7 @@ function addReactionRole(message, reaction, role, type) {
             embed.setTitle("Reaction Role Updated").setDescription(stripIndents`
             **Reaction Role Updated By:** ${message.member.user}
             **Reaction Role:** ${role} (${role.id})
-            **Reaction Emoji/ID:** <:${reaction.length == 1 ? reaction : message.guild.emojis.cache.get(reaction)}
+            **Reaction Emoji/ID:** <:${reaction.length <= 17 ? reaction : message.guild.emojis.cache.get(reaction)}
             **Reaction Role Messasge ID:** ${messageID}
             **Reaction Role Type:** ${type}`);
 
