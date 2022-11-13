@@ -112,17 +112,19 @@ module.exports = {
     },
 
     //Adds certain reactions, returns first user
-    simplePrompt: async function (message, validReactions) {
+    simplePrompt: function (message, validReactions) {
         if (!message.channel.permissionsFor(message.guild.me).has("ADD_REACTIONS"))
             return r(message.channel, message.author, "I am missing permissions to `ADD_REACTIONS` in this channel for this command.").then(m => module.exports.del(m, 30000));
 
-        for (const reaction of validReactions) await message.react(reaction).catch(err => err);
+        for (const reaction of validReactions) message.react(reaction).catch(err => err);
 
-        const filter = (reaction, user) => { return validReactions.includes(reaction.emoji.name) && user.id !== message.client.user.id };
+        const filter = (reaction, user) => { return validReactions.includes(reaction.emoji.name) && user.id !== message.guild.me.id };
 
-        return message
-            .awaitReactions({ filter, max: 1 })
-            .then(collected => collected.first() && collected.first().emoji.name).catch(err => console.log(`There was an error in simplePrompt ${err}`));
+        return message.awaitReactions({ filter, max: 1 }).then(collected => {
+            let reactor = collected.first().users.cache.filter(user => user.id !== message.guild.me.id).first();
+            message.reactions.cache.find(r => r.emoji.name == collected.first().emoji.name).users.remove(reactor);
+            return collected.first() && collected.first().emoji.name
+        }).catch(err => console.log(`There was an error in simplePrompt ${err}`));
     },
 
     //Adds certain reactions, waits certain amount of time, returns first user
@@ -132,9 +134,9 @@ module.exports = {
 
         time *= 1000;
 
-        for (const reaction of validReactions) await message.react(reaction).catch(err => err);
+        for (const reaction of validReactions) message.react(reaction).catch(err => err);
 
-        const filter = (reaction, user) => { return validReactions.includes(reaction.emoji.name) && user.id === author.id && user.id !== message.client.id };
+        const filter = (reaction, user) => { return validReactions.includes(reaction.emoji.name) && user.id === author.id && user.id !== message.guild.me.id };
 
         return message
             .awaitReactions({ filter, max: 1, time: time })
