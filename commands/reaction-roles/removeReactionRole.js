@@ -35,7 +35,7 @@ module.exports = {
                 .setThumbnail(message.author.displayAvatarURL())
                 .setDescription(stripIndents`
                 **Reaction Role Removed By:** ${message.member.user}
-                **Reaction Role:** ${role}(${role.id})
+                **Reaction Role:** ${role} (${role.id})
                 **Reaction Role Messasge ID:** ${messageID}`)
                 .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
                 .setTimestamp();
