@@ -1,4 +1,4 @@
-const { s, r, del, warn, hasPermissions } = require('./functions.js');
+const { s, del, warn, hasPermissions } = require('./functions.js');
 const mongoose = require("mongoose");
 const db = require('./schemas/db.js');
 const xp = require('./schemas/xp.js');
@@ -17,14 +17,14 @@ module.exports = {
                 _id: mongoose.Types.ObjectId(),
                 guildID: guildsID[guildIndex],
                 guildName: guildsName[guildIndex],
-                memberRoles: [], modRoles: [],
-                verificationRole: [], commands: [],
+                modRoles: [], verificationRole: [], commands: [],
                 channels: [], xpRoles: [], xpMultiplier: 1,
                 xpSystem: false, profanityFilter: false,
                 antiSpam: false, antiPhishing: false,
                 reactionRoles: [], badWordList: [],
                 welcomeMessage: [],
-                welcomeMessageReactions: []
+                welcomeMessageReactions: [],
+                deleteReaction: undefined
             }).save().then(() => {
                 module.exports.cmdSetup(client, guildsID[guildIndex]);
             }).catch(err => err);
