@@ -20,7 +20,8 @@ module.exports = {
             if (member.id !== process.env.USERID)
                 return r(message.channel, "You can't give yourself roles...").then(m => del(m, 7500));
 
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("role-logs"))
+            || message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
         const roleName = args.slice(1).join(" ");
 
         let role = message.guild.roles.cache.find(r => r.name === roleName) || message.guild.roles.cache.find(r => r.id === args[1]) || message.mentions.roles.first();

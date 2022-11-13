@@ -107,7 +107,8 @@ module.exports = {
             ? await message.guild.channels.fetch(exists.channels.find(ch => ch.command == "rank").channelID).catch(err => { return; })
             : undefined;
         if (!rankChannel) rankChannel = message.channel;
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("role-logs"))
+            || message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         const embed = new MessageEmbed()
             .setColor("#00FF00")

@@ -21,7 +21,7 @@ async function checkReactionRole(message, user) {
     const msg = message.message;
     let logChannel;
     if (msg.guild.channels)
-        logChannel = msg.guild.channels.cache.find(c => c.name.includes("reaction-logs"));
+        logChannel = msg.guild.channels.cache.find(c => c.name.includes("role-logs"));
     if (!logChannel) msg.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
     const guildUser = msg.guild.members.cache.get(user.id);
     const guildID = msg.guild.id;
