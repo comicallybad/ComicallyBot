@@ -5,6 +5,7 @@ const { stripIndents } = require("common-tags");
 
 module.exports = async (client, member) => {
     let logChannel = await member.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
+    let actionChannel = member.guild.channels.cache.find(c => c.name.includes("mod-logs"));
 
     activities = [`${client.guilds.cache.size} servers!`, `${client.channels.cache.size} channels!`, `${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} users!`], i = 0;
 
@@ -35,7 +36,7 @@ module.exports = async (client, member) => {
         const { executor, target } = kickLog;
 
         if (target.id === member.id) {
-            if (logChannel) {
+            if (actionChannel) {
                 const embed = new MessageEmbed()
                     .setColor("#FF0000")
                     .setTitle("Member Kicked")
@@ -47,7 +48,7 @@ module.exports = async (client, member) => {
                     **User Kicked By:** ${executor} (${executor.id}).
                     **Reason:** ${kickLog.reason ? kickLog.reason : "No reason given!"}`);
 
-                return s(logChannel, '', embed);
+                return s(actionChannel, '', embed);
             }
         } else {
             if (logChannel) {

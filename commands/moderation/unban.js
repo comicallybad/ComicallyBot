@@ -24,7 +24,8 @@ module.exports = {
         if (!bannedMember)
             return r(message.channel, message.author, "Please provide a member id to unban someone!").then(m => del(m, 7500));
 
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("action-logs"))
+            || message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
         let reason = args.slice(1).join(" ")
         if (!reason) reason = "No reason given!"
 

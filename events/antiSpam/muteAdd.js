@@ -3,7 +3,8 @@ const { MessageEmbed } = require('discord.js');
 const { stripIndents } = require("common-tags");
 
 module.exports = (client, member) => {
-    const logChannel = member.guild.channels.cache.find(c => c.name.includes("mod-logs"));
+    const logChannel = member.guild.channels.cache.find(c => c.name.includes("action-logs"))
+        || member.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
     if (logChannel) {
         const embed = new MessageEmbed()
             .setColor("#ff0000")
