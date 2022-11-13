@@ -16,8 +16,9 @@ module.exports = async (client, message, user) => {
 }
 
 function removeReactionRole(message) {
-    let guildID = message.message.guild.id;
-    let messageID = message.message.id;
+    const msg = message.message;
+    let guildID = msg.guild.id;
+    let messageID = msg.id;
     let reaction;
 
     if (!message._emoji.id) reaction = message._emoji.name;
@@ -29,14 +30,15 @@ function removeReactionRole(message) {
 }
 
 function checkReactionRole(message, user) {
+    const msg = message.message;
     let logChannel;
-    if (message.message.guild.channels)
-        logChannel = message.message.guild.channels.cache.find(c => c.name.includes("reaction-logs"));
-    if (!logChannel) message.message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
-    let guildUser = message.message.guild.members.cache.get(user.id);
-    let guildID = message.message.guild.id;
+    if (msg.guild.channels)
+        logChannel = msg.guild.channels.cache.find(c => c.name.includes("reaction-logs"));
+    if (!logChannel) msg.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
+    let guildUser = msg.guild.members.cache.get(user.id);
+    let guildID = msg.guild.id;
 
-    let messageID = message.message.id;
+    let messageID = msg.id;
     let reaction;
 
     if (!guildUser) return;
@@ -63,8 +65,8 @@ function checkReactionRole(message, user) {
                 embed.setDescription(`**Member:** ${user} ${user.id}\n**Role: ${role.roleName}** (${role.roleID})`);
                 if (logChannel) s(logChannel, '', embed);
             }).catch(err => {
-                if (!message.message.channel.permissionsFor(message.message.guild.me).has("SEND_MESSAGES")) return;
-                else return s(message.message.channel, `${user} there was an issue removing you from the **${role.roleName}** ${err}`).then(m => del(m, 7500));
+                if (!msg.channel.permissionsFor(msg.guild.me).has("SEND_MESSAGES")) return;
+                else return s(msg.channel, `${user} there was an issue removing you from the **${role.roleName}** ${err}`).then(m => del(m, 7500));
             });
         });
     }).catch(err => err);
