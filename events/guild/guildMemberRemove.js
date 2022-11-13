@@ -4,7 +4,8 @@ const xp = require("../../schemas/xp.js");
 const { stripIndents } = require("common-tags");
 
 module.exports = async (client, member) => {
-    let logChannel = await member.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
+    let logChannel = member.guild.channels.cache.find(c => c.name.includes("member-logs"))
+        || member.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
     let actionChannel = member.guild.channels.cache.find(c => c.name.includes("action-logs"));
 
     activities = [`${client.guilds.cache.size} servers!`, `${client.channels.cache.size} channels!`, `${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} users!`], i = 0;
