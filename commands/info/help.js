@@ -7,7 +7,7 @@ module.exports = {
     aliases: ["commands"],
     category: "info",
     description: "Returns all commands, returns all commands in a category, or returns a specific command's information.",
-    permissions: "everyone",
+    permissions: "member",
     usage: "[command | alias | category]",
     run: async (client, message, args) => {
         if (args[0]) return getSpecific(client, message, args[0]);

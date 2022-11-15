@@ -26,11 +26,15 @@ module.exports = {
             if (reactionRoles.length > 0) {
                 if (reactionRoles.length <= 10) {
                     reactionRoles.forEach((rr, index) => {
-                        embed.addFields({ name: `Reaction Role: ${index + 1}`, value: `MessageID: \`${rr.messageID}\`  Reaction: \`${rr.reaction}\` Role: \`${rr.roleName}(${rr.roleID})\` Type: \`${rr.type}\`,` });
+                        const reaction = rr.reaction;
+                        embed.addFields({
+                            name: `Reaction Role: ${index + 1}`,
+                            value: `MessageID: \`${rr.messageID}\`\nReaction: ${reaction.length <= 17 ? reaction : message.guild.emojis.cache.get(reaction)}\nRole: \`${rr.roleName}(${rr.roleID})\`\nType: \`${rr.type}\`,`
+                        });
                     });
                     return e(m, m.channel, '', embed).then(del(m, 30000));
                 } else {
-                    let array = reactionRoles.map(rr => `MessageID: \`${rr.messageID}\`  Reaction: \`${rr.reaction}\` Role: \`${rr.roleName}(${rr.roleID})\` Type: \`${rr.type}\`,`);
+                    let array = reactionRoles.map(rr => `MessageID: \`${rr.messageID}\`\nReaction: ${rr.reaction.length <= 17 ? rr.reaction : message.guild.emojis.cache.get(rr.reaction)}\nRole: \`${rr.roleName}(${rr.roleID})\`\nType: \`${rr.type}\`,`);
                     pageList(m, message.author, array, embed, "Reaction Role:", 10, 0);
                 }
             } else {

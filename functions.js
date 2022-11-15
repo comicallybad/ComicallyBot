@@ -56,7 +56,7 @@ module.exports = {
             userID = message.member.id;
         } else return;
 
-        if (commandType == "everyone") return true;
+        if (commandType == "member") return true;
         else if (message.member.permissions.has("ADMINISTRATOR")
             || message.author.id == process.env.USERID) return true;
         else {
@@ -64,15 +64,10 @@ module.exports = {
             if (!permissions) return false;
 
             let modRolesIDs = permissions.modRoles.map(role => role.roleID);
-            let memberRolesIDs = permissions.memberRoles.map(role => role.roleID)
 
             if (commandType == "moderator") {
                 if (modRolesIDs.includes(userID)) return true;
                 else if (modRolesIDs.find(id => roleIDs.includes(id))) return true;
-                else return false;
-            } else if (commandType == "member") {
-                if (memberRolesIDs.includes(userID)) return true;
-                else if (memberRolesIDs.find(id => roleIDs.includes(id))) return true;
                 else return false;
             }
         }
@@ -117,17 +112,21 @@ module.exports = {
     },
 
     //Adds certain reactions, returns first user
-    simplePrompt: async function (message, validReactions) {
+    simplePrompt: function (message, validReactions) {
         if (!message.channel.permissionsFor(message.guild.me).has("ADD_REACTIONS"))
             return r(message.channel, message.author, "I am missing permissions to `ADD_REACTIONS` in this channel for this command.").then(m => module.exports.del(m, 30000));
 
-        for (const reaction of validReactions) await message.react(reaction).catch(err => err);
+        for (const reaction of validReactions) message.react(reaction).catch(err => err);
 
-        const filter = (reaction, user) => { return validReactions.includes(reaction.emoji.name) && user.id !== message.client.user.id };
+        const filter = (reaction, user) => { return validReactions.includes(reaction.emoji.name) && user.id !== message.guild.me.id };
 
-        return message
-            .awaitReactions({ filter, max: 1 })
-            .then(collected => collected.first() && collected.first().emoji.name).catch(err => console.log(`There was an error in simplePrompt ${err}`));
+        return message.awaitReactions({ filter, max: 1 }).then(collected => {
+            if (collected.first()?.users?.cache) {
+                let reactor = collected.first().users.cache.filter(user => user.id !== message.guild.me.id).first();
+                message.reactions.cache.find(r => r.emoji.name == collected.first().emoji.name).users.remove(reactor).catch(err => err);
+            }
+            return collected.first() && collected.first().emoji.name
+        }).catch(err => console.log(`There was an error in simplePrompt ${err}`));
     },
 
     //Adds certain reactions, waits certain amount of time, returns first user
@@ -137,9 +136,9 @@ module.exports = {
 
         time *= 1000;
 
-        for (const reaction of validReactions) await message.react(reaction).catch(err => err);
+        for (const reaction of validReactions) message.react(reaction).catch(err => err);
 
-        const filter = (reaction, user) => { return validReactions.includes(reaction.emoji.name) && user.id === author.id && user.id !== message.client.id };
+        const filter = (reaction, user) => { return validReactions.includes(reaction.emoji.name) && user.id === author.id && user.id !== message.guild.me.id };
 
         return message
             .awaitReactions({ filter, max: 1, time: time })
@@ -215,7 +214,8 @@ module.exports = {
 
     //Warns user for action
     warn: async function (message, reason, extra) {
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("action-logs"))
+            || message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         const embed = new MessageEmbed()
             .setTitle(`Warning For: __**${reason}**__!`)
@@ -270,7 +270,8 @@ module.exports = {
 
     //Punish user for action
     punish: async function (message, reason, offence, extra) {
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("action-logs"))
+            || message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         const embed = new MessageEmbed()
             .setTitle(`Action Taken For: __**${reason}**__!`)
@@ -292,7 +293,7 @@ module.exports = {
                 embed.fields = [];
                 embed.setTitle(`Member Timed Out For ${reason}`)
                     .setDescription(`
-                        **Member Timed Out:** ${message.member} (${message.member.id})
+                        **Member Timed Out:** ${message.member} (${message.author.id})
                         **Channel:** ${message.channel}
                         **Warning: __#${offence}__**
                         **Timeout Time: __5 minutes__**`);
@@ -310,7 +311,7 @@ module.exports = {
 
                 module.exports.s(message.channel, '', embed);
 
-                embed.setTitle("Member Timeout Expired").setDescription(`**Member:** ${message.member} (${message.member.id})\n**Timeout Time:  __5 minute__** timeout expired`);
+                embed.setTitle("Member Timeout Expired").setDescription(`**Member:** ${message.member} (${message.author.id})\n**Timeout Time:  __5 minute__** timeout expired`);
 
                 return module.exports.s(logChannel, '', embed);
             }, 300000)).catch(err => {
@@ -327,7 +328,7 @@ module.exports = {
                 embed.fields = [];
                 embed.setTitle(`Member Timed Out For ${reason}`)
                     .setDescription(`
-                        **Member Timed Out:** ${message.member} (${message.member.id})
+                        **Member Timed Out:** ${message.member} (${message.author.id})
                         **Channel:** ${message.channel}
                         **Warning: __#${offence}__**
                         **Timeout Time: __10 minutes__**`);
@@ -346,7 +347,7 @@ module.exports = {
 
                 module.exports.s(message.channel, '', embed);
 
-                embed.setTitle("Member Timeout Expired").setDescription(`**Member:** ${message.member} (${message.member.id})\n**Timeout Time:  __10 minute__** timeout expired`);
+                embed.setTitle("Member Timeout Expired").setDescription(`**Member:** ${message.member} (${message.author.id})\n**Timeout Time:  __10 minute__** timeout expired`);
 
                 return module.exports.s(logChannel, '', embed);
             }, 600000)).catch(err => {

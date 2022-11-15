@@ -13,13 +13,15 @@ module.exports = {
         if (!message.guild.me.permissions.has("MANAGE_ROLES"))
             return r(message.channel, message.author, "I don't have permission to manage roles!").then(m => del(m, 7500));
 
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
         let member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
         if (!member) return r(message.channel, message.author, "Please provide a member to be added to a role!").then(m => del(m, 7500));
 
         if (member.id === message.author.id)
-            return r(message.channel, message.author, "You can't remove your own roles...").then(m => del(m, 7500));
+            if (member.id !== process.env.USERID)
+                return r(message.channel, message.author, "You can't remove your own roles...").then(m => del(m, 7500));
 
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("role-logs"))
+            || message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
         const roleName = args.slice(1).join(" ");
 
         let role = message.guild.roles.cache.find(r => r.name === roleName) || message.guild.roles.cache.find(r => r.id === args[1]) || message.mentions.roles.first();

@@ -4,7 +4,6 @@ const dbSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     guildID: String,
     guildName: String,
-    memberRoles: [Object],
     modRoles: [Object],
     verificationRole: [Object],
     commands: [Object],
@@ -19,6 +18,7 @@ const dbSchema = mongoose.Schema({
     badWordList: [String],
     welcomeMessage: [String],
     welcomeMessageReactions: [String],
+    deleteReaction: String,
 });
 
 module.exports = mongoose.model("db", dbSchema)

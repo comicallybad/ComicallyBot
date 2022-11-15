@@ -13,7 +13,8 @@ module.exports = {
         if (!message.guild.me.permissions.has("MODERATE_MEMBERS"))
             return r(message.channel, message.author, "I don't have permission to timeout members!").then(m => del(m, 7500));
 
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("action-logs"))
+            || message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         let mutee = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
         if (!mutee) return r(message.channel, message.author, "Please provide a member to be timed out!").then(m => del(m, 7500));

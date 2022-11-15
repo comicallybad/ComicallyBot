@@ -9,7 +9,8 @@ module.exports = {
     permissions: "moderator",
     usage: "<@user | userID> [#channel] <message>",
     run: async (client, message, args) => {
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
+        const logChannel = message.guild.channels.cache.find(c => c.name.includes("action-logs"))
+            || message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
 
         let embed = new MessageEmbed()
             .setTitle("Warning!")

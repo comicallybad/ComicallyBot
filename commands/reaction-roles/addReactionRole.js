@@ -7,9 +7,9 @@ module.exports = {
     name: "addreactionrole",
     aliases: ["reactionroleadd", "reactionrole", "rr"],
     category: "reaction-roles",
-    description: "Adds an emote users can react to to be given a role.",
+    description: "Adds an emoji users can react to to be given a role.",
     permissions: "moderator",
-    usage: "<messageID> <emote | emoteID> <@role | roleID> [type] Types: 'addonly', 'add/remove'. Type will default to add/remove if not supplied.",
+    usage: "<messageID> <emoji | emojiID> <@role | roleID> [type] Types: 'addonly', 'add/remove'. Type will default to add/remove if not supplied.",
     run: async (client, message, args) => {
         if (!message.guild.me.permissions.has("MANAGE_ROLES"))
             return r(message.channel, message.author, "I don't have permission to manage roles!").then(m => del(m, 7500));
@@ -21,7 +21,7 @@ module.exports = {
             return r(message.channel, message.author, `Please provide a message ID. Use \`${prefix}help reactionrole\` for guidance.`).then(m => del(m, 7500));
 
         if (!args[1])
-            return r(message.channel, message.author, "Please provide an emote or emote ID.").then(m => del(m, 7500));
+            return r(message.channel, message.author, "Please provide an emoji or emoji ID.").then(m => del(m, 7500));
 
         if (!args[2])
             return r(message.channel, message.author, "Please provide a role ID or at mention the role.").then(m => del(m, 7500));
@@ -32,7 +32,12 @@ module.exports = {
             if (!msg || msg.message == "Unknown Message" || !msg.id)
                 return r(message.channel, message.author, "Could not find message in current channel.").then(m => del(m, 7500));
 
-            const reaction = args[1];
+            const reaction = args[1].includes("<:")
+                ? args[1].replace("<:", "").slice(args[1].replace("<:", "").indexOf(":") + 1, args[1].replace("<:", "").length - 1)
+                : args[1].includes("<a:")
+                    ? args[1].replace("<a:", "").slice(args[1].replace("<a:", "").indexOf(":") + 1, args[1].replace("<a:", "").length - 1)
+                    : args[1];
+
             let roleID = await findID(message, args[2]);
             const role = message.guild.roles.cache.find(r => r.id == roleID);
             if (!role) return r(message.channel, message.author, "Could not find role.").then(m => del(m, 7500));
@@ -41,11 +46,7 @@ module.exports = {
             if (args[3]) {
                 if (args[3] == "addonly") type = "addonly"
             } else type = "add/remove"
-
-            if (reaction.includes("<:")) {
-                let customEmoji = reaction.replace("<:", "").slice(reaction.replace("<:", "").indexOf(":") + 1, reaction.replace("<:", "").length - 1);
-                return msg.react(customEmoji).then(() => addReactionRole(msg, customEmoji, role, type)).catch(err => r(message.channel, message.author, `Invalid emoji: ${err}`));
-            } else return msg.react(reaction).then(() => addReactionRole(msg, reaction, role, type)).catch(err => r(message.channel, message.author, `Invalid emoji: ${err}`));
+            return msg.react(reaction).then(() => addReactionRole(msg, reaction, role, type)).catch(err => r(message.channel, message.author, `Invalid emoji: ${err}`));
         }
     }
 }
@@ -73,8 +74,8 @@ function addReactionRole(message, reaction, role, type) {
             }).catch(err => r(message.channel, message.author, `There was an error adding this reaction role: ${err}`).then(m => del(m, 7500)));
             embed.setTitle("Reaction Role Added").setDescription(stripIndents`
             **Reaction Role Created By:** ${message.member.user}
-            **Reaction Role:** ${role}(${role.id})
-            **Reaction Emoji/ID:** ${reaction}
+            **Reaction Role:** ${role} (${role.id})
+            **Reaction Emoji/ID:** ${reaction.length <= 17 ? reaction : message.guild.emojis.cache.get(reaction)}
             **Reaction Role Messasge ID:** ${messageID}
             **Reaction Role Type: **${type}`);
 
@@ -87,8 +88,8 @@ function addReactionRole(message, reaction, role, type) {
 
             embed.setTitle("Reaction Role Updated").setDescription(stripIndents`
             **Reaction Role Updated By:** ${message.member.user}
-            **Reaction Role:** ${role}(${role.id})
-            **Reaction Emoji/ID:** ${reaction}
+            **Reaction Role:** ${role} (${role.id})
+            **Reaction Emoji/ID:** <:${reaction.length <= 17 ? reaction : message.guild.emojis.cache.get(reaction)}
             **Reaction Role Messasge ID:** ${messageID}
             **Reaction Role Type:** ${type}`);
 

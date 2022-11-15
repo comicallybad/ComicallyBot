@@ -6,7 +6,8 @@ module.exports = async (client, ban) => {
     if (!ban.guild.me.permissions.has("VIEW_AUDIT_LOG"))
         return;
 
-    let logChannel = await ban.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
+    let logChannel = await ban.guild.channels.cache.find(c => c.name.includes("action-logs"))
+        || ban.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
 
     try {
         const fetchedLogs = await ban.guild.fetchAuditLogs({
