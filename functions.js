@@ -121,8 +121,10 @@ module.exports = {
         const filter = (reaction, user) => { return validReactions.includes(reaction.emoji.name) && user.id !== message.guild.me.id };
 
         return message.awaitReactions({ filter, max: 1 }).then(collected => {
-            let reactor = collected.first().users.cache.filter(user => user.id !== message.guild.me.id).first();
-            message.reactions.cache.find(r => r.emoji.name == collected.first().emoji.name).users.remove(reactor);
+            if (collected.first()?.users?.cache) {
+                let reactor = collected.first().users.cache.filter(user => user.id !== message.guild.me.id).first();
+                message.reactions.cache.find(r => r.emoji.name == collected.first().emoji.name).users.remove(reactor).catch(err => err);
+            }
             return collected.first() && collected.first().emoji.name
         }).catch(err => console.log(`There was an error in simplePrompt ${err}`));
     },
