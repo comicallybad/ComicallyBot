@@ -38,7 +38,9 @@ async function checkReactionRole(message, user) {
 
         if (!modRolesIDs.includes(user.id) && !modRolesIDs.find(id => roleIDs.includes(id)) && guildUser.id !== process.env.USERID) return;
 
-        let author = await msg.guild.members.fetch(msg.author.id);
+        let author = await msg.guild.members.fetch(msg.author.id).catch(err => err);
+        if (!author) return;
+
         const textLogChannel = msg.guild.channels.cache.find(c => c.name.includes("text-logs"))
             || msg.guild.channels.cache.find(c => c.name.includes("mods-logs")) || undefined;
 
