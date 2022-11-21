@@ -12,7 +12,7 @@
     "@vitalets/google-translate-api": "^8.0.0",
     "ascii-table": "^0.0.9",
     "beautify": "^0.0.8",
-    "canvacord": "^5.4.8",
+    "canvacard": "^5.2.4",
     "common-tags": "^1.8.2",
     "discord-anti-spam": "^2.7.3",
     "discord-antiphishinglinks": "^1.0.7",
