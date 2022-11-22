@@ -219,7 +219,7 @@ module.exports = {
             .setTitle(`Warning For: __**${reason}**__!`)
             .setThumbnail(message.author.displayAvatarURL())
             .setColor("#ff0000")
-            .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
+            .setFooter({ text: message.member.user.tag, iconURL: message.author.displayAvatarURL() })
             .setTimestamp();
 
         if (!warnUsers || !warnUsers.find(user => user.id === message.author.id)) {
@@ -230,7 +230,7 @@ module.exports = {
             module.exports.s(message.channel, '', embed);
 
             embed.fields = [];
-            embed.setTitle(`Member Warned For ${reason}`)
+            embed.setTitle(`Member Warned For: ${reason}`)
                 .setDescription(stripIndents`
                 **Member Warned:** ${message.member} (${message.member.id})
                 **Channel:** ${message.channel}
@@ -249,7 +249,7 @@ module.exports = {
                 module.exports.s(message.channel, '', embed);
 
                 embed.fields = [];
-                embed.setTitle(`Member Warned For ${reason}`)
+                embed.setTitle(`Member Warned For: ${reason}`)
                     .setDescription(stripIndents`
                     **Member Warned:** ${message.member} (${message.member.id})
                     **Channel:** ${message.channel}
@@ -275,7 +275,7 @@ module.exports = {
             .setTitle(`Action Taken For: __**${reason}**__!`)
             .setThumbnail(message.author.displayAvatarURL())
             .setColor("#ff0000")
-            .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
+            .setFooter({ text: message.member.user.tag, iconURL: message.author.displayAvatarURL() })
             .setTimestamp();
 
         if (!message.guild.me.permissions.has("MANAGE_ROLES"))
