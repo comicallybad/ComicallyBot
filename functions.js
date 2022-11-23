@@ -111,7 +111,7 @@ module.exports = {
         return month + '/' + day + '/' + year;
     },
 
-    //Adds certain reactions, returns first user
+    //Creates a simple message collector with a filter to exclude bot reactions
     simplePrompt: function (message, validReactions) {
         if (!message.channel.permissionsFor(message.guild.me).has("ADD_REACTIONS"))
             return r(message.channel, message.author, "I am missing permissions to `ADD_REACTIONS` in this channel for this command.").then(m => module.exports.del(m, 30000));
@@ -120,14 +120,10 @@ module.exports = {
 
         const filter = (reaction, user) => { return validReactions.includes(reaction.emoji.name) && user.id !== message.guild.me.id };
 
-        return message.awaitReactions({ filter, max: 1 }).then(collected => {
-            message.reactions.cache.find(r => r.emoji.name == collected.first()?.emoji.name)
-                ?.users?.remove(collected.first()?.users.cache.filter(user => user.id !== message.guild.me.id).first()).catch(err => err);
-            return collected.first() && collected.first().emoji.name
-        }).catch(err => console.log(`There was an error in simplePrompt ${err}`));
+        return message.createReactionCollector({ filter });
     },
 
-    //Adds certain reactions, waits certain amount of time, returns first user
+    //Returns the reaction added by the author of the message 
     messagePrompt: async function (message, author, time, validReactions) {
         if (!message.channel.permissionsFor(message.guild.me).has("ADD_REACTIONS"))
             return r(message.channel, message.author, "I am missing permissions to `ADD_REACTIONS` in this channel for this command.").then(m => module.exports.del(m, 30000));
@@ -138,8 +134,7 @@ module.exports = {
 
         const filter = (reaction, user) => { return validReactions.includes(reaction.emoji.name) && user.id === author.id && user.id !== message.guild.me.id };
 
-        return message
-            .awaitReactions({ filter, max: 1, time: time })
+        return message.awaitReactions({ filter, max: 1, time: time })
             .then(collected => collected.first() && collected.first().emoji.name).catch(err => console.log(`There was an error in messagePrompt ${err}`));
     },
 
