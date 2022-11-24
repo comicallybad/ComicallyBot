@@ -10,7 +10,7 @@ module.exports = {
     run: async (client, message, args) => {
         let person;
         if (args[0])
-            person = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
+            person = message.mentions.members.first() || await message.guild.members.fetch(args[0]).catch(err => { return; });
 
         if (!person || message.author.id === person.id) {
             const allMembers = [
