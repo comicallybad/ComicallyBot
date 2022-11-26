@@ -6,7 +6,7 @@ module.exports = {
     description: "Provides a link to support the creator of the bot ❤️.",
     permissions: "member",
     run: (client, message, args) => {
-        const donationLink = "https://www.paypal.me/comicallybad";
+        const donationLink = "https://www.linktr.ee/comicallybad";
         return r(message.channel, message.author, `The donation link to support the bot creator is: ${donationLink}`).then(m => del(m, 15000));
     }
 }
