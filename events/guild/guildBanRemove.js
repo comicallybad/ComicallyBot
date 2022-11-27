@@ -19,7 +19,7 @@ module.exports = async (client, ban) => {
 
         if (!banLog) {
             const embed = new MessageEmbed()
-                .setColor("#FF0000")
+                .setColor("#00FF00")
                 .setTitle("Member Unbanned")
                 .setThumbnail(ban.user.displayAvatarURL())
                 .setFooter({ text: ban.user.tag, iconURL: ban.user.displayAvatarURL() })
@@ -32,10 +32,11 @@ module.exports = async (client, ban) => {
         }
 
         const { executor, target } = banLog;
+
         if (target.id === ban.user.id) {
             if (!logChannel) return;
             const embed = new MessageEmbed()
-                .setColor("#FF0000")
+                .setColor("#00FF00")
                 .setTitle("Member Unbanned")
                 .setThumbnail(ban.user.displayAvatarURL())
                 .setFooter({ text: ban.user.tag, iconURL: ban.user.displayAvatarURL() })
@@ -49,7 +50,7 @@ module.exports = async (client, ban) => {
         } else {
             if (!logChannel) return;
             const embed = new MessageEmbed()
-                .setColor("#FF0000")
+                .setColor("#00FF00")
                 .setTitle("Member Unbanned")
                 .setThumbnail(ban.user.displayAvatarURL())
                 .setFooter({ text: `${ban.user.tag}`, iconURL: ban.user.displayAvatarURL() })

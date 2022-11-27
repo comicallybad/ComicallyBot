@@ -32,6 +32,7 @@ module.exports = async (client, ban) => {
         }
 
         const { executor, target } = banLog;
+
         if (target.id === ban.user.id) {
             if (!logChannel) return;
             const embed = new MessageEmbed()
