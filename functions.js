@@ -6,7 +6,8 @@ module.exports = {
     //New global delete function due to discord.js changing it too much
     del: function (message, timeout) {
         if (!message || !message?.id) return;
-        if (!message.channel.permissionsFor(message.guild.me)?.has("MANAGE_MESSAGES")) return;
+        const channelPermissions = message.channel.permissionsFor(message.guild.me);
+        if (!channelPermissions?.has("MANAGE_MESSAGES")) return;
         setTimeout(() => {
             if (message.deletable && !message.reactions.cache?.get('🛑'))
                 message.delete().catch(err => err);
@@ -16,8 +17,11 @@ module.exports = {
 
     //New global send function due to discord.js changing it too much
     s: function (channel, content, embeds) {
-        if (!channel || !channel.guild.me.permissionsIn(channel)?.has("VIEW_CHANNEL") || !channel.guild.me.permissionsIn(channel)?.has("SEND_MESSAGES")) return;
-        if ((channel.type?.includes("THREAD") && !channelPermissions?.has("SEND_MESSAGES_IN_THREADS")) || channel.guild.me?.isCommunicationDisabled()) return;
+        if (!channel || !channel?.id) return;
+        const channelPermissions = channel.permissionsFor(channel.guild.me);
+        if (!channelPermissions?.has("VIEW_CHANNEL") || !channelPermissions?.has("SEND_MESSAGES")) return;
+        if ((channel.type?.includes("THREAD") && !channelPermissions?.has("SEND_MESSAGES_IN_THREADS"))
+            || channel.guild.me?.isCommunicationDisabled()) return;
         else if (!embeds) return channel.send({ content: content });
         else if (!content) return channel.send({ embeds: [embeds] });
         else if (content && embeds) return channel.send({ content: content, embeds: [embeds] });
@@ -26,8 +30,11 @@ module.exports = {
 
     //New global reply function due to discord.js changing it too much
     r: function (channel, author, content, embeds) {
-        if (!channel || !channel.guild.me.permissionsIn(channel)?.has("VIEW_CHANNEL") || !channel.guild.me.permissionsIn(channel)?.has("SEND_MESSAGES")) return;
-        if ((channel.type?.includes("THREAD") && !channelPermissions?.has("SEND_MESSAGES_IN_THREADS")) || channel.guild.me?.isCommunicationDisabled()) return;
+        if (!channel || !channel?.id) return;
+        const channelPermissions = channel.permissionsFor(channel.guild.me);
+        if (!channelPermissions?.has("VIEW_CHANNEL") || !channelPermissions?.has("SEND_MESSAGES")) return;
+        if ((channel.type?.includes("THREAD") && !channelPermissions?.has("SEND_MESSAGES_IN_THREADS"))
+            || channel.guild.me?.isCommunicationDisabled()) return;
         else if (!embeds) return channel.send({ content: `${author} ${content}` });
         else if (!content) return channel.send({ content: `${author}`, embeds: [embeds] });
         else if (content && embeds) return channel.send({ content: `${author} ${content}`, embeds: [embeds] });
@@ -36,8 +43,11 @@ module.exports = {
 
     //New global edit function due to discord.js changing it too much
     e: function (message, channel, content, embeds) {
-        if (!channel || !channel.guild.me.permissionsIn(channel)?.has("VIEW_CHANNEL") || !channel.guild.me.permissionsIn(channel)?.has("SEND_MESSAGES")) return;
-        if ((channel.type?.includes("THREAD") && !channelPermissions?.has("SEND_MESSAGES_IN_THREADS")) || channel.guild.me?.isCommunicationDisabled()) return;
+        if (!channel || !channel?.id) return;
+        const channelPermissions = channel.permissionsFor(channel.guild.me);
+        if (!channelPermissions?.has("VIEW_CHANNEL") || !channelPermissions?.has("SEND_MESSAGES")) return;
+        if ((channel.type?.includes("THREAD") && !channelPermissions?.has("SEND_MESSAGES_IN_THREADS"))
+            || channel.guild.me?.isCommunicationDisabled()) return;
         else if (!embeds) return message.edit({ content: content });
         else if (!content) return message.edit({ embeds: [embeds] });
         else if (content && embeds) return message.edit({ content: content, embeds: [embeds] });
