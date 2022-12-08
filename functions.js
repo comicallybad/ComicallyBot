@@ -300,6 +300,7 @@ module.exports = {
                         **Channel:** ${message.channel}
                         **Warning: __#${offence}__**
                         **Timeout Time: __5 minutes__**`);
+
                 if (reason == "Phishing Link") embed.addFields({ name: '__**DO NOT**__ use/open this link:', value: `||${extra}||` });
                 embed.addFields({ name: "Message Deleted: ", value: `||${message.content}||` });
 
@@ -308,17 +309,13 @@ module.exports = {
                 return module.exports.r(logChannel, message.author, `There was an error attempting to timeout ${message.member}: ${err}`);
             }).then(setTimeout(() => {
                 embed.fields = [];
-                embed.setTitle("Timout Expired!")
+                embed.setTitle("Member Timeout Expired")
                     .setColor("#00ff00")
-                    .setDescription(`${message.member}'s **__5 minute timeout__ expired**.`)
-
-                module.exports.s(message.channel, '', embed);
-
-                embed.setTitle("Member Timeout Expired").setDescription(`**Member:** ${message.member} (${message.author.id})\n**Timeout Time:  __5 minute__** timeout expired`);
+                    .setDescription(`**Member:** <@${message.author.id}> (${message.author.id})\n**Timeout Time:  __5 minute__** timeout expired`);
 
                 return module.exports.s(logChannel, '', embed);
             }, 300000)).catch(err => {
-                if (err) return module.exports.r(logChannel, message.author, `There was an error attempting to untime out ${message.member} ${err}`);
+                if (err) return module.exports.r(logChannel, message.author, `There was an error attempting to un-timeout ${message.member} ${err}`);
             });
         } else if (warnUsers.find(user => user.id == message.author.id && user.offences == 4)) {
             message.member.timeout(600000, `${reason}`).then(() => {
@@ -335,6 +332,7 @@ module.exports = {
                         **Channel:** ${message.channel}
                         **Warning: __#${offence}__**
                         **Timeout Time: __10 minutes__**`);
+
                 if (reason == "Phishing Link") embed.addFields({ name: '__**DO NOT**__ use/open this link:', value: `||${extra}||` });
                 embed.addFields({ name: "Message Deleted: ", value: `||${message.content}||` });
 
@@ -344,17 +342,13 @@ module.exports = {
             }).then(setTimeout(() => {
                 warnUsers.splice(warnUsers.findIndex(user => user.id === message.author.id), 1);
                 embed.fields = [];
-                embed.setTitle("Timout Expired!")
+                embed.setTitle("Member Timeout Expired")
                     .setColor("#00ff00")
-                    .setDescription(`${message.member}'s **__10 minute timeout__ expired**.`)
-
-                module.exports.s(message.channel, '', embed);
-
-                embed.setTitle("Member Timeout Expired").setDescription(`**Member:** ${message.member} (${message.author.id})\n**Timeout Time:  __10 minute__** timeout expired`);
+                    .setDescription(`**Member:** <@${message.author.id}> (${message.author.id})\n**Timeout Time:  __10 minute__** timeout expired`);
 
                 return module.exports.s(logChannel, '', embed);
             }, 600000)).catch(err => {
-                if (err) return module.exports.r(message.channel, message.author, `There was an error attempting to untime out ${message.member} ${err}`).then(m => module.exports.del(m, 7500));
+                if (err) return module.exports.r(message.channel, message.author, `There was an error attempting to un-timeout ${message.member} ${err}`).then(m => module.exports.del(m, 7500));
             });
         }
     },
