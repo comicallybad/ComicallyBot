@@ -12,7 +12,6 @@ module.exports = {
             return r(message.channel, message.author, "Please provide something to translate.").then(m => del(m, 7500));
 
         return await translate(`${args.join(' ')}`, { to: 'en' }).then(res => {
-            console.log(res.raw.src)
             return s(message.channel, `**Translation:** ${res.text} **Translated from:** \`${res.raw.src}\``);
         }).catch(err => s(message.channel, `There was an error translating: ${err}`).then(m => del(m, 7500)));
     }
