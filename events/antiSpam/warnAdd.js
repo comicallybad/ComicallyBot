@@ -1,4 +1,4 @@
-const { s, del } = require('../../functions.js');
+const { s } = require('../../functions.js');
 const { MessageEmbed } = require('discord.js');
 const { stripIndents } = require("common-tags");
 
