@@ -21,5 +21,5 @@ module.exports = (client, member) => {
     setTimeout(() => {
         let userIndex = client.antiSpam.cache.warnedUsers.indexOf(`${member.id}`);
         client.antiSpam.cache.warnedUsers.splice(userIndex, 1);
-    }, 15000)
+    }, 60000 * 30)
 }
