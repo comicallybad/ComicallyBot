@@ -1,6 +1,5 @@
-const { s, r } = require("../../functions.js");
-const { MessageEmbed } = require("discord.js");
-const randomPuppy = require("random-puppy");
+const { s, r, del } = require("../../functions.js");
+const memes = require("random-memes");
 
 module.exports = {
     name: "meme",
@@ -9,22 +8,10 @@ module.exports = {
     permissions: "member",
     run: async (client, message, args) => {
         try {
-            const subReddits = ["dankmeme", "meme", "PrequelMemes", "EdgelordMemes", "ProgrammerHumor"];
-            const random = subReddits[Math.floor(Math.random() * subReddits.length)];
-
-            const img = await randomPuppy(random)
-            while (img == undefined) await randomPuppy(random);
-
-            const embed = new MessageEmbed()
-                .setColor("#0efefe")
-                .setImage(img)
-                .setTitle(`From /r/${random}`)
-                .setURL(`https://reddit.com/r/${random}`)
-                .setTimestamp();
-
-            return s(message.channel, '', embed);
+            let meme = await memes.fromReddit("en");
+            return s(message.channel, meme.image);
         } catch (err) {
-            return r(message.channel, message.author, `There was an error attempting to find a new meme: ${err}`);
+            return r(message.channel, message.author, `There was an error attempting to find a new meme: ${err}`).then(m => del(m, 7500));
         }
     }
 }
