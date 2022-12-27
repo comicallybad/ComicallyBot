@@ -65,6 +65,7 @@
     "mongoose": "^6.7.3",
     "node-fetch": "^2.6.6",
     "random-memes": "^3.1.7",
+    "random-puppy": "^1.1.0",
     "urban": "^0.3.4",
     "word-definition": "^2.1.6"
   }
