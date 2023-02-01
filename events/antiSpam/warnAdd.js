@@ -1,4 +1,4 @@
-const { s, del } = require('../../functions.js');
+const { s } = require('../../functions.js');
 const { MessageEmbed } = require('discord.js');
 const { stripIndents } = require("common-tags");
 
@@ -21,5 +21,5 @@ module.exports = (client, member) => {
     setTimeout(() => {
         let userIndex = client.antiSpam.cache.warnedUsers.indexOf(`${member.id}`);
         client.antiSpam.cache.warnedUsers.splice(userIndex, 1);
-    }, 15000)
+    }, 60000 * 30)
 }

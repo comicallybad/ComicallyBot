@@ -18,7 +18,7 @@ client.antiSpam = new AntiSpam({
     warnThreshold: 5, muteThreshold: 7, kickThreshold: 99, banThreshold: 99, maxInterval: 2000,
     warnMessage: '{@user}, **Please stop spamming or you will be timed out.**',
     muteMessage: '{@user} has been **timed out** for **spamming.**',
-    unMuteTime: 5, ignoreBots: true, verbose: false, removeMessages: true,
+    unMuteTime: 10, ignoreBots: true, verbose: false, removeMessages: true,
     ignoredPermissions: ["MANAGE_NICKNAMES"], ignoredMembers: [`${process.env.USERID}`]
 });
 

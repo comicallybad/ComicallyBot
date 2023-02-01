@@ -6,7 +6,8 @@ module.exports = {
     //New global delete function due to discord.js changing it too much
     del: function (message, timeout) {
         if (!message || !message?.id) return;
-        if (!message.channel.permissionsFor(message.guild.me)?.has("MANAGE_MESSAGES")) return;
+        const channelPermissions = message.channel.permissionsFor(message.guild.me);
+        if (!channelPermissions?.has("MANAGE_MESSAGES")) return;
         setTimeout(() => {
             if (message.deletable && !message.reactions.cache?.get('🛑'))
                 message.delete().catch(err => err);
@@ -16,8 +17,11 @@ module.exports = {
 
     //New global send function due to discord.js changing it too much
     s: function (channel, content, embeds) {
-        if (!channel || !channel.guild.me.permissionsIn(channel)?.has("VIEW_CHANNEL") || !channel.guild.me.permissionsIn(channel)?.has("SEND_MESSAGES")) return;
-        if ((channel.type?.includes("THREAD") && !channelPermissions?.has("SEND_MESSAGES_IN_THREADS")) || channel.guild.me?.isCommunicationDisabled()) return;
+        if (!channel || !channel?.id) return;
+        const channelPermissions = channel.permissionsFor(channel.guild.me);
+        if (!channelPermissions?.has("VIEW_CHANNEL") || !channelPermissions?.has("SEND_MESSAGES")) return;
+        if ((channel.type?.includes("THREAD") && !channelPermissions?.has("SEND_MESSAGES_IN_THREADS"))
+            || channel.guild.me?.isCommunicationDisabled()) return;
         else if (!embeds) return channel.send({ content: content });
         else if (!content) return channel.send({ embeds: [embeds] });
         else if (content && embeds) return channel.send({ content: content, embeds: [embeds] });
@@ -26,8 +30,11 @@ module.exports = {
 
     //New global reply function due to discord.js changing it too much
     r: function (channel, author, content, embeds) {
-        if (!channel || !channel.guild.me.permissionsIn(channel)?.has("VIEW_CHANNEL") || !channel.guild.me.permissionsIn(channel)?.has("SEND_MESSAGES")) return;
-        if ((channel.type?.includes("THREAD") && !channelPermissions?.has("SEND_MESSAGES_IN_THREADS")) || channel.guild.me?.isCommunicationDisabled()) return;
+        if (!channel || !channel?.id) return;
+        const channelPermissions = channel.permissionsFor(channel.guild.me);
+        if (!channelPermissions?.has("VIEW_CHANNEL") || !channelPermissions?.has("SEND_MESSAGES")) return;
+        if ((channel.type?.includes("THREAD") && !channelPermissions?.has("SEND_MESSAGES_IN_THREADS"))
+            || channel.guild.me?.isCommunicationDisabled()) return;
         else if (!embeds) return channel.send({ content: `${author} ${content}` });
         else if (!content) return channel.send({ content: `${author}`, embeds: [embeds] });
         else if (content && embeds) return channel.send({ content: `${author} ${content}`, embeds: [embeds] });
@@ -36,8 +43,11 @@ module.exports = {
 
     //New global edit function due to discord.js changing it too much
     e: function (message, channel, content, embeds) {
-        if (!channel || !channel.guild.me.permissionsIn(channel)?.has("VIEW_CHANNEL") || !channel.guild.me.permissionsIn(channel)?.has("SEND_MESSAGES")) return;
-        if ((channel.type?.includes("THREAD") && !channelPermissions?.has("SEND_MESSAGES_IN_THREADS")) || channel.guild.me?.isCommunicationDisabled()) return;
+        if (!channel || !channel?.id) return;
+        const channelPermissions = channel.permissionsFor(channel.guild.me);
+        if (!channelPermissions?.has("VIEW_CHANNEL") || !channelPermissions?.has("SEND_MESSAGES")) return;
+        if ((channel.type?.includes("THREAD") && !channelPermissions?.has("SEND_MESSAGES_IN_THREADS"))
+            || channel.guild.me?.isCommunicationDisabled()) return;
         else if (!embeds) return message.edit({ content: content });
         else if (!content) return message.edit({ embeds: [embeds] });
         else if (content && embeds) return message.edit({ content: content, embeds: [embeds] });
@@ -111,7 +121,7 @@ module.exports = {
         return month + '/' + day + '/' + year;
     },
 
-    //Adds certain reactions, returns first user
+    //Creates a simple message collector with a filter to exclude bot reactions
     simplePrompt: function (message, validReactions) {
         if (!message.channel.permissionsFor(message.guild.me).has("ADD_REACTIONS"))
             return r(message.channel, message.author, "I am missing permissions to `ADD_REACTIONS` in this channel for this command.").then(m => module.exports.del(m, 30000));
@@ -120,16 +130,10 @@ module.exports = {
 
         const filter = (reaction, user) => { return validReactions.includes(reaction.emoji.name) && user.id !== message.guild.me.id };
 
-        return message.awaitReactions({ filter, max: 1 }).then(collected => {
-            if (collected.first()?.users?.cache) {
-                let reactor = collected.first().users.cache.filter(user => user.id !== message.guild.me.id).first();
-                message.reactions.cache.find(r => r.emoji.name == collected.first().emoji.name).users.remove(reactor).catch(err => err);
-            }
-            return collected.first() && collected.first().emoji.name
-        }).catch(err => console.log(`There was an error in simplePrompt ${err}`));
+        return message.createReactionCollector({ filter });
     },
 
-    //Adds certain reactions, waits certain amount of time, returns first user
+    //Returns the reaction added by the author of the message 
     messagePrompt: async function (message, author, time, validReactions) {
         if (!message.channel.permissionsFor(message.guild.me).has("ADD_REACTIONS"))
             return r(message.channel, message.author, "I am missing permissions to `ADD_REACTIONS` in this channel for this command.").then(m => module.exports.del(m, 30000));
@@ -140,8 +144,7 @@ module.exports = {
 
         const filter = (reaction, user) => { return validReactions.includes(reaction.emoji.name) && user.id === author.id && user.id !== message.guild.me.id };
 
-        return message
-            .awaitReactions({ filter, max: 1, time: time })
+        return message.awaitReactions({ filter, max: 1, time: time })
             .then(collected => collected.first() && collected.first().emoji.name).catch(err => console.log(`There was an error in messagePrompt ${err}`));
     },
 
@@ -221,7 +224,7 @@ module.exports = {
             .setTitle(`Warning For: __**${reason}**__!`)
             .setThumbnail(message.author.displayAvatarURL())
             .setColor("#ff0000")
-            .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
+            .setFooter({ text: message.member.user.tag, iconURL: message.author.displayAvatarURL() })
             .setTimestamp();
 
         if (!warnUsers || !warnUsers.find(user => user.id === message.author.id)) {
@@ -232,7 +235,7 @@ module.exports = {
             module.exports.s(message.channel, '', embed);
 
             embed.fields = [];
-            embed.setTitle(`Member Warned For ${reason}`)
+            embed.setTitle(`Member Warned For: ${reason}`)
                 .setDescription(stripIndents`
                 **Member Warned:** ${message.member} (${message.member.id})
                 **Channel:** ${message.channel}
@@ -251,7 +254,7 @@ module.exports = {
                 module.exports.s(message.channel, '', embed);
 
                 embed.fields = [];
-                embed.setTitle(`Member Warned For ${reason}`)
+                embed.setTitle(`Member Warned For: ${reason}`)
                     .setDescription(stripIndents`
                     **Member Warned:** ${message.member} (${message.member.id})
                     **Channel:** ${message.channel}
@@ -277,7 +280,7 @@ module.exports = {
             .setTitle(`Action Taken For: __**${reason}**__!`)
             .setThumbnail(message.author.displayAvatarURL())
             .setColor("#ff0000")
-            .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
+            .setFooter({ text: message.member.user.tag, iconURL: message.author.displayAvatarURL() })
             .setTimestamp();
 
         if (!message.guild.me.permissions.has("MANAGE_ROLES"))
@@ -297,6 +300,7 @@ module.exports = {
                         **Channel:** ${message.channel}
                         **Warning: __#${offence}__**
                         **Timeout Time: __5 minutes__**`);
+
                 if (reason == "Phishing Link") embed.addFields({ name: '__**DO NOT**__ use/open this link:', value: `||${extra}||` });
                 embed.addFields({ name: "Message Deleted: ", value: `||${message.content}||` });
 
@@ -305,17 +309,13 @@ module.exports = {
                 return module.exports.r(logChannel, message.author, `There was an error attempting to timeout ${message.member}: ${err}`);
             }).then(setTimeout(() => {
                 embed.fields = [];
-                embed.setTitle("Timout Expired!")
+                embed.setTitle("Member Timeout Expired")
                     .setColor("#00ff00")
-                    .setDescription(`${message.member}'s **__5 minute timeout__ expired**.`)
-
-                module.exports.s(message.channel, '', embed);
-
-                embed.setTitle("Member Timeout Expired").setDescription(`**Member:** ${message.member} (${message.author.id})\n**Timeout Time:  __5 minute__** timeout expired`);
+                    .setDescription(`**Member:** <@${message.author.id}> (${message.author.id})\n**Timeout Time:  __5 minute__** timeout expired`);
 
                 return module.exports.s(logChannel, '', embed);
             }, 300000)).catch(err => {
-                if (err) return module.exports.r(logChannel, message.author, `There was an error attempting to untime out ${message.member} ${err}`);
+                if (err) return module.exports.r(logChannel, message.author, `There was an error attempting to un-timeout ${message.member} ${err}`);
             });
         } else if (warnUsers.find(user => user.id == message.author.id && user.offences == 4)) {
             message.member.timeout(600000, `${reason}`).then(() => {
@@ -332,6 +332,7 @@ module.exports = {
                         **Channel:** ${message.channel}
                         **Warning: __#${offence}__**
                         **Timeout Time: __10 minutes__**`);
+
                 if (reason == "Phishing Link") embed.addFields({ name: '__**DO NOT**__ use/open this link:', value: `||${extra}||` });
                 embed.addFields({ name: "Message Deleted: ", value: `||${message.content}||` });
 
@@ -341,17 +342,13 @@ module.exports = {
             }).then(setTimeout(() => {
                 warnUsers.splice(warnUsers.findIndex(user => user.id === message.author.id), 1);
                 embed.fields = [];
-                embed.setTitle("Timout Expired!")
+                embed.setTitle("Member Timeout Expired")
                     .setColor("#00ff00")
-                    .setDescription(`${message.member}'s **__10 minute timeout__ expired**.`)
-
-                module.exports.s(message.channel, '', embed);
-
-                embed.setTitle("Member Timeout Expired").setDescription(`**Member:** ${message.member} (${message.author.id})\n**Timeout Time:  __10 minute__** timeout expired`);
+                    .setDescription(`**Member:** <@${message.author.id}> (${message.author.id})\n**Timeout Time:  __10 minute__** timeout expired`);
 
                 return module.exports.s(logChannel, '', embed);
             }, 600000)).catch(err => {
-                if (err) return module.exports.r(message.channel, message.author, `There was an error attempting to untime out ${message.member} ${err}`).then(m => module.exports.del(m, 7500));
+                if (err) return module.exports.r(message.channel, message.author, `There was an error attempting to un-timeout ${message.member} ${err}`).then(m => module.exports.del(m, 7500));
             });
         }
     },

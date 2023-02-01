@@ -19,7 +19,7 @@ module.exports = async (client, ban) => {
 
         if (!banLog) {
             const embed = new MessageEmbed()
-                .setColor("#FF0000")
+                .setColor("#00FF00")
                 .setTitle("Member Unbanned")
                 .setThumbnail(ban.user.displayAvatarURL())
                 .setFooter({ text: ban.user.tag, iconURL: ban.user.displayAvatarURL() })
@@ -31,33 +31,21 @@ module.exports = async (client, ban) => {
             return s(logChannel, '', embed);
         }
 
-        const { executor, target } = banLog;
-        if (target.id === ban.user.id) {
-            if (!logChannel) return;
-            const embed = new MessageEmbed()
-                .setColor("#FF0000")
-                .setTitle("Member Unbanned")
-                .setThumbnail(ban.user.displayAvatarURL())
-                .setFooter({ text: ban.user.tag, iconURL: ban.user.displayAvatarURL() })
-                .setTimestamp()
-                .setDescription(stripIndents`
-                **Member Unbanned:** ${ban.user} (${ban.user.id})
-                **Unbanned By:** ${executor} (${executor.id})
-                **Reason:** ${banLog.reason ? banLog.reason : "No reason given!"}`);
+        const { executor } = banLog;
 
-            return s(logChannel, '', embed);
-        } else {
-            if (!logChannel) return;
-            const embed = new MessageEmbed()
-                .setColor("#FF0000")
-                .setTitle("Member Unbanned")
-                .setThumbnail(ban.user.displayAvatarURL())
-                .setFooter({ text: `${ban.user.tag}`, iconURL: ban.user.displayAvatarURL() })
-                .setTimestamp()
-                .setDescription(`Member Unbanned: ${ban.user} (${ban.user.id})`);
+        if (!logChannel) return;
+        const embed = new MessageEmbed()
+            .setColor("#00FF00")
+            .setTitle("Member Unbanned")
+            .setThumbnail(ban.user.displayAvatarURL())
+            .setFooter({ text: ban.user.tag, iconURL: ban.user.displayAvatarURL() })
+            .setTimestamp()
+            .setDescription(stripIndents`
+            **Member Unbanned:** ${ban.user} (${ban.user.id})
+            **Unbanned By:** ${executor} (${executor.id})
+            **Reason:** ${banLog.reason ? banLog.reason : "No reason given!"}`);
 
-            return s(logChannel, '', embed);
-        }
+        return s(logChannel, '', embed);
     } catch (err) {
         console.log(err);
     }

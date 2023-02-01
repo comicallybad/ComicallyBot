@@ -39,7 +39,7 @@ module.exports = async (client, data) => {
     let exists = await db.findOne({ guildID: guildID }).catch(err => err);
     if (!exists || !exists.channels.find(ch => ch.command == "welcome") || !(exists.welcomeMessage.length > 0)) return;
     let welcomeCH = await data.guild.channels.fetch(exists.channels.find(ch => ch.command == "welcome").channelID).catch(err => { return; });
-    if (!welcomeCH) return;
+    if (!welcomeCH || !data.guild.me.permissionsIn(welcomeCH)?.has("SEND_MESSAGES")) return;
 
     let welcomeMSG;
     let msg = exists.welcomeMessage.toString().replace(/\[user\]/g, `${data.user}`);

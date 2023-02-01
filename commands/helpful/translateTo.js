@@ -1,5 +1,5 @@
 const { s, r, del } = require("../../functions.js");
-const translate = require('@vitalets/google-translate-api');
+const { translate } = require('@vitalets/google-translate-api');
 
 module.exports = {
     name: "translateto",
@@ -13,7 +13,7 @@ module.exports = {
 
         let translateToLanguage = args[0];
         return translate(`${args.splice(1).join(' ')}`, { to: translateToLanguage }).then(res => {
-            return s(message.channel, `**Translation:** ${res.text} **Translated from:** \`${res.from.language.iso}\``);
+            return s(message.channel, `**Translation:** ${res.text} **Translated from:** \`${res.raw.src}\``);
         }).catch(err => s(message.channel, `There was an error translating: ${err}`));
     }
 }

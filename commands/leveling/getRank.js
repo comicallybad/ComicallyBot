@@ -1,7 +1,7 @@
 const { del, s, r, findID } = require("../../functions.js");
 const xp = require('../../schemas/xp.js');
 const Discord = require("discord.js");
-const canvacord = require("canvacord");
+const canvacard = require("canvacard");
 
 module.exports = {
     name: "getrank",
@@ -24,11 +24,12 @@ module.exports = {
                 if (!exists) return s(message.channel, "Member doesn't have a rank yet.").then(m => del(m, 7500));
                 const rankupXP = 10 * Math.pow(exists.level + 1, 3) / 5 + 25
                 const member = await message.guild.members.fetch(usrID);
-                const rank = new canvacord.Rank()
+                const rank = new canvacard.Rank()
                     .setAvatar(member.user.displayAvatarURL({ dynamic: false, format: 'png' }))
                     .setBackground("IMAGE", `${process.env.LEVELBACKGROUNDURL}`)
                     .setRank(1, 'RANK', false)
                     .setLevel(exists.level)
+                    .setPreviousRankXP(exists.level == 0 ? 0 : 10 * Math.pow((exists.level - 1) + 1, 3) / 5 + 25)
                     .setCurrentXP(exists.xp)
                     .setRequiredXP(rankupXP)
                     .setStatus("online", true, 0)
