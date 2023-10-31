@@ -1,5 +1,5 @@
 const { s, r, e, del, messagePrompt } = require("../../../utils/functions/functions.js");
-var gis = require('g-i-s');
+const gis = require('async-g-i-s');
 
 module.exports = {
     name: "imagesearch",
@@ -12,15 +12,16 @@ module.exports = {
         if (!args[0])
             return r(message.channel, message.author, "Please provide an image to search for.").then(m => del(m, 7500));
 
-        gis(args.join(' '), logResults);
-
-        function logResults(err, results) {
-            if (err) return r(message.channel, message.author, "Could not find any images.").then(m => del(m, 7500))
-
-            s(message.channel, "Image: ").then(m => {
-                return nextPicture(m, message.author, results)
-            }).catch(err => err);
-        }
+        (async () => {
+            try {
+                const results = await gis(args.join(' '));
+                s(message.channel, "Image: ").then(m => {
+                    return nextPicture(m, message.author, results)
+                }).catch(err => err);
+            } catch (err) {
+                return s(message.channel, "There was an error finding an image").then(m => del(m, 7500));
+            }
+        })();
     }
 }
 

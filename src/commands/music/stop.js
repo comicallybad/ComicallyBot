@@ -2,7 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("leave")
+        .setName("stop")
         .setDescription("Disconnects the bot from the voice channel."),
     execute: (client, interaction) => {
         const player = client.music.players.get(interaction.guild.id);
