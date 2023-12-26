@@ -4,7 +4,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("ping")
         .setDescription('Returns ping and latency of the bot.'),
-    async execute(client, interaction) {
+    execute: async (interaction, client) => {
         const message = await interaction.deferReply({
             fetchReply: true
         });

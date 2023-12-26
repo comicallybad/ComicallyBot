@@ -1,67 +1,87 @@
-Let's just say this bot does everything... including keep a conversation if you enable it's autochat feature :)
+<div style="display: flex; align-items: flex-start;">
+<img src="https://i.imgur.com/99mnwjg.png" alt="ComicallyBot" width="200" style="margin-right: 20px;">
 
-SETUP 1:
------------------------------------------------------------------------
-Create a discord text channel named "**mod-logs**"
-**FOR:** Logging moderator command uses and server events (user join/leave/timed out/timeout removed/kick/ban). 
+<div>
 
-Create a discord text channel named "**reaction-logs**"
-**FOR:** Logging reaction role events (user join/leave role via reaction role) if you wish to log these events separately.
+# ComicallyBot
 
-Create a discord text channel named "**reports**"
-**FOR:** Logging reports from the `_report` command if you wish to log these events separately.
+ComicallyBot is a Discord bot that can do just about everything. From moderating your server, providing a modern music player, to keeping a conversation going with its autochat feature, ComicallyBot is designed to enhance your Discord experience.
 
-**NOTE:** These channels **require** the bot to have at least: 
-`view channel, send messages, embed links, and mentions,` permissions.
+ComicallyBot is made and managed by [ComicallyBad](https://github.com/comicallybad).
 
-SETUP 2:
------------------------------------------------------------------------
-Roles and Users **MUST** be given permission to access certain commands.
+</div>
+</div>
 
-**USE:** `_help {command}` to view it's permission requirements.
+## Features
 
-**USE:** `_addmember {@role | roleID | @user | userID}` to add a role/user to access member commands.
+- **Slash Commands**: Use Discord's new slash commands for a smoother experience.
+- **Music Player**: Enjoy music with a new and improved player, complete with an equalizer and music controls.
+- **Autochat**: Enable this feature and the bot will keep the conversation going.
+- **Welcoming**: Welcome new users with a welcome message.
+- **Moderation**: Whether you need auto-moderation, or manual, the bot has you covered.
+- **Information**: Find helpful information on your guild, roles, and members.
+- **Event Logging**: Keep track of what's happening in your server.
+- **And More**: ComicallyBot is always improving with new features being added regularly.
 
-**USE:** `_addmod {@role | roleID | @user | userID}` to add a role/user to access mod commands.
+## Setup
 
-Administrator commands can only be accessed by server administrators.
+- **Create Channels**: Create the following channels in your Discord server:
 
-**USE:** `_help` for a list of commands.
+    - `mod-logs`: For logging changes in the server, such as updating the Autochat channel.
+    - `member-logs`: For logging user join/leave events.
+    - `text-logs`: For logging messages deleted using the delete reaction.
+    - `action-logs`: For logging action events; member timeout, kick, ban, unban.
+    - `reports`: For logging reports from the `/report` command.
 
-Use `_help {command}` to view information on a command. 
+    **Note**: These channels require the bot to have `view channel` and `send messages` permissions.
 
-UPDATES: 
------------------------------------------------------------------------
-**ALL** automoderation will **DEFAULT** to disabled. To enable these tools USE: `_help auto-moderation`.
+## Updates
 
-**Added:** Welcome messaging. **USE:** `_help welcoming` to view this.
+- **Slash Commands**: Slash commands have been added for a cleaner and more intuitive user experience.
+- **Music Player**: The music player has been modernized to include better track & queue control, an equalizer, and player controls.
+- **Event Logging**: Event logging has been improved for better tracking and management.
+- **ChatGPT Autochat**: The autochat feature now uses OpenAI's ChatGPT for more natural and engaging conversations.
+- **More To Come**: Features are always in the works! Suggestions and feedback are greatly appreciated.
 
-**Added:** Autochat. **USE:** `_help autochat`
+## How to Use
 
-**Added:** Anti-Phishing. **USE:** `_help auto-moderation`
-________________________________________________________________________________
-To clone and use ComicallyBot you will have to do a few things:
-1. Install mongodb and compass for mongodb. Install Java v11 and lavalink from
+To clone and use ComicallyBot, follow these steps:
 
-https://www.azul.com/downloads/zulu-community/?version=java-11-lts&os=&os=windows&architecture=x86-64-bit&package=jdk 
+1. Install [mongodb](https://www.mongodb.com/try/download/community)
+2. Install [Lavalink](https://github.com/lavalink-devs/Lavalink/releases/)
+3. Install the required Java version mentioned [here](https://github.com/lavalink-devs/Lavalink#requirements)
+4. Place `lavalink.jar` into `./utils/lavalink`.
+5. Create an `application.yml` file inside the lavalink folder. An example can be found [here](https://github.com/lavalink-devs/Lavalink/blob/master/LavalinkServer/application.yml.example)
+6. Create a `.env` file with:
+    - `TOKEN` for a discord token, 
+    - `ERELA` for a Lavalink/erela password, 
+    - `OPENAI` & `ORGANIZATION` for ChatGPT,
+    - `USERID` for your Discord Dev ID
+7. Run `npm i --save` to install the necessary packages.
+8. Use `start.bat` to run the bot.
 
-Scroll down all the way, find your OS, download whichever works best for you. (For windows download the .zip).
+## Support
 
-https://ci.fredboat.com/buildConfiguration/Lavalink_Build?branch=refs%2Fheads%2Fdev&mode=builds&guest=1 
+For Bug Reports, Feature Requests, Help, and Other inquiries: 
 
-Hover over the top ![alt text](https://cdn.discordapp.com/attachments/418817098278764544/887838713500024832/unknown.png) icon on the right side of the page, then click > Artifacts > click Download All (.zip) (Top right).
+1. Navigate to the [GitHub Issues Tab](https://github.com/comicallybad/ComicallyBot/issues). 
+2. Click `New Issue` on the top right.
+3. Select `Get Started` from the applicable option.
+4. Provide as much information as possible. For extra help:
+    - Node.js version: `node --version`
+    - Discord.js version: found in `package.json`
+    - Java version: `java --version`
+5. Click `Submit new issue` and await a response!
 
-Place lavalink .zip contents into a lavalink folder inside the project.
+## Code Documentation
 
-2. Create a .env file with a `TOKEN` for a discord token, `STEAM` for steam API key, `ERELA` for erela password, `USERID` for discord User ID for owner commands, and `LEVELBACKGROUNDURL` for xp rank cards
-3. Create a application.yml file inside lavalink 
+For help understanding the code and technologies used in this project, you can refer to the following resources:
 
-ex: https://github.com/stuyy/Lavalink-Discordpy-Example/blob/master/application.yml
+- **W3Schools JavaScript Tutorial**: [W3Schools JavaScript Tutorial](https://www.w3schools.com/js/default.asp)
+- **MDN's JavaScript Guide**: [MDN's JavaScript Guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Introduction)
+- **Discord.js Guide**: [Discord.js Guide](https://discordjs.guide/#before-you-begin)
+- **Discord.js Documentation**: [Discord.js Documentation](https://discord.js.org)
+- **Lavalink Documentation**: [Lavalink Documentation](https://github.com/lavalink-devs/Lavalink?tab=readme-ov-file#lavalink)
+- **MenuDocs Erela.js Guide**: [MenuDocs Erela.js Guide](https://guides.menudocs.org/topics/erelajs/)
 
-4. npm i --save
-5. To start the bot correctly use: "start.bat" or open /lavalink/start.bat and then "node ." in project directory
-________________________________________________________________________________
-Differences for Mac/Linux users:
-1. Install Java v11 or higher https://www.azul.com/downloads/zulu-community/?&version=java-11-lts&os=&os=macos&architecture=x86-64-bit&package=jdk
-2. "Chmod u+x ./start.sh"
-3. To start the bot correctly use "./start.sh" then add a new terminal to use "node ."
+These resources provide comprehensive guides and documentation to help you understand and use JavaScript, Discord.js, Lavalink, and Erela.js effectively.

@@ -1,30 +1,25 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { r, re, delr } = require("../../../utils/functions/functions.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("volume")
         .setDescription("Changes the volume of the music player.")
-        .addIntegerOption(option => option
-            .setName("input")
-            .setDescription("The volume percentage input.")
-            .setRequired(true)),
-    execute: (client, interaction) => {
+        .addIntegerOption(option => option.setName("input").setDescription("The volume percentage input.").setRequired(true)),
+    execute: (interaction, client) => {
         const volume = interaction.options.get("input").value;
         const player = client.music.players.get(interaction.guild.id);
 
         if (!player || !player.queue.current)
-            return interaction.reply({ content: "No song(s) currently playing in this guild.", ephemeral: true })
-                .then(setTimeout(() => interaction.deleteReply().catch(err => err), 7500));
+            return re(interaction, "No song(s) currently playing in this guild.").then(() => delr(interaction, 7500));
 
         const voiceChannel = interaction.member.voice.channel;
 
         if (!voiceChannel || voiceChannel.id !== player.voiceChannel)
-            return interaction.reply({ content: "You need to be in the voice channel to use this command.", ephemeral: true })
-                .then(setTimeout(() => interaction.deleteReply().catch(err => err), 7500));
+            return re(interaction, "You need to be in the voice channel to pause music.").then(() => delr(interaction, 7500));
 
         if (volume <= 0 || volume > 100)
-            return interaction.reply({ content: "You may only set the volume to 1-100.", ephemeral: true })
-                .then(setTimeout(() => interaction.deleteReply().catch(err => err), 7500));
+            return re(interaction, "You may only set the volume to 1-100.").then(() => delr(interaction, 7500));
 
         player.setVolume(volume);
 
@@ -37,7 +32,6 @@ module.exports = {
             .setThumbnail(player.queue.current.thumbnail)
             .setDescription(`The volume has been set to: **${volume}%** ${volLevel}`);
 
-        return interaction.reply({ embeds: [embed] })
-            .then(setTimeout(() => interaction.deleteReply().catch(err => err), 15000));
+        return r(interaction, "", embed).then(() => delr(interaction, 30000));
     }
 }

@@ -1,33 +1,32 @@
-const { s, r, del } = require("../../../utils/functions/functions.js");
-const { EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { r, re, delr } = require("../../../utils/functions/functions.js");
 var wd = require("word-definition");
 
 module.exports = {
-    name: "define",
-    category: "helpful",
-    description: "Defines a word for you.",
-    permissions: "member",
-    usage: "<word to define>",
-    run: async (client, message, args) => {
-        if (!args[0])
-            return r(message.channel, message.author, "Please provide a word to be searched.").then(m => del(m, 7500));
+    data: new SlashCommandBuilder()
+        .setName('define')
+        .setDescription('Defines a word for you.')
+        .addStringOption(option => option.setName('word').setDescription('Word to define').setRequired(true)),
+    execute: (interaction) => {
+        const word = interaction.options.getString('word');
+        const user = interaction.user;
 
-        return await wd.getDef(`${args[0]}`, "en", null, function (result) {
+        wd.getDef(word, "en", null, function (result) {
             if (!result.definition)
-                return s(message.channel, "Sorry, I could not find that word.").then(m => del(m, 7500));
+                return re(interaction, "Sorry, I could not find that word.");
 
             if (result.definition.length >= 1024)
-                return r(message.channel, message.author, "This definition is too long of a string for a message embed sorry!").then(m => del(m, 7500));
+                return re(interaction, "This definition is too long of a string for a message embed sorry!");
 
             const embed = new EmbedBuilder()
                 .setColor("#0efefe")
-                .setAuthor({ name: `${message.member.displayName}`, iconURL: message.author.displayAvatarURL() })
-                .setTitle(`Definition of: ${args[0]}`)
+                .setAuthor({ name: user.tag, iconURL: user.displayAvatarURL() })
+                .setTitle(`Definition of: ${word}`)
                 .setDescription(result.definition)
                 .setFooter({ text: `Category of type: ${result.category}` })
-                .setTimestamp()
+                .setTimestamp();
 
-            return s(message.channel, '', embed).then(m => del(m, 30000));
+            return r(interaction, "", embed);
         });
     }
 }

@@ -1,21 +1,24 @@
-const { s, r, del } = require("../../../utils/functions/functions.js");
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { s, re, delr } = require("../../../utils/functions/functions.js");
+
 
 module.exports = {
-    name: "announce",
-    aliases: ["say"],
-    category: "helpful",
-    description: "Makes the bot say something.",
-    permissions: "moderator",
-    usage: "[#channel] <message>",
-    run: async (client, message, args) => {
-        if (!args[0])
-            return r(message.channel, message.author, "Please provide a channel and something to say, or just something to say.").then(m => del(m, 7500));
+    data: new SlashCommandBuilder()
+        .setName("announce")
+        .setDescription("Make an announcement to a channel.")
+        .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
+        .addStringOption(option => option.setName("message").setDescription("The message to send.").setRequired(true))
+        .addChannelOption(option => option.setName("channel").setDescription("The channel to send the announcement to.").setRequired(false)),
+    execute: (interaction) => {
+        const message = interaction.options.getString("message");
+        const channel = interaction.options.getChannel("channel") || interaction.channel;
 
-        let channelMentionID = args[0].replace("<#", "").slice(args[0].replace("<#", "").indexOf(":") + 1, args[0].replace("<#", "").length - 1);
-        if (message.mentions.channels.first() && message.mentions.channels.first().id === channelMentionID) {
-            const toSay = args.slice(1).join(' ');
-            let channel = await message.guild.channels.cache.get(message.mentions.channels.first().id);
-            return s(channel, `${toSay.length <= 1995 ? toSay : toSay.substring(0, 1995) + "`...`"}`);
-        } else return s(message.channel, `${args.join(' ').length <= 1995 ? args.join(' ') : args.join(' ').substring(0, 1995) + "`...`"}`);
+        if (message.length >= 1995) {
+            re(interaction, "Announcement sent, but shortened due to character limit.").then(() => delr(interaction, 30000));
+            return s(channel, `${message.length <= 1995 ? message : message.substring(0, 1995) + "`...`"}`);
+        } else {
+            re(interaction, "Announcement sent.").then(() => delr(interaction, 30000));
+            return s(channel, `${message.length <= 1995 ? message : message.substring(0, 1995) + "`...`"}`);
+        }
     }
 }

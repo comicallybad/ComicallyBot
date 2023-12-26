@@ -1,37 +1,33 @@
-const { s, r, del } = require("../../../utils/functions/functions.js");
-const { EmbedBuilder } = require("discord.js");
-const fetch = require("node-fetch");
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { r, delr } = require("../../../utils/functions/functions.js");
+const fetch = require('node-fetch');
 
 module.exports = {
-    name: "meme",
-    category: "fun",
-    description: "Get a random meme.",
-    permissions: "member",
-    run: async (client, message, args) => {
-        try {
-            const subReddits = ["dankmeme", "meme", "PrequelMemes", "EdgelordMemes", "ProgrammerHumor"];
-            const random = subReddits[Math.floor(Math.random() * subReddits.length)];
+    data: new SlashCommandBuilder()
+        .setName('meme')
+        .setDescription('Get a random meme.'),
+    execute: async (interaction) => {
+        const subReddits = ["dankmeme", "meme", "PrequelMemes", "EdgelordMemes", "ProgrammerHumor"];
+        const random = subReddits[Math.floor(Math.random() * subReddits.length)];
 
-            await fetch("https://www.reddit.com/r/" + random + "/hot/.json?count=100").then(res => res.json()).then(json => {
-                let postID = json.data.children[Math.floor(Math.random() * json.data.children.length)];
-                meme = {
-                    image: postID.data.url,
-                    category: postID.data.link_flair_text,
-                    caption: postID.data.title,
-                    permalink: postID.data.permalink
-                };
-            });
+        let meme;
+        await fetch("https://www.reddit.com/r/" + random + "/hot/.json?count=100").then(res => res.json()).then(json => {
+            let postID = json.data.children[Math.floor(Math.random() * json.data.children.length)];
+            meme = {
+                image: postID.data.url,
+                category: postID.data.link_flair_text,
+                caption: postID.data.title,
+                permalink: postID.data.permalink
+            };
+        }).catch(err => re(interaction, "There was an error getting a meme from Reddit.").then(() => delr(interaction, 7500)));
 
-            const embed = new EmbedBuilder()
-                .setColor("#0efefe")
-                .setImage(meme.image)
-                .setTitle(`Meme From r/${random}`)
-                .setURL(`https://reddit.com/r/${random}`)
-                .setFooter({ text: meme.caption });
+        const embed = new EmbedBuilder()
+            .setColor("#0efefe")
+            .setImage(meme.image)
+            .setTitle(`Meme From r/${random}`)
+            .setURL(`https://reddit.com${meme.permalink}`)
+            .setFooter({ text: meme.caption });
 
-            return s(message.channel, '', embed);
-        } catch (err) {
-            return r(message.channel, message.author, `There was an error attempting to find a new meme: ${err}`).then(m => del(m, 7500));
-        }
+        return r(interaction, "", embed);
     }
 }

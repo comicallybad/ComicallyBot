@@ -1,15 +1,15 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { r, re, delr } = require("../../../utils/functions/functions.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("stop")
         .setDescription("Disconnects the bot from the voice channel."),
-    execute: (client, interaction) => {
+    execute: (interaction, client) => {
         const player = client.music.players.get(interaction.guild.id);
 
-        if (!player)
-            return interaction.reply({ content: "No song(s) currently playing in this guild.", ephemeral: true })
-                .then(setTimeout(() => interaction.deleteReply().catch(err => err), 7500));
+        if (!player || !player.queue.current)
+            return re(interaction, "No song(s) currently playing in this guild.").then(() => delr(interaction, 7500));
 
         player.destroy();
 
@@ -17,7 +17,6 @@ module.exports = {
             .setAuthor({ name: "Music Player Disconnected!", iconURL: interaction.user.displayAvatarURL() })
             .setDescription("🛑 The music player has successfully been disconnected!");
 
-        return interaction.reply({ embeds: [embed] })
-            .then(setTimeout(() => interaction.deleteReply().catch(err => err), 15000));
+        return r(interaction, "", embed).then(() => delr(interaction, 30000));
     },
 };

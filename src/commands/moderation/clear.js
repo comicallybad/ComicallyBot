@@ -1,56 +1,29 @@
-const { r, del } = require("../../../utils/functions/functions.js");
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { re, delr } = require("../../../utils/functions/functions.js");
 
 module.exports = {
-    name: "clear",
-    aliases: ["purge"],
-    category: "moderation",
-    description: "Clears the chat.",
-    permissions: "moderator",
-    usage: "[@user | userID]<number of messages>",
-    run: async (client, message, args) => {
-        if (!message.channel.permissionsFor(message.guild.me).has("MANAGE_MESSAGES"))
-            return r(message.channel, message.author, "I do not have permissions to delete messages.").then(m => del(m, 7500));
+    data: new SlashCommandBuilder()
+        .setName('clear')
+        .setDescription('Clears the chat.')
+        .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
+        .addIntegerOption(option => option.setName('amount').setDescription('Number of messages to clear.').setRequired(true))
+        .addUserOption(option => option.setName('user').setDescription('User to clear messages from.')),
+    execute: (interaction) => {
+        if (!interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.ManageMessages))
+            return re(interaction, "I do not have permissions to delete messages.").then(() => delr(interaction, 7500));
 
-        if (!args[1]) {
-            if (isNaN(args[0]) || parseInt(args[0]) <= 0)
-                return r(message.channel, message.author, "Please provide a valid number.").then(m => del(m, 7500));
+        const user = interaction.options.getUser('user');
+        const amount = interaction.options.getInteger('amount');
 
-            let deleteAmount = parseInt(args[1]) > 100 ? 100 : args[0];
+        if (isNaN(amount) || amount <= 0 || amount > 100)
+            return re(interaction, "Please provide a valid number between 1 and 100.").then(() => delr(interaction, 7500));
 
-            message.channel.messages.fetch({ limit: 100 }).then((messages) => {
-                messages = messages.filter(m => m.id !== message.id).map(x => x).slice(0, (deleteAmount));
-                message.channel.bulkDelete(messages).catch(err => {
-                    return r(message.channel, message.author, `There was an error attempting to delete that amount of messages: ${err}`).then(m => del(m, 7500));
-                });
+        interaction.channel.messages.fetch({ limit: 100 }).then((messages) => {
+            if (user) messages = messages.filter(m => m.author.id === user.id);
+            messages = Array.from(messages).map(m => m[1]).slice(0, amount);
+            interaction.channel.bulkDelete(messages).catch(err => {
+                return re(interaction, `There was an error attempting to delete that amount of messages: ${err}`).then(() => delr(interaction, 7500));
             });
-        } else if (args[1]) {
-            if (isNaN(args[1]) || parseInt(args[1]) <= 0)
-                return r(message.channel, message.author, "Please provide a valid number.").then(m => del(m, 7500));
-
-            let deleteAmount = parseInt(args[1]) > 100 ? 100 : args[1];
-
-            if (message.mentions.users.first()) {
-                return message.channel.messages.fetch({ limit: 100 }).then((messages) => {
-                    const filterBy = message.mentions.users.first().id;
-                    messages = messages.filter(m => m.author.id === filterBy && m.id !== message.id).map(x => x).slice(0, (deleteAmount));
-                    message.channel.bulkDelete(messages).catch(err => {
-                        return r(message.channel, message.author, `There was an error attempting to delete that member's messages: ${err}`).then(m => del(m, 7500));
-                    });
-                });
-            } else if (parseInt(args[0]) > 1000000) {
-                let deleteAmount = parseInt(args[1]) > 100 ? 100 : args[1];
-                let member = await message.guild.members.fetch(args[0]).catch(() => { return undefined });
-                if (!member) member = { id: args[0] };
-                if (member) {
-                    message.channel.messages.fetch({ limit: 100 }).then((messages) => {
-                        const filterBy = member.id;
-                        messages = messages.filter(m => m.author.id === filterBy && m.id !== message.id).map(x => x).slice(0, (deleteAmount));
-                        message.channel.bulkDelete(messages).catch(err => {
-                            return r(message.channel, message.author, `There was an error attempting to delete that member's messages: ${err}`).then(m => del(m, 7500));
-                        });
-                    });
-                } else return r(message.channel, message.author, "Sorry, I could not find that member.").then(m => del(m, 7500));
-            }
-        }
+        }).then(re(interaction, `Successfully deleted ${amount} messages.`).then(() => delr(interaction, 7500)));
     }
-}
+};

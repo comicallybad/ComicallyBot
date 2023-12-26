@@ -1,49 +1,71 @@
-const { s, r, del, messagePrompt } = require("../../../utils/functions/functions.js");
-const { EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits } = require('discord.js');
+const { s, r, re, er, delr, messagePrompt } = require("../../../utils/functions/functions.js");
 
 module.exports = {
-    name: "unban",
-    category: "moderation",
-    description: "Unban a member.",
-    permissions: "moderator",
-    usage: "<userID> [reason]",
-    run: async (client, message, args) => {
-        if (!message.member.permissions.has("BAN_MEMBERS"))
-            return r(message.channel, message.author, "You don't have the ban members permission to perform this command!").then(m => del(m, 7500));
+    data: new SlashCommandBuilder()
+        .setName('unban')
+        .setDescription('Unban a member.')
+        .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
+        .addUserOption(option => option.setName('user').setDescription('The user to unban').setRequired(true))
+        .addStringOption(option => option.setName('reason').setDescription('The reason for unbanning the user')),
+    async execute(interaction) {
+        if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.BanMembers))
+            return re(interaction, "I don't have permission to `BAN MEMBERS`!").then(() => delr(interaction, 15000));
 
-        if (!message.guild.me.permissions.has("BAN_MEMBERS"))
-            return r(message.channel, message.author, "I don't have the permission to perform this command!").then(m => del(m, 7500));
+        const logChannel = interaction.guild.channels.cache.find(c => c.name.includes('action-logs'))
+        const bannedMember = interaction.options.getUser('user');
+        const reason = interaction.options.getString('reason') || 'No reason provided';
 
-        if (isNaN(args[0]))
-            return r(message.channel, message.author, "You need to provide an ID.").then(m => del(m, 7500));
-
-        let bannedMember = await client.users.fetch(args[0])
-            .catch(err => s(message.channel, `There was a problem fetching that member. ${err}`).then(m => del(m, 7500)));
-
-        if (!bannedMember)
-            return r(message.channel, message.author, "Please provide a member id to unban someone!").then(m => del(m, 7500));
-
-        let reason = args.slice(1).join(" ")
-        if (!reason) reason = "No reason given!"
+        if (bannedMember.id === interaction.user.id || bannedMember.id === interaction.guild.members.me.id)
+            return re(interaction, "I can't perform this action.").then(() => delr(interaction, 15000));
 
         const promptEmbed = new EmbedBuilder()
-            .setColor("GREEN")
-            .setAuthor({ name: `This verification becomes invalid after 30s.` })
-            .setDescription(`Do you want to unban ${bannedMember}?`)
+            .setColor('#00ff00')
+            .setAuthor({ name: `This verification becomes invalid after 30s.`, iconURL: interaction.user.displayAvatarURL() })
+            .setDescription(`Do you want to unban ${bannedMember}?`);
 
-        return s(message.channel, '', promptEmbed).then(async msg => {
-            const emoji = await messagePrompt(msg, message.author, 30, ["✅", "❌"]);
+        const row = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder().setCustomId('✅').setLabel('Confirm').setStyle(ButtonStyle.Success),
+                new ButtonBuilder().setCustomId('❌').setLabel('Cancel').setStyle(ButtonStyle.Danger)
+            );
 
-            if (emoji === "✅") {
-                del(msg, 0);
+        await r(interaction, "", promptEmbed)
 
-                message.guild.members.unban(bannedMember).then(() => {
-                    return s(message.channel, `${bannedMember} (${bannedMember.id}) was successfully unbanned.`).then(m => del(m, 7500));
-                }).catch(err => r(message.channel, message.author, `There was an error attempting to unban that member: ${err}`).then(m => del(m, 7500)));
-            } else if (emoji === "❌") {
-                del(msg, 0);
-                return r(message.channel, message.author, `Unban cancelled.`).then(m => del(m, 7500));
-            } else return del(msg, 0)
-        }).catch(err => err);
-    }
-}
+        const collectedInteraction = await messagePrompt(interaction, row, 30000);
+
+        if (collectedInteraction.customId === '❌')
+            return er(interaction, "Selection cancelled.", [], []).then(() => delr(interaction, 15000))
+
+        try {
+            if (collectedInteraction.customId === '✅') {
+                await interaction.guild.members.unban(bannedMember, reason)
+                const embed = new EmbedBuilder()
+                    .setColor('#00ff00')
+                    .setTitle('Member Unbanned')
+                    .setThumbnail(bannedMember.displayAvatarURL())
+                    .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
+                    .setTimestamp()
+                    .addFields({
+                        name: '__**Target**__',
+                        value: `${bannedMember}`,
+                        inline: true
+                    }, {
+                        name: '__**Reason**__',
+                        value: `${reason}`,
+                        inline: true
+
+                    }, {
+                        name: '__**Moderator**__',
+                        value: `${interaction.user}`,
+                        inline: true
+                    });
+
+                if (logChannel) s(logChannel, "", embed);
+                return er(interaction, "Member unbanned.", undefined, undefined).then(() => delr(interaction, 15000));
+            }
+        } catch (err) {
+            return er(interaction, `An error occured while trying to unban: \n\`${err}\``, [], []).then(() => delr(interaction, 15000));
+        }
+    },
+};

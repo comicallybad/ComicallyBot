@@ -1,73 +1,66 @@
-const { s, r, del } = require("../../../utils/functions/functions.js");
-const { EmbedBuilder } = require("discord.js");
-const { stripIndents } = require("common-tags");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
+const { s, r, re, delr } = require("../../../utils/functions/functions.js");
 
 module.exports = {
-    name: "warn",
-    category: "moderation",
-    description: "Warns a member with an embed on their actions they made.",
-    permissions: "moderator",
-    usage: "<@user | userID> [#channel] <message>",
-    run: async (client, message, args) => {
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("action-logs"))
-            || message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
+    data: new SlashCommandBuilder()
+        .setName('warn')
+        .setDescription('Warns a member.')
+        .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
+        .addUserOption(option => option.setName('member').setDescription('The member to warn').setRequired(true))
+        .addStringOption(option => option.setName('reason').setDescription('The reason for the warning').setRequired(true))
+        .addChannelOption(option => option.setName('channel').setDescription('The channel the warning was issued in')),
+    execute: async (interaction) => {
+        const wMember = interaction.options.getMember('member');
+        const reason = interaction.options.getString('reason');
+        const channel = interaction.options.getChannel('channel');
 
-        let embed = new EmbedBuilder()
-            .setTitle("Warning!")
+        if (wMember.permissions.has(PermissionFlagsBits.BanMembers) || wMember.user.bot)
+            return r(interaction, "Cannot warn that member.").then(() => delr(interaction, 7500));
+
+        let logChannel = interaction.guild.channels.cache.find(c => c.name.includes("action-logs"))
+            || interaction.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
+
+        if (!logChannel)
+            return r(interaction, "Couldn't find a `#action-logs` or `#mod-logs` channel").then(() => delr(interaction, 7500));
+
+        const embed = new EmbedBuilder()
             .setColor("#FF0000")
-            .setTimestamp();
+            .setTitle("Member Warned")
+            .setThumbnail(wMember.user.displayAvatarURL())
+            .setFooter({ text: wMember.user.tag, iconURL: wMember.user.displayAvatarURL() })
+            .setTimestamp()
+            .addFields({
+                name: '__**Target**__',
+                value: `${wMember}`,
+                inline: true
+            }, {
+                name: '__**Reason**__',
+                value: `${reason}`,
+                inline: true
+            }, {
+                name: '__**Moderator**__',
+                value: `${interaction.user}`,
+                inline: true
+            });
 
-        let logEmbed = new EmbedBuilder()
-            .setTitle("Member warned")
-            .setColor("#FF0000")
-            .setTimestamp();
+        const warnEmbed = new EmbedBuilder()
+            .setColor("FF0000")
+            .setTitle("You have been warned!")
+            .setThumbnail(wMember.user.displayAvatarURL())
+            .setFooter({ text: wMember.user.tag, iconURL: wMember.user.displayAvatarURL() })
+            .setTimestamp()
+            .addFields({
+                name: '__**Member**__',
+                value: `${wMember}`,
+                inline: true
+            }, {
+                name: '__**Reason**__',
+                value: `${reason}`,
+                inline: true
+            });
 
-        if (!args[0])
-            return r(message.channel, message.author, "Please provide a channel and something to say, or just something to say.").then(m => del(m, 7500));
-
-        if (message.mentions.channels.first()) {
-            let channelMentionID = args[1].replace("<#", "").slice(args[1].replace("<#", "").indexOf(":") + 1, args[1].replace("<#", "").length - 1);
-            if (message.mentions.channels.first().id === channelMentionID) {
-                if (!args[2])
-                    return r(message.channel, "Please provide a reason for the warning").then(m => del(m, 7500));
-
-                let member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
-                if (!member) return r(message.channel, message.author, "Please provide a member to be to be warned!").then(m => del(m, 7500));
-                let channel = await message.guild.channels.fetch(message.mentions.channels.first().id);
-
-                embed.setDescription(`${args.slice(2).join(' ')}`)
-                    .addFields({ name: "You have been warned: ", value: `${member}` })
-                    .setFooter({ text: member.displayName, iconURL: member.user.displayAvatarURL() });
-
-                logEmbed.setDescription(stripIndents`
-                        **Member warned:** ${member} (${member.id})
-                        **Warned By:** ${message.author} (${message.author.id})
-                        **Warned in channel:** ${channel} (${channel.id})
-                        **Warned for:** ${args.slice(2).join(' ')}`)
-                    .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() });
-
-                s(logChannel, "", logEmbed);
-                return s(channel, "", embed).catch(err => r(message.channel, message.author, `There was an error sending a message to that channel. ${err}`).then(m => del(m, 7500)));
-            }
-        } else {
-            if (!args[1])
-                return r(message.channel, message.author, "Please provide a reason for the warning").then(m => del(m, 7500));
-
-            let member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
-            if (!member) return r(message.channel, message.author, "Please provide a member to be to be warned!").then(m => del(m, 7500));
-
-            embed.setDescription(`${args.slice(1).join(' ')}`)
-                .addFields({ name: "You have been warned: ", value: `${member}` })
-                .setFooter({ text: member.displayName, iconURL: member.user.displayAvatarURL() });
-
-            logEmbed.setDescription(stripIndents`
-                    **Member warned:** ${member} (${member.id})
-                    **Warned By:** ${message.author} (${message.author.id})
-                    **Warned for:** ${args.slice(1).join(' ')}`)
-                .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() });
-
-            s(logChannel, "", logEmbed);
-            return s(message.channel, "", embed).catch(err => r(message.channel, message.author, `There was an error sending a message to that channel. ${err}`).then(m => del(m, 7500)));
-        }
-    }
-}
+        s(channel ? channel : interaction.channel, '', warnEmbed);
+        s(logChannel, '', embed);
+        return re(interaction, "Warning has been issued.").then(() => delr(interaction, 7500));
+    },
+};

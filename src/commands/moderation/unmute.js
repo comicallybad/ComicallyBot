@@ -1,59 +1,71 @@
-const { s, r, del, messagePrompt } = require("../../../utils/functions/functions.js");
-const { EmbedBuilder } = require("discord.js");
-const { stripIndents } = require("common-tags");
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits } = require('discord.js');
+const { s, r, re, er, delr, messagePrompt } = require("../../../utils/functions/functions.js");
 
 module.exports = {
-    name: "unmute",
-    category: "moderation",
-    description: "Remove timeout from a member.",
-    permissions: "moderator",
-    usage: "<@user | userID>",
-    run: async (client, message, args) => {
-        if (!message.guild.me.permissions.has("MANAGE_ROLES"))
-            return r(message.channel, message.author, "I don't have permission to manage roles!").then(m => del(m, 7500));
+    data: new SlashCommandBuilder()
+        .setName('unmute')
+        .setDescription('Remove timeout from a member.')
+        .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
+        .addUserOption(option => option.setName('user').setDescription('The user to unmute').setRequired(true))
+        .addStringOption(option => option.setName('reason').setDescription('The reason for unmuting the user')),
+    async execute(interaction) {
+        if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.ModerateMembers))
+            return re(interaction, "I don't have permission to MUTE MEMBERS!").then(() => delr(interaction, 15000));
 
-        const logChannel = message.guild.channels.cache.find(c => c.name.includes("action-logs"))
-            || message.guild.channels.cache.find(c => c.name.includes("mod-logs")) || message.channel;
-        let mutee = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
-        if (!mutee) return r(message.channel, message.author, "Please supply a member to be timed out!").then(m => del(m, 7500));
+        const logChannel = interaction.guild.channels.cache.find(c => c.name.includes('action-logs'))
+        const mutee = interaction.options.getMember('user');
+        const reason = interaction.options.getString('reason') || 'No reason provided';
 
-        if (mutee.id === message.author.id)
-            return r(message.channel, message.author, "You can't timeout yourself...? This should not even be possible if you are timed out...").then(m => del(m, 7500));
-
-        let reason = args.slice(1).join(" ");
-        if (!reason) reason = "No reason given"
+        if (mutee.id === interaction.user.id || mutee.id === interaction.guild.members.me.id)
+            return re(interaction, "I can't perform this action.").then(() => delr(interaction, 15000));
 
         const promptEmbed = new EmbedBuilder()
-            .setColor("GREEN")
-            .setAuthor({ name: `This verification becomes invalid after 30s.` })
-            .setDescription(`Do you want to remove ${mutee}'s timeout?`)
+            .setColor('#00ff00')
+            .setAuthor({ name: `This verification becomes invalid after 30s.`, iconURL: interaction.user.displayAvatarURL() })
+            .setDescription(`Do you want to remove ${mutee}'s timeout?`);
 
-        return s(message.channel, '', promptEmbed).then(async msg => {
-            const emoji = await messagePrompt(msg, message.author, 30, ["✅", "❌"]);
+        const row = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder().setCustomId('✅').setLabel('Confirm').setStyle(ButtonStyle.Success),
+                new ButtonBuilder().setCustomId('❌').setLabel('Cancel').setStyle(ButtonStyle.Danger)
+            );
 
-            if (emoji === "✅") {
-                del(msg, 0);
+        await r(interaction, "", promptEmbed)
 
+        const collectedInteraction = await messagePrompt(interaction, row, 30000);
+
+        if (collectedInteraction.customId === '❌')
+            return er(interaction, "Selection cancelled.", [], []).then(() => delr(interaction, 15000))
+
+        try {
+            if (collectedInteraction.customId === '✅') {
+                await mutee.timeout(null)
                 const embed = new EmbedBuilder()
-                    .setColor("#00ff00")
-                    .setTitle("Member Timeout Removed")
+                    .setColor('#00ff00')
+                    .setTitle('Member Timeout Removed')
                     .setThumbnail(mutee.user.displayAvatarURL())
-                    .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() })
+                    .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
                     .setTimestamp()
-                    .setDescription(stripIndents`
-                    **Member's Timeout Removed:** ${mutee} (${mutee.id})
-                    **Timeout Removed By:** ${message.member}
-                    **Reason:** ${reason}`);
+                    .addFields({
+                        name: '__**Target**__',
+                        value: `${mutee}`,
+                        inline: true
+                    }, {
+                        name: '__**Reason**__',
+                        value: `${reason}`,
+                        inline: true
 
-                mutee.timeout(null, `${reason}`).then(() => {
-                    mutee.send(`Hello, your **timeout** has been removed in ${message.guild.name} for: **${reason}**`).catch(err => err); //in case DM's are closed
-                    r(message.channel, message.author, `${mutee.user.username} was successfully removed from timeout.`).then(m => del(m, 7500));
-                    return s(logChannel, '', embed);
-                }).catch(err => r(message.channel, message.author, `There was an error attempting to untimeout ${mutee}: ${err}`).then(m => del(m, 7500)));
-            } else if (emoji === "❌") {
-                del(msg, 0);
-                return r(message.channel, message.author, `Timeout cancelled.`).then(m => del(m, 7500));
-            } else return del(msg, 0)
-        }).catch(err => err);
-    }
-}
+                    }, {
+                        name: '__**Moderator**__',
+                        value: `${interaction.user}`,
+                        inline: true
+                    });
+
+                if (logChannel) s(logChannel, "", embed);
+                return er(interaction, "Timeout removed.", [], []).then(() => delr(interaction, 15000));
+            }
+        } catch (err) {
+            return er(interaction, `An error occured while trying to remove timeout: \n\`${err}\``, [], []).then(() => delr(interaction, 15000));
+        }
+    },
+};

@@ -1,5 +1,4 @@
 const { s, r, del } = require("../../../utils/functions/functions.js");
-const { stripIndents } = require("common-tags");
 const { spawn } = require('child_process');
 
 //MongoDB Tools is required for this method of backup
@@ -14,11 +13,10 @@ module.exports = {
             return r(message.channel, message.author, "You're not the bot the owner!").then(m => del(m, 7500));
 
         const date = new Date();
-        const formatDate = stripIndents`
-            ${(date.getMonth() + 1)
-                .toString().padStart(2, '0')}-${date.getDate()
-                    .toString().padStart(2, '0')}-${date.getFullYear()
-                        .toString().padStart(4, '0')}`
+        const formatDate = `${(date.getMonth() + 1)
+            .toString().padStart(2, '0')}-${date.getDate()
+                .toString().padStart(2, '0')}-${date.getFullYear()
+                    .toString().padStart(4, '0')}`
 
         const dbsBackup = spawn('mongoexport', [
             '--db', 'ComicallyBot',

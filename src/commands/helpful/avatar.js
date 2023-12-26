@@ -1,30 +1,19 @@
-const { s, r, del } = require("../../../utils/functions/functions.js");
-const { EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { r } = require("../../../utils/functions/functions.js");
 
 module.exports = {
-    name: "avatar",
-    aliases: ["av", "pfp"],
-    category: "helpful",
-    description: "Responds with an embed of a users avatar.",
-    permissions: "member",
-    usage: "[@user | userID]",
-    run: async (client, message, args) => {
-        if (!args[0]) {
-            const embed = new EmbedBuilder()
-                .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL() })
-                .setColor("#000000")
-                .setTitle(`**Avatar**`)
-                .setImage(`${message.author.displayAvatarURL({ size: 4096, dynamic: true })}`);
-            return s(message.channel, '', embed);
-        } else {
-            let member = message.mentions.members.first() || await message.guild.members.fetch(args[0]).catch(() => { return undefined });
-            if (!member) return r(message.channel, message.author, "User not found.").then(m => del(m, 7500));
-            const embed = new EmbedBuilder()
-                .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL() })
-                .setColor("#000000")
-                .setTitle(`**Avatar**`)
-                .setImage(`${member.user.displayAvatarURL({ size: 4096, dynamic: true })}`);
-            return s(message.channel, '', embed);
-        }
+    data: new SlashCommandBuilder()
+        .setName('avatar')
+        .setDescription('Responds with an embed of a users avatar.')
+        .addUserOption(option => option.setName('user').setDescription('Target user')),
+    execute: (interaction) => {
+        const user = interaction.options.getUser('user') || interaction.user;
+        const embed = new EmbedBuilder()
+            .setAuthor({ name: user.tag, iconURL: user.displayAvatarURL() })
+            .setColor("#000000")
+            .setTitle(`**Avatar**`)
+            .setImage(user.displayAvatarURL({ size: 4096, dynamic: true }));
+
+        return r(interaction, "", embed);
     }
 }

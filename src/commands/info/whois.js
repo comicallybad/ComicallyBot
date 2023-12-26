@@ -1,52 +1,44 @@
-const { s, r, del, formatDate } = require("../../../utils/functions/functions.js");
-const { EmbedBuilder } = require("discord.js");
-const { stripIndents } = require("common-tags");
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { r, re, delr } = require("../../../utils/functions/functions.js");
 
 module.exports = {
-    name: "whois",
-    category: "info",
-    description: "Returns user information.",
-    permissions: "member",
-    usage: "[@user | userID | user]",
-    run: async (client, message, args) => {
+    data: new SlashCommandBuilder()
+        .setName('who-is')
+        .setDescription('Returns user information.')
+        .addUserOption(option => option.setName('user').setDescription('The user to check').setRequired(false)),
+    execute: (interaction) => {
         let member;
-        if (args[0])
-            member = message.mentions.members.first() || await message.guild.members.fetch(args[0]).catch(() => { return undefined });
-        else member = message.member;
+        if (interaction.options.getUser('user'))
+            member = interaction.guild.members.cache.get(interaction.options.getUser('user').id);
+        else member = interaction.member;
 
         if (!member)
-            return r(message.channel, message.author, "Sorry, this user either doesn't exist, or they are not in the discord.").then(m => del(m, 7500));
+            return re(interaction, "Sorry, this user either doesn't exist, or they are not in the discord.").then(() => delr(interaction, 7500));
 
-        // Member variables
-        const joined = formatDate(member.joinedAt);
-        const roles = member.roles.cache
-            .filter(r => r.id !== message.guild.id)
-            .map(r => r).join(", ") || 'none';
-
-        // User variables
-        const created = formatDate(member.user.createdAt);
+        const joinedTimestamp = Math.floor(member.joinedAt.getTime() / 1000);
+        const roles = member.roles.cache.filter(r => r.id !== interaction.guild.id).map(r => r).join(", ") || 'none';
+        const created = Math.floor(member.user.createdAt.getTime() / 1000);
 
         const embed = new EmbedBuilder()
+            .setTitle(member.user.username)
             .setFooter({ text: member.displayName, iconURL: member.user.displayAvatarURL() })
             .setThumbnail(member.user.displayAvatarURL())
             .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
             .addFields({
-                name: 'Member information:',
-                value: stripIndents`
-                **Display name: ${member.displayName}**
-                **Joined at: ${joined}**
-                **Roles: ${roles}**`
+                name: '__**Member information:**__',
+                value: `**Display name:** \`${member.displayName}\`
+                **Joined:** <t:${joinedTimestamp}:f>
+                **Roles:** ${roles}`
             })
             .addFields({
-                name: 'User information:',
-                value: stripIndents`
-                **ID: ${member.user.id}**
-                **Username: ${member.user.username}**
-                **Tag: ${member.user.tag}**
-                **Created at: ${created}**`
+                name: '__**User information:**__',
+                value: `**ID:** \`${member.user.id}\`
+                **Username:** \`${member.user.username}\`
+                **Tag:** \`${member.user.tag}\`
+                **Account Created:** <t:${created}:R>`
             })
             .setTimestamp();
 
-        return s(message.channel, '', embed).then(m => del(m, 15000));
+        return r(interaction, "", embed).then(() => delr(interaction, 30000));
     }
 }

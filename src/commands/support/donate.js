@@ -1,12 +1,12 @@
-const { r, del } = require("../../../utils/functions/functions.js");
+const { SlashCommandBuilder } = require('discord.js');
+const { re, delr } = require("../../../utils/functions/functions.js");
 
 module.exports = {
-    name: "donate",
-    category: "support",
-    description: "Provides a link to support the creator of the bot ❤️.",
-    permissions: "member",
-    run: (client, message, args) => {
+    data: new SlashCommandBuilder()
+        .setName('donate')
+        .setDescription('Provides a link to support the creator of the bot ❤️.'),
+    execute: (interaction) => {
         const donationLink = "https://www.linktr.ee/comicallybad";
-        return r(message.channel, message.author, `The donation link to support the bot creator is: ${donationLink}`).then(m => del(m, 15000));
-    }
-}
+        return re(interaction, `The donation link to support the bot creator is: ${donationLink}`).then(() => delr(interaction, 30000));
+    },
+};
