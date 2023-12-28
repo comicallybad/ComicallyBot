@@ -57,7 +57,7 @@ function checkPerms(client, interaction, voiceChannel, checkPlayer) {
 
     const permissions = voiceChannel.permissionsFor(client.user);
 
-    if (!permissions.has(PermissionFlagsBits.VIEW_CHANNEL && PermissionFlagsBits.CONNECT && PermissionFlagsBits.SPEAK))
+    if (!permissions.has(PermissionFlagsBits.ViewChannel && PermissionFlagsBits.Connect && PermissionFlagsBits.Speak))
         return re(interaction, "I am missing permissions to `VIEW_CHANNEL`, `CONNECT`, or `SPEAK`!").then(() => delr(interaction, 7500));
 
     if (!interaction.options.get("song") && !checkPlayer)
