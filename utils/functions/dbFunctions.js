@@ -13,7 +13,7 @@ module.exports = {
             let exists = await db.findOne({ guildID: guild.id }).catch(err => err);
             if (!exists) {
                 exists = new db({
-                    _id: mongoose.Types.ObjectId(),
+                    _id: new mongoose.Types.ObjectId(),
                     guildID: guild.id,
                     guildName: guild.name,
                     verificationRole: [],

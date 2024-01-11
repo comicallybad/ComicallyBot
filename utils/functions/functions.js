@@ -32,7 +32,8 @@ module.exports = {
         const row = new ActionRowBuilder()
             .addComponents(saveButton, delButton);
 
-        interaction.editReply({ components: [row] });
+        await interaction.editReply({ components: [row] });
+
         const filter = i => i.user.id === interaction.user.id;
         const message = await interaction.fetchReply();
         const collector = message.createMessageComponentCollector({ filter, time: timeout });
