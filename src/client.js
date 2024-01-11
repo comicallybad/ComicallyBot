@@ -25,7 +25,7 @@ client.commands = new Collection();
 client.categories = new fs.readdirSync("./src/commands/");
 
 ["command", "event", "erela"].forEach(x => require(`./handlers/${x}`)(client));
-// require(`./handlers/error`)(client, process);
+require(`./handlers/error`)(client, process);
 
 client.setMaxListeners(25);
 

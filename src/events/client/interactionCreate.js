@@ -8,6 +8,7 @@ module.exports = async (client, interaction) => {
         try {
             await command.execute(interaction, client);
         } catch (error) {
+            console.error(interaction.commandName);
             console.error(error.stack);
             const errorMessage = { content: `There was an error while executing this command: \n\`${error}\``, ephemeral: true };
             if (interaction.replied) {
