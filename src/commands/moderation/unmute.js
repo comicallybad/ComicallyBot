@@ -5,7 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('unmute')
         .setDescription('Remove timeout from a member.')
-        .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
+        .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
         .addUserOption(option => option.setName('user').setDescription('The user to unmute').setRequired(true))
         .addStringOption(option => option.setName('reason').setDescription('The reason for unmuting the user')),
     async execute(interaction) {

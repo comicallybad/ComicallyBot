@@ -6,7 +6,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("announce")
         .setDescription("Make an announcement to a channel.")
-        .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
+        .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
         .addStringOption(option => option.setName("message").setDescription("The message to send.").setRequired(true))
         .addChannelOption(option => option.setName("channel").setDescription("The channel to send the announcement to.").setRequired(false)),
     execute: (interaction) => {
