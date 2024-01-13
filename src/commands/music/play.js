@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const humanizeDuration = require("humanize-duration");
-const { r, re, delr } = require("../../../utils/functions/functions.js");
+const { r, re, delr, del } = require("../../../utils/functions/functions.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -46,6 +46,7 @@ module.exports = {
 
         if (player.state !== "CONNECTED") player.connect();
 
+        await re(interaction, "Loading...");
         const res = await client.music.search(interaction.options.get("song").value, interaction.user);
         handleLoadType(interaction, player, res);
     }
@@ -75,7 +76,7 @@ function checkResume(interaction, voiceChannel, checkPlayer) {
 
         const embed = new EmbedBuilder()
             .setAuthor({ name: `Player resumed.`, iconURL: interaction.user.displayAvatarURL() })
-            .setThumbnail(checkPlayer.queue.current ? checkPlayer.queue.current.thumbnail : null)
+            .setThumbnail(checkPlayer.queue.current ? checkPlayer.queue.current.thumbnail : interaction.guild.iconURL())
             .setDescription(`▶️ The player has been resumed. Use \`/pause\` to pause playing again. ⏸️`);
 
         return r(interaction, "", embed).then(() => delr(interaction, 15000));
@@ -84,7 +85,7 @@ function checkResume(interaction, voiceChannel, checkPlayer) {
 
         const embed = new EmbedBuilder()
             .setAuthor({ name: `Player joined.`, iconURL: interaction.user.displayAvatarURL() })
-            .setThumbnail(checkPlayer.queue.current ? checkPlayer.queue.current.thumbnail : null)
+            .setThumbnail(checkPlayer.queue.current ? checkPlayer.queue.current.thumbnail : interaction.guild.iconURL())
             .setDescription(`▶️ The player has joined the voice channel to resume playing.`);
 
         return r(interaction, "", embed).then(() => delr(interaction, 15000));
@@ -93,9 +94,10 @@ function checkResume(interaction, voiceChannel, checkPlayer) {
     return true;
 }
 
-async function handleLoadType(interaction, player, response) {
+function handleLoadType(interaction, player, response) {
     switch (response.loadType) {
         case "TRACK_LOADED":
+            delr(interaction, 0);
             player.queue.add(response.tracks[0]);
             sendEmbed(interaction, "Song Added To Queue!", response.tracks[0]);
             startPlaying(player);
@@ -106,6 +108,7 @@ async function handleLoadType(interaction, player, response) {
             break;
 
         case "PLAYLIST_LOADED":
+            delr(interaction, 0);
             sendPlaylistEmbed(interaction, "Playlist Added To Queue!", response);
             response.tracks.forEach(track => player.queue.add(track));
             startPlaying(player);
@@ -131,17 +134,17 @@ async function handleSearchResult(interaction, player, tracks) {
     });
 
     const row = new ActionRowBuilder().addComponents(buttons);
-
-    interaction.reply({ content: "", embeds: [embed], components: [row], ephemeral: true });
+    await interaction.editReply({ content: "", embeds: [embed], components: [row], ephemeral: true });
     const filter = (i) => i.customId.startsWith('track_') && i.user.id === interaction.user.id;
     const message = await interaction.fetchReply();
     const collector = message.createMessageComponentCollector({ filter, time: 30000, max: 1 });
 
-    collector.on('collect', (buttonInteraction) => {
+    collector.on('collect', async (buttonInteraction) => {
         const trackIndex = parseInt(buttonInteraction.customId.split('_')[1]);
         const track = tracks[trackIndex];
 
         if (track) {
+            await buttonInteraction.deferUpdate();
             player.queue.add(track);
             sendEmbed(buttonInteraction, "Song Added To Queue!", track);
             startPlaying(player);
@@ -161,22 +164,22 @@ function startPlaying(player) {
     else if (!player.playing) player.play();
 }
 
-function sendEmbed(interaction, title, track) {
+async function sendEmbed(interaction, title, track) {
     const embed = new EmbedBuilder()
         .setAuthor({ name: title, iconURL: interaction.user.displayAvatarURL() })
-        .setThumbnail(track.thumbnail)
+        .setThumbnail(track.thumbnail ? track.thumbnail : interaction.guild.iconURL())
         .setDescription(`⌚ Queuing [**${track.title.includes(track.author) ? track.title : `${track.title} by ${track.author}`}**](${track.uri}) \`${humanizeDuration(track.duration)}\``);
 
-    return r(interaction, "", embed).then(() => delr(interaction, 30000));
+    return await interaction.followUp({ content: "", embeds: [embed] }).then(m => del(m, 15000));
 }
 
-function sendPlaylistEmbed(interaction, title, response) {
+async function sendPlaylistEmbed(interaction, title, response) {
     const duration = humanizeDuration(response.tracks.reduce((acc, cur) => ({ duration: acc.duration + cur.duration })).duration);
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: title, iconURL: interaction.user.displayAvatarURL() })
-        .setThumbnail(response.tracks[0].thumbnail)
+        .setThumbnail(response.tracks[0].thumbnail ? response.tracks[0].thumbnail : interaction.guild.iconURL())
         .setDescription(`⌚ Queuing  [**${response.playlist.name}**](${interaction.options.get("song").value}) \`${response.tracks.length}\` tracks \`${duration}\``);
 
-    return r(interaction, "", embed).then(() => delr(interaction, 30000));
+    return await interaction.followUp({ content: "", embeds: [embed] }).then(m => del(m, 15000));
 }
