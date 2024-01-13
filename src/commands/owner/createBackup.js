@@ -1,4 +1,4 @@
-const { s, r, del } = require("../../../utils/functions/functions.js");
+const { s, del } = require("../../../utils/functions/functions.js");
 const { spawn } = require('child_process');
 
 //MongoDB Tools is required for this method of backup
@@ -10,7 +10,7 @@ module.exports = {
     permissions: "owner",
     run: async (client, message, args) => {
         if (message.author.id != process.env.USERID)
-            return r(message.channel, message.author, "You're not the bot the owner!").then(m => del(m, 7500));
+            return s(message.channel, "You're not the bot the owner!").then(m => del(m, 7500));
 
         const date = new Date();
         const formatDate = `${(date.getMonth() + 1)
