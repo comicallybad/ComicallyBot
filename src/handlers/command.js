@@ -16,8 +16,13 @@ module.exports = async (client) => {
                 client.commands.set(command.data.name, command);
                 commands.push(command.data.toJSON());
                 table.addRow(file, '✅');
+            } else if (command.name) {
+                client.commands.set(command.name, command);
+                if (command.aliases && Array.isArray(command.aliases))
+                    command.aliases.forEach(alias => client.aliases.set(alias, command.name));
+                table.addRow(file, '⚠️ (outdated)');
             } else {
-                table.addRow(file, `❌`);
+                table.addRow(file, '❌')
             }
         }
     });

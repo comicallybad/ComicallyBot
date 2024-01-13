@@ -17,11 +17,11 @@ client.music = new Manager({
     }
 });
 
-process.on('warning', e => console.warn(e.stack));
 config({ path: __dirname + "/.env" });
 global.voiceChannels = [], global.warnUsers = [];
 
 client.commands = new Collection();
+client.aliases = new Collection();
 client.categories = new fs.readdirSync("./src/commands/");
 
 ["command", "event", "erela"].forEach(x => require(`./handlers/${x}`)(client));

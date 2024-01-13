@@ -1,17 +1,47 @@
+const { PermissionFlagsBits } = require("discord.js")
+const { del, s } = require("../../../utils/functions/functions.js");
 const { checkWarn } = require("../../../utils/functions/dbFunctions.js");
 const db = require("../../../utils/schemas/db.js");
 const OpenAI = require("openai");
 
 module.exports = async (client, message) => {
-    if (!message) return;
-    if (message.author.bot) return;
-    if (!message.guild) return;
+    if (!message || !message.guild || message.author.bot) return;
     if (!message.member) message.member = await message.guild.members.fetch(message).catch(err => err);
-
-    checkWarn(client, message);
-
     if (message.guild.members.me.isCommunicationDisabled()) return;
 
+    checkWarn(client, message);
+    checkOwnerCommand(client, message);
+    checkAutoChat(client, message);
+}
+
+function checkOwnerCommand(client, message) {
+    if (!message.content.startsWith("_") || !message.content.startsWith(`<@${client.user.id}>`) && message.author.id !== process.env.USERID) return;
+    const args = message.content.startsWith("_") ? message.content.slice("_".length).trim().split(/ +/g) : message.content.slice(`<@${client.user.id}>`.length).trim().split(/ +/g);
+    const cmd = args.shift().toLowerCase();
+
+    if (cmd.length === 0) return;
+
+    let command = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
+    if (!command) return;
+
+    const channelPermissions = message.channel.permissionsFor(message.guild.members.me);
+
+    if (!channelPermissions?.has(PermissionFlagsBits.ViewChannel)) return;
+
+    if (!channelPermissions?.has(PermissionFlagsBits.SendMessages))
+        return message.author.send("I am missing permissions to `SEND_MESSAGES`").catch(err => err);
+
+    del(message, 0);
+
+    try {
+        return command.run(client, message, args);
+    } catch (err) {
+        console.log(`Error running ${command}: ${err.stack}`);
+    }
+    return;
+}
+
+async function checkAutoChat(client, message) {
     const exists = await db.findOne({ guildID: message.guild.id, channels: { $elemMatch: { command: "Bot Chatting" } } });;
     if (!exists) return;
 
