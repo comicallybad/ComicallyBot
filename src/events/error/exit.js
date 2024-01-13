@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-module.exports = async (client, process, error, origin) => {
+module.exports = async (client, process, code) => {
     const date = new Date();
     const formatDate = `${(date.getMonth() + 1)
         .toString().padStart(2, '0')}-${date.getDate()
@@ -16,12 +16,12 @@ module.exports = async (client, process, error, origin) => {
 
     if (!fs.existsSync(dir)) fs.mkdirSync(dir);
 
-    fs.appendFile(`./logs/${formatDate} uncaughtException.log`, `${formatDate} ${formatTime}: A new uncaughtException: ${origin}\n${error.stack}\n`, function (err) {
+    fs.appendFile(`./logs/${formatDate} exit.log`, `${formatDate} ${formatTime}: A new exit code: ${code}\n`, function (err) {
         if (err) throw err;
-        console.error(`A new uncaughtException has been logged to: ${formatDate} uncaughtException.log`);
+        console.error(`A new exit code has been logged to: ${formatDate} exit.log`)
     });
 
     let owner = await client.users.fetch(`${process.env.USERID}`);
-    owner.send(`${formatDate} ${formatTime}: A new uncaughtException: \`${origin}\`\n\`\`\`prolog\n${error.stack}\`\`\``)
-        .catch(err => console.log(`Could not send uncaughtException error message to owner. ${err}`));
+    owner.send(`${formatDate} ${formatTime}: A new exit code:\n\`\`\`prolog\n${code}\`\`\``)
+        .catch(err => console.log(`Could not send exit code error message to owner. ${err}`));
 }

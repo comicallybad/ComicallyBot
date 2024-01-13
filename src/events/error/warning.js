@@ -14,15 +14,14 @@ module.exports = async (client, process, error) => {
 
     var dir = './logs';
 
-    if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir);
-    }
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir);
 
-    fs.appendFile(`./logs/${formatDate} warning.log`, `${formatDate} ${formatTime}: ${error.stack}\n`, function (err) {
+    fs.appendFile(`./logs/${formatDate} warning.log`, `${formatDate} ${formatTime}: A new warning:\n${error.stack}\n`, function (err) {
         if (err) throw err;
-        console.log(`A new warning has been logged to: ${formatDate} warning.log`)
+        console.warn(`A new warning has been logged to: ${formatDate} warning.log`)
     });
 
     let owner = await client.users.fetch(`${process.env.USERID}`);
-    owner.send(`New warning ${error.stack}`).catch(err => console.log(`Could not send warning error message to owner. ${err}`));
+    owner.send(`${formatDate} ${formatTime}: A new warning:\n\`\`\`prolog\n${error.stack}\`\`\``)
+        .catch(err => console.log(`Could not send warning error message to owner. ${err}`));
 }

@@ -16,11 +16,12 @@ module.exports = async (client, process, reason, promise) => {
 
     if (!fs.existsSync(dir)) fs.mkdirSync(dir);
 
-    fs.appendFile(`./logs/${formatDate} UnhandledRejection.log`, `${formatDate} ${formatTime}: A new unhandledRejection: at promise ${promise} ${reason}\n`, function (err) {
+    fs.appendFile(`./logs/${formatDate} unhandledRejection.log`, `${formatDate} ${formatTime}: A new unhandledRejection: ${promise}\n${reason.stack}\n`, function (err) {
         if (err) throw err;
-        console.log(`A new UnhandledRejection has been logged to: ${formatDate} UnhandledRejection.log`)
+        console.error(`A new unhandledRejection has been logged to: ${formatDate} unhandledRejection.log`)
     });
 
     let owner = await client.users.fetch(`${process.env.USERID}`);
-    owner.send(`${formatDate} ${formatTime}: A new unhandledRejection error ${promise} ${reason}`).catch(err => console.log(`Could not send unhandledRejection error message to owner. ${err}`));
+    owner.send(`${formatDate} ${formatTime}: A new unhandledRejection error: \`${promise}\`\n\`\`\`prolog\n${reason.stack}\`\`\``)
+        .catch(err => console.log(`Could not send unhandledRejection error message to owner. ${err}`));
 }
