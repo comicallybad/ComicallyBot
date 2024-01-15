@@ -16,7 +16,7 @@ module.exports = {
 
     //Delete reply
     delr: async function (interaction, timeout) {
-        if (!interaction) return;
+        if (!interaction || !interaction.replied) return;
         if (!timeout || timeout == 0) return interaction.deleteReply().catch(err => err);
 
         const saveButton = new ButtonBuilder()
