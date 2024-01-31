@@ -1,4 +1,5 @@
-const { InteractionType } = require('discord.js');
+const { InteractionType, EmbedBuilder } = require('discord.js');
+const { s } = require('../../../utils/functions/functions.js');
 
 module.exports = async (client, interaction) => {
     if (interaction.isChatInputCommand()) {
@@ -33,20 +34,30 @@ module.exports = async (client, interaction) => {
 
         await interaction.deferUpdate().catch(err => err);
 
+        const logChannel = interaction.guild.channels.cache.find(c => c.name.includes("role-logs")) || undefined;
         const options = interaction.message.components[0].components[0].options.map(option => option.value);
         const values = interaction.values;
+        const embed = new EmbedBuilder()
+            .setColor("#0EFEFE")
+            .setTitle("User Role(s) Updated")
+            .setThumbnail(interaction.user.displayAvatarURL())
+            .setFooter({ text: `${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() })
+            .setTimestamp()
 
         try {
             for (const option of options) {
                 const role = interaction.guild.roles.cache.get(option);
                 if (!role) return;
 
-                if (!values.includes(option)) {
+                if (!values.includes(option) && interaction.member.roles.cache.has(role.id)) {
                     await interaction.member.roles.remove(role);
-                } else {
+                    embed.addFields({ name: "__**Removed**__", value: `${role}`, inline: true });
+                } else if (values.includes(option) && !interaction.member.roles.cache.has(role.id)) {
                     await interaction.member.roles.add(role);
+                    embed.addFields({ name: "__**Added**__", value: `${role}`, inline: true });
                 }
             }
+            if (logChannel) s(logChannel, "", embed);
             await interaction.followUp({ content: "Roles updated.", ephemeral: true });
         } catch (error) {
             await interaction.followUp({ content: `There was an error while attempting to assign role(s): \n\`${error}\``, ephemeral: true });

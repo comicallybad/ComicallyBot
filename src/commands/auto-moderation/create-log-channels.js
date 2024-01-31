@@ -18,7 +18,7 @@ module.exports = {
 
 async function createChannels(interaction) {
     const everyoneRoleId = interaction.guild.roles.everyone.id;
-    const channelNames = ["mod-logs", "member-logs", "text-logs", "action-logs", "reports"];
+    const channelNames = ["mod-logs", "member-logs", "role-logs", "text-logs", "action-logs", "reports"];
     const permissionOverwrites = [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.AddReactions, PermissionFlagsBits.ManageMessages]
     let categoryChannel = interaction.guild.channels.cache.find(c => c.name.includes("Logging") && c.type === ChannelType.GuildCategory);
 
