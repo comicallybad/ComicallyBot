@@ -115,6 +115,7 @@ function handleLoadType(interaction, player, response) {
             break;
 
         default:
+            er(interaction, "The provided track/url could not be loaded.");
             break;
     }
 }
