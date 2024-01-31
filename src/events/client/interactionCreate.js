@@ -26,5 +26,30 @@ module.exports = async (client, interaction) => {
         } catch (error) {
             console.error(error.stack);
         }
+
+    } else if (interaction.type == InteractionType.MessageComponent) {
+        const command = interaction.customId;
+        if (command !== "select-menu-roles") return;
+
+        await interaction.deferUpdate().catch(err => err);
+
+        const options = interaction.message.components[0].components[0].options.map(option => option.value);
+        const values = interaction.values;
+
+        try {
+            for (const option of options) {
+                const role = interaction.guild.roles.cache.get(option);
+                if (!role) return;
+
+                if (!values.includes(option)) {
+                    await interaction.member.roles.remove(role);
+                } else {
+                    await interaction.member.roles.add(role);
+                }
+            }
+            await interaction.followUp({ content: "Roles updated.", ephemeral: true });
+        } catch (error) {
+            await interaction.followUp({ content: `There was an error while attempting to assign role(s): \n\`${error}\``, ephemeral: true });
+        }
     } else return;
 }
