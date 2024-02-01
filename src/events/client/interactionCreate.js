@@ -57,7 +57,7 @@ module.exports = async (client, interaction) => {
                     embed.addFields({ name: "__**Added**__", value: `${role}`, inline: true });
                 }
             }
-            if (logChannel) s(logChannel, "", embed);
+            if (logChannel && embed.data.fields) s(logChannel, "", embed);
             await interaction.followUp({ content: "Roles updated.", ephemeral: true });
         } catch (error) {
             await interaction.followUp({ content: `There was an error while attempting to assign role(s): \n\`${error}\``, ephemeral: true });
