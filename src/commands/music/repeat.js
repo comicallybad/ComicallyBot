@@ -21,26 +21,33 @@ module.exports = {
 
         player.setTextChannel(interaction.channel.id);
 
-        if (subcommand === "track") {
-            if (player.trackRepeat) player.setTrackRepeat(false);
-            else player.setTrackRepeat(true);
-
-            const embed = new EmbedBuilder()
-                .setAuthor({ name: `Track Repeat: ${player.trackRepeat ? "ON" : "OFF"}!`, iconURL: interaction.user.displayAvatarURL() })
-                .setThumbnail(player.queue.current.thumbnail)
-                .setDescription(`Track repeat has been toggled ${player.trackRepeat ? "**ON** - (the current track will now loop) 🔁" : "**OFF** - (the current track will no longer loop) ❌🔁"}.`);
-
-            return r(interaction, "", embed).then(() => delr(interaction, 30000));
-        } else if (subcommand === "queue") {
-            if (player.queueRepeat) player.setQueueRepeat(false);
-            else player.setQueueRepeat(true);
-
-            const embed = new EmbedBuilder()
-                .setAuthor({ name: `Queue Repeat: ${player.queueRepeat ? "ON" : "OFF"}!`, iconURL: interaction.user.displayAvatarURL() })
-                .setThumbnail(player.queue.current.thumbnail)
-                .setDescription(`The player queue repeat has been toggled ${player.queueRepeat ? "**ON** - (the queue will now loop) 🔁" : "**OFF** - (the queue will no longer loop) ❌🔁"}.`);
-
-            return r(interaction, "", embed).then(() => delr(interaction, 30000));
-        }
+        if (subcommand === "track") return trackRepeat(interaction, player);
+        else if (subcommand === "queue") return queueRepeat(interaction, player);
     }
+}
+
+function trackRepeat(interaction, player) {
+    if (player.trackRepeat) player.setTrackRepeat(false);
+    else player.setTrackRepeat(true);
+
+    const embed = new EmbedBuilder()
+        .setAuthor({ name: `Track Repeat: ${player.trackRepeat ? "ON" : "OFF"}!`, iconURL: interaction.user.displayAvatarURL() })
+        .setThumbnail(player.queue.current.thumbnail)
+        .setColor("#0EFEFE")
+        .setDescription(`Track repeat has been toggled ${player.trackRepeat ? "**ON**\n(The current track will now repeat) 🔁" : "**OFF**\n(The current track will no longer repeat) ❌🔁"}`);
+
+    return r(interaction, "", embed).then(() => delr(interaction, 30000));
+}
+
+function queueRepeat(interaction, player) {
+    if (player.queueRepeat) player.setQueueRepeat(false);
+    else player.setQueueRepeat(true);
+
+    const embed = new EmbedBuilder()
+        .setAuthor({ name: `Queue Repeat: ${player.queueRepeat ? "ON" : "OFF"}!`, iconURL: interaction.user.displayAvatarURL() })
+        .setThumbnail(player.queue.current.thumbnail)
+        .setColor("#0EFEFE")
+        .setDescription(`The player queue repeat has been toggled ${player.queueRepeat ? "**ON**\n(The queue will now repeat) 🔁" : "**OFF**\n(The queue will no longer repeat) ❌🔁"}`);
+
+    return r(interaction, "", embed).then(() => delr(interaction, 30000));
 }

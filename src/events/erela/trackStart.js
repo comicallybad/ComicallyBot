@@ -8,6 +8,7 @@ module.exports = async (client, player, track) => {
     const embed = new EmbedBuilder()
         .setAuthor({ name: "Now Playing!", iconURL: guild.iconURL() })
         .setThumbnail(track.thumbnail ? track.thumbnail : guild.iconURL())
+        .setColor("#0EFEFE")
         .setDescription(`▶️ [**${track.title.includes(track.author) ? track.title : `${track.title} by ${track.author}`}**](${track.uri}) \`${humanizeDuration(track.duration)}\``)
         .setFooter({ text: `Requested by ${track.requester.tag}`, iconURL: track.requester.displayAvatarURL() });
 
@@ -155,6 +156,7 @@ function handleStop(message, embed, player, collector) {
     if (player) player.destroy();
     embed = new EmbedBuilder()
         .setAuthor({ name: "Music Player Disconnected!", iconURL: message.author.displayAvatarURL() })
+        .setColor("#FF0000")
         .setDescription("🛑 The music player has successfully been disconnected!");
     return s(message.channel, '', embed).then(m => del(m, 15000));
 }

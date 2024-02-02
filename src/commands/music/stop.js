@@ -15,6 +15,7 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setAuthor({ name: "Music Player Disconnected!", iconURL: interaction.user.displayAvatarURL() })
+            .setColor("#FF0000")
             .setDescription("🛑 The music player has successfully been disconnected!");
 
         return r(interaction, "", embed).then(() => delr(interaction, 30000));

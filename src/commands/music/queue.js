@@ -74,6 +74,7 @@ function viewQueue(interaction, player) {
     const embed = new EmbedBuilder()
         .setAuthor({ name: `🎧 Current Queue for ${interaction.guild.name}`, iconURL: interaction.guild.iconURL() })
         .setThumbnail(track.thumbnail ? track.thumbnail : interaction.guild.iconURL())
+        .setColor("#0EFEFE")
         .setDescription(string);
 
     return r(interaction, "", embed).then(() => delr(interaction, 30000));
@@ -85,6 +86,7 @@ function clearQueue(interaction, player) {
     const embed = new EmbedBuilder()
         .setAuthor({ name: `🎧 Queue Cleared for ${interaction.guild.name}`, iconURL: interaction.guild.iconURL() })
         .setThumbnail(player.queue.current.thumbnail ? player.queue.current.thumbnail : interaction.guild.iconURL())
+        .setColor("#FF0000")
         .setDescription("The queue has been cleared.");
 
     return r(interaction, "", embed).then(() => delr(interaction, 30000));
@@ -112,6 +114,7 @@ function removeQueue(interaction, player) {
     const embed = new EmbedBuilder()
         .setAuthor({ name: `🎧 Queue Edited for ${interaction.guild.name}`, iconURL: interaction.guild.iconURL() })
         .setThumbnail(player.queue.current.thumbnail ? player.queue.current.thumbnail : interaction.guild.iconURL())
+        .setColor("#FF0000")
         .setDescription(`${text} been removed from the queue.`)
 
     return r(interaction, "", embed).then(() => delr(interaction, 30000));
@@ -131,6 +134,7 @@ function swapQueue(interaction, player) {
     const embed = new EmbedBuilder()
         .setAuthor({ name: `🎧 Queue Edited for ${interaction.guild.name}`, iconURL: interaction.guild.iconURL() })
         .setThumbnail(player.queue.current.thumbnail ? player.queue.current.thumbnail : interaction.guild.iconURL())
+        .setColor("#0EFEFE")
         .setDescription(`Songs **${index1 + 1}** and **${index2 + 1}** have been swapped in the queue.`)
 
     return r(interaction, "", embed).then(() => delr(interaction, 30000));

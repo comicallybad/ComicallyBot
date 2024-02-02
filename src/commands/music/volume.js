@@ -30,6 +30,7 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setAuthor({ name: `Volume Changed!`, iconURL: interaction.user.displayAvatarURL() })
             .setThumbnail(player.queue.current.thumbnail)
+            .setColor("#0EFEFE")
             .setDescription(`The volume has been set to: **${volume}%** ${volLevel}`);
 
         return r(interaction, "", embed).then(() => delr(interaction, 30000));

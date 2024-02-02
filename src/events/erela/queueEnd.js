@@ -8,6 +8,7 @@ module.exports = async (client, player) => {
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: "Queue Ended!!", iconURL: client.user.displayAvatarURL() })
+        .setColor("#FF0000")
         .setDescription("🛑 The queue has ended and the bot has successfully disconnected!");
 
     s(channel, "", embed).then(m => del(m, 15000));

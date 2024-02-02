@@ -16,6 +16,7 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setAuthor({ name: "Current Song!", iconURL: interaction.guild.iconURL() })
             .setThumbnail(thumbnail ? thumbnail : interaction.guild.iconURL())
+            .setColor("#0EFEFE")
             .setDescription(`${player.playing ? "▶️" : "⏸️"} [**${title.includes(author) ? title : `${title} by ${author}`}**](${uri}) \`${humanizeDuration(duration)}\`
             Currently at: \`${humanizeDuration(player.position)}\`.`)
             .setFooter({ text: `Requested by ${player.queue.current.requester.tag}`, iconURL: player.queue.current.requester.displayAvatarURL() });

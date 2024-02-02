@@ -53,6 +53,7 @@ async function bassEQ(interaction, player) {
     const embed = new EmbedBuilder()
         .setAuthor({ name: `Equalizer Set To Bass Boosted.`, iconURL: interaction.user.displayAvatarURL() })
         .setThumbnail(player.queue.current.thumbnail)
+        .setColor("#0EFEFE")
         .setDescription(`The equalizer has been set to **bass boosted.**\n(This takes a second to apply).`);
 
     return r(interaction, "", embed).then(() => delr(interaction, 30000));

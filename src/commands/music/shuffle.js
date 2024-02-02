@@ -22,6 +22,7 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setAuthor({ name: "Queue Shuffled!", iconURL: interaction.user.displayAvatarURL() })
             .setThumbnail(player.queue.current.thumbnail)
+            .setColor("#0EFEFE")
             .setDescription("🔀 The song queue has been shuffled randomly!");
 
         return r(interaction, "", embed).then(() => delr(interaction, 30000));

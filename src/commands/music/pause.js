@@ -22,6 +22,7 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setAuthor({ name: `Player Paused!`, iconURL: interaction.user.displayAvatarURL() })
             .setThumbnail(player.queue.current.thumbnail)
+            .setColor("#0EFEFE")
             .setDescription(`⏸ The player has been paused! Use \`/play\` to resume playing. ▶️`);
 
         return r(interaction, "", embed).then(() => delr(interaction, 30000));

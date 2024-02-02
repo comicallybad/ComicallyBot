@@ -34,6 +34,7 @@ function skipSong(interaction, player) {
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: "Song Skipped!", iconURL: interaction.user.displayAvatarURL() })
+        .setColor("#0EFEFE")
         .setDescription("⏩ The current song has been skipped!");
 
     return r(interaction, "", embed).then(() => delr(interaction, 30000));
@@ -77,6 +78,7 @@ function skipTo(interaction, player) {
     const embed = new EmbedBuilder()
         .setAuthor({ name: "Song Time Set!", iconURL: interaction.user.displayAvatarURL() })
         .setThumbnail(player.queue.current.thumbnail)
+        .setColor("#0EFEFE")
         .setDescription(`⏩ The current song has been skipped to \`${humanizeDuration(time * 1000)}\`!`);
 
     return r(interaction, "", embed).then(() => delr(interaction, 30000));
@@ -97,6 +99,7 @@ function skipAhead(interaction, player) {
     const embed = new EmbedBuilder()
         .setAuthor({ name: "Song Time Set!", iconURL: interaction.user.displayAvatarURL() })
         .setThumbnail(player.queue.current.thumbnail)
+        .setColor("#0EFEFE")
         .setDescription(`⏩ The current song time has been skipped \`${humanizeDuration(time * 1000)}\` to \`${humanizeDuration(player.position)}\`!`);
 
     return r(interaction, "", embed).then(() => delr(interaction, 30000));

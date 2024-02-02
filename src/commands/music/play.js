@@ -169,6 +169,7 @@ async function sendEmbed(interaction, title, track) {
     const embed = new EmbedBuilder()
         .setAuthor({ name: title, iconURL: interaction.user.displayAvatarURL() })
         .setThumbnail(track.thumbnail ? track.thumbnail : interaction.guild.iconURL())
+        .setColor("#0EFEFE")
         .setDescription(`⌚ Queuing [**${track.title.includes(track.author) ? track.title : `${track.title} by ${track.author}`}**](${track.uri}) \`${humanizeDuration(track.duration)}\``);
 
     return await interaction.followUp({ content: "", embeds: [embed] }).then(m => del(m, 15000));
@@ -180,6 +181,7 @@ async function sendPlaylistEmbed(interaction, title, response) {
     const embed = new EmbedBuilder()
         .setAuthor({ name: title, iconURL: interaction.user.displayAvatarURL() })
         .setThumbnail(response.tracks[0].thumbnail ? response.tracks[0].thumbnail : interaction.guild.iconURL())
+        .setColor("#0EFEFE")
         .setDescription(`⌚ Queuing  [**${response.playlist.name}**](${interaction.options.get("song").value}) \`${response.tracks.length}\` tracks \`${duration}\``);
 
     return await interaction.followUp({ content: "", embeds: [embed] }).then(m => del(m, 15000));
