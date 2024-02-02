@@ -12,10 +12,10 @@ module.exports = async (client, player, track) => {
         .setDescription(`▶️ [**${track.title.includes(track.author) ? track.title : `${track.title} by ${track.author}`}**](${track.uri}) \`${humanizeDuration(track.duration)}\``)
         .setFooter({ text: `Requested by ${track.requester.tag}`, iconURL: track.requester.displayAvatarURL() });
 
+    if (player.options.message) del(player.options.message, 0);
+
     return s(channel, '', embed).then(m => {
-        if (player.options.message) del(player.options.message, 0);
-        else player.options.message = m;
-        del(m, track.duration);
+        player.options.message = m;
         return controls(m, embed, player, track);
     });
 }
