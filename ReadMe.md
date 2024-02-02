@@ -23,18 +23,6 @@ ComicallyBot is made and managed by [ComicallyBad](https://github.com/comicallyb
 - **Event Logging**: Keep track of what's happening in your server.
 - **And More**: ComicallyBot is always improving with new features being added regularly.
 
-## Setup
-
-- **Create Channels**: Create the following channels in your Discord server:
-
-    - `mod-logs`: For logging changes in the server, such as updating the Autochat channel.
-    - `member-logs`: For logging user join/leave events.
-    - `text-logs`: For logging messages deleted using the delete reaction.
-    - `action-logs`: For logging action events; member timeout, kick, ban, unban.
-    - `reports`: For logging reports from the `/report` command.
-
-    **Note**: These channels require the bot to have `view channel` and `send messages` permissions.
-
 ## Updates
 
 - **Slash Commands**: Slash commands have been added for a cleaner and more intuitive user experience.
