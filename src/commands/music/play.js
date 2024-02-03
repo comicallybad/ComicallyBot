@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const humanizeDuration = require("humanize-duration");
-const { r, re, delr, del } = require("../../../utils/functions/functions.js");
+const { r, re, er, delr, del } = require("../../../utils/functions/functions.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
