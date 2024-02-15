@@ -5,7 +5,6 @@ const db = require('../schemas/db.js');
 const { antiPhishing } = require('discord-antiphishinglinks');
 
 module.exports = {
-    //Setup guild in DB, if guild exists: update guild name, then call cmdSetup 
     dbSetup: async function (client) {
         const guilds = client.guilds.cache.map(guild => ({ id: guild.id, name: guild.name }));
 
@@ -16,14 +15,9 @@ module.exports = {
                     _id: new mongoose.Types.ObjectId(),
                     guildID: guild.id,
                     guildName: guild.name,
-                    verificationRole: [],
-                    channels: [],
                     profanityFilter: false,
                     antiSpam: false,
                     antiPhishing: false,
-                    badWordList: [],
-                    welcomeMessage: [],
-                    deleteReaction: undefined
                 });
             } else {
                 exists.guildName = guild.name;
