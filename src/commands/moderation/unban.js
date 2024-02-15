@@ -8,7 +8,7 @@ module.exports = {
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
         .addUserOption(option => option.setName('user').setDescription('The user to unban').setRequired(true))
         .addStringOption(option => option.setName('reason').setDescription('The reason for unbanning the user')),
-    async execute(interaction) {
+    execute: async (interaction) => {
         if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.BanMembers))
             return re(interaction, "I don't have permission to `BAN MEMBERS`!").then(() => delr(interaction, 15000));
 

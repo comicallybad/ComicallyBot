@@ -61,16 +61,12 @@ async function setWelcomeChannel(interaction) {
             });
 
         if (!dbResult) {
-            //push channel if it doesn't exist
             embed.setTitle("Welcome Channel Set");
-
             await db.updateOne({ guildID: guildID }, {
                 $push: { channels: { command: "welcome", channelID: channelID, channelName: channelName } }
             });
         } else {
-            ///update channel if it does exist
             embed.setTitle("Welcome Channel Changed");
-
             await db.updateOne({ guildID: guildID, 'channels.command': "welcome" }, {
                 $set: { 'channels.$.channelID': channelID, 'channels.$.channelName': channelName }
             });

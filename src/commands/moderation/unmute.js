@@ -8,7 +8,7 @@ module.exports = {
         .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
         .addUserOption(option => option.setName('user').setDescription('The user to unmute').setRequired(true))
         .addStringOption(option => option.setName('reason').setDescription('The reason for unmuting the user')),
-    async execute(interaction) {
+    execute: async (interaction) => {
         if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.ModerateMembers))
             return re(interaction, "I don't have permission to MUTE MEMBERS!").then(() => delr(interaction, 15000));
 

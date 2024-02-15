@@ -7,12 +7,10 @@ module.exports = {
         .setName('auto-mod-toggle')
         .setDescription('Toggles the anti-spam or anti-phishing system on or off.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels)
-        .addSubcommand(subcommand =>
-            subcommand.setName('antispam').setDescription('Toggles the anti-spam system on or off.')
-                .addBooleanOption(option => option.setName('state').setDescription('The new state of the anti-spam system.').setRequired(true)))
-        .addSubcommand(subcommand =>
-            subcommand.setName('antiphishing').setDescription('Toggles the anti-phishing system on or off.')
-                .addBooleanOption(option => option.setName('state').setDescription('The new state of the anti-phishing system.').setRequired(true))),
+        .addSubcommand(subcommand => subcommand.setName('antispam').setDescription('Toggles the anti-spam system on or off.')
+            .addBooleanOption(option => option.setName('state').setDescription('The new state of the anti-spam system.').setRequired(true)))
+        .addSubcommand(subcommand => subcommand.setName('antiphishing').setDescription('Toggles the anti-phishing system on or off.')
+            .addBooleanOption(option => option.setName('state').setDescription('The new state of the anti-phishing system.').setRequired(true))),
     execute: async (interaction) => {
         const subcommand = interaction.options.getSubcommand();
         const state = interaction.options.getBoolean('state');

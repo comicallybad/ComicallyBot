@@ -5,8 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("good")
         .setDescription("Sends a cute goodmorning or goodnight message.")
-        .addSubcommand(command => command
-            .setName("morning").setDescription("Sends a cute goodmorning message.")
+        .addSubcommand(command => command.setName("morning").setDescription("Sends a cute goodmorning message.")
             .addUserOption(option => option.setName("user").setDescription("Target user"))
             .addStringOption(option => option.setName("message").setDescription("Message to send")))
         .addSubcommand(command => command.setName("night").setDescription("Sends a cute goodnight message.")

@@ -4,18 +4,14 @@ const { r, re, delr } = require("../../../utils/functions/functions.js");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("queue").setDescription("Manage the current song queue.")
-        .addSubcommand(subcommand =>
-            subcommand.setName('view').setDescription('Display the current song queue.'))
-        .addSubcommand(subcommand =>
-            subcommand.setName('clear').setDescription('Clear the current song queue.'))
-        .addSubcommand(subcommand =>
-            subcommand.setName('remove').setDescription('Removes a song or group of song from the song queue.')
-                .addIntegerOption(option => option.setName('index').setDescription('The index of the song to remove from the queue.').setRequired(true).setAutocomplete(true))
-                .addIntegerOption(option => option.setName('end').setDescription('The index of which songs will be removed up to.').setAutocomplete(true)))
-        .addSubcommand(subcommand =>
-            subcommand.setName('swap').setDescription('Swap two songs in the queue.')
-                .addIntegerOption(option => option.setName('index-1').setDescription('The index of the first song to swap.').setRequired(true).setAutocomplete(true))
-                .addIntegerOption(option => option.setName('index-2').setDescription('The index of the second song to swap.').setRequired(true).setAutocomplete(true))),
+        .addSubcommand(subcommand => subcommand.setName('view').setDescription('Display the current song queue.'))
+        .addSubcommand(subcommand => subcommand.setName('clear').setDescription('Clear the current song queue.'))
+        .addSubcommand(subcommand => subcommand.setName('remove').setDescription('Removes a song or group of song from the song queue.')
+            .addIntegerOption(option => option.setName('index').setDescription('The index of the song to remove from the queue.').setRequired(true).setAutocomplete(true))
+            .addIntegerOption(option => option.setName('end').setDescription('The index of which songs will be removed up to.').setAutocomplete(true)))
+        .addSubcommand(subcommand => subcommand.setName('swap').setDescription('Swap two songs in the queue.')
+            .addIntegerOption(option => option.setName('index-1').setDescription('The index of the first song to swap.').setRequired(true).setAutocomplete(true))
+            .addIntegerOption(option => option.setName('index-2').setDescription('The index of the second song to swap.').setRequired(true).setAutocomplete(true))),
     autocomplete: async (interaction, client) => {
         const player = client.music.players.get(interaction.guild.id);
         if (!player || !player.queue.current) return;

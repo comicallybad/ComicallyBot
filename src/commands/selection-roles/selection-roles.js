@@ -6,12 +6,11 @@ module.exports = {
         .setName('selection-roles')
         .setDescription('Manage the selection roles.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
-        .addSubcommand(subcommand =>
-            subcommand.setName('add').setDescription('Add selection role(s).')
-                .addStringOption(option => option.setName('message').setDescription('The message to send with the selection menu.').setRequired(true))
-                .addChannelOption(option => option.setName('channel').setDescription('The channel to send the message to.'))
-                .addIntegerOption(option => option.setName('min').setDescription('The minimum number of roles that must be selected.').setMinValue(0).setMaxValue(25))
-                .addIntegerOption(option => option.setName('max').setDescription('The maximum number of roles that can be selected.').setMinValue(0).setMaxValue(25))),
+        .addSubcommand(subcommand => subcommand.setName('add').setDescription('Add selection role(s).')
+            .addStringOption(option => option.setName('message').setDescription('The message to send with the selection menu.').setRequired(true))
+            .addChannelOption(option => option.setName('channel').setDescription('The channel to send the message to.'))
+            .addIntegerOption(option => option.setName('min').setDescription('The minimum number of roles that must be selected.').setMinValue(0).setMaxValue(25))
+            .addIntegerOption(option => option.setName('max').setDescription('The maximum number of roles that can be selected.').setMinValue(0).setMaxValue(25))),
     execute: async (interaction) => {
         const channel = interaction.options.getChannel('channel') || interaction.channel;
         const message = interaction.options.getString('message');

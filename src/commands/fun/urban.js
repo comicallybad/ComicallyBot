@@ -6,11 +6,9 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('urban')
         .setDescription('Gets an urban dictionary definition')
-        .addSubcommand(subcommand =>
-            subcommand.setName('search').setDescription('Searches for a term')
-                .addStringOption(option => option.setName('term').setDescription('Search term').setRequired(true)))
-        .addSubcommand(subcommand =>
-            subcommand.setName('random').setDescription('Gets a random definition')),
+        .addSubcommand(subcommand => subcommand.setName('search').setDescription('Searches for a term')
+            .addStringOption(option => option.setName('term').setDescription('Search term').setRequired(true)))
+        .addSubcommand(subcommand => subcommand.setName('random').setDescription('Gets a random definition')),
     execute: async (interaction) => {
         const term = interaction.options.getString('term');
 

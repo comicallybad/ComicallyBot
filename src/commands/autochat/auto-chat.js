@@ -7,13 +7,10 @@ module.exports = {
         .setName('auto-chat')
         .setDescription('Manage the auto chat channel.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels)
-        .addSubcommand(subcommand =>
-            subcommand.setName('get').setDescription('Get the current auto chat channel.'))
-        .addSubcommand(subcommand =>
-            subcommand.setName('set').setDescription('Set the auto chat channel.')
-                .addChannelOption(option => option.setName('channel').setDescription('The channel to set as the auto chat channel.').setRequired(true)))
-        .addSubcommand(subcommand =>
-            subcommand.setName('remove').setDescription('Remove the current auto chat channel.')),
+        .addSubcommand(subcommand => subcommand.setName('get').setDescription('Get the current auto chat channel.'))
+        .addSubcommand(subcommand => subcommand.setName('set').setDescription('Set the auto chat channel.')
+            .addChannelOption(option => option.setName('channel').setDescription('The channel to set as the auto chat channel.').setRequired(true)))
+        .addSubcommand(subcommand => subcommand.setName('remove').setDescription('Remove the current auto chat channel.')),
     execute: async (interaction) => {
         const subcommand = interaction.options.getSubcommand();
 

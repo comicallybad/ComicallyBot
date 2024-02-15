@@ -16,7 +16,7 @@ module.exports = {
             .addRoleOption(option => option.setName("role").setDescription("The role to get information about.").setRequired(true)))
         .addSubcommand(subCommand => subCommand.setName("users").setDescription("Get a list of users with a role.")
             .addRoleOption(option => option.setName("role").setDescription("The role to get a list of users from.").setRequired(true))),
-    async execute(interaction) {
+    execute: async (interaction) => {
         const subCommand = interaction.options.getSubcommand();
 
         if (subCommand === "add" || subCommand === "remove") return handleAddRemove(interaction);
