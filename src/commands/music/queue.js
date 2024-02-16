@@ -3,7 +3,8 @@ const { r, re, delr } = require("../../../utils/functions/functions.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("queue").setDescription("Manage the current song queue.")
+        .setName("queue")
+        .setDescription("Manage the current song queue.")
         .addSubcommand(subcommand => subcommand.setName('view').setDescription('Display the current song queue.'))
         .addSubcommand(subcommand => subcommand.setName('clear').setDescription('Clear the current song queue.'))
         .addSubcommand(subcommand => subcommand.setName('remove').setDescription('Removes a song or group of song from the song queue.')
