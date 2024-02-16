@@ -23,6 +23,6 @@ module.exports = {
         await r(interaction, "", embed);
         const message = await interaction.fetchReply();
         await message.react("⬆️");
-        return await message.react("⬇️");
+        return message.react("⬇️");
     }
 };

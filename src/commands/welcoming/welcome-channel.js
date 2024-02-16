@@ -81,7 +81,7 @@ async function removeWelcomeChannel(interaction) {
     const dbResult = await db.findOne({ guildID: interaction.guild.id, channels: { $elemMatch: { command: "welcome" } } });
 
     if (!dbResult)
-        return await interaction.reply("There has been no welcome channel set.");
+        return interaction.reply("There has been no welcome channel set.");
 
     const logChannel = interaction.guild.channels.cache.find(c => c.name.includes("mod-logs")) || interaction.channel;
 

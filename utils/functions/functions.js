@@ -59,7 +59,7 @@ module.exports = {
             components: (components && components.components?.length > 0 ? [components] : [])
         };
 
-        return await channel.send(reply);
+        return channel.send(reply);
     },
 
     //Reply ephemeral
@@ -79,7 +79,7 @@ module.exports = {
             ephemeral: true
         };
 
-        return await interaction.reply(reply);
+        return interaction.reply(reply);
     },
 
     //Reply
@@ -98,7 +98,7 @@ module.exports = {
             components: (components && components.components?.length > 0 ? [components] : [])
         };
 
-        return await interaction.reply(reply);
+        return interaction.reply(reply);
     },
 
     //Edit
@@ -117,7 +117,7 @@ module.exports = {
             components: (components && components.components?.length > 0 ? [components] : [])
         };
 
-        return await message.edit(reply);
+        return message.edit(reply);
     },
 
     //Edit reply
@@ -137,7 +137,7 @@ module.exports = {
             components: (components && components.components?.length > 0 ? [components] : [])
         };
 
-        return await interaction.editReply(reply)
+        return interaction.editReply(reply)
     },
 
     //Creates a collector for an interaction and returns the result

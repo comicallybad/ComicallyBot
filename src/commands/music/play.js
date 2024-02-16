@@ -24,7 +24,7 @@ module.exports = {
 
         if (choices.length === 0) choices.push({ name: focusedValue, value: focusedValue });
 
-        return await interaction.respond(choices).catch(err => err);
+        return interaction.respond(choices).catch(err => err);
     },
     execute: async (interaction, client) => {
         const voiceChannel = interaction.member.voice.channel;
@@ -172,7 +172,7 @@ async function sendEmbed(interaction, title, track) {
         .setColor("#0EFEFE")
         .setDescription(`⌚ Queuing [**${track.title.includes(track.author) ? track.title : `${track.title} by ${track.author}`}**](${track.uri}) \`${humanizeDuration(track.duration)}\``);
 
-    return await interaction.followUp({ content: "", embeds: [embed] }).then(m => del(m, 15000));
+    return interaction.followUp({ content: "", embeds: [embed] }).then(m => del(m, 15000));
 }
 
 async function sendPlaylistEmbed(interaction, title, response) {
@@ -184,5 +184,5 @@ async function sendPlaylistEmbed(interaction, title, response) {
         .setColor("#0EFEFE")
         .setDescription(`⌚ Queuing  [**${response.playlist.name}**](${interaction.options.get("song").value}) \`${response.tracks.length}\` tracks \`${duration}\``);
 
-    return await interaction.followUp({ content: "", embeds: [embed] }).then(m => del(m, 15000));
+    return interaction.followUp({ content: "", embeds: [embed] }).then(m => del(m, 15000));
 }

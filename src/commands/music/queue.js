@@ -30,7 +30,7 @@ module.exports = {
             choices.push(lastChoice);
         }
 
-        return await interaction.respond(choices).catch(err => err);
+        return interaction.respond(choices).catch(err => err);
     },
     execute: (interaction, client) => {
         const subcommand = interaction.options.getSubcommand();
