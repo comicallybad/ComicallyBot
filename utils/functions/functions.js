@@ -20,12 +20,12 @@ module.exports = {
         if (!timeout || timeout == 0) return interaction.deleteReply().catch(err => err);
 
         const saveButton = new ButtonBuilder()
-            .setCustomId('save')
+            .setCustomId(`save-${interaction.user.id}`)
             .setLabel('Save Message')
             .setStyle(ButtonStyle.Success);
 
         const delButton = new ButtonBuilder()
-            .setCustomId('delete')
+            .setCustomId(`delete-${interaction.user.id}`)
             .setLabel('Delete Message')
             .setStyle(ButtonStyle.Danger);
 
@@ -37,17 +37,6 @@ module.exports = {
         const filter = i => i.user.id === interaction.user.id;
         const message = await interaction.fetchReply();
         const collector = message.createMessageComponentCollector({ filter, time: timeout });
-
-        collector.on('collect', async i => {
-            if (i.customId === 'save') {
-                await i.update({ components: [] }).catch(err => err);
-                collector.stop();
-            } else if (i.customId === 'delete') {
-                await i.deferUpdate().catch(err => err);
-                await i.deleteReply().catch(err => err);
-                collector.stop();
-            }
-        });
 
         collector.on('end', collected => {
             if (collected.size === 0) interaction.deleteReply().catch(err => err);
