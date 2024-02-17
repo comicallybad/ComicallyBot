@@ -10,6 +10,7 @@ module.exports = {
         .addSubcommand(command => command.setName("high").setDescription("Boosts the high frequencies."))
         .addSubcommand(command => command.setName("band").setDescription("Sets the equalizer to band-pass.")),
     execute: (interaction, client) => {
+        const subcommand = interaction.options.getSubcommand();
         const player = client.music.players.get(interaction.guild.id);
 
         if (!player || !player.queue.current)
@@ -20,11 +21,16 @@ module.exports = {
         if (!voiceChannel || voiceChannel.id !== player.voiceChannel)
             return re(interaction, "You need to be in the voice channel to adjust the equalizer.").then(() => delr(interaction, 7500));
 
-
-        if (interaction.options.getSubcommand() === "normal") return normalEQ(interaction, player);
-        else if (interaction.options.getSubcommand() === "bass") return bassEQ(interaction, player);
-        else if (interaction.options.getSubcommand() === "high") return highEQ(interaction, player);
-        else if (interaction.options.getSubcommand() === "band") return bandEQ(interaction, player);
+        switch (subcommand) {
+            case "normal":
+                return normalEQ(interaction, player);
+            case "bass":
+                return bassEQ(interaction, player);
+            case "high":
+                return highEQ(interaction, player);
+            case "band":
+                return bandEQ(interaction, player);
+        }
     }
 }
 

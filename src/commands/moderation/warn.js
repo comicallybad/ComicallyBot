@@ -7,7 +7,7 @@ module.exports = {
         .setDescription('Warns a member.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
         .addUserOption(option => option.setName('member').setDescription('The member to warn').setRequired(true))
-        .addStringOption(option => option.setName('reason').setDescription('The reason for the warning').setRequired(true))
+        .addStringOption(option => option.setName('reason').setDescription('The reason for the warning').setMaxLength(1024).setRequired(true))
         .addChannelOption(option => option.setName('channel').setDescription('The channel the warning was issued in')),
     execute: async (interaction) => {
         const wMember = interaction.options.getMember('member');

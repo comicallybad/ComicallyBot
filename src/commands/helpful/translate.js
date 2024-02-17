@@ -8,9 +8,9 @@ module.exports = {
         .setDescription('Translates a message for you.')
         .addSubcommand(subcommand => subcommand.setName('to').setDescription('Translates a message to a specified language.')
             .addStringOption(option => option.setName('language').setDescription('Language code').setRequired(true))
-            .addStringOption(option => option.setName('message').setDescription('Message to translate').setRequired(true)))
+            .addStringOption(option => option.setName('message').setDescription('Message to translate').setMaxLength(1024).setRequired(true)))
         .addSubcommand(subcommand => subcommand.setName('default').setDescription('Translates a message to English.')
-            .addStringOption(option => option.setName('message').setDescription('Message to translate').setRequired(true))),
+            .addStringOption(option => option.setName('message').setDescription('Message to translate').setMaxLength(1024).setRequired(true))),
     execute: (interaction) => {
         const subcommand = interaction.options.getSubcommand(false);
         const message = interaction.options.getString('message');

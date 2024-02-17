@@ -14,9 +14,14 @@ module.exports = {
     execute: async (interaction) => {
         const subcommand = interaction.options.getSubcommand();
 
-        if (subcommand === 'get') return getAutoChatChannel(interaction);
-        else if (subcommand === 'set') return setAutoChatChannel(interaction);
-        else if (subcommand === 'remove') return removeAutoChatChannel(interaction);
+        switch (subcommand) {
+            case 'get':
+                return getAutoChatChannel(interaction);
+            case 'set':
+                return setAutoChatChannel(interaction);
+            case 'remove':
+                return removeAutoChatChannel(interaction);
+        }
     },
 };
 

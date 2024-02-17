@@ -1,5 +1,5 @@
 const { PermissionFlagsBits } = require("discord.js")
-const { del, s } = require("../../../utils/functions/functions.js");
+const { del } = require("../../../utils/functions/functions.js");
 const { checkWarn } = require("../../../utils/functions/dbFunctions.js");
 const db = require("../../../utils/schemas/db.js");
 const OpenAI = require("openai");

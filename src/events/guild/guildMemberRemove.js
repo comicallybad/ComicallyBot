@@ -1,5 +1,5 @@
-const { s } = require("../../../utils/functions/functions.js");
 const { EmbedBuilder } = require("discord.js");
+const { s } = require("../../../utils/functions/functions.js");
 const humanizeDuration = require('humanize-duration');
 
 module.exports = async (client, member) => {

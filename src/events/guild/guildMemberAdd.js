@@ -1,5 +1,4 @@
 const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
-const humanizeDuration = require('humanize-duration');
 const db = require("../../../utils/schemas/db.js");
 const { s } = require("../../../utils/functions/functions.js");
 

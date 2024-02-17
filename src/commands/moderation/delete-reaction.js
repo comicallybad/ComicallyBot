@@ -14,9 +14,14 @@ module.exports = {
     execute: (interaction) => {
         const subcommand = interaction.options.getSubcommand();
 
-        if (subcommand === 'get') return getDeleteReaction(interaction);
-        else if (subcommand === 'set') return setDeleteReaction(interaction);
-        else if (subcommand === 'remove') return removeDeleteReaction(interaction);
+        switch (subcommand) {
+            case 'get':
+                return getDeleteReaction(interaction);
+            case 'set':
+                return setDeleteReaction(interaction);
+            case 'remove':
+                return removeDeleteReaction(interaction);
+        }
     }
 }
 

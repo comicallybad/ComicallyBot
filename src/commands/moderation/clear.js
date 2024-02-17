@@ -6,7 +6,7 @@ module.exports = {
         .setName('clear')
         .setDescription('Clears the chat.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
-        .addIntegerOption(option => option.setName('amount').setDescription('Number of messages to clear.').setRequired(true))
+        .addIntegerOption(option => option.setName('amount').setDescription('Number of messages to clear.').setMinValue(1).setMaxValue(100).setRequired(true))
         .addUserOption(option => option.setName('user').setDescription('User to clear messages from.')),
     execute: (interaction) => {
         if (!interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.ManageMessages))
@@ -14,9 +14,6 @@ module.exports = {
 
         const user = interaction.options.getUser('user');
         const amount = interaction.options.getInteger('amount');
-
-        if (isNaN(amount) || amount <= 0 || amount > 100)
-            return re(interaction, "Please provide a valid number between 1 and 100.").then(() => delr(interaction, 7500));
 
         interaction.channel.messages.fetch({ limit: 100 }).then((messages) => {
             if (user) messages = messages.filter(m => m.author.id === user.id);

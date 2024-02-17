@@ -12,6 +12,7 @@ module.exports = {
         .addSubcommand(command => command.setName("ahead").setDescription("Skip ahead in the current song.")
             .addStringOption(option => option.setName('time').setDescription('The time to skip ahead in the song. Append "s" for seconds and "m" for minutes.').setRequired(true))),
     execute: (interaction, client) => {
+        const subcommand = interaction.options.getSubcommand();
         const player = client.music.players.get(interaction.guild.id);
 
         if (!player || !player.queue.current)
@@ -22,9 +23,14 @@ module.exports = {
         if (!voiceChannel || voiceChannel.id !== player.voiceChannel)
             return re(interaction, "You need to be in the voice channel to pause music.").then(() => delr(interaction, 7500));
 
-        if (interaction.options.getSubcommand() === "song") skipSong(interaction, player);
-        else if (interaction.options.getSubcommand() === "to") skipTo(interaction, player);
-        else if (interaction.options.getSubcommand() === "ahead") skipAhead(interaction, player);
+        switch (subcommand) {
+            case "song":
+                return skipSong(interaction, player);
+            case "to":
+                return skipTo(interaction, player);
+            case "ahead":
+                return skipAhead(interaction, player);
+        }
     }
 }
 

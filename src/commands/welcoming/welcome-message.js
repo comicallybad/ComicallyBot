@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const db = require("../../../utils/schemas/db.js");
 const { s, r, delr } = require("../../../utils/functions/functions.js");
+const db = require("../../../utils/schemas/db.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -9,7 +9,7 @@ module.exports = {
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels)
         .addSubcommand(subcommand => subcommand.setName('get').setDescription('Get the current welcome message.'))
         .addSubcommand(subcommand => subcommand.setName('set').setDescription('Set a new welcome message.')
-            .addStringOption(option => option.setName('message').setDescription('The new welcome message.').setRequired(true)))
+            .addStringOption(option => option.setName('message').setDescription('The new welcome message.').setMaxLength(1024).setRequired(true)))
         .addSubcommand(subcommand => subcommand.setName('remove').setDescription('Remove the current welcome message.')),
     execute: async (interaction) => {
         const subcommand = interaction.options.getSubcommand();
@@ -30,9 +30,6 @@ function getWelcomeMessage(interaction, dbResult) {
 
 async function setWelcomeMessage(interaction, dbResult) {
     const newMessage = interaction.options.getString('message');
-
-    if (newMessage.length >= 1024)
-        return r(interaction, "The welcome message cannot be longer than 1024 characters.").then(m => del(m, 7500));
 
     if (dbResult) {
         dbResult.welcomeMessage = newMessage;

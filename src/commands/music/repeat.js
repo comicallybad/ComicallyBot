@@ -21,8 +21,12 @@ module.exports = {
 
         player.setTextChannel(interaction.channel.id);
 
-        if (subcommand === "track") return trackRepeat(interaction, player);
-        else if (subcommand === "queue") return queueRepeat(interaction, player);
+        switch (subcommand) {
+            case "track":
+                return trackRepeat(interaction, player);
+            case "queue":
+                return queueRepeat(interaction, player);
+        }
     }
 }
 

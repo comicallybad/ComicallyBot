@@ -6,7 +6,7 @@ module.exports = {
         .setName('report')
         .setDescription('Reports a member.')
         .addUserOption(option => option.setName('member').setDescription('The member to report').setRequired(true))
-        .addStringOption(option => option.setName('reason').setDescription('The reason for the report').setRequired(true)),
+        .addStringOption(option => option.setName('reason').setDescription('The reason for the report').setMaxLength(1024).setRequired(true)),
     execute: (interaction) => {
         const rMember = interaction.options.getMember('member');
         const reason = interaction.options.getString('reason');

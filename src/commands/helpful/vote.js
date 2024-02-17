@@ -5,13 +5,9 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('vote')
         .setDescription('Sends a message users can vote on.')
-        .addStringOption(option => option.setName('input').setDescription('What will be voted on').setRequired(true)),
+        .addStringOption(option => option.setName('input').setDescription('What will be voted on').setMaxLength(1024).setRequired(true)),
     execute: async (interaction) => {
         let input = interaction.options.getString('input');
-
-        if (input.length >= 1024) {
-            return re(interaction, "You can only use a string less than 2048 characters!").then(() => delr(interaction, 7500));
-        }
 
         const embed = new EmbedBuilder()
             .setColor("#0efefe")

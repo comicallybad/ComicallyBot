@@ -7,7 +7,7 @@ module.exports = {
         .setName('reminder')
         .setDescription('Set yourself a reminder, or use as a timer.')
         .addStringOption(option => option.setName('time').setDescription('Time for the reminder').setRequired(true))
-        .addStringOption(option => option.setName('reminder').setDescription('Reminder message')),
+        .addStringOption(option => option.setName('reminder').setMaxLength(1024).setDescription('Reminder message')),
     execute: (interaction) => {
         const timeInput = interaction.options.getString('time');
         const reminder = interaction.options.getString('reminder');
@@ -30,9 +30,6 @@ module.exports = {
 
             return setTimeout(() => interaction.followUp({ embeds: [embed] }), time);
         } else {
-            if (reminder.length >= 1024)
-                return r(interaction, "Your reminder must be 1024 characters or less.");
-
             const embed = new EmbedBuilder()
                 .setColor("#0efefe")
                 .setTitle(`**Reminder**`)

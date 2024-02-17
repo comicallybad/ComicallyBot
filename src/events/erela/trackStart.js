@@ -1,6 +1,6 @@
+const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
 const { s, del } = require("../../../utils/functions/functions.js");
 const humanizeDuration = require("humanize-duration");
-const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
 
 module.exports = async (client, player, track) => {
     const channel = await client.channels.fetch(player.textChannel);

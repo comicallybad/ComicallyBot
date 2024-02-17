@@ -17,11 +17,18 @@ module.exports = {
         .addSubcommand(subCommand => subCommand.setName("users").setDescription("Get a list of users with a role.")
             .addRoleOption(option => option.setName("role").setDescription("The role to get a list of users from.").setRequired(true))),
     execute: async (interaction) => {
-        const subCommand = interaction.options.getSubcommand();
+        const subcommand = interaction.options.getSubcommand();
 
-        if (subCommand === "add" || subCommand === "remove") return handleAddRemove(interaction);
-        if (subCommand === "info") return handleInfo(interaction);
-        if (subCommand === "users") return handleUsers(interaction);
+        switch (subcommand) {
+            case "add":
+                return handleAddRemove(interaction);
+            case "remove":
+                return handleAddRemove(interaction);
+            case "info":
+                return handleInfo(interaction);
+            case "users":
+                return handleUsers(interaction);
+        }
     }
 }
 
@@ -56,8 +63,10 @@ async function handleAddRemove(interaction) {
 
     if (collectedInteraction.customId === "✅") {
         try {
-            if (subCommand === "add") return addRole(interaction, member, role);
-            if (subCommand === "remove") return removeRole(interaction, member, role);
+            if (subCommand === "add")
+                return addRole(interaction, member, role);
+            else if (subCommand === "remove")
+                return removeRole(interaction, member, role);
         } catch (err) {
             return er(interaction, `An error occured while trying to ${subCommand} role: \n\`${err}\``, [], []).then(() => delr(interaction, 15000));
         }
