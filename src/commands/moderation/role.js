@@ -54,7 +54,7 @@ async function handleAddRemove(interaction) {
             new ButtonBuilder().setCustomId("❌").setLabel("Cancel").setStyle(ButtonStyle.Danger)
         );
 
-    await r(interaction, "", promptEmbed)
+    await re(interaction, "", promptEmbed)
 
     const collectedInteraction = await messagePrompt(interaction, row, 30000);
 
@@ -64,9 +64,9 @@ async function handleAddRemove(interaction) {
     if (collectedInteraction.customId === "✅") {
         try {
             if (subCommand === "add")
-                return addRole(interaction, member, role);
+                return await addRole(interaction, member, role);
             else if (subCommand === "remove")
-                return removeRole(interaction, member, role);
+                return await removeRole(interaction, member, role);
         } catch (err) {
             return er(interaction, `An error occured while trying to ${subCommand} role: \n\`${err}\``, [], []).then(() => delr(interaction, 15000));
         }
@@ -77,7 +77,7 @@ async function addRole(interaction, member, role) {
     const logChannel = interaction.guild.channels.cache.find(c => c.name.includes("action-logs"));
     await member.roles.add(role.id).then(() => {
         const embed = new EmbedBuilder()
-            .setColor("#00ff00")
+            .setColor("#00FF00")
             .setTitle("Role Added")
             .setThumbnail(member.user.displayAvatarURL())
             .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
