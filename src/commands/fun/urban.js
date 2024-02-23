@@ -13,9 +13,9 @@ module.exports = {
         const term = interaction.options.getString('term');
 
         const res = await urban.random(`${term ? term : ""}`);
-        let { word, definition, example, thumbsUp, thumbsDown, urbanURL, author } = res;
+        const { word, definition, example, thumbsUp, thumbsDown, urbanURL, author } = res;
 
-        let description = `**Defintion:** ${definition || "No definition"}
+        const description = `**Defintion:** ${definition || "No definition"}
                 **Example:** ${example || "No Example"}
                 **Upvotes:** ${thumbsUp || 0}
                 **Downvotes:** ${thumbsDown || 0}
@@ -24,7 +24,7 @@ module.exports = {
         if (description.length >= 1024)
             return re(interaction, "This definition is too long of a string for a message embed sorry!").then(() => delr(interaction, 7500));
 
-        let embed = new EmbedBuilder()
+        const embed = new EmbedBuilder()
             .setColor("#0efefe")
             .setAuthor({ name: `Urban Dictionary | ${word}` })
             .setDescription(description)

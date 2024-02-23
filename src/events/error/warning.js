@@ -21,7 +21,7 @@ module.exports = async (client, process, error) => {
         console.warn(`A new warning has been logged to: ${formatDate} warning.log`)
     });
 
-    let owner = await client.users.fetch(`${process.env.USERID}`);
+    const owner = await client.users.fetch(`${process.env.USERID}`);
     owner.send(`${formatDate} ${formatTime}: A new warning:\n\`\`\`prolog\n${error.stack}\`\`\``)
         .catch(err => console.log(`Could not send warning error message to owner. ${err}`));
 }

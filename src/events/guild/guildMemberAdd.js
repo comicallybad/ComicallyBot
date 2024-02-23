@@ -34,7 +34,7 @@ module.exports = async (client, member) => {
     const welcomeCH = await member.guild.channels.fetch(exists.channels.find(ch => ch.command == "welcome").channelID).catch(err => { return; });
     if (!welcomeCH || !member.guild.members.me.permissionsIn(welcomeCH)?.has(PermissionFlagsBits.SendMessages)) return;
 
-    let welcomeMSG = exists.welcomeMessage.toString().replace(/\[user\]/g, `${member.user}`);
+    const welcomeMSG = exists.welcomeMessage.toString().replace(/\[user\]/g, `${member.user}`);
 
     if (welcomeCH && welcomeMSG)
         s(welcomeCH, `${welcomeMSG}`).catch(err => s(logChannel, `There was an error in sending a welcome message: ${err}`));

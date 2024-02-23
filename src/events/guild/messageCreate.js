@@ -21,7 +21,7 @@ function checkOwnerCommand(client, message) {
 
     if (cmd.length === 0) return;
 
-    let command = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
+    const command = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
     if (!command) return;
 
     const channelPermissions = message.channel.permissionsFor(message.guild.members.me);
@@ -45,16 +45,16 @@ async function checkAutoChat(client, message) {
     const exists = await db.findOne({ guildID: message.guild.id, channels: { $elemMatch: { command: "Bot Chatting" } } });;
     if (!exists) return;
 
-    let channel = await client.channels.cache.get(exists.channels.filter(x => x.command === "Bot Chatting")[0].channelID);
+    const channel = await client.channels.cache.get(exists.channels.filter(x => x.command === "Bot Chatting")[0].channelID);
     if (message.channel !== channel) return;
 
     const openai = new OpenAI({ apiKey: process.env.OPENAI });
-    let conversationLog = [{ role: 'system', content: 'You are a sarcastic but helpful chatbot.' }];
+    const conversationLog = [{ role: 'system', content: 'You are a sarcastic but helpful chatbot.' }];
 
     try {
         await message.channel.sendTyping();
 
-        let prevMessages = await message.channel.messages.fetch({ limit: 15 });
+        const prevMessages = await message.channel.messages.fetch({ limit: 15 });
         prevMessages.reverse();
 
         prevMessages.forEach((msg) => {

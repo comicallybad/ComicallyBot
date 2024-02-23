@@ -7,7 +7,7 @@ module.exports = {
         .setDescription('Sends a message users can vote on.')
         .addStringOption(option => option.setName('input').setDescription('What will be voted on').setMaxLength(1024).setRequired(true)),
     execute: async (interaction) => {
-        let input = interaction.options.getString('input');
+        const input = interaction.options.getString('input');
 
         const embed = new EmbedBuilder()
             .setColor("#0efefe")

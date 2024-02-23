@@ -21,7 +21,7 @@ module.exports = async (client, process, error, origin) => {
         console.error(`A new uncaughtException has been logged to: ${formatDate} uncaughtException.log`);
     });
 
-    let owner = await client.users.fetch(`${process.env.USERID}`);
+    const owner = await client.users.fetch(`${process.env.USERID}`);
     owner.send(`${formatDate} ${formatTime}: A new uncaughtException: \`${origin}\`\n\`\`\`prolog\n${error.stack}\`\`\``)
         .catch(err => console.log(`Could not send uncaughtException error message to owner. ${err}`));
 }

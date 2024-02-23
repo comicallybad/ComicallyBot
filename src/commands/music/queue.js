@@ -9,7 +9,7 @@ module.exports = {
         .addSubcommand(subcommand => subcommand.setName('clear').setDescription('Clear the current song queue.'))
         .addSubcommand(subcommand => subcommand.setName('remove').setDescription('Removes a song or group of song from the song queue.')
             .addIntegerOption(option => option.setName('index').setDescription('The index of the song to remove from the queue.').setRequired(true).setAutocomplete(true))
-            .addIntegerOption(option => option.setName('end').setDescription('The index of which songs will be removed up to.').setAutocomplete(true)))
+            .addIntegerOption(option => option.setName('end').setDescription('The index of which songs will be removed until.').setAutocomplete(true)))
         .addSubcommand(subcommand => subcommand.setName('swap').setDescription('Swap two songs in the queue.')
             .addIntegerOption(option => option.setName('index-1').setDescription('The index of the first song to swap.').setRequired(true).setAutocomplete(true))
             .addIntegerOption(option => option.setName('index-2').setDescription('The index of the second song to swap.').setRequired(true).setAutocomplete(true))),
@@ -95,10 +95,10 @@ function removeQueue(interaction, player) {
     let text;
 
     if (index < 1 || index > player.queue.size)
-        return re(interaction, "Please provide a valid index.").then(() => delr(interaction, 7500));
+        return re(interaction, "Please provide a valid index for the current queue.").then(() => delr(interaction, 7500));
 
     if (end && index > end)
-        return re(interaction, "The end index must be greater than the start index.").then(() => delr(interaction, 7500));
+        return re(interaction, "The start index must be smaller than the end index.").then(() => delr(interaction, 7500));
 
     if (end && index !== end) {
         text = `Songs **${index}-${end > player.queue.size ? player.queue.size : end}** have`;
@@ -122,7 +122,7 @@ function swapQueue(interaction, player) {
     const index2 = interaction.options.getInteger('index-2') - 1;
 
     if (index1 < 0 || index1 >= player.queue.size || index2 < 0 || index2 >= player.queue.size)
-        return re(interaction, "Please provide a valid index.").then(() => delr(interaction, 7500));
+        return re(interaction, "Please provide a valid index for the current queue.").then(() => delr(interaction, 7500));
 
     const temp = player.queue[index1];
     player.queue[index1] = player.queue[index2];

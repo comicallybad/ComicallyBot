@@ -34,9 +34,8 @@ async function checkDeleteReaction(message, user) {
 }
 
 function isUserAllowedToDeleteMessage(exists, guildUser) {
-    const modRolesIDs = exists.modRoles.map(role => role.roleID);
-    const roleIDs = guildUser.roles.cache.map(roles => roles.id);
-    return modRolesIDs.includes(guildUser.id) || modRolesIDs.some(id => roleIDs.includes(id)) || guildUser.id === process.env.USERID;
+    const hasPermission = guildUser.permissions.has(PermissionFlagsBits.ManageMessages) || guildUser.id === process.env.USERID;
+    return hasPermission;
 }
 
 function findTextLogChannel(msg) {

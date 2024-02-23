@@ -3,9 +3,9 @@ const { readdirSync } = require("fs")
 module.exports = (client) => {
     const load = () => {
         const events = readdirSync(`./src/events/erela/`).filter(d => d.endsWith('.js'));
-        for (let file of events) {
+        for (const file of events) {
             const evt = require(`../events/erela/${file}`);
-            let eName = file.split('.')[0];
+            const eName = file.split('.')[0];
             client.music.on(eName, evt.bind(null, client));
         };
     };

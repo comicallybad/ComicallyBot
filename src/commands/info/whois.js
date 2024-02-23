@@ -7,10 +7,7 @@ module.exports = {
         .setDescription('Returns user information.')
         .addUserOption(option => option.setName('user').setDescription('The user to check').setRequired(false)),
     execute: (interaction) => {
-        let member;
-        if (interaction.options.getUser('user'))
-            member = interaction.guild.members.cache.get(interaction.options.getUser('user').id);
-        else member = interaction.member;
+        const member = interaction.guild.members.cache.get(interaction.options.getUser('user')?.id) || interaction.member;
 
         if (!member)
             return re(interaction, "Sorry, this user either doesn't exist, or they are not in the discord.").then(() => delr(interaction, 7500));

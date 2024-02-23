@@ -53,7 +53,7 @@ module.exports = {
             && !channelPermissions?.has(PermissionFlagsBits.SendMessagesInThreads)) return;
         if (channel.guild.members.me.isCommunicationDisabled()) return;
 
-        let reply = {
+        const reply = {
             content: content || undefined,
             embeds: (embeds && embeds.length > 0 ? [embeds] : []),
             components: (components && components.components?.length > 0 ? [components] : [])
@@ -72,7 +72,7 @@ module.exports = {
             && !channelPermissions?.has(PermissionFlagsBits.SendMessagesInThreads)) return;
         if (interaction.guild.members.me.isCommunicationDisabled()) return;
 
-        let reply = {
+        const reply = {
             content: content || undefined,
             embeds: (embeds && embeds.length > 0 ? [embeds] : []),
             components: (components && components.components?.length > 0 ? [components] : []),
@@ -92,7 +92,7 @@ module.exports = {
             && !channelPermissions?.has(PermissionFlagsBits.SendMessagesInThreads)) return;
         if (interaction.guild.members.me.isCommunicationDisabled()) return;
 
-        let reply = {
+        const reply = {
             content: content || undefined,
             embeds: (embeds && embeds.length > 0 ? [embeds] : []),
             components: (components && components.components?.length > 0 ? [components] : [])
@@ -111,7 +111,7 @@ module.exports = {
             && !channelPermissions?.has(PermissionFlagsBits.SendMessagesInThreads)) return;
         if (message.guild.members.me.isCommunicationDisabled()) return;
 
-        let reply = {
+        const reply = {
             content: content || undefined,
             embeds: (embeds && embeds.length > 0 ? [embeds] : []),
             components: (components && components.components?.length > 0 ? [components] : [])
@@ -131,7 +131,7 @@ module.exports = {
             && !channelPermissions?.has(PermissionFlagsBits.SendMessagesInThreads)) return;
         if (interaction.guild.members.me.isCommunicationDisabled()) return;
 
-        let reply = {
+        const reply = {
             content: content || undefined,
             embeds: (embeds && embeds.length > 0 ? [embeds] : []),
             components: (components && components.components?.length > 0 ? [components] : [])
@@ -181,14 +181,14 @@ module.exports = {
                 resolve(i)
             });
             collector.on('end', collected => {
-                if (collected.size === 0) reject('Time out');
+                if (collected.size === 0) module.exports.delr(interaction, 0);
             });
         });
     },
 
     //Paging system for Embed Fields
     pageList: async function (interaction, array, embed, parameter, size, page) {
-        let pages = Math.ceil(array.length / size) - 1, newPage = page;
+        const pages = Math.ceil(array.length / size) - 1, newPage = page;
         embed.setFooter({ text: "Use the buttons to navigate, discard, or save." })
         embed.data.fields = [];
 
@@ -245,7 +245,7 @@ module.exports = {
             .setFooter({ text: message.member.user.tag, iconURL: message.author.displayAvatarURL() })
             .setTimestamp();
 
-        let userOffence = warnUsers.find(user => user.id === message.author.id);
+        const userOffence = warnUsers.find(user => user.id === message.author.id);
         if (!userOffence) {
             warnUsers.push({ id: message.author.id, offences: 1 });
             userOffence = warnUsers.find(user => user.id === message.author.id);
@@ -322,13 +322,13 @@ module.exports = {
 
     //Remove users after 30 minutes from warnUsers if no more offences
     checkWarnUsers: function (id, offences) {
-        let warnedUsers = setTimeout(() => {
+        const warnedUsers = setTimeout(() => {
             clearInterval(intervalCheck);
             if (warnUsers.find(user => user.id === id)?.offences == offences) {
                 warnUsers.splice(warnUsers.findIndex(user => user.id === id), 1);
             }
         }, (60000 * 30)); //15 minutes = (60000*15) || 30 minutes = (60000*30)
-        let intervalCheck = setInterval(() => {
+        const intervalCheck = setInterval(() => {
             if (warnUsers.find(user => user.id === id)?.offences > offences) {
                 clearInterval(intervalCheck);
                 clearTimeout(warnedUsers)

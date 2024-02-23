@@ -14,7 +14,7 @@ module.exports = {
         if (rMember.permissions.has(PermissionFlagsBits.BanMembers) || rMember.user.bot)
             return r(interaction, "Cannot report that member.").then(() => delr(interaction, 7500));
 
-        let logChannel = interaction.guild.channels.cache.find(c => c.name.includes("reports"))
+        const logChannel = interaction.guild.channels.cache.find(c => c.name.includes("reports"))
             || interaction.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
 
         if (!logChannel)

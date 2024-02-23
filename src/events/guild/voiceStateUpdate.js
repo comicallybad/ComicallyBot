@@ -63,11 +63,11 @@ function checkUsers(client) {
 
 //If bot is left alone, leave. If user joins back, clearInterval
 function checkDisconnect(client, channelID) {
-    let disconnectChannel = setTimeout(() => {
+    const disconnectChannel = setTimeout(() => {
         clearInterval(intervalCheck);
         disconnect(client, channelID);
     }, 180000); //5 minutes == 300000 || 3 minutes == 180000
-    let intervalCheck = setInterval(() => {
+    const intervalCheck = setInterval(() => {
         if (getSize(client, channelID) > 1) {
             clearInterval(intervalCheck);
             clearTimeout(disconnectChannel)

@@ -2,15 +2,15 @@ const { REST, Routes } = require('discord.js');
 const { readdirSync } = require("fs");
 const ascii = require("ascii-table");
 
-let table = new ascii("Commands");
+const table = new ascii("Commands");
 table.setHeading("Command", "Load status");
 
 module.exports = async (client) => {
-    let commands = [];
+    const commands = [];
     readdirSync("./src/commands/").forEach(dir => {
         const commandFolders = readdirSync(`./src/commands/${dir}/`).filter(file => file.endsWith(".js"));
 
-        for (let file of commandFolders) {
+        for (const file of commandFolders) {
             const command = require(`../commands/${dir}/${file}`);
             if ('data' in command && 'execute' in command) {
                 client.commands.set(command.data.name, command);

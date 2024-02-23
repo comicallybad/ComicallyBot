@@ -17,7 +17,7 @@ module.exports = {
         if (wMember.permissions.has(PermissionFlagsBits.BanMembers) || wMember.user.bot)
             return r(interaction, "Cannot warn that member.").then(() => delr(interaction, 7500));
 
-        let logChannel = interaction.guild.channels.cache.find(c => c.name.includes("action-logs"))
+        const logChannel = interaction.guild.channels.cache.find(c => c.name.includes("action-logs"))
             || interaction.guild.channels.cache.find(c => c.name.includes("mod-logs")) || undefined;
 
         if (!logChannel)

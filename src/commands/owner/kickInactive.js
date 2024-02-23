@@ -10,8 +10,8 @@ module.exports = {
         if (message.author.id != process.env.USERID)
             return s(message.channel, "You're not the bot the owner!").then(m => del(m, 7500));
 
-        let list = await message.guild.members.fetch();
-        let members = await list.filter(member => member._roles.length == 0);
+        const list = await message.guild.members.fetch();
+        const members = await list.filter(member => member._roles.length == 0);
 
         members.forEach(member => {
             message.guild.members.kick(member, "Not Authenticating")

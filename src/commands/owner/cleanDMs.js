@@ -10,7 +10,7 @@ module.exports = {
         if (message.author.id != process.env.USERID)
             return s(message.channel, "You're not the bot the owner!").then(m => del(m, 7500));
 
-        let dm = await client.channels.fetch(process.env.DMCHANNELID);
+        const dm = await client.channels.fetch(process.env.DMCHANNELID);
         if (dm) s(message.channel, "Now cleaning your DM's.").then(m => del(m, 7500));
 
         return dm.messages.fetch().then(messages => messages.map(m => m).forEach(message =>

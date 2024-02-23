@@ -26,7 +26,7 @@ module.exports = {
 }
 
 async function getDeleteReaction(interaction) {
-    let exists = await db.findOne({ guildID: interaction.guild.id }).catch(err => err);
+    const exists = await db.findOne({ guildID: interaction.guild.id }).catch(err => err);
     if (!exists || !exists.deleteReaction)
         return r(interaction, "A delete reaction emoji has not been set.").then(() => delr(interaction, 7500));
     const reaction = exists.deleteReaction;
@@ -44,7 +44,7 @@ async function setDeleteReaction(interaction) {
     const reaction = interaction.options.getString('emoji');
 
     await r(interaction, "Validating Reaction Emoji");
-    let validate = await interaction.fetchReply();
+    const validate = await interaction.fetchReply();
 
     return validate.react(reaction).then(() => {
         er(interaction, "Delete reaction emoji has been verified and set.").then(() => delr(interaction, 7500));
@@ -77,7 +77,7 @@ async function setDeleteReaction(interaction) {
 }
 
 async function removeDeleteReaction(interaction) {
-    let exists = await db.findOne({ guildID: interaction.guild.id }).catch(err => err);
+    const exists = await db.findOne({ guildID: interaction.guild.id }).catch(err => err);
     if (!exists || !exists.deleteReaction)
         return r(interaction, "A delete reaction emoji has not been set.").then(() => delr(interaction, 7500));
 

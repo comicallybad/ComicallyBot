@@ -56,7 +56,7 @@ module.exports = {
     },
 
     checkWarn: async function (client, message) {
-        let checkBadWords = await module.exports.checkBadWords(message).then(check => {
+        const checkBadWords = await module.exports.checkBadWords(message).then(check => {
             if (!check) return module.exports.checkAntiPhishing(message);
         });
     }

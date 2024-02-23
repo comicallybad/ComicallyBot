@@ -23,7 +23,7 @@ module.exports = {
             const toEval = args.join(" ");
             const evaluated = eval(toEval);
 
-            let embed = new EmbedBuilder()
+            const embed = new EmbedBuilder()
                 .setColor("#00FF00")
                 .setTimestamp()
                 .setFooter({ text: client.user.username, iconURL: client.user.displayAvatarURL() })
@@ -35,7 +35,7 @@ module.exports = {
 
             return s(message.channel, '', embed).then(m => del(m, 15000));
         } catch (err) {
-            let embed = new EmbedBuilder()
+            const embed = new EmbedBuilder()
                 .setColor("#FF0000")
                 .setTitle("\:x: Error!")
                 .setDescription(`${err}`)

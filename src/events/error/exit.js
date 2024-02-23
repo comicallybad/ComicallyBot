@@ -21,7 +21,7 @@ module.exports = async (client, process, code) => {
         console.error(`A new exit code has been logged to: ${formatDate} exit.log`)
     });
 
-    let owner = await client.users.fetch(`${process.env.USERID}`);
+    const owner = await client.users.fetch(`${process.env.USERID}`);
     owner.send(`${formatDate} ${formatTime}: A new exit code:\n\`\`\`prolog\n${code}\`\`\``)
         .catch(err => console.log(`Could not send exit code error message to owner. ${err}`));
 }

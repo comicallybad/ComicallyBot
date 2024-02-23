@@ -28,7 +28,7 @@ module.exports = {
 async function getAutoChatChannel(interaction) {
     const exists = await db.findOne({ guildID: interaction.guild.id, channels: { $elemMatch: { command: "Bot Chatting" } } });
     if (!exists) return re(interaction, "There has been no bot chat channel set.").then(() => delr(interaction, 7500));
-    let channel = await interaction.guild.channels.cache.get(exists.channels.filter(x => x.command === "Bot Chatting")[0].channelID);
+    const channel = await interaction.guild.channels.cache.get(exists.channels.filter(x => x.command === "Bot Chatting")[0].channelID);
     return r(interaction, `The bot chat channel is: ${channel}.`).then(() => delr(interaction, 30000));
 }
 

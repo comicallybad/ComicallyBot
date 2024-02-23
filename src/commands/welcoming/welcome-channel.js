@@ -26,7 +26,7 @@ async function getWelcomeChannel(interaction) {
 
     if (!dbResult) return r(interaction, "There has been no welcome channel set.").then(() => delr(interaction, 7500));
 
-    let channel = await interaction.guild.channels.fetch(dbResult.channels.filter(x => x.command === "welcome")[0].channelID);
+    const channel = await interaction.guild.channels.fetch(dbResult.channels.filter(x => x.command === "welcome")[0].channelID);
     return r(interaction, `The current welcome channel is set to: ${channel}`).then(() => delr(interaction, 7500));
 }
 
@@ -35,7 +35,7 @@ async function setWelcomeChannel(interaction) {
     if (!channel) return interaction.reply("Please provide a channel.");
 
     const logChannel = interaction.guild.channels.cache.find(c => c.name.includes("mod-logs")) || interaction.channel;
-    let guildID = interaction.guild.id;
+    const guildID = interaction.guild.id;
 
     if (!interaction.guild.channels.cache.has(channel.id))
         return r(interaction, "Channel not found in this server.").then(() => delr(interaction, 7500));
