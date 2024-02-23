@@ -27,14 +27,14 @@ module.exports = {
             .setColor("#0efefe")
             .setTimestamp();
 
-        if (invites.length > 10) {
-            await r(interaction, "", embed)
-            pageList(interaction, invites, embed, "Invite #", 10, 0);
-        } else {
+        if (invites.length <= 10) {
             invites.forEach((invite, index) => {
                 embed.addFields({ name: `Invite #${index + 1}:`, value: `${invite}` });
             });
             return r(interaction, "", embed).then(() => delr(interaction, 30000));
+        } else {
+            await r(interaction, "", embed)
+            return pageList(interaction, invites, embed, "Invite #", 10, 0);
         }
     }
 };

@@ -164,15 +164,18 @@ async function handleUsers(interaction) {
         .setTitle(`${guildRole.name}: ${guildRole.members.size} members`)
         .setTimestamp()
 
-    await r(interaction, '', embed);
+    const array = members.map(member => `${member.user.username} (\`${member.user.id}\`)`);
 
-    let array = members.map(member => `${member.user.username} (\`${member.user.id}\`)`);
-
-    if (array.length <= 10) {
+    if (array.length === 0) {
+        embed.addFields({ name: "Role Members", value: "No members found." });
+        return r(interaction, "", embed).then(() => delr(interaction, 30000));
+    } else if (array.length <= 10) {
         array.forEach((user, index) => {
             embed.addFields({ name: `Role Member: ${index + 1}`, value: `${user}` });
         });
-        return er(interaction, '', embed).then(() => delr(interaction, 30000));
+        return r(interaction, '', embed).then(() => delr(interaction, 30000));
+    } else {
+        await r(interaction, "", embed);
+        return pageList(interaction, array, embed, "Role Members:", 10, 0);
     }
-    else return pageList(interaction, array, embed, "Role Members:", 10, 0);
 }
