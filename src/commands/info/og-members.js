@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const { r, er, delr, pageList } = require("../../../utils/functions/functions.js");
+const { r, delr, pageList } = require("../../../utils/functions/functions.js");
 
 module.exports = {
     data: new SlashCommandBuilder()

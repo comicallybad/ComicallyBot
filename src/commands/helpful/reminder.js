@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const humanizeDuration = require("humanize-duration");
-const { r, re, delr } = require("../../../utils/functions/functions.js");
+const { re, delr } = require("../../../utils/functions/functions.js");
 
 module.exports = {
     data: new SlashCommandBuilder()

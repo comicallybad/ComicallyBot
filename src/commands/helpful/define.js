@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { r, re, delr } = require("../../../utils/functions/functions.js");
+const { r, re } = require("../../../utils/functions/functions.js");
 var wd = require("word-definition");
 
 module.exports = {
