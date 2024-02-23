@@ -188,7 +188,7 @@ module.exports = {
 
     //Paging system for Embed Fields
     pageList: async function (interaction, array, embed, parameter, size, page) {
-        const pages = Math.ceil(array.length / size) - 1, newPage = page;
+        let pages = Math.ceil(array.length / size) - 1, newPage = page;
         embed.setFooter({ text: "Use the buttons to navigate, discard, or save." })
         embed.data.fields = [];
 
