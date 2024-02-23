@@ -4,7 +4,7 @@ const { s, r, re, er, delr, messagePrompt, pageList } = require("../../../utils/
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("role")
-        .setDescription("Add or remove a role from a member.")
+        .setDescription("Add, remove, view information, or view users from a role from a role.")
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
         .addSubcommand(subcommand => subcommand.setName("add").setDescription("Add a role to a member.")
             .addUserOption(option => option.setName("user").setDescription("The user to add/remove the role from.").setRequired(true))
