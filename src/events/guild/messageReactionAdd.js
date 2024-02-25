@@ -20,7 +20,7 @@ async function checkDeleteReaction(message, user) {
     const exists = await db.findOne({ guildID: guildID });
 
     if (exists && exists.deleteReaction && exists.deleteReaction == reaction) {
-        if (!iguildUser.permissions.has(PermissionFlagsBits.ManageMessages) || guildUser.id !== process.env.USERID) return;
+        if (!guildUser.permissions.has(PermissionFlagsBits.ManageMessages) || guildUser.id !== process.env.USERID) return;
 
         const author = await msg.guild.members.fetch(msg.author.id).catch(err => err);
         if (!author) return;
