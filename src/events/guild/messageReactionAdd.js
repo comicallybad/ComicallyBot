@@ -20,26 +20,17 @@ async function checkDeleteReaction(message, user) {
     const exists = await db.findOne({ guildID: guildID });
 
     if (exists && exists.deleteReaction && exists.deleteReaction == reaction) {
-        if (!isUserAllowedToDeleteMessage(exists, guildUser)) return;
+        if (!iguildUser.permissions.has(PermissionFlagsBits.ManageMessages) || guildUser.id !== process.env.USERID) return;
 
         const author = await msg.guild.members.fetch(msg.author.id).catch(err => err);
         if (!author) return;
 
-        const textLogChannel = findTextLogChannel(msg);
+        const textLogChannel = msg.guild.channels.cache.find(c => c.name.includes("text-logs")) || undefined;
         const embed = buildEmbed(guildUser, author, msg);
 
         if (textLogChannel && author.id !== msg.guild.members.me.id) s(textLogChannel, '', embed);
         return del(msg, 0);
     }
-}
-
-function isUserAllowedToDeleteMessage(exists, guildUser) {
-    const hasPermission = guildUser.permissions.has(PermissionFlagsBits.ManageMessages) || guildUser.id === process.env.USERID;
-    return hasPermission;
-}
-
-function findTextLogChannel(msg) {
-    return msg.guild.channels.cache.find(c => c.name.includes("text-logs")) || msg.guild.channels.cache.find(c => c.name.includes("mods-logs"));
 }
 
 function buildEmbed(guildUser, author, msg) {

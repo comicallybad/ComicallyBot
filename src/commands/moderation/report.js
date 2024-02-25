@@ -11,6 +11,9 @@ module.exports = {
         const rMember = interaction.options.getMember('member');
         const reason = interaction.options.getString('reason');
 
+        if (!rMember || !rMember.user?.id)
+            return r(interaction, "Please provide a member to report.").then(() => delr(interaction, 7500));
+
         if (rMember.permissions.has(PermissionFlagsBits.BanMembers) || rMember.user.bot)
             return r(interaction, "Cannot report that member.").then(() => delr(interaction, 7500));
 
