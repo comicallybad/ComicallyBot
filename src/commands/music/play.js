@@ -121,7 +121,7 @@ function handleLoadType(interaction, player, response) {
 }
 
 async function handleSearchResult(interaction, player, tracks) {
-    const index = 1;
+    let index = 1;
     const embed = new EmbedBuilder()
         .setAuthor({ name: "Song Selection.", iconURL: interaction.user.displayAvatarURL() })
         .setDescription(`${tracks.map(video => `**${index++} -** ${video.title}\n`).join('')}`)
