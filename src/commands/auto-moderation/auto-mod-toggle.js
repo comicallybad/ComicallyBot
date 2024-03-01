@@ -19,7 +19,7 @@ module.exports = {
         const logChannel = interaction.guild.channels.cache.find(c => c.name.includes("mod-logs")) || interaction.channel;
 
         if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.ManageMessages))
-            return r(interaction, "I need `MANAGE_MESSAGES` permissions for the anti-spam system.").then(m => del(m, 7500));
+            return r(interaction, "I need `MANAGE_MESSAGES` permissions for the anti-spam system.").then(() => delr(interaction, 7500));
 
         const embed = new EmbedBuilder()
             .setColor("#0efefe")
