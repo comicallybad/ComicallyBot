@@ -69,7 +69,7 @@ async function handleMessageComponent(interaction) {
         const embed = new EmbedBuilder()
             .setColor("#0EFEFE")
             .setTitle("User Roles Updated")
-            .setDescription(`User: ${interaction.user}`)
+            .setDescription(`${interaction.user} (${interaction.user.id})`)
             .setThumbnail(interaction.user.displayAvatarURL())
             .setFooter({ text: `${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() })
             .setTimestamp()

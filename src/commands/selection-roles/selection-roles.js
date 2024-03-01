@@ -8,7 +8,7 @@ module.exports = {
         .setDescription('Manage the selection roles.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
         .addSubcommand(subcommand => subcommand.setName('add').setDescription('Add selection role(s).')
-            .addStringOption(option => option.setName('message').setDescription('The message to send with the selection menu.').setRequired(true))
+            .addStringOption(option => option.setName('message').setDescription('The message to send with the selection menu.'))
             .addChannelOption(option => option.setName('channel').setDescription('The channel to send the message to.'))
             .addIntegerOption(option => option.setName('min').setDescription('The minimum number of roles that must be selected.').setMinValue(0).setMaxValue(25))
             .addIntegerOption(option => option.setName('max').setDescription('The maximum number of roles that can be selected.').setMinValue(0).setMaxValue(25))),
@@ -57,7 +57,7 @@ module.exports = {
             const rowSelect = new ActionRowBuilder().addComponents(roleSelect);
 
             try {
-                await channel.send({ content: `${message}`, components: [rowSelect] });
+                await channel.send({ content: message ? `${message}` : undefined, components: [rowSelect] });
             } catch (err) {
                 return interaction.editReply({ content: `There was an error sending the select menu message: \n\`${err}\``, components: [] });
             }

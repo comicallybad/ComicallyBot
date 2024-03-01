@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const { s, r, delr } = require("../../../utils/functions/functions.js");
+const { s, re, delr } = require("../../../utils/functions/functions.js");
 const db = require("../../../utils/schemas/db.js");
 
 module.exports = {
@@ -24,21 +24,23 @@ async function getWelcomeChannel(interaction) {
     const guildID = interaction.guild.id;
     const dbResult = await db.findOne({ guildID: guildID, channels: { $elemMatch: { command: "welcome" } } });
 
-    if (!dbResult) return r(interaction, "There has been no welcome channel set.").then(() => delr(interaction, 7500));
+    if (!dbResult) return re(interaction, "There has been no welcome channel set.").then(() => delr(interaction, 7500));
 
     const channel = await interaction.guild.channels.fetch(dbResult.channels.filter(x => x.command === "welcome")[0].channelID);
-    return r(interaction, `The current welcome channel is set to: ${channel}`).then(() => delr(interaction, 7500));
+    return re(interaction, `The current welcome channel is set to: ${channel}`).then(() => delr(interaction, 7500));
 }
 
 async function setWelcomeChannel(interaction) {
     const channel = interaction.options.getChannel('channel');
-    if (!channel) return interaction.reply("Please provide a channel.");
+
+    if (!channel)
+        return re(interaction, "Please provide a valid channel.").then(() => delr(interaction, 7500));
 
     const logChannel = interaction.guild.channels.cache.find(c => c.name.includes("mod-logs")) || interaction.channel;
     const guildID = interaction.guild.id;
 
     if (!interaction.guild.channels.cache.has(channel.id))
-        return r(interaction, "Channel not found in this server.").then(() => delr(interaction, 7500));
+        return re(interaction, "Channel not found in this server.").then(() => delr(interaction, 7500));
 
     return dbUpdate(channel.id, channel.name);
 
@@ -52,7 +54,7 @@ async function setWelcomeChannel(interaction) {
             .setTimestamp()
             .addFields({
                 name: '__**Channel**__',
-                value: `${channelID}`,
+                value: `<#${channelID}>`,
                 inline: true
             }, {
                 name: '__**Moderator**__',
@@ -73,7 +75,7 @@ async function setWelcomeChannel(interaction) {
         }
 
         s(logChannel, '', embed);
-        return r(interaction, dbResult ? "Updated welcome channel." : "Welcome channel has been set.").then(() => delr(interaction, 7500));
+        return re(interaction, dbResult ? "Updated welcome channel." : "Welcome channel has been set.").then(() => delr(interaction, 7500));
     }
 }
 
@@ -81,7 +83,7 @@ async function removeWelcomeChannel(interaction) {
     const dbResult = await db.findOne({ guildID: interaction.guild.id, channels: { $elemMatch: { command: "welcome" } } });
 
     if (!dbResult)
-        return interaction.reply("There has been no welcome channel set.");
+        return re(interaction, "The welcome channel has not been set.").then(() => delr(interaction, 75000))
 
     const logChannel = interaction.guild.channels.cache.find(c => c.name.includes("mod-logs")) || interaction.channel;
 
@@ -95,8 +97,12 @@ async function removeWelcomeChannel(interaction) {
         .setThumbnail(interaction.user.avatarURL())
         .setFooter({ text: interaction.user.username, iconURL: interaction.user.avatarURL() })
         .setTimestamp()
-        .setDescription(`**Welcome channel removed By:** ${interaction.user}`);
+        .addFields({
+            name: '__**Moderator**__',
+            value: `${interaction.user}`,
+            inline: true
+        });
 
     s(logChannel, '', embed);
-    return r(interaction, "Removed welcome channel.").then(() => delr(interaction, 7500));
+    return re(interaction, "Removed welcome channel.").then(() => delr(interaction, 7500));
 }

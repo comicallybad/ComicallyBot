@@ -1,5 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { r } = require("../../../utils/functions/functions.js");
+const { SlashCommandBuilder, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
+const { r, re, er, delr } = require("../../../utils/functions/functions.js");
 const { translate } = require('@vitalets/google-translate-api');
 
 module.exports = {
@@ -7,26 +7,49 @@ module.exports = {
         .setName('translate')
         .setDescription('Translates a message for you.')
         .addSubcommand(subcommand => subcommand.setName('to').setDescription('Translates a message to a specified language.')
-            .addStringOption(option => option.setName('language').setDescription('Language code').setRequired(true))
-            .addStringOption(option => option.setName('message').setDescription('Message to translate').setMaxLength(1024).setRequired(true)))
-        .addSubcommand(subcommand => subcommand.setName('default').setDescription('Translates a message to English.')
-            .addStringOption(option => option.setName('message').setDescription('Message to translate').setMaxLength(1024).setRequired(true))),
-    execute: (interaction) => {
+            .addStringOption(option => option.setName('language').setDescription('Language code').setRequired(true)))
+        .addSubcommand(subcommand => subcommand.setName('default').setDescription('Translates a message to English.')),
+    execute: async (interaction) => {
         const subcommand = interaction.options.getSubcommand(false);
-        const message = interaction.options.getString('message');
-        const language = interaction.options.getString('language');
+        const language = interaction.options.getString('language') || undefined;
+
+        if (subcommand === 'to' && !language)
+            return re(interaction, "You must provide a language code to translate to.").then(() => delr(interaction, 7500));
+
+        const modal = new ModalBuilder()
+            .setCustomId(`translate-${interaction.id}`)
+            .setTitle("Message To Translate")
+
+        const textInput = new TextInputBuilder()
+            .setCustomId("translate-input")
+            .setLabel("Message To Translate")
+            .setPlaceholder("Enter the message to translate here.")
+            .setMaxLength(1024)
+            .setStyle(TextInputStyle.Paragraph)
+            .setRequired(true)
+
+        const actionRow = new ActionRowBuilder().addComponents(textInput);
+        modal.addComponents(actionRow);
+
+        await interaction.showModal(modal)
+
+        const submitted = await interaction.awaitModalSubmit({
+            time: 30000,
+            filter: i => i.user.id === interaction.user.id && i.customId.includes(interaction.id)
+        }).catch(err => err);
+
+        if (!submitted.fields) return;
+
+        const message = submitted.fields.getTextInputValue("translate-input")
 
         if (subcommand === 'to') {
-            if (!language)
-                return r(interaction, "Please provide a language code Ex: 'en' for english 'es' for spanish.");
-
             return translate(message, { to: language }).then(res => {
-                return r(interaction, `**Translation:** ${res.text} **Translated from:** \`${res.raw.src}\``);
-            }).catch(err => r(interaction, `There was an error translating: ${err}`));
+                return r(submitted, `**Translation:** ${res.text} **Translated from:** \`${res.raw.src}\``);
+            }).catch(err => submitted.followUp(submitted, `There was an error translating: ${err}`));
         } else {
             return translate(message, { to: 'en' }).then(res => {
-                return r(interaction, `**Translation:** ${res.text} **Translated from:** \`${res.raw.src}\``);
-            }).catch(err => r(interaction, `There was an error translating: ${err}`));
+                return r(submitted, `**Translation:** ${res.text} **Translated from:** \`${res.raw.src}\``);
+            }).catch(err => submitted.followUp(submitted, `There was an error translating: ${err}`));
         }
     }
 }
