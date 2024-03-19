@@ -35,10 +35,10 @@ async function getDeleteReaction(interaction) {
 }
 
 async function setDeleteReaction(interaction) {
-    if (!interaction.guild.members.me.permissions.has("MANAGE_MESSAGES"))
+    if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.ManageMessages))
         return r(interaction, "I am missing permissions to `MANAGE_MESSAGES`!").then(() => delr(interaction, 7500));
 
-    if (!interaction.guild.members.me.permissions.has("ADD_REACTIONS"))
+    if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.AddReactions))
         return r(interaction, "I am missing permissions to `ADD_REACTIONS` to validate the provided emoji.").then(m => del(m, 7500));
 
     const reaction = interaction.options.getString('emoji');
