@@ -245,7 +245,7 @@ module.exports = {
             .setFooter({ text: message.member.user.tag, iconURL: message.author.displayAvatarURL() })
             .setTimestamp();
 
-        const userOffence = warnUsers.find(user => user.id === message.author.id);
+        let userOffence = warnUsers.find(user => user.id === message.author.id);
         if (!userOffence) {
             warnUsers.push({ id: message.author.id, offences: 1 });
             userOffence = warnUsers.find(user => user.id === message.author.id);
@@ -301,7 +301,7 @@ module.exports = {
         if (!message.guild.me.permissions.has(PermissionFlagsBits.ModerateMembers))
             return module.exports.s(message.channel, "I am missing permissions to `TIMEOUT_MEMBERS` to timeout users for profanity/bad words.").then(m => module.exports.del(m, 7500));
 
-        const userOffence = warnUsers.find(user => user.id == message.author.id);
+        let userOffence = warnUsers.find(user => user.id == message.author.id);
         if (!userOffence) return;
 
         const timeoutDuration = userOffence.offences == 3 ? 300000 : 600000;
