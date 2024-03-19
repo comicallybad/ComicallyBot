@@ -20,8 +20,27 @@ async function handleChatInputCommand(client, interaction) {
     try {
         await command.execute(interaction, client);
     } catch (error) {
-        console.error(interaction.commandName);
-        console.error(error.stack);
+        const time = new Date();
+
+        const mapOptions = (options) => options.map(x => ({
+            name: x.name,
+            value: x.value,
+            options: x.options ? mapOptions(x.options) : undefined
+        }));
+        const errorLog = {
+            time: time.toLocaleString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true }),
+            command: interaction.commandName,
+            subcommand: interaction.options.getSubcommand(false) || null,
+            options: JSON.stringify(mapOptions(interaction.options.data)) || null,
+            guild: interaction.guild.id,
+            guildName: interaction.guild.name,
+            user: interaction.user.id,
+            userName: interaction.user.tag,
+        }
+
+        console.log("\nInteraction Error");
+        console.error(errorLog)
+        console.log(error.stack)
         const errorMessage = { content: `There was an error while executing this command: \n\`${error}\``, ephemeral: true };
         if (interaction.replied) return interaction.followUp(errorMessage);
         else return interaction.reply(errorMessage);

@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const { dbSetup } = require("../../../utils/functions/dbFunctions.js");
 
 module.exports = client => {
-    var time = new Date();
+    const time = new Date();
     console.log(time.toLocaleString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true }));
 
     global.activities = [`${client.guilds.cache.size} servers!`, `${client.channels.cache.size} channels!`, `${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} users!`], i = 0;
