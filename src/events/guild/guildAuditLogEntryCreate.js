@@ -77,7 +77,10 @@ module.exports = async (client, auditLog, guild) => {
         .setColor(actionMap[action].color)
         .setTitle(actionMap[action].title)
         .setThumbnail(target?.displayAvatarURL() || executor.displayAvatarURL())
-        .setFooter({ text: `${target ? target.tag : executor.tag}`, iconURL: target ? target.displayAvatarURL() : executor.displayAvatarURL() })
+        .setFooter({
+            text: `${target ? target.tag : executor.tag} | ${target ? target.id : executor.id}`,
+            iconURL: target ? target.displayAvatarURL() : executor.displayAvatarURL()
+        })
         .setTimestamp()
 
     //Handle timeout, kick, ban, and unban
