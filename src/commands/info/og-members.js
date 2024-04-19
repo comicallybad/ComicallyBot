@@ -7,7 +7,7 @@ module.exports = {
         .setDescription("Shows a list of earliest users in the discord server."),
     async execute(interaction) {
         const date = new Date();
-        const sorted = interaction.guild.members.cache.sort((a, b) => a.joinedAt - b.joinedAt).map(user => user);
+        const sorted = interaction.guild.members.cache.sort((a, b) => a.joinedAt - b.joinedAt).map(x => x);
         const array = sorted.map(user => `**${user.nickname ? user.nickname : user.user.username}** (\`${user.user.tag}\`)
         **Joined:** ${user.joinedAt.toDateString()} (\`${Math.round((date.getTime() - user.joinedAt.getTime()) / 86400000)
                 .toLocaleString("en-US")}\` **DAYS AGO!)**`);
