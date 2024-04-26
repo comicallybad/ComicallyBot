@@ -59,7 +59,11 @@ module.exports = {
             components: (components && components.components?.length > 0 ? [components] : [])
         };
 
-        return channel.send(reply);
+        try {
+            return channel.send(reply);
+        } catch (error) {
+            console.error("Stack trace:", new Error().stack);
+        }
     },
 
     //Reply ephemeral
@@ -79,7 +83,11 @@ module.exports = {
             ephemeral: true
         };
 
-        return interaction.reply(reply);
+        try {
+            return interaction.reply(reply);
+        } catch (error) {
+            console.error("Stack trace:", new Error().stack);
+        }
     },
 
     //Reply
@@ -98,7 +106,11 @@ module.exports = {
             components: (components && components.components?.length > 0 ? [components] : [])
         };
 
-        return interaction.reply(reply);
+        try {
+            return interaction.reply(reply);
+        } catch (error) {
+            console.error("Stack trace:", new Error().stack);
+        }
     },
 
     //Edit
@@ -117,7 +129,11 @@ module.exports = {
             components: (components && components.components?.length > 0 ? [components] : [])
         };
 
-        return message.edit(reply);
+        try {
+            return message.edit(reply);
+        } catch (error) {
+            console.error("Stack trace:", new Error().stack);
+        }
     },
 
     //Edit reply
@@ -137,7 +153,11 @@ module.exports = {
             components: (components && components.components?.length > 0 ? [components] : [])
         };
 
-        return interaction.editReply(reply)
+        try {
+            return interaction.editReply(reply);;
+        } catch (error) {
+            console.error("Stack trace:", new Error().stack);
+        }
     },
 
     //Creates a collector for an interaction and returns the result
