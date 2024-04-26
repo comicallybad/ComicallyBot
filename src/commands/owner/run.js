@@ -17,7 +17,7 @@ module.exports = {
             return s(message.channel, "You need to provide code to evaluate").then(m => del(m, 7500));
 
         try {
-            if (args.join(" ").toLowerCase().includes("token") || args.join(" ").toLowerCase().includes("music") || args.join(" ").toLowerCase().includes("openai"))
+            if (args.join(" ").toLowerCase().includes("token") || args.join(" ").toLowerCase().includes("openai"))
                 return s(message.channel, "You cannot find my token :)").then(m => del(m, 7500));
 
             const toEval = args.join(" ");
@@ -28,10 +28,18 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({ text: client.user.username, iconURL: client.user.displayAvatarURL() })
                 .setTitle("Eval")
-                .addFields(
-                    { name: "Code to evaluate", value: `\`\`\`js\n${beautify(toEval, { format: "js" }).length < 1014 ? beautify(toEval, { format: "js" }) : beautify(toEval, { format: "js" }).substring(0, 1004) + "..."}\n\`\`\`` },
-                    { name: "Evaluated: ", value: `${evaluated}` },
-                    { name: "Type of: ", value: `${typeof (evaluated)}` });
+                .addFields({
+                    name: "Code to evaluate",
+                    value: `\`\`\`js
+                     ${beautify(toEval, { format: "js" }).length < 1014 ? beautify(toEval, { format: "js" }) : beautify(toEval, { format: "js" }).substring(0, 1004) + "..."}
+                     \`\`\``
+                }, {
+                    name: "Evaluated: ",
+                    value: `${evaluated}`
+                }, {
+                    name: "Type of: ",
+                    value: `${typeof (evaluated)}`
+                });
 
             return s(message.channel, '', embed).then(m => del(m, 15000));
         } catch (err) {
