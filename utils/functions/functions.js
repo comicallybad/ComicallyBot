@@ -60,7 +60,7 @@ module.exports = {
         };
 
         try {
-            return channel.send(reply);
+            return await channel.send(reply);
         } catch (error) {
             console.error("Stack trace:", new Error().stack);
         }
@@ -84,7 +84,7 @@ module.exports = {
         };
 
         try {
-            return interaction.reply(reply);
+            return await interaction.reply(reply);
         } catch (error) {
             console.error("Stack trace:", new Error().stack);
         }
@@ -107,7 +107,7 @@ module.exports = {
         };
 
         try {
-            return interaction.reply(reply);
+            return await interaction.reply(reply);
         } catch (error) {
             console.error("Stack trace:", new Error().stack);
         }
@@ -130,7 +130,7 @@ module.exports = {
         };
 
         try {
-            return message.edit(reply);
+            return await message.edit(reply);
         } catch (error) {
             console.error("Stack trace:", new Error().stack);
         }
@@ -154,7 +154,7 @@ module.exports = {
         };
 
         try {
-            return interaction.editReply(reply);;
+            return await interaction.editReply(reply);;
         } catch (error) {
             console.error("Stack trace:", new Error().stack);
         }

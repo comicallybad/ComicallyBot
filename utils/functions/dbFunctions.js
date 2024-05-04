@@ -30,7 +30,7 @@ module.exports = {
         const guildID = message.guild.id;
         const words = message.content.replace(/ /g, '').toLowerCase();
         const check = await db.findOne({ guildID: guildID, profanityFilter: true }).catch(err => err);
-        const isMod = message.member.permissions.has(PermissionFlagsBits.ManageMessages);
+        const isMod = message.member?.permissions?.has(PermissionFlagsBits.ManageMessages) || undefined;
 
         if (!check || !check.badWordList || isMod) return;
 
@@ -47,7 +47,7 @@ module.exports = {
     checkAntiPhishing: async function (message) {
         const guildID = message.guild.id;
         const exists = await db.findOne({ guildID: guildID, antiPhishing: true })
-        const isMod = message.member.permissions.has(PermissionFlagsBits.ManageMessages);
+        const isMod = message.member?.permissions?.has(PermissionFlagsBits.ManageMessages) || undefined;
 
         if (!exists || isMod) return;
         else return antiPhishing(message).then(res => {
