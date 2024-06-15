@@ -9,15 +9,46 @@ module.exports = async (client, player, track) => {
         .setAuthor({ name: "Now Playing!", iconURL: guild.iconURL() })
         .setThumbnail(track.thumbnail ? track.thumbnail : guild.iconURL())
         .setColor("#0EFEFE")
-        .setDescription(`▶️ [**${track.title.includes(track.author) ? track.title : `${track.title} by ${track.author}`}**](${track.uri}) \`${humanizeDuration(track.duration)}\``)
+        .setDescription(`▶️ [**${track.title.includes(track.author) ? track.title : `${track.title} by ${track.author}`}**](${track.uri}) \`${humanizeDuration(track.duration)}\`\n🔘${'▬'.repeat(19)} \n\`0 Seconds\``)
         .setFooter({ text: `Requested by ${track.requester.tag}`, iconURL: track.requester.displayAvatarURL() });
 
     if (player.options.message) del(player.options.message, 0);
 
     return s(channel, '', embed).then(m => {
         player.options.message = m;
+        updateTimeline(m, embed, player, track);
         return controls(m, embed, player, track);
     });
+}
+
+function updateTimeline(message, embed, player, track) {
+    const timelineLength = 20;
+
+    const interval = setInterval(async () => {
+        const currentPosition = Math.floor(player.position / 1000);
+        const totalLength = Math.floor(track.duration / 1000);
+        const markerPosition = Math.round((currentPosition / totalLength) * timelineLength);
+
+        let timeline = '▬'.repeat(timelineLength).split('');
+        timeline[markerPosition] = '🔘';
+        timeline = timeline.join('');
+
+        embed.setDescription(`▶️ [**${track.title.includes(track.author) ? track.title : `${track.title} by ${track.author}`}**](${track.uri}) \`${humanizeDuration(track.duration)}\`\n${timeline} \n\`${humanizeDuration(Math.round(player.position / 1000) * 1000)}\``);
+
+        if (player.options.message) {
+            try {
+                await message.edit({ embeds: [embed] });
+            } catch (err) {
+                clearInterval(interval);
+            }
+        }
+
+        if (!player.options.message)
+            clearInterval(interval);
+
+        if (currentPosition >= totalLength)
+            clearInterval(interval);
+    }, 5000);
 }
 
 function createControlRows() {
