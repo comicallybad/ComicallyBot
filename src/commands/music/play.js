@@ -5,7 +5,7 @@ const { r, re, er, delr, del } = require("../../../utils/functions/functions.js"
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("play")
-        .setDescription("Resume music or queue a song from YouTube/SoundCloud.")
+        .setDescription("Resume player, or queue a song/playlist from YouTube/SoundCloud/Spotify.")
         .addStringOption(option => option.setName("song").setDescription("The song/URL you want to play.").setAutocomplete(true)),
     autocomplete: async (interaction, client) => {
         const focusedValue = interaction.options.getFocused();

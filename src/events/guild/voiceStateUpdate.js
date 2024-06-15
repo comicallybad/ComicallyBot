@@ -80,7 +80,7 @@ function disconnect(client, channelID) {
     if (!(voiceChannels.find(channel => channel.channelID == channelID))) return;
     if (!(voiceChannels.find(channel => channel.channelID == channelID).users <= 1)) return;
     if (channelFind(channelID)) channelsSplice(channelID)
-    const guildID = client.channels.cache.get(channelID).guild.id || undefined;
+    const guildID = client.channels.cache.get(channelID).guild?.id || undefined;
     const player = client.music.players.get(guildID) || undefined;
     if (player) client.music.players.get(guildID).destroy();
 }
