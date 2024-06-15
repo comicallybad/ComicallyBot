@@ -9,7 +9,7 @@ module.exports = async (client, player, track) => {
         .setAuthor({ name: "Now Playing!", iconURL: guild.iconURL() })
         .setThumbnail(track.thumbnail ? track.thumbnail : guild.iconURL())
         .setColor("#0EFEFE")
-        .setDescription(`▶️ [**${track.title.includes(track.author) ? track.title : `${track.title} by ${track.author}`}**](${track.uri}) \`${humanizeDuration(track.duration)}\`\n🔘${'▬'.repeat(19)} \n\`0 Seconds\``)
+        .setDescription(`▶️ [**${track.title.includes(track.author) ? track.title : `${track.title} by ${track.author}`}**](${track.uri}) \`${humanizeDuration(Math.round(track.duration / 1000) * 1000)}\`\n🔘${'▬'.repeat(19)} \n\`0 Seconds\``)
         .setFooter({ text: `Requested by ${track.requester.tag}`, iconURL: track.requester.displayAvatarURL() });
 
     if (player.options.message) del(player.options.message, 0);
@@ -33,7 +33,7 @@ function updateTimeline(message, embed, player, track) {
         timeline[markerPosition] = '🔘';
         timeline = timeline.join('');
 
-        embed.setDescription(`▶️ [**${track.title.includes(track.author) ? track.title : `${track.title} by ${track.author}`}**](${track.uri}) \`${humanizeDuration(track.duration)}\`\n${timeline} \n\`${humanizeDuration(Math.round(player.position / 1000) * 1000)}\``);
+        embed.setDescription(`▶️ [**${track.title.includes(track.author) ? track.title : `${track.title} by ${track.author}`}**](${track.uri}) \`${humanizeDuration(Math.round(track.duration / 1000) * 1000)}\`\n${timeline} \n\`${humanizeDuration(Math.round(player.position / 1000) * 1000)}\``);
 
         if (player.options.message) {
             try {
