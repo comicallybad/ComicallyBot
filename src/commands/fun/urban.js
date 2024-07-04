@@ -15,14 +15,20 @@ module.exports = {
         const res = await urban.random(`${term ? term : ""}`);
         const { word, definition, example, thumbsUp, thumbsDown, urbanURL, author } = res;
 
-        const description = `**Defintion:** ${definition || "No definition"}
-                **Example:** ${example || "No Example"}
-                **Upvotes:** ${thumbsUp || 0}
-                **Downvotes:** ${thumbsDown || 0}
-                **Link:** [link to ${word}](${urbanURL || "https://www.urbandictionary.com/"})`
+        const baseMessage = `**Example:** ${example || "No Example"}
+                    **Upvotes:** ${thumbsUp || 0}
+                    **Downvotes:** ${thumbsDown || 0}
+                    **Link:** [link to ${word}](${urbanURL || "https://www.urbandictionary.com/"})`;
 
-        if (description.length >= 1024)
-            return re(interaction, "This definition is too long of a string for a message embed sorry!").then(() => delr(interaction, 7500));
+        const maxDefinitionLength = 1024 - baseMessage.length - 20;
+
+        let shortenedDefinition = definition;
+        if (definition.length > maxDefinitionLength) {
+            shortenedDefinition = `${definition.slice(0, maxDefinitionLength - 15)}... [read more](${urbanURL})`;
+        }
+
+        let description = `**Definition:** ${shortenedDefinition}
+        ${baseMessage}`;
 
         const embed = new EmbedBuilder()
             .setColor("#0efefe")
