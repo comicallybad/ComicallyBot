@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { r, re, delr } = require("../../../utils/functions/functions.js");
+const { r } = require("../../../utils/functions/functions.js");
 const urban = require('relevant-urban');
 
 module.exports = {
@@ -15,10 +15,10 @@ module.exports = {
         const res = await urban.random(`${term ? term : ""}`);
         const { word, definition, example, thumbsUp, thumbsDown, urbanURL, author } = res;
 
-        const baseMessage = `**Example:** ${example || "No Example"}
-                    **Upvotes:** ${thumbsUp || 0}
-                    **Downvotes:** ${thumbsDown || 0}
-                    **Link:** [link to ${word}](${urbanURL || "https://www.urbandictionary.com/"})`;
+        const baseMessage = `**Example:** ${example || "No Example"}\n` +
+            `**Upvotes:** ${thumbsUp || 0}\n` +
+            `**Downvotes:** ${thumbsDown || 0}\n` +
+            `**Link:** [link to ${word}](${urbanURL || "https://www.urbandictionary.com/"})`;
 
         const maxDefinitionLength = 1024 - baseMessage.length - 20;
 
@@ -27,8 +27,8 @@ module.exports = {
             shortenedDefinition = `${definition.slice(0, maxDefinitionLength - 15)}... [read more](${urbanURL})`;
         }
 
-        let description = `**Definition:** ${shortenedDefinition}
-        ${baseMessage}`;
+        let description = `**Definition:** ${shortenedDefinition}\n` +
+            `${baseMessage}`;
 
         const embed = new EmbedBuilder()
             .setColor("#0efefe")
