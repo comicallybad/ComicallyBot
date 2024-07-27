@@ -40,7 +40,7 @@ async function handleChatInputCommand(client, interaction) {
 
         console.log("\nInteraction Error");
         console.error(errorLog)
-        console.log(error.stack)
+        console.error(error.stack)
         const errorMessage = { content: `There was an error while executing this command: \n\`${error}\``, ephemeral: true };
         if (interaction.replied) return interaction.followUp(errorMessage);
         else return interaction.reply(errorMessage);

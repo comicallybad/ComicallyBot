@@ -52,7 +52,7 @@
   "dependencies": {
     "@vitalets/google-translate-api": "^9.0.0",
     "ascii-table": "^0.0.9",
-    "async-g-i-s": "^1.5.2",
+    "async-g-i-s": "^1.5.3",
     "beautify": "^0.0.8",
     "discord-antiphishinglinks": "^1.0.8",
     "discord.js": "^14.14.1",
