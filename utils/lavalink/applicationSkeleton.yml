@@ -34,7 +34,7 @@ lavalink:
   plugins:
     - dependency: "com.github.TopiSenpai.LavaSrc:lavasrc-plugin:3.2.10"
       repository: "https://maven.topi.wtf/releases"
-    - dependency: "dev.lavalink.youtube:youtube-plugin:1.4.0"
+    - dependency: "dev.lavalink.youtube:youtube-plugin:1.5.1"
       repository: "https://maven.lavalink.dev/releases"
   server:
     password: "ErelaServerPassword!"
