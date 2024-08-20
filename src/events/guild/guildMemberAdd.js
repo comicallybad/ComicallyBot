@@ -3,7 +3,7 @@ const db = require("../../../utils/schemas/db.js");
 const { s } = require("../../../utils/functions/functions.js");
 
 module.exports = async (client, member) => {
-    activities = [`${client.guilds.cache.size} servers!`, `${client.channels.cache.size} channels!`, `${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} users!`], i = 0;
+    activities = [`${client.guilds.cache.size} servers!`, `${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} users!`], i = 0;
     const memberLogsChannel = member.guild.channels.cache.find(c => c.name.includes("member-logs"));
     const modLogsChannel = member.guild.channels.cache.find(c => c.name.includes("mod-logs"));
     const logChannel = memberLogsChannel || modLogsChannel;
