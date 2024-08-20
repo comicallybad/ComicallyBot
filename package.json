@@ -61,7 +61,6 @@
     "humanize-duration": "^3.31.0",
     "mongoose": "^8.0.2",
     "node-fetch": "^2.7.0",
-    "openai": "^4.24.1",
     "relevant-urban": "^2.0.0",
     "word-definition": "^2.1.6"
   }
