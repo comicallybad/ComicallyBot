@@ -17,10 +17,7 @@ module.exports = {
                 name = name.substring(0, 97) + '...';
             }
             return { name, value: `${x.uri}` };
-        });
-
-        if (focusedValue) choices = choices.filter(choice => choice.name.toLowerCase().includes(focusedValue.toLowerCase()));
-        choices = choices.slice(0, 25);
+        }).slice(0, 25);
 
         if (choices.length === 0) choices.push({ name: focusedValue, value: focusedValue });
 

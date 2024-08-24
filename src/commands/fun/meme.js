@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { r, delr } = require("../../../utils/functions/functions.js");
+const { r, re, delr } = require("../../../utils/functions/functions.js");
 const fetch = require('node-fetch');
 
 module.exports = {
