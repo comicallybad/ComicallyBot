@@ -115,7 +115,7 @@ module.exports = {
 
     //Edit
     e: async function (message, content, embeds, components) {
-        if (!message) return;
+        if (!message || !message.id) return;
         if (!content && !embeds && !components) return;
         const channelPermissions = message.channel.permissionsFor(message.guild.members.me) || null;
         if (!channelPermissions?.has([PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages])) return;
