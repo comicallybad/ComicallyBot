@@ -9,32 +9,47 @@ module.exports = {
         .addStringOption(option => option.setName("song").setDescription("The song/URL you want to play.").setAutocomplete(true)),
     autocomplete: async (interaction, client) => {
         const focusedValue = interaction.options.getFocused();
-        let res;
-        try {
-            res = await client.music.search(focusedValue);
-        } catch (error) {
-            return interaction.respond([{ name: "An error occurred while searching", value: "error" }]);
-        }
-
-        let choices = res.tracks.map((x, i) => {
-            let name = `${i + 1}) ${x.title}`;
-            name = name.length > 100 ? name.substring(0, 97) + '...' : name;
-            return { name, value: `${x.uri}` };
+        const timeoutPromise = new Promise((resolve) => {
+            setTimeout(() => {
+                let truncatedValue = focusedValue.length > 100 ? focusedValue.substring(0, 97) + '...' : focusedValue;
+                resolve([{ name: truncatedValue, value: truncatedValue }]);
+            }, 2500);
         });
 
-        if (res.playlist) {
-            let playlistName = `Playlist: ${res.playlist.name}`;
-            playlistName = playlistName.length > 100 ? playlistName.substring(0, 97) + '...' : playlistName;
-            choices.unshift({ name: playlistName, value: focusedValue });
-        }
+        const searchPromise = (async () => {
+            let res;
+            try {
+                res = await client.music.search(focusedValue);
+            } catch (error) {
+                return [{ name: "An error occurred while searching", value: "error" }];
+            }
 
-        choices = choices.slice(0, 25);
+            let choices = res.tracks.slice(0, 25).map((x, i) => {
+                let name = `${i + 1}) ${x.title}`;
+                if (name.length > 100) name = name.substring(0, 97) + '...';
+                let value = `${x.uri}`;
+                if (value.length > 100) value = value.substring(0, 100);
+                return { name, value };
+            });
 
-        if (choices.length === 0) {
-            let truncatedValue = focusedValue.length > 100 ? focusedValue.substring(0, 97) + '...' : focusedValue;
-            choices.push({ name: truncatedValue, value: truncatedValue });
-        }
+            if (res.playlist) {
+                let playlistName = `Playlist: ${res.playlist.name}`;
+                if (playlistName.length > 100) playlistName = playlistName.substring(0, 97) + '...';
+                let playlistValue = focusedValue;
+                if (playlistValue.length > 100) playlistValue = playlistValue.substring(0, 97) + '...';
+                choices.unshift({ name: playlistName, value: playlistValue });
+            }
 
+            if (choices.length === 0) {
+                let truncatedValue = focusedValue.length > 100 ? focusedValue.substring(0, 97) + '...' : focusedValue;
+                choices.push({ name: truncatedValue, value: truncatedValue });
+            }
+
+            choices = choices.slice(0, 25);
+            return choices;
+        })();
+
+        const choices = await Promise.race([searchPromise, timeoutPromise]);
         return interaction.respond(choices);
     },
     execute: async (interaction, client) => {
