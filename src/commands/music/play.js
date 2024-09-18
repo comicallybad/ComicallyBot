@@ -50,7 +50,7 @@ module.exports = {
         })();
 
         const choices = await Promise.race([searchPromise, timeoutPromise]);
-        return interaction.respond(choices);
+        return interaction.respond(choices).catch(err => err);
     },
     execute: async (interaction, client) => {
         const voiceChannel = interaction.member.voice.channel;
