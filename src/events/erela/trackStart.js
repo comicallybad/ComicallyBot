@@ -74,6 +74,7 @@ function createControlRows() {
 }
 
 function createControlCollector(message) {
+    if (!message || !message.id) return;
     const rows = createControlRows();
     const filter = i => ["🔈", "⏯", "⏮", "⏭", "🔀", "🔁", "🔂", "⏹"].includes(i.customId);
     message.edit({ components: rows });
@@ -81,6 +82,7 @@ function createControlCollector(message) {
 }
 
 function controls(message, embed, player, track) {
+    if (!message || !message.id) return;
     const collector = createControlCollector(message);
     collector.on("collect", (reaction) => {
         reaction.deferUpdate();
@@ -115,6 +117,7 @@ function createVolumeRow() {
 }
 
 function createVolumeCollector(message) {
+    if (!message || !message.id) return;
     const row = createVolumeRow();
     const filter = i => ["🔉", "🔊", "🎵", "📈"].includes(i.customId);
     message.edit({ components: [row] });
@@ -122,6 +125,7 @@ function createVolumeCollector(message) {
 }
 
 function volumeControls(message, embed, player, track) {
+    if (!message || !message.id) return;
     const collector = createVolumeCollector(message);
     collector.on('collect', (reaction) => {
         reaction.deferUpdate();
