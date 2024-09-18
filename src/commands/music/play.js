@@ -9,19 +9,33 @@ module.exports = {
         .addStringOption(option => option.setName("song").setDescription("The song/URL you want to play.").setAutocomplete(true)),
     autocomplete: async (interaction, client) => {
         const focusedValue = interaction.options.getFocused();
-        const res = await client.music.search(focusedValue);
+        let res;
+        try {
+            res = await client.music.search(focusedValue);
+        } catch (error) {
+            return interaction.respond([{ name: "An error occurred while searching", value: "error" }]);
+        }
 
         let choices = res.tracks.map((x, i) => {
             let name = `${i + 1}) ${x.title}`;
-            if (name.length > 100) {
-                name = name.substring(0, 97) + '...';
-            }
+            name = name.length > 100 ? name.substring(0, 97) + '...' : name;
             return { name, value: `${x.uri}` };
-        }).slice(0, 25);
+        });
 
-        if (choices.length === 0) choices.push({ name: focusedValue, value: focusedValue });
+        if (res.playlist) {
+            let playlistName = `Playlist: ${res.playlist.name}`;
+            playlistName = playlistName.length > 100 ? playlistName.substring(0, 97) + '...' : playlistName;
+            choices.unshift({ name: playlistName, value: focusedValue });
+        }
 
-        return interaction.respond(choices).catch(err => err);
+        choices = choices.slice(0, 25);
+
+        if (choices.length === 0) {
+            let truncatedValue = focusedValue.length > 100 ? focusedValue.substring(0, 97) + '...' : focusedValue;
+            choices.push({ name: truncatedValue, value: truncatedValue });
+        }
+
+        return interaction.respond(choices);
     },
     execute: async (interaction, client) => {
         const voiceChannel = interaction.member.voice.channel;
