@@ -132,7 +132,7 @@ module.exports = {
         try {
             return await message.edit(reply);
         } catch (error) {
-            console.error("Stack trace:", new Error().stack);
+            return;
         }
     },
 
@@ -156,7 +156,7 @@ module.exports = {
         try {
             return await interaction.editReply(reply);;
         } catch (error) {
-            console.error("Stack trace:", new Error().stack);
+            return;
         }
     },
 
