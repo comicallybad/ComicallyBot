@@ -1,4 +1,18 @@
 plugins:
+  youtube:
+    enabled: true
+    oauth:
+      # setting "enabled: true" is the bare minimum to get OAuth working.
+      enabled: true
+
+      # if you have a refresh token, you may set it below (make sure to uncomment the line to apply it).
+      # setting a valid refresh token will skip the OAuth flow entirely.
+      refreshToken: "your refresh token"
+
+      # Set this if you don't want the OAuth flow to be triggered, if you intend to supply a refresh token later.
+      # Initialization is skipped automatically if a valid refresh token is supplied. Leave this commented if you're
+      # completing the OAuth flow for the first time/do not have a refresh token.
+      skipInitialization: true
   lavasrc:
     providers: # Custom providers for track loading. This is the default
       # - "dzisrc:%ISRC%" # Deezer ISRC provider
@@ -39,7 +53,7 @@ lavalink:
   server:
     password: "ErelaServerPassword!"
     sources:
-      youtube: true
+      youtube: false
       bandcamp: false
       soundcloud: true
       twitch: false
