@@ -129,11 +129,7 @@ module.exports = {
             components: (components && components.components?.length > 0 ? [components] : [])
         };
 
-        try {
-            return await message.edit(reply);
-        } catch (error) {
-            return;
-        }
+        return await message.edit(reply).catch(err => err);
     },
 
     //Edit reply
@@ -153,11 +149,7 @@ module.exports = {
             components: (components && components.components?.length > 0 ? [components] : [])
         };
 
-        try {
-            return await interaction.editReply(reply);;
-        } catch (error) {
-            return;
-        }
+        return await interaction.editReply(reply).catch(err => err);
     },
 
     //Creates a collector for an interaction and returns the result

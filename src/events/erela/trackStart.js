@@ -3,8 +3,11 @@ const { s, del } = require("../../../utils/functions/functions.js");
 const humanizeDuration = require("humanize-duration");
 
 module.exports = async (client, player, track) => {
-    const channel = await client.channels.fetch(player.textChannel);
-    const guild = await client.guilds.fetch(player.guild);
+    const channel = await client.channels.fetch(player.textChannel) || undefined;
+    const guild = await client.guilds.fetch(player.guild) || undefined;
+
+    if (!channel || !guild) return;
+
     const embed = new EmbedBuilder()
         .setAuthor({ name: "Now Playing!", iconURL: guild.iconURL() })
         .setThumbnail(track.thumbnail ? track.thumbnail : guild.iconURL())
