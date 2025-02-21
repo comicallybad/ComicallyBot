@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionFlagsBits, InteractionType } = require('discord.js');
+const { EmbedBuilder, PermissionFlagsBits, InteractionType, MessageFlags } = require('discord.js');
 const { s } = require('../../../utils/functions/functions.js');
 
 const cooldown = new Set();
@@ -41,7 +41,7 @@ async function handleChatInputCommand(client, interaction) {
         console.log("\nInteraction Error");
         console.error(errorLog)
         console.error(error.stack)
-        const errorMessage = { content: `There was an error while executing this command: \n\`${error}\``, ephemeral: true };
+        const errorMessage = { content: `There was an error while executing this command: \n\`${error}\``, flags: MessageFlags.Ephemeral };
         if (interaction.replied) return interaction.followUp(errorMessage);
         else return interaction.reply(errorMessage);
     }
@@ -75,7 +75,7 @@ async function handleMessageComponent(interaction) {
                 return interaction.deferUpdate().catch(err => err);
             cooldown.add(interaction.user.id);
             setTimeout(() => cooldown.delete(interaction.user.id), 30000);
-            return interaction.reply({ content: "You do not have permission to use this button.", ephemeral: true }).catch(err => err);
+            return interaction.reply({ content: "You do not have permission to use this button.", flags: MessageFlags.Ephemeral }).catch(err => err);
         }
     }
 
@@ -107,9 +107,9 @@ async function handleMessageComponent(interaction) {
                 }
             }
             if (logChannel && embed.data.fields) s(logChannel, "", embed);
-            return interaction.followUp({ content: "Roles updated.", ephemeral: true });
+            return interaction.followUp({ content: "Roles updated.", flags: MessageFlags.Ephemeral });
         } catch (error) {
-            return interaction.followUp({ content: `There was an error while attempting to assign role(s): \n\`${error}\``, ephemeral: true });
+            return interaction.followUp({ content: `There was an error while attempting to assign role(s): \n\`${error}\``, flags: MessageFlags.Ephemeral });
         }
     }
 }
