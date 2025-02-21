@@ -11,15 +11,31 @@ module.exports = {
         const random = subReddits[Math.floor(Math.random() * subReddits.length)];
 
         let meme;
-        await fetch("https://www.reddit.com/r/" + random + "/hot/.json?count=100").then(res => res.json()).then(json => {
-            let postID = json.data.children[Math.floor(Math.random() * json.data.children.length)];
+        try {
+            const response = await fetch(`https://www.reddit.com/r/${random}/hot/.json?count=100`);
+            const json = await response.json();
+
+            if (!json || !json.data || !json.data.children || !Array.isArray(json.data.children)) return;
+
+            const postsWithImages = json.data.children.filter(post => {
+                return post.data.url && (post.data.url.endsWith('.jpg') || post.data.url.endsWith('.png') || post.data.url.endsWith('.gif'));
+            });
+
+            if (postsWithImages.length === 0) return;
+
+            const randomPost = postsWithImages[Math.floor(Math.random() * postsWithImages.length)];
+
             meme = {
-                image: postID.data.url,
-                category: postID.data.link_flair_text,
-                caption: postID.data.title,
-                permalink: postID.data.permalink
+                image: randomPost.data.url,
+                category: randomPost.data.link_flair_text,
+                caption: randomPost.data.title,
+                permalink: randomPost.data.permalink
             };
-        }).catch(err => re(interaction, "There was an error getting a meme from Reddit.").then(() => delr(interaction, 7500)));
+        } catch (err) {
+            return re(interaction, "There was an error getting a meme from Reddit. Please retry.").then(() => delr(interaction, 7500));
+        }
+
+        if (!meme) return;
 
         const embed = new EmbedBuilder()
             .setColor("#0efefe")
@@ -30,4 +46,4 @@ module.exports = {
 
         return r(interaction, "", embed);
     }
-}
+};
