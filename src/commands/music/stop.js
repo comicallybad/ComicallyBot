@@ -8,7 +8,7 @@ module.exports = {
     execute: (interaction, client) => {
         const player = client.music.players.get(interaction.guild.id);
 
-        if (!player || !player.queue.current)
+        if (!player || !player.current)
             return re(interaction, "No song(s) currently playing in this guild.").then(() => delr(interaction, 7500));
 
         player.destroy();

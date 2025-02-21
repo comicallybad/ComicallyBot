@@ -1,3 +1,3 @@
-module.exports = (client, d) => {
-    client.music.updateVoiceState(d);
+module.exports = (client, data) => {
+    client.music.packetUpdate(data);
 }

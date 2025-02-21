@@ -35,7 +35,7 @@ module.exports = async (client) => {
                 Routes.applicationCommands(process.env.CLIENTID),
                 { body: commands },
             );
-            console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+            console.log(`Successfully reloaded ${data.length} application (/) commands`);
         } catch (error) {
             console.error(error);
         }
