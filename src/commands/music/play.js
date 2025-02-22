@@ -38,8 +38,8 @@ module.exports = {
                 });
             }
 
-            if (res.data?.info?.name) {
-                let playlistName = `Playlist: ${res.data.info.name}`;
+            if (res.data?.info?.name || res?.playlistInfo?.name) {
+                let playlistName = `Playlist: ${res.data?.info?.name ? res.data.info.name : res.playlistInfo.name}`;
                 if (playlistName.length > 100) playlistName = playlistName.substring(0, 97) + '...';
                 let playlistValue = focusedValue;
                 if (playlistValue.length > 100) playlistValue = playlistValue.substring(0, 97) + '...';
@@ -170,7 +170,7 @@ async function sendPlaylistEmbed(interaction, title, res) {
         .setAuthor({ name: title, iconURL: interaction.user.displayAvatarURL() })
         .setThumbnail(res.tracks[0].thumbnail ? res.tracks[0].thumbnail : interaction.guild.iconURL())
         .setColor("#0EFEFE")
-        .setDescription(`⌚ Queuing  [**${res.data.info.name}**](${interaction.options.get("song").value}) \`${res.tracks.length}\` tracks \`${duration}\``);
+        .setDescription(`⌚ Queuing  [**${res.data?.info?.name ? res.data.info.name : res.playlistInfo.name}**](${interaction.options.get("song").value}) \`${res.tracks.length}\` tracks \`${duration}\``);
 
     return interaction.followUp({ content: "", embeds: [embed] }).then(m => del(m, 15000));
 }
