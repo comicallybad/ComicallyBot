@@ -80,7 +80,7 @@ function createControlCollector(message, player) {
         return ["🔈", "⏯", "⏮", "⏭", "🔀", "🔁", "🔂", "⏹"].includes(i.customId) &&
             voiceChannel && voiceChannel.id === player.voiceChannelId;
     };
-    message.edit({ components: rows });
+    message.edit({ components: rows }).catch(err => err);
     return message.createMessageComponentCollector({ filter });
 }
 
@@ -127,7 +127,7 @@ function createVolumeCollector(message, player) {
         return ["🔉", "🔊", "🎵", "📈"].includes(i.customId) &&
             voiceChannel && voiceChannel.id === player.voiceChannelId;
     };
-    message.edit({ components: [row] });
+    message.edit({ components: [row] }).catch(err => err);
     return message.createMessageComponentCollector({ filter });
 }
 
@@ -147,7 +147,7 @@ function volumeControls(message, embed, player, track) {
 
 function handleVolume(message, embed, player, track, collector) {
     collector.stop();
-    message.edit({ components: [] });
+    message.edit({ components: [] }).catch(err => err);
     editFields(message, embed, player);
     return volumeControls(message, embed, player, track);
 }
@@ -229,7 +229,7 @@ async function handleBassBoost(message, embed, player) {
 
 function handleMusic(message, embed, player, track, collector) {
     collector.stop();
-    message.edit({ components: [] });
+    message.edit({ components: [] }).catch(err => err);
     editFields(message, embed)
     return controls(message, embed, player, track);
 }
@@ -240,7 +240,7 @@ function editFields(message, embed, player, title, text) {
         const volLevel = vol > volFloor ? `${"🔊".repeat(volFloor)} 🔉 ${"🔈".repeat(10 - vol)}`
             : `${"🔊".repeat(volFloor)} ${"🔈".repeat(10 - vol)}`;
         embed.setFields({ name: "Volume Level: ", value: `**${player.volume}%** ${volLevel}` });
-        return message.edit({ embeds: [embed] });
-    } else if (title) return message.edit({ embeds: [embed.setFields({ name: `${title}`, value: `${text}` })] });
-    else return message.edit({ embeds: [embed] })
+        return message.edit({ embeds: [embed] }).catch(err => err);
+    } else if (title) return message.edit({ embeds: [embed.setFields({ name: `${title}`, value: `${text}` })] }).catch(err => err);
+    else return message.edit({ embeds: [embed] }).catch(err => err);
 }
