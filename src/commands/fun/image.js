@@ -31,6 +31,8 @@ async function sendImage(interaction, results) {
 
     const message = await er(interaction, `${results[num]?.url}`, undefined, row);
 
+    if (!message || !message.id) return;
+
     const filter = i => i.customId === 'next' || i.customId === 'delete' || i.customId === 'save' && i.user.id === interaction.user.id;
     const collector = message.createMessageComponentCollector({ filter, time: 15000 });
 

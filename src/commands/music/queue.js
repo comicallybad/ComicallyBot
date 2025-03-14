@@ -15,9 +15,10 @@ module.exports = {
             .addIntegerOption(option => option.setName('index-2').setDescription('The index of the second song to swap.').setRequired(true).setAutocomplete(true))),
     autocomplete: async (interaction, client) => {
         const player = client.music.players.get(interaction.guild.id);
-        if (!player || !player.queue.current) return;
+        if (!player || !player.current) return;
+
         const focusedValue = interaction.options.getFocused();
-        let choices = player.queue.map((x, i) => ({
+        let choices = player.queue.tracks.map((x, i) => ({
             name: `${i + 1}) ${x.title}`.substring(0, 100),
             value: i + 1
         }));
@@ -36,7 +37,7 @@ module.exports = {
         const subcommand = interaction.options.getSubcommand();
         const player = client.music.players.get(interaction.guild.id);
 
-        if (!player || !player.queue.current)
+        if (!player || !player.current)
             return re(interaction, "No song(s) currently playing in this guild.").then(() => delr(interaction, 7500));
 
         switch (subcommand) {
@@ -52,18 +53,21 @@ module.exports = {
     }
 }
 
-function viewQueue(interaction, player) {
+async function viewQueue(interaction, player) {
     let index = 1;
     let string = "";
-    const track = player.queue.current || undefined;
+    const track = player.current || undefined;
 
-    if (track)
+    if (track) {
         string += `__**Currently Playing:**__
-        [${track.title.includes(track.author) ? track.title : `${track.title} by ${track.author}`}](${track.uri}) - **Requester:** ${track.requester.username}. \n`;
+        [${track.title.includes(track.author) ? track.title : `${track.title} by ${track.author}`}](${track.url}) - **Requester:** <@${track.requestedBy.id}> \n`;
+    }
 
-    if (player.queue[0])
-        string += `__**Rest of queue:**__\n ${player.queue.slice(0, 10).map(x =>
-            `**${index++})** [${x.title.includes(x.author) ? x.title : `${x.title} by ${x.author}`}](${x.uri}) - **Requester:** ${x.requester.username}.`).join("\n")}`;
+    if (player.queue.tracks[0]) {
+        string += `__**Rest of queue:**__\n ${player.queue.tracks.slice(0, 10).map(x =>
+            `**${index++})** [${x.title.includes(x.author) ? x.title : `${x.title} by ${x.author}`}](${x.url}) - **Requester:** <@${x.requestedBy?.id ? x.requestedBy.id : x.requestedBy}>`
+        ).join("\n")}`;
+    }
 
     if (player.queue.size > 10)
         string += `\n\n**...${player.queue.size - 10} more song(s)**`;
@@ -82,7 +86,7 @@ function clearQueue(interaction, player) {
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: `🎧 Queue Cleared for ${interaction.guild.name}`, iconURL: interaction.guild.iconURL() })
-        .setThumbnail(player.queue.current.thumbnail ? player.queue.current.thumbnail : interaction.guild.iconURL())
+        .setThumbnail(player.current.thumbnail ? player.current.thumbnail : interaction.guild.iconURL())
         .setColor("#FF0000")
         .setDescription("The queue has been cleared.");
 
@@ -102,15 +106,17 @@ function removeQueue(interaction, player) {
 
     if (end && index !== end) {
         text = `Songs **${index}-${end > player.queue.size ? player.queue.size : end}** have`;
-        player.queue.remove(index - 1, end);
+        for (let i = index - 1; i <= end; i++) {
+            player.queue.remove(index - 1);
+        }
     } else {
-        text = `**${player.queue[index - 1].title}** has`;
+        text = `**${player.queue.tracks[index - 1].title}** has`;
         player.queue.remove(index - 1);
     }
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: `🎧 Queue Edited for ${interaction.guild.name}`, iconURL: interaction.guild.iconURL() })
-        .setThumbnail(player.queue.current.thumbnail ? player.queue.current.thumbnail : interaction.guild.iconURL())
+        .setThumbnail(player.current.thumbnail ? player.current.thumbnail : interaction.guild.iconURL())
         .setColor("#FF0000")
         .setDescription(`${text} been removed from the queue.`)
 
@@ -124,13 +130,13 @@ function swapQueue(interaction, player) {
     if (index1 < 0 || index1 >= player.queue.size || index2 < 0 || index2 >= player.queue.size)
         return re(interaction, "Please provide a valid index for the current queue.").then(() => delr(interaction, 7500));
 
-    const temp = player.queue[index1];
-    player.queue[index1] = player.queue[index2];
-    player.queue[index2] = temp;
+    const temp = player.queue.tracks[index1];
+    player.queue.tracks[index1] = player.queue.tracks[index2];
+    player.queue.tracks[index2] = temp;
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: `🎧 Queue Edited for ${interaction.guild.name}`, iconURL: interaction.guild.iconURL() })
-        .setThumbnail(player.queue.current.thumbnail ? player.queue.current.thumbnail : interaction.guild.iconURL())
+        .setThumbnail(player.current.thumbnail ? player.current.thumbnail : interaction.guild.iconURL())
         .setColor("#0EFEFE")
         .setDescription(`Songs **${index1 + 1}** and **${index2 + 1}** have been swapped in the queue.`)
 

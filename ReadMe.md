@@ -42,7 +42,7 @@ To clone and use ComicallyBot, follow these steps:
 5. Create an `application.yml` file inside the lavalink folder. An example can be found [here](https://github.com/lavalink-devs/Lavalink/blob/master/LavalinkServer/application.yml.example)
 6. Create a `.env` file with:
     - `TOKEN` for a discord token, 
-    - `ERELA` for a Lavalink/erela password, 
+    - `MUSIC` for a Lavalink/Moonlink password, 
     - `OPENAI` & `ORGANIZATION` for ChatGPT,
     - `USERID` for your Discord Dev ID
 7. Run `npm i --save` to install the necessary packages.
@@ -70,6 +70,6 @@ For help understanding the code and technologies used in this project, you can r
 - **Discord.js Guide**: [Discord.js Guide](https://discordjs.guide/#before-you-begin)
 - **Discord.js Documentation**: [Discord.js Documentation](https://discord.js.org)
 - **Lavalink Documentation**: [Lavalink Documentation](https://github.com/lavalink-devs/Lavalink?tab=readme-ov-file#lavalink)
-- **MenuDocs Erela.js Guide**: [MenuDocs Erela.js Guide](https://guides.menudocs.org/topics/erelajs/)
+- **Moonlink Documentation**: [Moonlink Documentation](https://moonlink.js.org/introduction)
 
-These resources provide comprehensive guides and documentation to help you understand and use JavaScript, Discord.js, Lavalink, and Erela.js effectively.
+These resources provide comprehensive guides and documentation to help you understand and use JavaScript, Discord.js, Lavalink, and Moonlink.js effectively.

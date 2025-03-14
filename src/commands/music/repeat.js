@@ -11,15 +11,15 @@ module.exports = {
         const subcommand = interaction.options.getSubcommand();
         const player = client.music.players.get(interaction.guild.id);
 
-        if (!player || !player.queue.current)
+        if (!player || !player.current)
             return re(interaction, "No song(s) currently playing in this guild.").then(() => delr(interaction, 7500));
 
         const voiceChannel = interaction.member.voice.channel;
 
-        if (!voiceChannel || voiceChannel.id !== player.voiceChannel)
+        if (!voiceChannel || voiceChannel.id !== player.voiceChannelId)
             return re(interaction, "You need to be in the voice channel to pause music.").then(() => delr(interaction, 7500));
 
-        player.setTextChannel(interaction.channel.id);
+        player.setTextChannelId(interaction.channel.id);
 
         switch (subcommand) {
             case "track":
@@ -31,27 +31,27 @@ module.exports = {
 }
 
 function trackRepeat(interaction, player) {
-    if (player.trackRepeat) player.setTrackRepeat(false);
-    else player.setTrackRepeat(true);
+    if (player.loop !== "off" && player.loop !== "queue") player.setLoop("off");
+    else player.setLoop("track");
 
     const embed = new EmbedBuilder()
-        .setAuthor({ name: `Track Repeat: ${player.trackRepeat ? "ON" : "OFF"}!`, iconURL: interaction.user.displayAvatarURL() })
-        .setThumbnail(player.queue.current.thumbnail)
+        .setAuthor({ name: `Track Repeat: ${player.loop !== "off" ? "ON" : "OFF"}!`, iconURL: interaction.user.displayAvatarURL() })
+        .setThumbnail(player.current.thumbnail)
         .setColor("#0EFEFE")
-        .setDescription(`Track repeat has been toggled ${player.trackRepeat ? "**ON**\n(The current track will now repeat) 🔁" : "**OFF**\n(The current track will no longer repeat) ❌🔁"}`);
+        .setDescription(`Track repeat has been toggled ${player.loop !== "off" ? "**ON**\n(The current track will now repeat) 🔁" : "**OFF**\n(The current track will no longer repeat) ❌🔁"}`);
 
     return r(interaction, "", embed).then(() => delr(interaction, 30000));
 }
 
 function queueRepeat(interaction, player) {
-    if (player.queueRepeat) player.setQueueRepeat(false);
-    else player.setQueueRepeat(true);
+    if (player.loop !== "off" && player.loop !== "track") player.setLoop("off");
+    else player.setLoop("queue");
 
     const embed = new EmbedBuilder()
-        .setAuthor({ name: `Queue Repeat: ${player.queueRepeat ? "ON" : "OFF"}!`, iconURL: interaction.user.displayAvatarURL() })
-        .setThumbnail(player.queue.current.thumbnail)
+        .setAuthor({ name: `Queue Repeat: ${player.loop !== "off" ? "ON" : "OFF"}!`, iconURL: interaction.user.displayAvatarURL() })
+        .setThumbnail(player.current.thumbnail)
         .setColor("#0EFEFE")
-        .setDescription(`The player queue repeat has been toggled ${player.queueRepeat ? "**ON**\n(The queue will now repeat) 🔁" : "**OFF**\n(The queue will no longer repeat) ❌🔁"}`);
+        .setDescription(`The player queue repeat has been toggled ${player.loop !== "off" ? "**ON**\n(The queue will now repeat) 🔁" : "**OFF**\n(The queue will no longer repeat) ❌🔁"}`);
 
     return r(interaction, "", embed).then(() => delr(interaction, 30000));
 }

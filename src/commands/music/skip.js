@@ -15,12 +15,12 @@ module.exports = {
         const subcommand = interaction.options.getSubcommand();
         const player = client.music.players.get(interaction.guild.id);
 
-        if (!player || !player.queue.current)
+        if (!player || !player.current)
             return re(interaction, "No song(s) currently playing in this guild.").then(() => delr(interaction, 7500));
 
         const voiceChannel = interaction.member.voice.channel;
 
-        if (!voiceChannel || voiceChannel.id !== player.voiceChannel)
+        if (!voiceChannel || voiceChannel.id !== player.voiceChannelId)
             return re(interaction, "You need to be in the voice channel to pause music.").then(() => delr(interaction, 7500));
 
         switch (subcommand) {
@@ -35,8 +35,10 @@ module.exports = {
 }
 
 function skipSong(interaction, player) {
-    player.setTextChannel(interaction.channel.id);
-    player.stop();
+    player.setTextChannelId(interaction.channel.id);
+
+    if (!player.queue.size) player.stop();
+    else player.skip();
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: "Song Skipped!", iconURL: interaction.user.displayAvatarURL() })
@@ -78,12 +80,12 @@ function skipTo(interaction, player) {
         return re(interaction, "Please provide a valid time to skip to.").then(() => delr(interaction, 7500));
     }
 
-    player.setTextChannel(interaction.channel.id);
+    player.setTextChannelId(interaction.channel.id);
     player.seek(time * 1000);
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: "Song Time Set!", iconURL: interaction.user.displayAvatarURL() })
-        .setThumbnail(player.queue.current.thumbnail)
+        .setThumbnail(player.current.thumbnail)
         .setColor("#0EFEFE")
         .setDescription(`⏩ The current song has been skipped to \`${humanizeDuration(time * 1000)}\`!`);
 
@@ -99,14 +101,15 @@ function skipAhead(interaction, player) {
         return re(interaction, "Please provide a valid time to skip ahead to.").then(() => delr(interaction, 7500));
     }
 
-    player.setTextChannel(interaction.channel.id);
-    player.seek(player.position + (time * 1000));
+    const position = player.current.position + (time * 1000)
+    player.setTextChannelId(interaction.channel.id);
+    player.seek(position);
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: "Song Time Set!", iconURL: interaction.user.displayAvatarURL() })
-        .setThumbnail(player.queue.current.thumbnail)
+        .setThumbnail(player.current.thumbnail)
         .setColor("#0EFEFE")
-        .setDescription(`⏩ The current song time has been skipped \`${humanizeDuration(time * 1000)}\` to \`${humanizeDuration(player.position)}\`!`);
+        .setDescription(`⏩ The current song time has been skipped \`${humanizeDuration(time * 1000)}\` to \`${humanizeDuration(Math.floor(position))}\`!`);
 
     return r(interaction, "", embed).then(() => delr(interaction, 30000));
 }

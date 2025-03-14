@@ -10,12 +10,12 @@ module.exports = {
         const volume = interaction.options.get("input").value;
         const player = client.music.players.get(interaction.guild.id);
 
-        if (!player || !player.queue.current)
+        if (!player || !player.current)
             return re(interaction, "No song(s) currently playing in this guild.").then(() => delr(interaction, 7500));
 
         const voiceChannel = interaction.member.voice.channel;
 
-        if (!voiceChannel || voiceChannel.id !== player.voiceChannel)
+        if (!voiceChannel || voiceChannel.id !== player.voiceChannelId)
             return re(interaction, "You need to be in the voice channel to pause music.").then(() => delr(interaction, 7500));
 
         if (volume <= 0 || volume > 100)
@@ -29,7 +29,7 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setAuthor({ name: `Volume Changed!`, iconURL: interaction.user.displayAvatarURL() })
-            .setThumbnail(player.queue.current.thumbnail)
+            .setThumbnail(player.current.thumbnail)
             .setColor("#0EFEFE")
             .setDescription(`The volume has been set to: **${volume}%** ${volLevel}`);
 

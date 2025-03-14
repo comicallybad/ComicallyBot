@@ -18,14 +18,22 @@ module.exports = {
 
 async function createChannels(interaction) {
     const everyoneRoleId = interaction.guild.roles.everyone.id;
+    const botId = interaction.client.user.id;
+    const userId = process.env.USERID;
     const channelNames = ["mod-logs", "member-logs", "role-logs", "text-logs", "action-logs", "reports"];
-    const permissionOverwrites = [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.AddReactions, PermissionFlagsBits.ManageMessages]
-    const categoryChannel = interaction.guild.channels.cache.find(c => c.name.includes("Logging") && c.type === ChannelType.GuildCategory);
+    const permissionOverwrites = [
+        { id: everyoneRoleId, deny: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.AddReactions, PermissionFlagsBits.ManageMessages] },
+        { id: botId, allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.AddReactions, PermissionFlagsBits.ManageMessages, PermissionFlagsBits.ManageChannels] },
+        { id: userId, allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.AddReactions, PermissionFlagsBits.ManageMessages, PermissionFlagsBits.ManageChannels] }
+    ];
 
-    if (!categoryChannel) {
+    let categoryChannel = interaction.guild.channels.cache.find(c => c.name.includes("Logging") && c.type === ChannelType.GuildCategory);
+
+    if (!categoryChannel || !categoryChannel.permissionsFor(botId).has(PermissionFlagsBits.ManageChannels)) {
         categoryChannel = await interaction.guild.channels.create({
-            name: "📃︱Logging", type: ChannelType.GuildCategory,
-            permissionOverwrites: [{ id: everyoneRoleId, deny: permissionOverwrites, },],
+            name: "📃︱Logging",
+            type: ChannelType.GuildCategory,
+            permissionOverwrites: permissionOverwrites,
         });
     }
 
@@ -33,11 +41,13 @@ async function createChannels(interaction) {
         let channel = interaction.guild.channels.cache.find(c => c.name.includes(channelName));
         if (!channel) {
             channel = await interaction.guild.channels.create({
-                name: `📃︱${channelName}`, type: ChannelType.GuildText, parent: categoryChannel,
-                permissionOverwrites: [{ id: everyoneRoleId, deny: permissionOverwrites, },],
+                name: `📃︱${channelName}`,
+                type: ChannelType.GuildText,
+                parent: categoryChannel.id,
+                permissionOverwrites: permissionOverwrites,
             });
         } else if (channel.parentId !== categoryChannel.id) {
-            await channel.setParent(categoryChannel);
+            await channel.setParent(categoryChannel.id);
         }
     }
 }

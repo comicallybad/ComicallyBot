@@ -1,11 +1,12 @@
-const { EmbedBuilder, PermissionFlagsBits, ChannelType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const { EmbedBuilder, PermissionFlagsBits, ChannelType, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require("discord.js");
 
 module.exports = {
     //Delete
     del: function (message, timeout) {
         if (!message || !message?.id) return;
         const channelPermissions = message.channel.permissionsFor(message.guild.members.me);
-        if (!channelPermissions?.has(PermissionFlagsBits.ManageMessages)) return;
+        if (message.author.id !== message.guild.members.me.id
+            && !channelPermissions?.has(PermissionFlagsBits.ManageMessages)) return;
 
         setTimeout(() => {
             if (message.deletable && !message.reactions.cache?.get('🛑'))
@@ -80,7 +81,7 @@ module.exports = {
             content: content || undefined,
             embeds: (embeds && embeds.length > 0 ? [embeds] : []),
             components: (components && components.components?.length > 0 ? [components] : []),
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         };
 
         try {
@@ -129,11 +130,7 @@ module.exports = {
             components: (components && components.components?.length > 0 ? [components] : [])
         };
 
-        try {
-            return await message.edit(reply);
-        } catch (error) {
-            console.error("Stack trace:", new Error().stack);
-        }
+        return await message.edit(reply).catch(err => err);
     },
 
     //Edit reply
@@ -153,11 +150,7 @@ module.exports = {
             components: (components && components.components?.length > 0 ? [components] : [])
         };
 
-        try {
-            return await interaction.editReply(reply);;
-        } catch (error) {
-            console.error("Stack trace:", new Error().stack);
-        }
+        return await interaction.editReply(reply).catch(err => err);
     },
 
     //Creates a collector for an interaction and returns the result

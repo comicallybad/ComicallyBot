@@ -13,12 +13,12 @@ module.exports = {
         const subcommand = interaction.options.getSubcommand();
         const player = client.music.players.get(interaction.guild.id);
 
-        if (!player || !player.queue.current)
+        if (!player || !player.current)
             return re(interaction, "No song(s) currently playing in this guild.").then(() => delr(interaction, 7500));
 
         const voiceChannel = interaction.member.voice.channel;
 
-        if (!voiceChannel || voiceChannel.id !== player.voiceChannel)
+        if (!voiceChannel || voiceChannel.id !== player.voiceChannelId)
             return re(interaction, "You need to be in the voice channel to adjust the equalizer.").then(() => delr(interaction, 7500));
 
         switch (subcommand) {
@@ -35,70 +35,67 @@ module.exports = {
 }
 
 function normalEQ(interaction, player) {
-    player.clearEQ();
+    player.filters.resetFilters();
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: `Equalizer Set To Normal.`, iconURL: interaction.user.displayAvatarURL() })
-        .setThumbnail(player.queue.current.thumbnail)
-        .setDescription(`The equalizer has been set to **normal.**\n(This takes a second to apply).`);
+        .setThumbnail(player.current.thumbnail)
+        .setDescription(`The equalizer has been set to **normal.**`);
 
     return r(interaction, "", embed).then(() => delr(interaction, 30000));
 }
 
-async function bassEQ(interaction, player) {
-    player.clearEQ();
-    await new Promise(resolve => setTimeout(resolve, 500));
-    player.setEQ([
-        { band: 0, gain: 0.6 },
-        { band: 1, gain: 0.67 },
-        { band: 2, gain: 0.67 },
+function bassEQ(interaction, player) {
+    player.filters.setEqualizer([
+        { band: 0, gain: 0.25 },
+        { band: 1, gain: 0.3 },
+        { band: 2, gain: 0.3 },
         { band: 3, gain: 0 },
-        { band: 4, gain: -0.5 },
-        { band: 5, gain: 0.15 }
+        { band: 4, gain: -0.2 },
+        { band: 5, gain: 0.1 }
     ]);
+
     const embed = new EmbedBuilder()
         .setAuthor({ name: `Equalizer Set To Bass Boosted.`, iconURL: interaction.user.displayAvatarURL() })
-        .setThumbnail(player.queue.current.thumbnail)
+        .setThumbnail(player.current.thumbnail)
         .setColor("#0EFEFE")
-        .setDescription(`The equalizer has been set to **bass boosted.**\n(This takes a second to apply).`);
+        .setDescription(`The equalizer has been set to **bass boosted.**`);
 
     return r(interaction, "", embed).then(() => delr(interaction, 30000));
 }
 
 async function highEQ(interaction, player) {
-    player.clearEQ();
-    await new Promise(resolve => setTimeout(resolve, 500));
-    player.setEQ([
+    player.filters.setEqualizer([
         { band: 0, gain: -0.5 },
         { band: 1, gain: 0 },
         { band: 2, gain: 0 },
         { band: 3, gain: 0.5 },
         { band: 4, gain: 1.0 },
-        { band: 5, gain: 1.5 }
+        { band: 5, gain: 1.0 }
     ]);
+
     const embed = new EmbedBuilder()
         .setAuthor({ name: `Equalizer Set To High Boosted.`, iconURL: interaction.user.displayAvatarURL() })
-        .setThumbnail(player.queue.current.thumbnail)
-        .setDescription(`The equalizer has been set to **high pass.**\n(This takes a second to apply).`);
+        .setThumbnail(player.current.thumbnail)
+        .setDescription(`The equalizer has been set to **high pass.**`);
 
     return r(interaction, "", embed).then(() => delr(interaction, 30000));
 }
 
 async function bandEQ(interaction, player) {
-    player.clearEQ();
-    await new Promise(resolve => setTimeout(resolve, 500));
-    player.setEQ([
+    player.filters.setEqualizer([
         { band: 0, gain: -0.5 },
-        { band: 1, gain: 0.7 },
-        { band: 2, gain: 1.0 },
-        { band: 3, gain: 0.7 },
+        { band: 1, gain: 0.5 },
+        { band: 2, gain: 0.5 },
+        { band: 3, gain: 0.5 },
         { band: 4, gain: -0.5 },
         { band: 5, gain: -0.5 }
     ]);
+
     const embed = new EmbedBuilder()
         .setAuthor({ name: `Equalizer Set To Band Pass.`, iconURL: interaction.user.displayAvatarURL() })
-        .setThumbnail(player.queue.current.thumbnail)
-        .setDescription(`The equalizer has been set to **band pass.**\n(This takes a second to apply).`);
+        .setThumbnail(player.current.thumbnail)
+        .setDescription(`The equalizer has been set to **band pass.**`);
 
     return r(interaction, "", embed).then(() => delr(interaction, 30000));
 }

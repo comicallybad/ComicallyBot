@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits, ChannelType, ActionRowBuilder,
-    RoleSelectMenuBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
+    RoleSelectMenuBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder,
+    MessageFlags } = require('discord.js');
 const { re, delr } = require("../../../utils/functions/functions.js");
 
 module.exports = {
@@ -32,7 +33,7 @@ module.exports = {
 
         const row = new ActionRowBuilder().addComponents(roleSelect);
 
-        await interaction.reply({ content: 'Select the role(s) to be added to the select menu.', components: [row], ephemeral: true });
+        await interaction.reply({ content: 'Select the role(s) to be added to the select menu.', components: [row], flags: MessageFlags.Ephemeral });
 
         const msg = await interaction.fetchReply();
         const filter = i => i.customId === 'roles' && i.user.id === interaction.user.id;

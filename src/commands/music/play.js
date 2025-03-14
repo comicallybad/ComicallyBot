@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
 const humanizeDuration = require("humanize-duration");
 const { r, re, er, delr, del } = require("../../../utils/functions/functions.js");
 
@@ -9,6 +9,9 @@ module.exports = {
         .addStringOption(option => option.setName("song").setDescription("The song/URL you want to play.").setAutocomplete(true)),
     autocomplete: async (interaction, client) => {
         const focusedValue = interaction.options.getFocused();
+
+        if (!focusedValue) return;
+
         const timeoutPromise = new Promise((resolve) => {
             setTimeout(() => {
                 let truncatedValue = focusedValue.length > 100 ? focusedValue.substring(0, 97) + '...' : focusedValue;
@@ -19,21 +22,24 @@ module.exports = {
         const searchPromise = (async () => {
             let res;
             try {
-                res = await client.music.search(focusedValue);
+                res = await client.music.search({ query: focusedValue, requester: interaction.user.id });
             } catch (error) {
                 return [{ name: "An error occurred while searching", value: "error" }];
             }
 
-            let choices = res.tracks.slice(0, 25).map((x, i) => {
-                let name = `${i + 1}) ${x.title}`;
-                if (name.length > 100) name = name.substring(0, 97) + '...';
-                let value = `${x.uri}`;
-                if (value.length > 100) value = value.substring(0, 100);
-                return { name, value };
-            });
+            let choices = [];
+            if (res.tracks) {
+                choices = res.tracks.slice(0, 25).map((x, i) => {
+                    let name = `${i + 1}) ${x.title}`;
+                    if (name.length > 100) name = name.substring(0, 97) + '...';
+                    let value = `${x.url}`;
+                    if (value.length > 100) value = value.substring(0, 100);
+                    return { name, value };
+                });
+            }
 
-            if (res.playlist) {
-                let playlistName = `Playlist: ${res.playlist.name}`;
+            if (res.data?.info?.name || res?.playlistInfo?.name) {
+                let playlistName = `Playlist: ${res.data?.info?.name ? res.data.info.name : res.playlistInfo.name}`;
                 if (playlistName.length > 100) playlistName = playlistName.substring(0, 97) + '...';
                 let playlistValue = focusedValue;
                 if (playlistValue.length > 100) playlistValue = playlistValue.substring(0, 97) + '...';
@@ -62,18 +68,18 @@ module.exports = {
         const checkResumeResult = await checkResume(interaction, voiceChannel, checkPlayer);
         if (!checkResumeResult) return;
 
-        const player = client.music.create({
-            guild: interaction.guild.id,
-            voiceChannel: voiceChannel.id,
-            textChannel: interaction.channel.id,
+        const player = await client.music.createPlayer({
+            guildId: interaction.guild.id,
+            voiceChannelId: voiceChannel.id,
+            textChannelId: interaction.channel.id,
             volume: 10,
-            selfDeafen: true,
+            autoLeave: true
         });
 
-        if (player.state !== "CONNECTED") player.connect();
+        if (!player.connected) player.connect({ setDeaf: true, setMute: false });
 
         await re(interaction, "Loading...");
-        const res = await client.music.search(interaction.options.get("song").value, interaction.user);
+        const res = await client.music.search({ query: interaction.options.get("song").value, requester: interaction.user.id });
         handleLoadType(interaction, player, res);
     }
 }
@@ -94,24 +100,27 @@ function checkPerms(client, interaction, voiceChannel, checkPlayer) {
 }
 
 function checkResume(interaction, voiceChannel, checkPlayer) {
-    if (!interaction.options.get("song") && checkPlayer.voiceChannel === voiceChannel.id) {
-        if (checkPlayer.playing)
+    if (!interaction.options.get("song") && checkPlayer.voiceChannelId === voiceChannel.id) {
+        if (!checkPlayer.paused)
             return re(interaction, "Please provide a song name or link to search.").then(() => delr(interaction, 7500));
 
-        checkPlayer.setTextChannel(interaction.channel.id).pause(false);
+        checkPlayer.setTextChannelId(interaction.channel.id);
+        checkPlayer.resume();
 
         const embed = new EmbedBuilder()
             .setAuthor({ name: `Player resumed.`, iconURL: interaction.user.displayAvatarURL() })
-            .setThumbnail(checkPlayer.queue.current ? checkPlayer.queue.current.thumbnail : interaction.guild.iconURL())
+            .setThumbnail(checkPlayer.current ? checkPlayer.current.thumbnail : interaction.guild.iconURL())
             .setDescription(`▶️ The player has been resumed. Use \`/pause\` to pause playing again. ⏸️`);
 
         return r(interaction, "", embed).then(() => delr(interaction, 15000));
-    } else if (!interaction.options.get("song") && checkPlayer.voiceChannel !== voiceChannel.id) {
-        checkPlayer.setTextChannel(interaction.channel.id).setVoiceChannel(voiceChannel.id);
+    } else if (!interaction.options.get("song") && checkPlayer.voiceChannelId !== voiceChannel.id) {
+        checkPlayer.setTextChannelId(interaction.channel.id);
+        checkPlayer.setVoiceChannelId(voiceChannel.id);
+        checkPlayer.connect({ setDeaf: true, setMute: false });
 
         const embed = new EmbedBuilder()
             .setAuthor({ name: `Player joined.`, iconURL: interaction.user.displayAvatarURL() })
-            .setThumbnail(checkPlayer.queue.current ? checkPlayer.queue.current.thumbnail : interaction.guild.iconURL())
+            .setThumbnail(checkPlayer.current ? checkPlayer.current.thumbnail : interaction.guild.iconURL())
             .setDescription(`▶️ The player has joined the voice channel to resume playing.`);
 
         return r(interaction, "", embed).then(() => delr(interaction, 15000));
@@ -120,75 +129,28 @@ function checkResume(interaction, voiceChannel, checkPlayer) {
     return true;
 }
 
-function handleLoadType(interaction, player, response) {
-    switch (response.loadType) {
-        case "TRACK_LOADED":
-            delr(interaction, 0);
-            player.queue.add(response.tracks[0]);
-            sendEmbed(interaction, "Song Added To Queue!", response.tracks[0]);
-            startPlaying(player);
-            break;
+function handleLoadType(interaction, player, res) {
+    if (res.loadType === "loadfailed")
+        return er(interaction, "The provided track/url could not be loaded.");
+    else if (res.loadType === "empty")
+        return er(interaction, "No results were found for the provided track/url.");
 
-        case "SEARCH_RESULT":
-            handleSearchResult(interaction, player, response.tracks.slice(0, 5));
-            break;
-
-        case "PLAYLIST_LOADED":
-            delr(interaction, 0);
-            sendPlaylistEmbed(interaction, "Playlist Added To Queue!", response);
-            response.tracks.forEach(track => player.queue.add(track));
-            startPlaying(player);
-            break;
-
-        default:
-            er(interaction, "The provided track/url could not be loaded.");
-            break;
+    if (res.loadType === "playlist") {
+        delr(interaction, 0);
+        sendPlaylistEmbed(interaction, "Playlist Added To Queue!", res);
+        res.tracks.forEach(track => player.queue.add(track));
+        startPlaying(player);
+    } else {
+        delr(interaction, 0);
+        player.queue.add(res.tracks[0]);
+        sendEmbed(interaction, "Song Added To Queue!", res.tracks[0]);
+        startPlaying(player);
     }
 }
 
-async function handleSearchResult(interaction, player, tracks) {
-    let index = 1;
-    const embed = new EmbedBuilder()
-        .setAuthor({ name: "Song Selection.", iconURL: interaction.user.displayAvatarURL() })
-        .setDescription(`${tracks.map(video => `**${index++} -** ${video.title}\n`).join('')}`)
-        .setFooter({ text: "Select a track by clicking the buttons." });
-
-    const buttons = tracks.map((video, index) => {
-        return new ButtonBuilder()
-            .setCustomId(`track_${index}`)
-            .setLabel(`Track ${index + 1}`)
-            .setStyle(ButtonStyle.Secondary);
-    });
-
-    const row = new ActionRowBuilder().addComponents(buttons);
-    await interaction.editReply({ content: "", embeds: [embed], components: [row], ephemeral: true });
-    const filter = (i) => i.customId.startsWith('track_') && i.user.id === interaction.user.id;
-    const message = await interaction.fetchReply();
-    const collector = message.createMessageComponentCollector({ filter, time: 30000, max: 1 });
-
-    collector.on('collect', async (buttonInteraction) => {
-        const trackIndex = parseInt(buttonInteraction.customId.split('_')[1]);
-        const track = tracks[trackIndex];
-
-        if (track) {
-            await buttonInteraction.deferUpdate();
-            player.queue.add(track);
-            sendEmbed(buttonInteraction, "Song Added To Queue!", track);
-            startPlaying(player);
-        } else {
-            return re(interaction, `An error occurred.`).then(() => delr(interaction, 7500));
-        }
-        collector.stop();
-    });
-
-    collector.on('end', () => {
-        delr(interaction);
-    });
-}
-
 function startPlaying(player) {
-    if (player.paused) player.pause(false);
-    else if (!player.playing) player.play();
+    if (player && !player.playing) return player.play();
+    if (player && player.paused) return player.resume();
 }
 
 async function sendEmbed(interaction, title, track) {
@@ -196,19 +158,19 @@ async function sendEmbed(interaction, title, track) {
         .setAuthor({ name: title, iconURL: interaction.user.displayAvatarURL() })
         .setThumbnail(track.thumbnail ? track.thumbnail : interaction.guild.iconURL())
         .setColor("#0EFEFE")
-        .setDescription(`⌚ Queuing [**${track.title.includes(track.author) ? track.title : `${track.title} by ${track.author}`}**](${track.uri}) \`${humanizeDuration(track.duration)}\``);
+        .setDescription(`⌚ Queuing [**${track.title.includes(track.author) ? track.title : `${track.title} by ${track.author}`}**](${track.url}) \`${humanizeDuration(track.duration)}\``);
 
     return interaction.followUp({ content: "", embeds: [embed] }).then(m => del(m, 15000));
 }
 
-async function sendPlaylistEmbed(interaction, title, response) {
-    const duration = humanizeDuration(response.tracks.reduce((acc, cur) => ({ duration: acc.duration + cur.duration })).duration);
+async function sendPlaylistEmbed(interaction, title, res) {
+    const duration = humanizeDuration(res.tracks.reduce((acc, cur) => ({ duration: acc.duration + cur.duration })).duration);
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: title, iconURL: interaction.user.displayAvatarURL() })
-        .setThumbnail(response.tracks[0].thumbnail ? response.tracks[0].thumbnail : interaction.guild.iconURL())
+        .setThumbnail(res.tracks[0].thumbnail ? res.tracks[0].thumbnail : interaction.guild.iconURL())
         .setColor("#0EFEFE")
-        .setDescription(`⌚ Queuing  [**${response.playlist.name}**](${interaction.options.get("song").value}) \`${response.tracks.length}\` tracks \`${duration}\``);
+        .setDescription(`⌚ Queuing  [**${res.data?.info?.name ? res.data.info.name : res.playlistInfo.name}**](${interaction.options.get("song").value}) \`${res.tracks.length}\` tracks \`${duration}\``);
 
     return interaction.followUp({ content: "", embeds: [embed] }).then(m => del(m, 15000));
 }
