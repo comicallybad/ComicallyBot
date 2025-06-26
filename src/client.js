@@ -42,7 +42,6 @@ client.music = new Manager({
 });
 
 config({ path: __dirname + "/.env" });
-global.warnUsers = [];
 
 client.commands = new Collection();
 client.aliases = new Collection();
