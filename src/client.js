@@ -42,7 +42,7 @@ client.music = new Manager({
 });
 
 config({ path: __dirname + "/.env" });
-global.voiceChannels = [], global.warnUsers = [];
+global.warnUsers = [];
 
 client.commands = new Collection();
 client.aliases = new Collection();
