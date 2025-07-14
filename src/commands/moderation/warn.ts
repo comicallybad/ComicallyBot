@@ -1,6 +1,6 @@
 import {
     SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, ChatInputCommandInteraction,
-    GuildMember, TextChannel, MessageFlags, InteractionContextType, ChannelType
+    GuildMember, TextChannel, InteractionContextType, ChannelType
 } from "discord.js";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
 import { sendMessage } from "../../utils/messageUtils";
@@ -37,7 +37,7 @@ export default {
         }
 
         const embed = new EmbedBuilder()
-            .setColor(0xFF0000)
+            .setColor("#FF0000")
             .setTitle("Member Warned")
             .setThumbnail(wMember.user.displayAvatarURL())
             .setFooter({ text: wMember.user.tag, iconURL: wMember.user.displayAvatarURL() })
@@ -58,7 +58,7 @@ export default {
             });
 
         const warnEmbed = new EmbedBuilder()
-            .setColor(0xFF0000)
+            .setColor("#FF0000")
             .setTitle("You have been warned!")
             .setThumbnail(wMember.user.displayAvatarURL())
             .setFooter({ text: wMember.user.tag, iconURL: wMember.user.displayAvatarURL() })

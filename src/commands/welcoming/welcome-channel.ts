@@ -5,7 +5,7 @@ import {
 import { sendReply, deleteReply, editReply } from "../../utils/replyUtils";
 import { sendMessage } from "../../utils/messageUtils";
 import { GuildConfig } from "../../models/GuildConfig";
-import { ValidationError, PermissionError } from "../../utils/customErrors";
+import { ValidationError } from "../../utils/customErrors";
 import { messagePrompt } from "../../utils/paginationUtils";
 
 export default {
@@ -19,10 +19,6 @@ export default {
         .addSubcommand(subcommand => subcommand.setName('remove').setDescription('Remove the current welcome channel.')),
     async execute(interaction: ChatInputCommandInteraction) {
         const subcommand = interaction.options.getSubcommand();
-
-        if (!interaction.guild?.members.me?.permissions.has(PermissionFlagsBits.ManageChannels)) {
-            throw new PermissionError("I don't have permission to `Manage Channels`.");
-        }
 
         if (subcommand === "get") return await getWelcomeChannel(interaction);
         else if (subcommand === "set") return await setWelcomeChannel(interaction);

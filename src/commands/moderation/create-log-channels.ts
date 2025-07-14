@@ -4,7 +4,7 @@ import {
 } from "discord.js";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
 import * as dotenv from "dotenv";
-import { PermissionError, ValidationError } from "../../utils/customErrors";
+import { ValidationError } from "../../utils/customErrors";
 
 dotenv.config();
 

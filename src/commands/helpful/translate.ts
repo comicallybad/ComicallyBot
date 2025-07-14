@@ -1,5 +1,5 @@
-import { SlashCommandBuilder, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ChatInputCommandInteraction, ModalSubmitInteraction, MessageFlags } from "discord.js";
-import { sendReply, deleteReply } from "../../utils/replyUtils";
+import { SlashCommandBuilder, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ChatInputCommandInteraction, ModalSubmitInteraction } from "discord.js";
+import { sendReply } from "../../utils/replyUtils";
 import { translate } from "@vitalets/google-translate-api";
 import { ValidationError } from "../../utils/customErrors";
 

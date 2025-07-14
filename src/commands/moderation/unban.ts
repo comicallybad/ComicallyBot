@@ -1,6 +1,6 @@
 import {
     SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits,
-    ChatInputCommandInteraction, MessageFlags, InteractionContextType, ButtonInteraction
+    ChatInputCommandInteraction, InteractionContextType, ButtonInteraction
 } from "discord.js";
 import { sendReply, deleteReply, editReply } from "../../utils/replyUtils";
 import { sendMessage } from "../../utils/messageUtils";

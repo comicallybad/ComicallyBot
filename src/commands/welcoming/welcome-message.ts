@@ -6,7 +6,7 @@ import {
 import { sendReply, deleteReply, editReply } from "../../utils/replyUtils";
 import { sendMessage } from "../../utils/messageUtils";
 import { GuildConfig } from "../../models/GuildConfig";
-import { ValidationError, PermissionError } from "../../utils/customErrors";
+import { ValidationError } from "../../utils/customErrors";
 import { messagePrompt } from "../../utils/paginationUtils";
 
 export default {
@@ -21,10 +21,6 @@ export default {
         const subcommand = interaction.options.getSubcommand();
         const guildID = interaction.guildId;
         if (!guildID) return;
-
-        if (!interaction.guild?.members.me?.permissions.has(PermissionFlagsBits.ManageChannels)) {
-            throw new PermissionError("I don't have permission to `Manage Channels`.");
-        }
 
         const dbResult = await GuildConfig.findOne({ guildID: guildID });
 

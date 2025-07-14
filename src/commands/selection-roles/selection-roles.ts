@@ -3,8 +3,7 @@ import {
     StringSelectMenuOptionBuilder, MessageFlags, ChatInputCommandInteraction, TextChannel, RoleSelectMenuInteraction,
 } from "discord.js";
 import { sendReply, deleteReply, deferUpdate } from "../../utils/replyUtils";
-import { canCommunicate } from "../../utils/preconditions";
-import { ValidationError, PermissionError } from "../../utils/customErrors";
+import { ValidationError } from "../../utils/customErrors";
 
 export default {
     data: new SlashCommandBuilder()
@@ -17,9 +16,6 @@ export default {
             .addIntegerOption(option => option.setName("min").setDescription("The minimum number of roles that must be selected.").setMinValue(0).setMaxValue(25))
             .addIntegerOption(option => option.setName("max").setDescription("The maximum number of roles that can be selected.").setMinValue(0).setMaxValue(25))),
     execute: async (interaction: ChatInputCommandInteraction) => {
-        if (!(await canCommunicate(interaction))) {
-            throw new PermissionError("I don't have permission to communicate in this channel.");
-        }
         const channel = (interaction.options.getChannel("channel") || interaction.channel) as TextChannel;
         const message = interaction.options.getString("message");
         const min = interaction.options.getInteger("min") || 0;

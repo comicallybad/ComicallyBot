@@ -1,6 +1,6 @@
 import {
     SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, ChatInputCommandInteraction,
-    GuildMember, MessageFlags, InteractionContextType
+    GuildMember, InteractionContextType
 } from "discord.js";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
 import { sendMessage } from "../../utils/messageUtils";

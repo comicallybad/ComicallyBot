@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, CommandInteraction, InteractionContextType } from "discord.js";
+import { SlashCommandBuilder, CommandInteraction } from "discord.js";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
 
 export default {
