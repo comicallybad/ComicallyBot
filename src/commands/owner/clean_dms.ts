@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction, TextChannel, MessageFlags, InteractionContextType, DiscordAPIError, PermissionsBitField } from "discord.js";
+import { SlashCommandBuilder, ChatInputCommandInteraction, DMChannel, MessageFlags, InteractionContextType, DiscordAPIError, PermissionsBitField } from "discord.js";
 import { sendReply, deleteReply, editReply } from "../../utils/replyUtils";
 import { PermissionError, ValidationError } from "../../utils/customErrors";
 import { logError } from "../../utils/logUtils";
@@ -18,10 +18,10 @@ export default {
             throw new ValidationError("DM_CHANNEL_ID environment variable is not set.");
         }
 
-        let dmChannel: TextChannel;
+        let dmChannel: DMChannel;
         try {
             const fetchedChannel = await interaction.client.channels.fetch(process.env.DM_CHANNEL_ID);
-            if (!fetchedChannel || !(fetchedChannel instanceof TextChannel)) {
+            if (!fetchedChannel || !(fetchedChannel instanceof DMChannel)) {
                 throw new ValidationError("Could not find the specified DM channel.");
             }
             dmChannel = fetchedChannel;
