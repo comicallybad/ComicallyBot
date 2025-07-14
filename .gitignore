@@ -3,6 +3,7 @@ node_modules
 package-lock.json
 logs
 dist
+GEMINI.md
 /src/lavalink/application.yml
 /src/lavalink/plugins
 /src/lavalink/lavalink.jar
