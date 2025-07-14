@@ -34,7 +34,9 @@ client.music = new Manager({
         port: 2333,
         secure: false
     }],
-    options: {},
+    options: {
+        disableNativeSources: true
+    },
     sendPayload: (guildId, payload) => {
         const guild = client.guilds.cache.get(guildId);
         if (guild) guild.shard.send(JSON.parse(payload));
