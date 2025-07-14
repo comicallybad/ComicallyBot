@@ -1,0 +1,40 @@
+{
+  "name": "comicallybotts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "if exist dist rd /s /q dist",
+    "build": "npm run clean && tsc",
+    "start": "npm run build && set NODE_OPTIONS=--no-deprecation && node .",
+    "deploy": "npm run build && node --no-deprecation dist/deploy-commands.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@discordjs/builders": "^1.11.2",
+    "@discordjs/rest": "^2.5.1",
+    "@types/node": "^24.0.10",
+    "@vitalets/google-translate-api": "^9.2.1",
+    "beautify": "^0.0.8",
+    "discord-api-types": "^0.38.15",
+    "discord.js": "^14.21.0",
+    "dotenv": "^16.0.3",
+    "humanize-duration": "^3.33.0",
+    "mongoose": "^8.16.3",
+    "moonlink.js": "github:Ecliptia/moonlink.js#dev",
+    "node-fetch": "^3.3.2",
+    "relevant-urban": "^2.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "word-definition": "^2.1.6"
+  },
+  "devDependencies": {
+    "@types/beautify": "^0.0.3",
+    "@types/humanize-duration": "^3.27.4",
+    "@types/node-fetch": "^2.6.12"
+  }
+}
