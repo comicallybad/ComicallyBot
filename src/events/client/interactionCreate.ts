@@ -1,4 +1,5 @@
 import { Interaction, Client, InteractionType, User, MessageFlags, PermissionFlagsBits, GuildMember } from "discord.js";
+import { incrementCommandUsage } from "../../utils/dbUtils";
 import { canCommunicate } from "../../utils/preconditions";
 import { deferUpdate, deleteReply, sendReply, sendUpdate } from "../../utils/replyUtils";
 import { PermissionError, ValidationError } from "../../utils/customErrors";
@@ -29,6 +30,10 @@ async function handleChatInputCommand(client: Client, interaction: Interaction) 
 
     const command = client.commands.get(interaction.commandName);
     if (!command) return;
+
+    if (interaction.guildId) {
+        await incrementCommandUsage(interaction.commandName, interaction.guildId);
+    }
 
     try {
         await command.execute(interaction, client);
