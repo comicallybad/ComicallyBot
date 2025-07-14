@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction, MessageFlags, InteractionContextType } from "discord.js";
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction, MessageFlags, InteractionContextType, PermissionsBitField } from "discord.js";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
 import { PermissionError, ValidationError } from "../../utils/customErrors";
 import beautify from "beautify";
@@ -7,7 +7,7 @@ export default {
     data: new SlashCommandBuilder()
         .setName("eval")
         .setDescription("Executes arbitrary JavaScript code (Owner Only).")
-        .setDefaultMemberPermissions(0)
+        .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator)
         .setContexts(InteractionContextType.Guild)
         .addStringOption(option =>
             option.setName("code")

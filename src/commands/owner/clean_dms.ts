@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction, TextChannel, MessageFlags, InteractionContextType, DiscordAPIError } from "discord.js";
+import { SlashCommandBuilder, ChatInputCommandInteraction, TextChannel, MessageFlags, InteractionContextType, DiscordAPIError, PermissionsBitField } from "discord.js";
 import { sendReply, deleteReply, editReply } from "../../utils/replyUtils";
 import { PermissionError, ValidationError } from "../../utils/customErrors";
 import { logError } from "../../utils/logUtils";
@@ -7,7 +7,7 @@ export default {
     data: new SlashCommandBuilder()
         .setName("clean_dms")
         .setDescription("Cleans DM messages from bot to owner (Owner Only).")
-        .setDefaultMemberPermissions(0)
+        .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator)
         .setContexts(InteractionContextType.Guild),
     async execute(interaction: ChatInputCommandInteraction) {
         if (interaction.user.id !== process.env.BOT_OWNER_ID) {
