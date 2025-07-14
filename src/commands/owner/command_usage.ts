@@ -5,14 +5,14 @@ import { PermissionError, ValidationError } from "../../utils/customErrors";
 
 export default {
     data: new SlashCommandBuilder()
-        .setName("command_usage")
+        .setName("usage")
         .setDescription("Provides statistics on command usage (Owner Only).")
         .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator)
         .setContexts(InteractionContextType.Guild)
         .addSubcommand(subcommand =>
-            subcommand.setName("top").setDescription("Shows the top used commands globally."))
+            subcommand.setName("top_commands").setDescription("Shows the top used commands globally."))
         .addSubcommand(subcommand =>
-            subcommand.setName("least").setDescription("Shows the least used commands globally."))
+            subcommand.setName("least_commands").setDescription("Shows the least used commands globally."))
         .addSubcommand(subcommand =>
             subcommand.setName("info").setDescription("Provides detailed information on command usage.")
                 .addStringOption(option => option.setName("command_name").setDescription("The name of the command to get info for.").setRequired(false))
@@ -125,7 +125,7 @@ async function handleInfoCommand(interaction: ChatInputCommandInteraction, clien
         const formattedGuildId = await getGuildNameAndId(guildId);
         const embed = new EmbedBuilder()
             .setTitle("Usage for `" + `/${commandName}` + "` in Guild " + formattedGuildId)
-            .setColor("#0099FF")
+            .setColor("#0EFEFE")
             .setDescription(`**Total Uses:** ${commandData.count}`);
 
         await sendReply(interaction, { embeds: [embed.toJSON()], flags: MessageFlags.Ephemeral });
