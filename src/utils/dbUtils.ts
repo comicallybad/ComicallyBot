@@ -67,6 +67,14 @@ export async function getCommandUsageByCommandName(commandName: string) {
     return usage;
 }
 
+export async function resetCommandUsage(commandName: string) {
+    await CommandUsage.updateMany({ commandName }, { $set: { count: 0 } });
+}
+
+export async function removeCommandUsage(commandName: string) {
+    await CommandUsage.deleteMany({ commandName });
+}
+
 export async function getGuildUsage(sortOrder: 1 | -1) {
     return CommandUsage.aggregate([
         {

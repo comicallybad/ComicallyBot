@@ -31,7 +31,7 @@ async function handleChatInputCommand(client: Client, interaction: Interaction) 
     const command = client.commands.get(interaction.commandName);
     if (!command) return;
 
-    if (interaction.guildId) {
+    if (interaction.guildId && !command.ownerOnly) {
         await incrementCommandUsage(interaction.commandName, interaction.guildId);
     }
 

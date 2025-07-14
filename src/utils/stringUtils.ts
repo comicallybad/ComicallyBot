@@ -1,4 +1,4 @@
-import { Message, PartialMessage } from "discord.js";
+import { Message, PartialMessage, Client } from "discord.js";
 
 export function escapeMarkdown(text: string): string {
     return text.replace(/\|\|/g, "\\|\\").replace(/([_\*\`~])/g, "\\$1");
@@ -71,3 +71,12 @@ export function formatMessageContent(message: Message | PartialMessage): string 
 
     return content.trim() || "No content or attachments.";
 }
+
+export const getGuildNameAndId = async (client: Client, id: string) => {
+    try {
+        const guild = await client.guilds.fetch(id);
+        return `${guild.name} (\`${id}\`)`;
+    } catch (error) {
+        return `(\`${id}\`)`;
+    }
+};

@@ -4,6 +4,7 @@ import { PermissionError, ValidationError } from "../../utils/customErrors";
 import { logError } from "../../utils/logUtils";
 
 export default {
+    ownerOnly: true,
     data: new SlashCommandBuilder()
         .setName("clean_dms")
         .setDescription("Cleans DM messages from bot to owner (Owner Only).")

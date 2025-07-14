@@ -2,11 +2,16 @@ import {
     SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder, PermissionsBitField,
     MessageFlags, InteractionContextType, Client, ColorResolvable,
 } from "discord.js";
-import { getGlobalCommandUsage, getGuildCommandUsage, getCommandUsageByCommandName, getGuildUsage, } from "../../utils/dbUtils";
+import {
+    getGlobalCommandUsage, getGuildCommandUsage, getCommandUsageByCommandName,
+    getGuildUsage, resetCommandUsage, removeCommandUsage,
+} from "../../utils/dbUtils";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
 import { PermissionError, ValidationError } from "../../utils/customErrors";
+import { getGuildNameAndId } from "../../utils/stringUtils";
 
 export default {
+    ownerOnly: true,
     data: new SlashCommandBuilder()
         .setName("usage")
         .setDescription("Provides statistics on command usage (Owner Only).")
@@ -25,7 +30,13 @@ export default {
         .addSubcommand(subcommand =>
             subcommand.setName("top_guilds").setDescription("Shows the top guilds by command usage."))
         .addSubcommand(subcommand =>
-            subcommand.setName("least_guilds").setDescription("Shows the least used guilds by command usage.")),
+            subcommand.setName("least_guilds").setDescription("Shows the least used guilds by command usage."))
+        .addSubcommand(subcommand =>
+            subcommand.setName("reset").setDescription("Resets the usage count for a specific command.")
+                .addStringOption(option => option.setName("command_name").setDescription("The command to reset.").setRequired(true)))
+        .addSubcommand(subcommand =>
+            subcommand.setName("remove").setDescription("Removes all usage data for a specific command.")
+                .addStringOption(option => option.setName("command_name").setDescription("The command to remove.").setRequired(true))),
     async execute(interaction: ChatInputCommandInteraction, client: Client) {
         if (interaction.user.id !== process.env.BOT_OWNER_ID) {
             throw new PermissionError("This command can only be used by the bot owner.");
@@ -52,26 +63,24 @@ export default {
             case "least_guilds":
                 await handleGuildList(interaction, client, "least");
                 break;
+            case "reset": {
+                const commandName = interaction.options.getString("command_name", true);
+                await resetCommandUsage(commandName);
+                await sendReply(interaction, { content: `Successfully reset usage data for the \`${commandName}\` command.`, flags: MessageFlags.Ephemeral });
+                break;
+            }
+            case "remove": {
+                const commandName = interaction.options.getString("command_name", true);
+                await removeCommandUsage(commandName);
+                await sendReply(interaction, { content: `Successfully removed all usage data for the \`${commandName}\` command.`, flags: MessageFlags.Ephemeral });
+                break;
+            }
         }
     },
 };
 
-const getGuildNameAndId = async (client: Client, id: string) => {
-    try {
-        const guild = await client.guilds.fetch(id);
-        return `${guild.name} (\`${id}\`)`;
-    } catch (error) {
-        return `(\`${id}\`)`;
-    }
-};
-
-async function sendUsageEmbed(
-    interaction: ChatInputCommandInteraction,
-    title: string,
-    color: ColorResolvable,
-    data: any[],
-    formatter: (item: any, index: number) => Promise<string> | string
-) {
+async function sendUsageEmbed(interaction: ChatInputCommandInteraction, title: string, color: ColorResolvable,
+    data: any[], formatter: (item: any, index: number) => Promise<string> | string) {
     if (!data || data.length === 0) {
         throw new ValidationError("No command usage data found.");
     }
@@ -150,7 +159,7 @@ async function handleInfoCommand(interaction: ChatInputCommandInteraction, clien
 }
 
 async function handleUnusedCommands(interaction: ChatInputCommandInteraction, client: Client) {
-    const allCommands = Array.from(client.commands.keys());
+    const allCommands = Array.from(client.commands.filter(cmd => !cmd.ownerOnly).keys());
     const usedCommandsData = await getGlobalCommandUsage();
     const usedCommandNames = new Set(usedCommandsData.map(usage => usage._id));
     const unusedCommands = allCommands.filter(commandName => !usedCommandNames.has(commandName));

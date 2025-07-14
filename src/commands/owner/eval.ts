@@ -4,6 +4,7 @@ import { PermissionError, ValidationError } from "../../utils/customErrors";
 import beautify from "beautify";
 
 export default {
+    ownerOnly: true,
     data: new SlashCommandBuilder()
         .setName("eval")
         .setDescription("Executes arbitrary JavaScript code (Owner Only).")
