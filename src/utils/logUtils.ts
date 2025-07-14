@@ -12,12 +12,23 @@ export async function logError(error: any, context?: string) {
     if (error instanceof Error) {
         errorMessage = error.stack || error.message;
     } else if (typeof error === "object" && error !== null) {
-        errorMessage = JSON.stringify(error, null, 2);
+        const cache = new Set();
+        errorMessage = JSON.stringify(error, (key, value) => {
+            if (typeof value === "object" && value !== null) {
+                if (cache.has(value)) {
+                    return;
+                }
+                cache.add(value);
+            }
+            return value;
+        }, 2);
     } else {
         errorMessage = String(error);
     }
 
-    const logEntry = `[${date.toLocaleString()}]${context ? ` [${context}]` : ""} ERROR: ${errorMessage}\n\n`;
+    const logEntry = `[${date.toLocaleString()}]${context ? ` [${context}]` : ""} ERROR: ${errorMessage}`;
+
+    console.error(`[${date.toLocaleString()}] New error logged: ${errorMessage.split('\n')[0]}`);
 
     try {
         await fs.mkdir(logDirectory, { recursive: true });
