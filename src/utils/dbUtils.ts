@@ -67,32 +67,17 @@ export async function getCommandUsageByCommandName(commandName: string) {
     return usage;
 }
 
-export async function getTopGuildsByUsage() {
-    const usage = await CommandUsage.aggregate([
+export async function getGuildUsage(sortOrder: 1 | -1) {
+    return CommandUsage.aggregate([
         {
             $group: {
                 _id: "$guildId",
-                totalCount: { $sum: "$count" }
-            }
+                totalCount: { $sum: "$count" },
+            },
         },
         {
-            $sort: { totalCount: -1 }
-        }
+            $sort: { totalCount: sortOrder },
+        },
     ]);
-    return usage;
 }
 
-export async function getLeastUsedGuildsByUsage() {
-    const usage = await CommandUsage.aggregate([
-        {
-            $group: {
-                _id: "$guildId",
-                totalCount: { $sum: "$count" }
-            }
-        },
-        {
-            $sort: { totalCount: 1 }
-        }
-    ]);
-    return usage;
-}

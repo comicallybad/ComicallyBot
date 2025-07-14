@@ -1,5 +1,8 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder, PermissionsBitField, MessageFlags, InteractionContextType, Client } from "discord.js";
-import { getGlobalCommandUsage, getGuildCommandUsage, getCommandUsageByCommandName, getTopGuildsByUsage, getLeastUsedGuildsByUsage } from "../../utils/dbUtils";
+import {
+    SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder, PermissionsBitField,
+    MessageFlags, InteractionContextType, Client, ColorResolvable,
+} from "discord.js";
+import { getGlobalCommandUsage, getGuildCommandUsage, getCommandUsageByCommandName, getGuildUsage, } from "../../utils/dbUtils";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
 import { PermissionError, ValidationError } from "../../utils/customErrors";
 
@@ -31,11 +34,11 @@ export default {
         const subcommand = interaction.options.getSubcommand();
 
         switch (subcommand) {
-            case "top":
-                await handleTopCommands(interaction);
+            case "top_commands":
+                await handleCommandList(interaction, "top");
                 break;
-            case "least":
-                await handleLeastCommands(interaction);
+            case "least_commands":
+                await handleCommandList(interaction, "least");
                 break;
             case "info":
                 await handleInfoCommand(interaction, client);
@@ -44,137 +47,103 @@ export default {
                 await handleUnusedCommands(interaction, client);
                 break;
             case "top_guilds":
-                await handleTopGuilds(interaction, client);
+                await handleGuildList(interaction, client, "top");
                 break;
             case "least_guilds":
-                await handleLeastGuilds(interaction, client);
+                await handleGuildList(interaction, client, "least");
                 break;
         }
     },
 };
 
-async function handleTopCommands(interaction: ChatInputCommandInteraction) {
-    const globalUsage = await getGlobalCommandUsage();
+const getGuildNameAndId = async (client: Client, id: string) => {
+    try {
+        const guild = await client.guilds.fetch(id);
+        return `${guild.name} (\`${id}\`)`;
+    } catch (error) {
+        return `(\`${id}\`)`;
+    }
+};
 
-    if (globalUsage.length === 0) {
+async function sendUsageEmbed(
+    interaction: ChatInputCommandInteraction,
+    title: string,
+    color: ColorResolvable,
+    data: any[],
+    formatter: (item: any, index: number) => Promise<string> | string
+) {
+    if (!data || data.length === 0) {
         throw new ValidationError("No command usage data found.");
     }
 
-    const embed = new EmbedBuilder()
-        .setTitle("Top Used Commands (Global)")
-        .setColor("#00FF00");
+    const embed = new EmbedBuilder().setTitle(title).setColor(color);
 
-    let description = "";
-    const totalUses = globalUsage.reduce((sum, command) => sum + command.totalCount, 0);
-    for (let i = 0; i < Math.min(10, globalUsage.length); i++) {
-        const percentage = totalUses > 0 ? ((globalUsage[i].totalCount / totalUses) * 100).toFixed(2) : 0;
-        description += `**${i + 1}.** ` + "`" + `/${globalUsage[i]._id}` + "`" + `: ${globalUsage[i].totalCount} uses (${percentage}%)\n`;
-    }
+    const description = (await Promise.all(data.slice(0, 10).map(formatter))).join("\n");
     embed.setDescription(description);
 
     await sendReply(interaction, { embeds: [embed.toJSON()], flags: MessageFlags.Ephemeral });
     await deleteReply(interaction, { timeout: 30000 });
 }
 
-async function handleLeastCommands(interaction: ChatInputCommandInteraction) {
+async function handleCommandList(interaction: ChatInputCommandInteraction, sortOrder: "top" | "least") {
     const globalUsage = await getGlobalCommandUsage();
-
-    if (globalUsage.length === 0) {
-        throw new ValidationError("No command usage data found.");
-    }
-
-    const embed = new EmbedBuilder()
-        .setTitle("Least Used Commands (Global)")
-        .setColor("#FF0000");
-
-    let description = "";
     const totalUses = globalUsage.reduce((sum, command) => sum + command.totalCount, 0);
-    const startIndex = Math.max(0, globalUsage.length - 10);
-    for (let i = globalUsage.length - 1; i >= startIndex; i--) {
-        const percentage = totalUses > 0 ? ((globalUsage[i].totalCount / totalUses) * 100).toFixed(2) : 0;
-        description += `**${globalUsage.length - i}.** ` + "`" + `/${globalUsage[i]._id}` + "`" + `: ${globalUsage[i].totalCount} uses (${percentage}%)\n`;
-    }
-    embed.setDescription(description);
 
-    await sendReply(interaction, { embeds: [embed.toJSON()], flags: MessageFlags.Ephemeral });
-    await deleteReply(interaction, { timeout: 30000 });
+    const sortedUsage = [...globalUsage].sort((a, b) =>
+        sortOrder === "top" ? b.totalCount - a.totalCount : a.totalCount - b.totalCount
+    );
+
+    await sendUsageEmbed(
+        interaction,
+        sortOrder === "top" ? "Top Used Commands (Global)" : "Least Used Commands (Global)",
+        sortOrder === "top" ? "#00FF00" : "#FF0000",
+        sortedUsage,
+        (command, index) => {
+            const percentage = totalUses > 0 ? ((command.totalCount / totalUses) * 100).toFixed(2) : "0.00";
+            return `**${index + 1}.** \`/${command._id}\`: ${command.totalCount} uses (${percentage}%)`;
+        }
+    );
+}
+
+async function handleGuildList(interaction: ChatInputCommandInteraction, client: Client, sortOrder: "top" | "least") {
+    const guilds = await getGuildUsage(sortOrder === "top" ? -1 : 1);
+    const totalUses = guilds.reduce((sum, guild) => sum + guild.totalCount, 0);
+
+    await sendUsageEmbed(
+        interaction,
+        sortOrder === "top" ? "Top Guilds by Command Usage" : "Least Used Guilds by Command Usage",
+        sortOrder === "top" ? "#00FF00" : "#FF0000",
+        guilds,
+        async (guild, index) => {
+            const percentage = totalUses > 0 ? ((guild.totalCount / totalUses) * 100).toFixed(2) : "0.00";
+            const guildName = await getGuildNameAndId(client, guild._id);
+            return `**${index + 1}.** ${guildName}: ${guild.totalCount} uses (${percentage}%)`;
+        }
+    );
 }
 
 async function handleInfoCommand(interaction: ChatInputCommandInteraction, client: Client) {
     const commandName = interaction.options.getString("command_name");
     const guildId = interaction.options.getString("guild_id");
 
-    const getGuildNameAndId = async (id: string) => {
-        try {
-            const guild = await client.guilds.fetch(id);
-            return `${guild.name} (\`${id}\`)`;
-        } catch (error) {
-            return `(\`${id}\`)`;
-        }
-    };
-
     if (commandName && guildId) {
-        // Specific command in specific guild
         const guildUsage = await getGuildCommandUsage(guildId);
         const commandData = guildUsage.find(usage => usage.commandName === commandName);
-
         if (!commandData) {
-            throw new ValidationError("No usage data found for command `" + `/${commandName}` + "` in guild `" + `${guildId}` + "`.");
+            throw new ValidationError(`No usage data found for command \`/${commandName}\` in guild \`${guildId}\`.`);
         }
-
-        const formattedGuildId = await getGuildNameAndId(guildId);
-        const embed = new EmbedBuilder()
-            .setTitle("Usage for `" + `/${commandName}` + "` in Guild " + formattedGuildId)
-            .setColor("#0EFEFE")
-            .setDescription(`**Total Uses:** ${commandData.count}`);
-
-        await sendReply(interaction, { embeds: [embed.toJSON()], flags: MessageFlags.Ephemeral });
-        await deleteReply(interaction, { timeout: 30000 });
-
+        const guildName = await getGuildNameAndId(client, guildId);
+        await sendUsageEmbed(interaction, `Usage for \`/${commandName}\` in ${guildName}`, "#0EFEFE", [commandData], (cmd) => `**Total Uses:** ${cmd.count}`);
     } else if (commandName) {
-        // Top guilds for a specific command
         const commandUsageByGuild = await getCommandUsageByCommandName(commandName);
-
-        if (commandUsageByGuild.length === 0) {
-            throw new ValidationError("No usage data found for command `" + `/${commandName}` + "`.");
-        }
-
-        const embed = new EmbedBuilder()
-            .setTitle("Top Guilds for `" + `/${commandName}` + "`")
-            .setColor("#0EFEFE");
-
-        let description = "";
-        for (let i = 0; i < Math.min(10, commandUsageByGuild.length); i++) {
-            const formattedGuildId = await getGuildNameAndId(commandUsageByGuild[i].guildId);
-            description += `**${i + 1}.** ${formattedGuildId}: ${commandUsageByGuild[i].count} uses\n`;
-        }
-        embed.setDescription(description);
-
-        await sendReply(interaction, { embeds: [embed.toJSON()], flags: MessageFlags.Ephemeral });
-        await deleteReply(interaction, { timeout: 30000 });
-
+        await sendUsageEmbed(interaction, `Top Guilds for \`/${commandName}\``, "#0EFEFE", commandUsageByGuild, async (usage, index) => {
+            const guildName = await getGuildNameAndId(client, usage.guildId);
+            return `**${index + 1}.** ${guildName}: ${usage.count} uses`;
+        });
     } else if (guildId) {
-        // All commands in a specific guild
         const guildUsage = await getGuildCommandUsage(guildId);
-
-        if (guildUsage.length === 0) {
-            throw new ValidationError("No command usage data found for guild `" + `${guildId}` + "`.");
-        }
-
-        const formattedGuildId = await getGuildNameAndId(guildId);
-        const embed = new EmbedBuilder()
-            .setTitle("Command Usage in Guild " + formattedGuildId)
-            .setColor("#0EFEFE");
-
-        let description = "";
-        for (let i = 0; i < Math.min(10, guildUsage.length); i++) {
-            description += `**${i + 1}.** ` + "`" + `/${guildUsage[i].commandName}` + "`" + `: ${guildUsage[i].count} uses\n`;
-        }
-        embed.setDescription(description);
-
-        await sendReply(interaction, { embeds: [embed.toJSON()], flags: MessageFlags.Ephemeral });
-        await deleteReply(interaction, { timeout: 30000 });
-
+        const guildName = await getGuildNameAndId(client, guildId);
+        await sendUsageEmbed(interaction, `Command Usage in ${guildName}`, "#0EFEFE", guildUsage, (cmd, index) => `**${index + 1}.** \`/${cmd.commandName}\`: ${cmd.count} uses`);
     } else {
         throw new ValidationError("Please provide either a command name or a guild ID.");
     }
@@ -184,85 +153,11 @@ async function handleUnusedCommands(interaction: ChatInputCommandInteraction, cl
     const allCommands = Array.from(client.commands.keys());
     const usedCommandsData = await getGlobalCommandUsage();
     const usedCommandNames = new Set(usedCommandsData.map(usage => usage._id));
-
     const unusedCommands = allCommands.filter(commandName => !usedCommandNames.has(commandName));
 
     if (unusedCommands.length === 0) {
         throw new ValidationError("All commands have been used at least once!");
     }
 
-    const embed = new EmbedBuilder()
-        .setTitle("Unused Commands")
-        .setColor("#FF0000");
-
-    let description = "";
-    unusedCommands.forEach(commandName => {
-        description += `\`/${commandName}\`\n`;
-    });
-    embed.setDescription(description);
-
-    await sendReply(interaction, { embeds: [embed.toJSON()], flags: MessageFlags.Ephemeral });
-    await deleteReply(interaction, { timeout: 30000 });
-}
-
-async function handleTopGuilds(interaction: ChatInputCommandInteraction, client: Client) {
-    const topGuilds = await getTopGuildsByUsage();
-    if (topGuilds.length === 0) {
-        throw new ValidationError("No guild usage data found.");
-    }
-    const embed = new EmbedBuilder()
-        .setTitle("Top Guilds by Command Usage")
-        .setColor("#00FF00");
-
-    let description = "";
-    const totalUses = topGuilds.reduce((sum, guild) => sum + guild.totalCount, 0);
-    const getGuildNameAndId = async (id: string) => {
-        try {
-            const guild = await client.guilds.fetch(id);
-            return `${guild.name} (` + "`" + `${id}` + "`" + `)`;
-        } catch (error) {
-            return `(` + "`" + `${id}` + "`" + `)`;
-        }
-    };
-
-    for (let i = 0; i < Math.min(10, topGuilds.length); i++) {
-        const percentage = totalUses > 0 ? ((topGuilds[i].totalCount / totalUses) * 100).toFixed(2) : 0;
-        const formattedGuildId = await getGuildNameAndId(topGuilds[i]._id);
-        description += `**${i + 1}.** ${formattedGuildId}: ${topGuilds[i].totalCount} uses (${percentage}%)\n`;
-    }
-    embed.setDescription(description);
-
-    await sendReply(interaction, { embeds: [embed.toJSON()], flags: MessageFlags.Ephemeral });
-    await deleteReply(interaction, { timeout: 30000 });
-}
-
-async function handleLeastGuilds(interaction: ChatInputCommandInteraction, client: Client) {
-    const leastGuilds = await getLeastUsedGuildsByUsage();
-    if (leastGuilds.length === 0) {
-        throw new ValidationError("No guild usage data found.");
-    }
-    const embed = new EmbedBuilder()
-        .setTitle("Least Used Guilds by Command Usage")
-        .setColor("#FF0000");
-
-    let description = "";
-    const totalUses = leastGuilds.reduce((sum, guild) => sum + guild.totalCount, 0);
-    const getGuildNameAndId = async (id: string) => {
-        try {
-            const guild = await client.guilds.fetch(id);
-            return `${guild.name} (` + "`" + `${id}` + "`" + `)`;
-        } catch (error) {
-            return `(` + "`" + `${id}` + "`" + `)`;
-        }
-    };
-
-    for (let i = 0; i < Math.min(10, leastGuilds.length); i++) {
-        const percentage = totalUses > 0 ? ((leastGuilds[i].totalCount / totalUses) * 100).toFixed(2) : 0;
-        const formattedGuildId = await getGuildNameAndId(leastGuilds[i]._id);
-        description += `**${i + 1}.** ${formattedGuildId}: ${leastGuilds[i].totalCount} uses (${percentage}%)\n`;
-    }
-    embed.setDescription(description);
-
-    await sendReply(interaction, { embeds: [embed.toJSON()], flags: MessageFlags.Ephemeral });
-    await deleteReply(interaction, { timeout: 30000 });
+    await sendUsageEmbed(interaction, "Unused Commands", "#FF0000", unusedCommands, (cmdName) => `\`/${cmdName}\``);
 }
