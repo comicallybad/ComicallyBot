@@ -3,11 +3,11 @@
 
 <div>
 
-# ComicallyBotTS
+# ComicallyBot
 
-ComicallyBotTS is a Discord bot built with TypeScript that can do just about everything. From moderating your server, providing a modern music player, to keeping a conversation going with its autochat feature, ComicallyBotTS is designed to enhance your Discord experience.
+ComicallyBot is a Discord bot built with TypeScript that has many features. From moderating your server, providing a modern music player, to tons of fun commands, ComicallyBot is designed to enhance your Discord experience.
 
-ComicallyBotTS is made and managed by [ComicallyBad](https://github.com/comicallybad).
+ComicallyBot is made and managed by [ComicallyBad](https://github.com/comicallybad).
 
 </div>
 </div>
@@ -20,19 +20,19 @@ ComicallyBotTS is made and managed by [ComicallyBad](https://github.com/comicall
 - **Moderation**: Whether you need auto-moderation, or manual, the bot has you covered.
 - **Information**: Find helpful information on your guild, roles, and members.
 - **Event Logging**: Keep track of what's happening in your server with detailed event logging.
-- **And More**: ComicallyBotTS is always improving with new features being added regularly.
+- **And More**: ComicallyBot is always improving with new features being added regularly.
 
 ## Updates
 
 - **TypeScript Port**: The entire project has been ported from JavaScript to TypeScript for improved maintainability and type safety.
-- **Slash Commands**: Slash commands have been implemented for a cleaner and more intuitive user experience.
-- **Music Player**: The music player has been modernized to include better track & queue control, an equalizer, and player controls.
+- **Slash Commands**: Global and developer guild slash commands have been implemented for a cleaner and more intuitive user experience.
+- **Music Player**: The music player has been modernized and made more efficient.
 - **Event Logging**: Event logging has been improved with centralized error handling and logging to files.
 - **More To Come**: Features are always in the works! Suggestions and feedback are greatly appreciated.
 
 ## How to Use
 
-To clone and use ComicallyBotTS, follow these steps:
+To clone and use ComicallyBot, follow these steps:
 
 1. Install [mongodb](https://www.mongodb.com/try/download/community)
 2. Install [Lavalink](https://github.com/lavalink-devs/Lavalink/releases/)
@@ -42,13 +42,14 @@ To clone and use ComicallyBotTS, follow these steps:
 6. Create a `.env` file with:
     - `DISCORD_TOKEN`: Your Discord bot token.
     - `CLIENT_ID`: Your Discord bot's client ID.
-    - `MUSIC`: Your Lavalink/Moonlink password.
+    - `DEV_GUILD_ID` Your Discord guild ID for developer commands
     - `BOT_OWNER_ID`: Your Discord user ID (for owner-only commands and error DMs).
-    - `DMCHANNELID`: The ID of a DM channel with the bot (for `clean_dms` command).
+    - `DM_CHANNEL_ID`: The ID of a DM channel with the bot (for `/clean_dms` command).
+    - `MUSIC`: Your Lavalink/Moonlink password.
 7. Run `npm install` to install the necessary packages.
 8. Run `npm run build` to compile the TypeScript code.
 9. Run `npm run deploy` to deploy the slash commands to Discord.
-10. Run `npm run start` to start the bot.
+10. Run the `start.bat` within the root directory to start Lavalink and the bot.
 
 ## Support
 

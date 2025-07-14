@@ -1,0 +1,68 @@
+name: 🙋 Help
+description: Open an issue and request for individual help
+labels: ['help', 'help wanted']
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before you submit an issue it is recommended to read the [README.md](https://github.com/comicallybad/comicallybot/blob/master/ReadMe.md).
+
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      options:
+      - label: I have written a descriptive issue title
+        required: true
+
+  - type: input
+    id: node-version
+    attributes:
+      label: Node.js Version
+      placeholder: 17.x
+    validations:
+      required: true
+
+  - type: input
+    id: discordjs-version
+    attributes:
+      label: Discord.js Version
+      placeholder: 14.x
+    validations:
+      required: true
+
+  - type: input
+    id: java-version
+    attributes:
+      label: Java Version
+      placeholder: 17.x
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Linux
+        - macOS
+        - Windows
+    validations:
+      required: false
+
+  - type: input
+    id: os-version
+    attributes:
+      label: OS version (i.e. Ubuntu 22.04, Mac OS Monterey, Windows 11)
+      placeholder: (Optional)
+    validations:
+      required: false
+
+  - type: textarea
+    id: text
+    attributes:
+      label: Issue/Information for required help
+      description: |
+        Give as much detail as you can to help us understand.
+        Make sure you place example code inside a [code (```) block](https://docs.github.com/en/github/writing-on-github/creating-and-highlighting-code-blocks) to avoid linking unrelated issues.
