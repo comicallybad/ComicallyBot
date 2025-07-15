@@ -26,7 +26,7 @@ export async function logError(error: any, context?: string) {
         errorMessage = String(error);
     }
 
-    const logEntry = `[${date.toLocaleString()}]${context ? ` [${context}]` : ""} ERROR: ${errorMessage}`;
+    const logEntry = `[${date.toLocaleString()}]${context ? ` [${context}]` : ""} ERROR: ${errorMessage}\n\n`;
 
     console.error(`[${date.toLocaleString()}] New error logged: ${errorMessage.split('\n')[0]}`);
 
