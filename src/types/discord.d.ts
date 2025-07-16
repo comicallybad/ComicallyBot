@@ -16,13 +16,7 @@ declare module "discord.js" {
 
 declare module "moonlink.js" {
     interface Player {
-        data: {
-            message?: Message;
-            timelineInterval?: NodeJS.Timeout | null;
-            controlCollector?: InteractionCollector<MessageComponentInteraction> | null;
-            volumeCollector?: InteractionCollector<MessageComponentInteraction> | null;
-            [key: string]: any;
-        };
+        data: Map<string, any>;
     }
 
     interface Track {

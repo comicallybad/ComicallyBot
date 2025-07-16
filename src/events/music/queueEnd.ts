@@ -1,10 +1,12 @@
 import { Client, EmbedBuilder, TextChannel, Message } from "discord.js";
 import { Player } from "moonlink.js";
+import { deletePlayerState } from "../../utils/dbUtils";
 import { sendMessage, deleteMessage } from "../../utils/messageUtils";
 
 export default {
     name: "queueEnd",
     execute: async (client: Client, player: Player) => {
+        await deletePlayerState(player.guildId);
         const channel = await client.channels.fetch(player.textChannelId) as TextChannel;
 
         if (player.data.message) {

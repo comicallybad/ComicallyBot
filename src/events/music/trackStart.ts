@@ -7,6 +7,7 @@ import humanizeDuration from "humanize-duration";
 import { sendMessage, deleteMessage, editMessage } from "../../utils/messageUtils";
 import { formatSongTitle } from "../../utils/stringUtils";
 import { deferUpdate } from "../../utils/replyUtils";
+import { savePlayerState } from "../../utils/dbUtils";
 
 const TIMELINE_UPDATE_INTERVAL = 5000;
 const DEFAULT_TIMELINE_LENGTH = 25;
@@ -21,7 +22,6 @@ export default {
         const requester = requestedBy ? await client.users.fetch(requestedBy).catch(() => client.user) : client.user;
         const footerText = `Requested by ${requester?.tag || "Unknown"}`;
         const timelineLength = footerText.length > 30 ? SHORT_TIMELINE_LENGTH : DEFAULT_TIMELINE_LENGTH;
-
         const formattedTitle = formatSongTitle(track.title || "", track.author || "", track.url || "");
 
         const embed = new EmbedBuilder()
@@ -37,6 +37,7 @@ export default {
             player.data.message = sentMessage;
             updateTimeline(sentMessage, embed, player, track, timelineLength);
             controls(sentMessage, embed, player, track);
+            await savePlayerState(player);
         }
     },
 };
@@ -61,6 +62,7 @@ function updateTimeline(message: Message, embed: EmbedBuilder, player: Player, t
 
         try {
             await editMessage(message, { embeds: [embed.toJSON()] });
+            await savePlayerState(player);
         } catch (error: unknown) {
             clearPlayerIntervalsAndCollectors(player);
             return;

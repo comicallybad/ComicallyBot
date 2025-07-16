@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction, Client, InteractionContextType } from "discord.js";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
 import { ValidationError } from "../../utils/customErrors";
+import { savePlayerState } from "../../utils/dbUtils";
 
 export default {
     data: new SlashCommandBuilder()
@@ -28,6 +29,7 @@ export default {
             .setColor("#0EFEFE")
             .setDescription("🔀 The song queue has been shuffled randomly!");
 
+        await savePlayerState(player);
         await sendReply(interaction, { embeds: [embed.toJSON()] });
         await deleteReply(interaction, { timeout: 30000 });
     }

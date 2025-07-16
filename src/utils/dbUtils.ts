@@ -1,7 +1,9 @@
-import { Client } from "discord.js";
+import { Client, Message } from "discord.js";
 import { GuildConfig } from "../models/GuildConfig";
 import CommandUsage from "../models/CommandUsage";
+import PlayerState from "../models/PlayerState";
 import { Types } from "mongoose";
+import { Player } from "moonlink.js";
 
 async function findOrCreateGuildConfig(guildId: string, guildName: string) {
     let config = await GuildConfig.findOne({ guildID: guildId });
@@ -87,5 +89,40 @@ export async function getGuildUsage(sortOrder: 1 | -1) {
             $sort: { totalCount: sortOrder },
         },
     ]);
+}
+
+export async function savePlayerState(player: Player) {
+    if (!player) return;
+    await PlayerState.findOneAndUpdate(
+        { guildId: player.guildId },
+        {
+            guildId: player.guildId,
+            voiceChannelId: player.voiceChannelId,
+            textChannelId: player.textChannelId,
+            messageId: (player.data.message as Message)?.id,
+            queue: player.queue.tracks,
+            previous: player.previous,
+            currentTrack: player.current,
+            position: player.current?.position ?? 0,
+            playing: player.playing,
+            paused: player.paused,
+            volume: player.volume,
+            loop: player.loop,
+            autoPlay: player.autoPlay,
+        },
+        { upsert: true, new: true }
+    );
+}
+
+export async function getSavedPlayerState(guildId: string) {
+    return await PlayerState.findOne({ guildId: guildId });
+}
+
+export async function deletePlayerState(guildId: string) {
+    await PlayerState.deleteOne({ guildId: guildId });
+}
+
+export async function getAllSavedPlayerStates() {
+    return await PlayerState.find({});
 }
 

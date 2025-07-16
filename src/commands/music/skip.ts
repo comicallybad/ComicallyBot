@@ -2,6 +2,7 @@ import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction, Client,
 import { Player } from "moonlink.js";
 import humanizeDuration from "humanize-duration";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
+import { savePlayerState } from "../../utils/dbUtils";
 import { ValidationError } from "../../utils/customErrors";
 
 export default {
@@ -104,6 +105,7 @@ async function skipTo(interaction: ChatInputCommandInteraction, player: Player) 
         .setColor("#0EFEFE")
         .setDescription(`⏩ The current song has been skipped to \`${humanizeDuration(time * 1000)}\`!`);
 
+    await savePlayerState(player);
     await sendReply(interaction, { embeds: [embed.toJSON()] });
     await deleteReply(interaction, { timeout: 30000 });
 }
@@ -127,6 +129,7 @@ async function skipAhead(interaction: ChatInputCommandInteraction, player: Playe
         .setColor("#0EFEFE")
         .setDescription(`⏩ The current song time has been skipped \`${humanizeDuration(time * 1000)}\` to \`${humanizeDuration(Math.floor(position))}\`!`);
 
+    await savePlayerState(player);
     await sendReply(interaction, { embeds: [embed.toJSON()] });
     await deleteReply(interaction, { timeout: 30000 });
 }

@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction, Client, InteractionContextType } from "discord.js";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
+import { savePlayerState } from "../../utils/dbUtils";
 import { ValidationError } from "../../utils/customErrors";
 
 export default {
@@ -37,6 +38,7 @@ export default {
             .setColor("#0EFEFE")
             .setDescription(`The volume has been set to: **${volume}%** ${volLevel}`);
 
+        await savePlayerState(player);
         await sendReply(interaction, { embeds: [embed.toJSON()] });
         await deleteReply(interaction, { timeout: 30000 });
     }

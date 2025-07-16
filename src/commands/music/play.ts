@@ -7,6 +7,7 @@ import { sendReply, deleteReply, editReply } from "../../utils/replyUtils";
 import { formatSongTitle } from "../../utils/stringUtils";
 import { Player, SearchResult, Track } from "moonlink.js";
 import { PermissionError, ValidationError } from "../../utils/customErrors";
+import { savePlayerState } from "../../utils/dbUtils";
 
 export default {
     data: new SlashCommandBuilder()
@@ -108,6 +109,7 @@ async function handleNoSongOption(interaction: ChatInputCommandInteraction, clie
             if (checkPlayer.paused) {
                 checkPlayer.setTextChannelId(interaction.channel!.id);
                 checkPlayer.resume();
+                await savePlayerState(checkPlayer);
 
                 const embed = new EmbedBuilder()
                     .setAuthor({ name: `Player resumed.`, iconURL: interaction.user.displayAvatarURL() })
@@ -124,6 +126,7 @@ async function handleNoSongOption(interaction: ChatInputCommandInteraction, clie
             checkPlayer.setTextChannelId(interaction.channel!.id);
             checkPlayer.setVoiceChannelId(voiceChannel.id);
             checkPlayer.connect({ setDeaf: true, setMute: false });
+            await savePlayerState(checkPlayer);
 
             const embed = new EmbedBuilder()
                 .setAuthor({ name: `Player joined.`, iconURL: interaction.user.displayAvatarURL() })
@@ -147,13 +150,15 @@ async function handleLoadType(interaction: ChatInputCommandInteraction, player: 
     }
 
     if (res.loadType === "playlist") {
+        player.queue.add(res.tracks);
         await sendPlaylistEmbed(interaction, "Playlist Added To Queue!", res);
-        res.tracks.forEach((track: Track) => player.queue.add(track));
         startPlaying(player);
+        await savePlayerState(player);
     } else {
         player.queue.add(res.tracks[0]);
         await sendEmbed(interaction, "Song Added To Queue!", res.tracks[0]);
         startPlaying(player);
+        await savePlayerState(player);
     }
 }
 

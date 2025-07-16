@@ -6,6 +6,7 @@ import { Player, Track } from "moonlink.js";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
 import { formatSongTitle } from "../../utils/stringUtils";
 import { pageList } from "../../utils/paginationUtils";
+import { savePlayerState } from "../../utils/dbUtils";
 import { ValidationError } from "../../utils/customErrors";
 
 export default {
@@ -127,6 +128,7 @@ async function clearQueue(interaction: ChatInputCommandInteraction, player: Play
         .setColor("#FF0000")
         .setDescription("The queue has been cleared.");
 
+    await savePlayerState(player);
     await sendReply(interaction, { embeds: [embed.toJSON()] });
     await deleteReply(interaction, { timeout: 30000 });
 }
@@ -159,6 +161,7 @@ async function removeQueue(interaction: ChatInputCommandInteraction, player: Pla
         .setColor("#FF0000")
         .setDescription(`${text} been removed from the queue.`)
 
+    await savePlayerState(player);
     await sendReply(interaction, { embeds: [embed.toJSON()] });
     await deleteReply(interaction, { timeout: 30000 });
 }

@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction, Client, InteractionContextType } from "discord.js";
 import { Player } from "moonlink.js";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
+import { savePlayerState } from "../../utils/dbUtils";
 import { ValidationError } from "../../utils/customErrors";
 
 export default {
@@ -46,6 +47,7 @@ async function trackRepeat(interaction: ChatInputCommandInteraction, player: Pla
         .setColor("#0EFEFE")
         .setDescription(`Track repeat has been toggled ${player.loop !== "off" ? "**ON**\n(The current track will now repeat) 🔁" : "**OFF**\n(The current track will no longer repeat) ❌🔁"}`);
 
+    await savePlayerState(player);
     await sendReply(interaction, { embeds: [embed.toJSON()] });
     await deleteReply(interaction, { timeout: 30000 });
 }
@@ -60,6 +62,7 @@ async function queueRepeat(interaction: ChatInputCommandInteraction, player: Pla
         .setColor("#0EFEFE")
         .setDescription(`The player queue repeat has been toggled ${player.loop !== "off" ? "**ON**\n(The queue will now repeat) 🔁" : "**OFF**\n(The queue will no longer repeat) ❌🔁"}`);
 
+    await savePlayerState(player);
     await sendReply(interaction, { embeds: [embed.toJSON()] });
     await deleteReply(interaction, { timeout: 30000 });
 }
