@@ -21,6 +21,7 @@ export default {
                 const timer = setTimeout(() => {
                     const player = client.music.players.get(oldChannel.guild.id);
                     if (player) {
+                        player.disconnect();
                         player.destroy();
                     }
                     disconnectTimers.delete(oldChannel.id);

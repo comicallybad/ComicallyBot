@@ -7,7 +7,7 @@ import humanizeDuration from "humanize-duration";
 import { sendMessage, deleteMessage, editMessage } from "../../utils/messageUtils";
 import { formatSongTitle } from "../../utils/stringUtils";
 import { deferUpdate } from "../../utils/replyUtils";
-import { savePlayerState } from "../../utils/dbUtils";
+import { savePlayerState, deletePlayerState } from "../../utils/dbUtils";
 
 const TIMELINE_UPDATE_INTERVAL = 5000;
 const DEFAULT_TIMELINE_LENGTH = 25;
@@ -44,6 +44,12 @@ export default {
 
 function updateTimeline(message: Message, embed: EmbedBuilder, player: Player, track: Track, timelineLength: number) {
     player.data.timelineInterval = setInterval(async () => {
+        if (player.destroyed) {
+            await deletePlayerState(player.guildId);
+            clearPlayerIntervalsAndCollectors(player);
+            return;
+        }
+
         if (!player || !player.current || !player.data.message) {
             clearPlayerIntervalsAndCollectors(player);
             return;

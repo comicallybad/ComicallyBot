@@ -60,6 +60,13 @@ export default {
                     }
                 }
 
+                setTimeout(() => {
+                    if (player && !player.current) {
+                        player.disconnect();
+                        player.destroy();
+                    }
+                }, 5000);
+
                 const textChannel = await client.channels.fetch(savedState.textChannelId) as TextChannel;
                 if (textChannel) {
                     await deleteOldMessage(client, savedState.textChannelId, savedState.messageId);
