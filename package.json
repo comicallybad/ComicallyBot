@@ -52,7 +52,7 @@
     "dotenv": "^16.4.7",
     "humanize-duration": "^3.32.1",
     "mongoose": "^8.10.1",
-    "moonlink.js": "^4.6.18",
+    "moonlink.js": "^4.52.2",
     "node-fetch": "^2.7.0",
     "relevant-urban": "^2.0.0",
     "word-definition": "^2.1.6"
