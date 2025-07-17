@@ -6,9 +6,9 @@ import { getLogChannel } from "../../utils/channelUtils";
 export default {
     name: "messageReactionAdd",
     async execute(client: Client, messageReaction: MessageReaction, user: User) {
-        const hasManageRoles = messageReaction.message.guild?.members.me?.permissions.has(PermissionFlagsBits.ManageRoles);
+        const hasManageMessages = messageReaction.message.guild?.members.me?.permissions.has(PermissionFlagsBits.ManageMessages);
 
-        if (!hasManageRoles || user.id === client.user?.id) return;
+        if (!hasManageMessages || user.id === client.user?.id) return;
 
         const fullMessage = messageReaction.partial ? await messageReaction.fetch() : messageReaction;
         checkDeleteReaction(fullMessage, user, client.user?.id);
@@ -19,7 +19,7 @@ async function checkDeleteReaction(messageReaction: MessageReaction, user: User,
     const msg = messageReaction.message;
     const guildUser = msg.guild?.members.cache.get(user.id);
     const guildID = msg.guild?.id;
-    const reaction = messageReaction.emoji.id || messageReaction.emoji.name;
+    const reaction = messageReaction.emoji.toString();
 
     if (!guildID) return;
 

@@ -10,4 +10,4 @@ const GuildConfigSchema = new Schema<IGuildConfig>({
     deleteReaction: { type: String, default: "" },
 });
 
-export const GuildConfig = model<IGuildConfig>("GuildConfig", GuildConfigSchema, "db");
+export const GuildConfig = model<IGuildConfig>("GuildConfig", GuildConfigSchema, "guildconfigs");
