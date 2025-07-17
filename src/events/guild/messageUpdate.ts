@@ -1,4 +1,4 @@
-import { Client, EmbedBuilder, Message, TextChannel } from "discord.js";
+import { Client, EmbedBuilder, Message } from "discord.js";
 import { sendMessage } from "../../utils/messageUtils";
 import { formatMessageContent } from "../../utils/stringUtils";
 import { getLogChannel } from "../../utils/channelUtils";

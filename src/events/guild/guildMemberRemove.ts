@@ -1,4 +1,4 @@
-import { GuildMember, Client, EmbedBuilder, TextChannel } from "discord.js";
+import { GuildMember, Client, EmbedBuilder } from "discord.js";
 import { updateActivities } from "../../utils/activityUtils";
 import { sendMessage } from "../../utils/messageUtils";
 import humanizeDuration from "humanize-duration";

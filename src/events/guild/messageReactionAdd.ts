@@ -1,4 +1,4 @@
-import { MessageReaction, User, PermissionFlagsBits, EmbedBuilder, TextChannel, Message, PartialMessage, Client, GuildMember } from "discord.js";
+import { MessageReaction, User, PermissionFlagsBits, EmbedBuilder, Message, PartialMessage, Client, GuildMember } from "discord.js";
 import { sendMessage, deleteMessage } from "../../utils/messageUtils";
 import { GuildConfig } from "../../models/GuildConfig";
 import { getLogChannel } from "../../utils/channelUtils";

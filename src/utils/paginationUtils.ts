@@ -1,12 +1,6 @@
 import {
-    ActionRowBuilder,
-    ButtonBuilder,
-    ButtonStyle,
-    CommandInteraction,
-    MessageComponentInteraction,
-    ModalSubmitInteraction,
-    EmbedBuilder,
-    ComponentType
+    ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, MessageComponentInteraction,
+    ModalSubmitInteraction, EmbedBuilder, ComponentType
 } from "discord.js";
 import { editReply, deleteReply, deferUpdate } from "./replyUtils";
 import { ValidationError } from "./customErrors";

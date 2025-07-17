@@ -1,5 +1,5 @@
 import {
-    SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, ChannelType, TextChannel, ChatInputCommandInteraction,
+    SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, ChannelType, ChatInputCommandInteraction,
     MessageFlags, ActionRowBuilder, ButtonBuilder, ButtonStyle, ButtonInteraction
 } from "discord.js";
 import { sendReply, deleteReply, editReply } from "../../utils/replyUtils";

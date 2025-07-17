@@ -1,4 +1,4 @@
-import { GuildMember, Client, EmbedBuilder, PermissionFlagsBits, TextChannel } from "discord.js";
+import { GuildMember, Client, EmbedBuilder, PermissionFlagsBits } from "discord.js";
 import { updateActivities } from "../../utils/activityUtils";
 import { sendMessage } from "../../utils/messageUtils";
 import { GuildConfig } from "../../models/GuildConfig";
@@ -34,7 +34,7 @@ export default {
         const exists = await GuildConfig.findOne({ guildID: guildID });
         if (!exists || !exists.channels.find(ch => ch.command === "welcome") || !(exists.welcomeMessage.length > 0)) return;
 
-        const welcomeCH = await member.guild.channels.fetch(exists.channels.find(ch => ch.command === "welcome")?.channelID || "").catch(() => null) as TextChannel;
+        const welcomeCH = getLogChannel(member.guild, ["welcome-logs"]);
         if (!welcomeCH || !member.guild.members.me?.permissionsIn(welcomeCH)?.has(PermissionFlagsBits.SendMessages)) return;
 
         const welcomeMSG = exists.welcomeMessage.toString().replace(/\[user\]/g, `${member.user}`);

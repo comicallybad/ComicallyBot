@@ -11,8 +11,7 @@ export default {
         const message = await interaction.fetchReply();
 
         await editReply(interaction, {
-            content: `Api Latency: ${client.ws.ping}ms
-Client Ping: ${message.createdTimestamp - interaction.createdTimestamp}ms`
+            content: `Api Latency: ${client.ws.ping}ms\nClient Ping: ${message.createdTimestamp - interaction.createdTimestamp}ms`
         });
     }
 };

@@ -1,4 +1,4 @@
-import { Channel, Client, GuildChannel } from "discord.js";
+import { Channel, Client } from "discord.js";
 import { GuildConfig } from "../../models/GuildConfig";
 
 export default {
