@@ -73,7 +73,6 @@ export default {
 
                     const embed = new EmbedBuilder()
                         .setAuthor({ name: "Player Resuming", iconURL: textChannel.guild.iconURL() || undefined })
-                        .setThumbnail(player.current.getThumbnailUrl() ?? textChannel.guild.iconURL() ?? null)
                         .setColor("#0EFEFE")
                         .setDescription("🎶 The player is resuming from its last saved state.")
 
