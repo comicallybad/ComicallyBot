@@ -38,23 +38,6 @@ lavalink:
         useSeekGhosting: true
         youtubePlaylistLoadLimit: 6
         youtubeSearchEnabled: true
-# logging:
-#     file:
-#         path: ./logs/
-#     level:
-#         lavalink: INFO
-#         root: INFO
-#     logback:
-#         rollingpolicy:
-#             max-file-size: 1GB
-#             max-history: 30
-#     request:
-#         enabled: true
-#         includeClientInfo: true
-#         includeHeaders: false
-#         includePayload: true
-#         includeQueryString: true
-#         maxPayloadLength: 10000
 metrics:
     prometheus:
         enabled: false
