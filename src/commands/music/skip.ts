@@ -127,7 +127,7 @@ async function skipAhead(interaction: ChatInputCommandInteraction, player: Playe
         .setAuthor({ name: "Song Time Set!", iconURL: interaction.user.displayAvatarURL() })
         .setThumbnail(player.current?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
         .setColor("#0EFEFE")
-        .setDescription(`⏩ The current song time has been skipped \`${humanizeDuration(time * 1000)}\` to \`${humanizeDuration(Math.floor(position))}\`!`);
+        .setDescription(`⏩ The current song time has been skipped \`${humanizeDuration(time * 1000)}\` to \`${humanizeDuration(position, { round: true })}\`!`);
 
     await savePlayerState(player);
     await sendReply(interaction, { embeds: [embed.toJSON()] });

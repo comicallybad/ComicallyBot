@@ -1,4 +1,5 @@
 import { Message, PartialMessage, Client } from "discord.js";
+import humanizeDuration from "humanize-duration";
 
 export function escapeMarkdown(text: string): string {
     return text.replace(/\|\|/g, "\\|\\").replace(/([_\*\`~])/g, "\\$1");
@@ -55,7 +56,7 @@ export function formatMessageContent(message: Message | PartialMessage): string 
     if (message.poll) {
         content += `Poll Question: ${message.poll.question.text}\n`;
         message.poll.answers.forEach((answer, index) => {
-            content += `  Answer ${index + 1}: ${answer.text}\n`;
+            content += `  Answer ${index}: ${answer.text}\n`;
         });
         if (message.poll.expiresAt) {
             const now = new Date();
@@ -63,8 +64,10 @@ export function formatMessageContent(message: Message | PartialMessage): string 
                 content += `  Status: Expired\n`;
             } else {
                 const durationMs = message.poll.expiresAt.getTime() - now.getTime();
-                const durationSeconds = Math.floor(durationMs / 1000);
-                content += `  Expires In: ${durationSeconds} seconds\n`;
+                const duration = humanizeDuration(durationMs, {
+                    round: true,
+                });
+                content += `  Expires In: ${duration}\n`;
             }
         }
     }

@@ -28,7 +28,7 @@ export default {
             .setAuthor({ name: "Now Playing!", iconURL: guild.iconURL() || undefined })
             .setThumbnail(track.getThumbnailUrl() ?? guild.iconURL() ?? null)
             .setColor("#0EFEFE")
-            .setDescription(`▶️ ${formattedTitle} \`${humanizeDuration(Math.round((track.duration || 0) / 1000) * 1000)}\`\n🔘${'▬'.repeat(timelineLength)}\n\`0 Seconds\``)
+            .setDescription(`▶️ ${formattedTitle} \`${humanizeDuration(track.duration ?? 0, { round: true })}\`\n🔘${'▬'.repeat(timelineLength)}\n\`0 Seconds\``)
             .setFooter({ text: footerText, iconURL: requester?.displayAvatarURL() || undefined });
 
         clearPlayerIntervalsAndCollectors(player);
@@ -64,7 +64,7 @@ function updateTimeline(message: Message, embed: EmbedBuilder, player: Player, t
 
         const formattedTitle = formatSongTitle(track.title || "", track.author || "", track.url || "");
 
-        embed.setDescription(`▶️ ${formattedTitle} \`${humanizeDuration(Math.round((track.duration || 0) / 1000) * 1000)}\`\n${timelineArray.join('')}\n\`${humanizeDuration(Math.round((player.current.position || 0) / 1000) * 1000)}\``);
+        embed.setDescription(`▶️ ${formattedTitle} \`${humanizeDuration(track.duration ?? 0, { round: true })}\`\n${timelineArray.join('')}\n\`${humanizeDuration(player.current.position ?? 0, { round: true })}\``);
 
         try {
             await editMessage(message, { embeds: [embed.toJSON()] });

@@ -180,7 +180,7 @@ async function sendEmbed(interaction: ChatInputCommandInteraction, title: string
         .setAuthor({ name: title, iconURL: interaction.user.displayAvatarURL() })
         .setThumbnail(track.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
         .setColor("#0EFEFE")
-        .setDescription(`⌚ Queuing ${formatSongTitle(songTitle, songAuthor, songUrl)} \`${humanizeDuration(track.duration)}\``);
+        .setDescription(`⌚ Queuing ${formatSongTitle(songTitle, songAuthor, songUrl)} \`${humanizeDuration(track.duration, { round: true })}\``);
 
     try {
         await editReply(interaction, { content: "", embeds: [embed.toJSON()] });
@@ -190,7 +190,7 @@ async function sendEmbed(interaction: ChatInputCommandInteraction, title: string
 }
 
 async function sendPlaylistEmbed(interaction: ChatInputCommandInteraction, title: string, res: SearchResult) {
-    const duration = humanizeDuration(res.getTotalDuration());
+    const duration = humanizeDuration(res.getTotalDuration(), { round: true });
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: title, iconURL: interaction.user.displayAvatarURL() })

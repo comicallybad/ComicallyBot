@@ -16,20 +16,18 @@ export default {
             throw new ValidationError("No song(s) currently playing in this guild.");
         }
 
-        const { title, author, duration, position, thumbnail, url, requestedBy } = player.current;
+        const { title, author, duration, position, url, requestedBy } = player.current;
         const songTitle = title ?? "";
         const songAuthor = author ?? "";
         const songUrl = url ?? "";
         const requester = requestedBy && typeof requestedBy === 'object' && 'id' in requestedBy ? await client.users.fetch(requestedBy.id as string) : null;
-        const totalLength = Math.floor(duration / 1000) * 1000;
-        const currentPosition = Math.floor(position / 1000) * 1000;
 
         const embed = new EmbedBuilder()
             .setAuthor({ name: "Current Song!", iconURL: interaction.guild?.iconURL() || undefined })
             .setThumbnail(player.current.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
             .setColor("#0EFEFE")
-            .setDescription(`${!player.paused ? "▶️" : "⏸️"} ${formatSongTitle(songTitle, songAuthor, songUrl)} ${humanizeDuration(totalLength)}
-            Currently at: ${humanizeDuration(currentPosition)}`)
+            .setDescription(`${!player.paused ? "▶️" : "⏸️"} ${formatSongTitle(songTitle, songAuthor, songUrl)} ${humanizeDuration(duration, { round: true })}
+            __**Currently at:**__ \`${humanizeDuration(position, { round: true })}\``)
             .setFooter({ text: `Requested by ${requester?.tag || "Unknown"}`, iconURL: requester?.displayAvatarURL() || undefined });
 
         await sendReply(interaction, { embeds: [embed.toJSON()] });
