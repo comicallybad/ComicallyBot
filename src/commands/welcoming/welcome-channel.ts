@@ -7,6 +7,7 @@ import { sendMessage } from "../../utils/messageUtils";
 import { GuildConfig } from "../../models/GuildConfig";
 import { ValidationError } from "../../utils/customErrors";
 import { messagePrompt } from "../../utils/paginationUtils";
+import { getLogChannel } from "../../utils/channelUtils";
 
 export default {
     data: new SlashCommandBuilder()
@@ -64,7 +65,7 @@ async function setWelcomeChannel(interaction: ChatInputCommandInteraction) {
         throw new ValidationError("Please provide a valid text channel.");
     }
 
-    const logChannel = interaction.guild?.channels.cache.find(c => c.name.includes("mod-logs")) as TextChannel || interaction.channel as TextChannel;
+    const logChannel = getLogChannel(interaction.guild!, ["mod-logs"]);
     const guildID = interaction.guildId;
     if (!guildID) return;
 
@@ -140,7 +141,7 @@ async function removeWelcomeChannel(interaction: ChatInputCommandInteraction) {
         }
 
         if (collectedInteraction.customId === "confirm") {
-            const logChannel = interaction.guild?.channels.cache.find(c => c.name.includes("mod-logs")) as TextChannel || interaction.channel as TextChannel;
+            const logChannel = getLogChannel(interaction.guild!, ["mod-logs"]);
 
             await GuildConfig.updateOne({ guildID: guildID }, {
                 $pull: { channels: { command: "welcome" } }

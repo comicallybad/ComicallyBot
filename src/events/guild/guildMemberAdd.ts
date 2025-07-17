@@ -2,15 +2,14 @@ import { GuildMember, Client, EmbedBuilder, PermissionFlagsBits, TextChannel } f
 import { updateActivities } from "../../utils/activityUtils";
 import { sendMessage } from "../../utils/messageUtils";
 import { GuildConfig } from "../../models/GuildConfig";
+import { getLogChannel } from "../../utils/channelUtils";
 
 export default {
     name: "guildMemberAdd",
     async execute(client: Client, member: GuildMember) {
         updateActivities(client);
 
-        const memberLogsChannel = member.guild.channels.cache.find(c => c.name.includes("member-logs")) as TextChannel;
-        const modLogsChannel = member.guild.channels.cache.find(c => c.name.includes("mod-logs")) as TextChannel;
-        const logChannel = memberLogsChannel || modLogsChannel;
+        const logChannel = getLogChannel(member.guild, ["member-logs", "mod-logs"]);
 
         if (!logChannel || member.user.id === client.user?.id) return;
 

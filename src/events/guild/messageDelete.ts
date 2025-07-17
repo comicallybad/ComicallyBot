@@ -1,16 +1,15 @@
 import { Message, Client, EmbedBuilder, TextChannel } from "discord.js";
 import { sendMessage } from "../../utils/messageUtils";
 import { formatMessageContent } from "../../utils/stringUtils";
+import { getLogChannel } from "../../utils/channelUtils";
 
 export default {
     name: "messageDelete",
     async execute(client: Client, message: Message) {
-        if (!message.guild) return;
-        if (!message.content || !message.author) return;
-        if (message.author.bot) return;
+        if (!message.guild || !message.author || message.author.bot) return;
 
         const target = message.author;
-        const logChannel = message.guild.channels.cache.find(channel => channel.name.includes("text-logs")) as TextChannel;
+        const logChannel = getLogChannel(message.guild, ["text-logs"]);
         if (!logChannel || !target) return;
 
         const embed = new EmbedBuilder()

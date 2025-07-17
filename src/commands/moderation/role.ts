@@ -6,6 +6,7 @@ import { deleteReply, editReply, sendReply } from "../../utils/replyUtils";
 import { pageList, messagePrompt } from "../../utils/paginationUtils";
 import { PermissionError, ValidationError } from "../../utils/customErrors";
 import { sendMessage } from "../../utils/messageUtils";
+import { getLogChannel } from "../../utils/channelUtils";
 
 export default {
     data: new SlashCommandBuilder()
@@ -116,7 +117,7 @@ async function addRole(interaction: ChatInputCommandInteraction, member: GuildMe
     await editReply(interaction, { content: `Successfully added the ${role} role to ${member}.`, embeds: [], components: [] });
     await deleteReply(interaction, {});
 
-    const logChannel = interaction.guild?.channels.cache.find(c => c.name.includes("action-logs")) as TextChannel | undefined;
+    const logChannel = getLogChannel(interaction.guild!, ["action-logs"]);
     if (logChannel) {
         const embed = new EmbedBuilder()
             .setColor("Green")

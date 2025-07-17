@@ -8,6 +8,7 @@ import { sendMessage } from "../../utils/messageUtils";
 import { GuildConfig } from "../../models/GuildConfig";
 import { ValidationError } from "../../utils/customErrors";
 import { messagePrompt } from "../../utils/paginationUtils";
+import { getLogChannel } from "../../utils/channelUtils";
 
 export default {
     data: new SlashCommandBuilder()
@@ -79,7 +80,7 @@ async function setWelcomeMessage(interaction: ChatInputCommandInteraction, dbRes
         }
     }
 
-    const logChannel = interaction.guild?.channels.cache.find(c => c.name.includes("mod-logs")) as TextChannel || interaction.channel as TextChannel;
+    const logChannel = getLogChannel(interaction.guild!, ["mod-logs"]);
     const embed = new EmbedBuilder()
         .setColor("#0efefe")
         .setTitle("Welcome Message Changed")
@@ -136,7 +137,7 @@ async function removeWelcomeMessage(interaction: ChatInputCommandInteraction, db
             dbResult.welcomeMessage = []; // Set to empty array instead of undefined
             await dbResult.save();
 
-            const logChannel = interaction.guild?.channels.cache.find(c => c.name.includes("mod-logs")) as TextChannel || interaction.channel as TextChannel;
+            const logChannel = getLogChannel(interaction.guild!, ["mod-logs"]);
             const embed = new EmbedBuilder()
                 .setColor("#0efefe")
                 .setTitle("Welcome Message Removed")

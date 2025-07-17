@@ -1,16 +1,15 @@
 import { Client, EmbedBuilder, Message, TextChannel } from "discord.js";
 import { sendMessage } from "../../utils/messageUtils";
 import { formatMessageContent } from "../../utils/stringUtils";
+import { getLogChannel } from "../../utils/channelUtils";
 
 export default {
     name: "messageUpdate",
     async execute(client: Client, oldMessage: Message, newMessage: Message) {
-        if (!newMessage.guild || !newMessage.author) return;
-        if (newMessage.author.bot) return;
-        if (newMessage.content === oldMessage.content) return;
+        if (!newMessage.guild || !newMessage.author || newMessage.author.bot) return;
 
         const target = newMessage.author || oldMessage.author;
-        const logChannel = newMessage.guild.channels.cache.find(channel => channel.name.includes("text-logs")) as TextChannel;
+        const logChannel = getLogChannel(newMessage.guild, ["text-logs"]);
         if (!logChannel || !target) return;
 
         const embed = new EmbedBuilder()
@@ -32,11 +31,7 @@ export default {
                 value: `[View Message](${newMessage.url})`,
                 inline: true,
             })
-            .setDescription(`__**Old Message**__
-${formatMessageContent(oldMessage)}
-
-__**New Message**__
-${formatMessageContent(newMessage)}`)
+            .setDescription(`__**Old Message**__\n${formatMessageContent(oldMessage)}\n__**New Message**__\n${formatMessageContent(newMessage)}`)
 
         return await sendMessage(logChannel, { embeds: [embed] });
     }

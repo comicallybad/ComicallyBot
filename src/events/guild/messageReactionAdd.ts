@@ -1,6 +1,7 @@
 import { MessageReaction, User, PermissionFlagsBits, EmbedBuilder, TextChannel, Message, PartialMessage, Client, GuildMember } from "discord.js";
 import { sendMessage, deleteMessage } from "../../utils/messageUtils";
 import { GuildConfig } from "../../models/GuildConfig";
+import { getLogChannel } from "../../utils/channelUtils";
 
 export default {
     name: "messageReactionAdd",
@@ -30,10 +31,12 @@ async function checkDeleteReaction(messageReaction: MessageReaction, user: User,
         const author = await msg.guild?.members.fetch(msg.author?.id || "").catch(() => null);
         if (!author) return;
 
-        const textLogChannel = msg.guild?.channels.cache.find(c => c.name.includes("text-logs")) as TextChannel | undefined;
+        const textLogChannel = getLogChannel(msg.guild, ["text-logs"]);
         const embed = buildEmbed(guildUser, author, msg);
 
-        if (textLogChannel && author.id !== botUserId) await sendMessage(textLogChannel, { embeds: [embed] });
+        if (textLogChannel && author.id !== botUserId) {
+            await sendMessage(textLogChannel, { embeds: [embed] });
+        }
         await deleteMessage(msg as Message, { timeout: 0 });
     }
 }
