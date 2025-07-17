@@ -79,20 +79,22 @@ export default {
         }
 
         const songOption = interaction.options.get("song");
-        const checkPlayer = client.music.players.get(interaction.guildId!);
+        let player = client.music.players.get(interaction.guildId!);
 
         if (!songOption) {
-            const handled = await handleNoSongOption(interaction, client, voiceChannel, checkPlayer);
+            const handled = await handleNoSongOption(interaction, voiceChannel, player);
             if (handled) return;
         }
 
-        const player = client.music.createPlayer({
-            guildId: interaction.guild!.id,
-            voiceChannelId: voiceChannel.id,
-            textChannelId: interaction.channel!.id,
-            volume: 10,
-            autoLeave: true
-        });
+        if (!player) {
+            player = client.music.createPlayer({
+                guildId: interaction.guild!.id,
+                voiceChannelId: voiceChannel.id,
+                textChannelId: interaction.channel!.id,
+                volume: 10,
+                autoLeave: true
+            });
+        }
 
         if (!player.connected) player.connect({ setDeaf: true, setMute: false });
 
@@ -103,17 +105,17 @@ export default {
     }
 }
 
-async function handleNoSongOption(interaction: ChatInputCommandInteraction, client: Client, voiceChannel: any, checkPlayer: Player): Promise<boolean> {
-    if (checkPlayer) {
-        if (checkPlayer.voiceChannelId === voiceChannel.id) {
-            if (checkPlayer.paused) {
-                checkPlayer.setTextChannelId(interaction.channel!.id);
-                checkPlayer.resume();
-                await savePlayerState(checkPlayer);
+async function handleNoSongOption(interaction: ChatInputCommandInteraction, voiceChannel: any, player: Player): Promise<boolean> {
+    if (player) {
+        if (player.voiceChannelId === voiceChannel.id) {
+            if (player.paused) {
+                player.setTextChannelId(interaction.channel!.id);
+                player.resume();
+                await savePlayerState(player);
 
                 const embed = new EmbedBuilder()
                     .setAuthor({ name: `Player resumed.`, iconURL: interaction.user.displayAvatarURL() })
-                    .setThumbnail(checkPlayer.current?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+                    .setThumbnail(player.current?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
                     .setDescription(`▶️ The player has been resumed. Use \`/pause\` to pause playing again. ⏸️`);
 
                 await sendReply(interaction, { embeds: [embed.toJSON()] });
@@ -122,22 +124,24 @@ async function handleNoSongOption(interaction: ChatInputCommandInteraction, clie
             } else {
                 throw new ValidationError("Music is already playing in this channel.");
             }
-        } else {
-            checkPlayer.setTextChannelId(interaction.channel!.id);
-            checkPlayer.setVoiceChannelId(voiceChannel.id);
-            checkPlayer.connect({ setDeaf: true, setMute: false });
-            await savePlayerState(checkPlayer);
+        }
+        else {
+            player.setTextChannelId(interaction.channel!.id);
+            player.setVoiceChannelId(voiceChannel.id);
+            player.connect({ setDeaf: true, setMute: false });
+            await savePlayerState(player);
 
             const embed = new EmbedBuilder()
                 .setAuthor({ name: `Player joined.`, iconURL: interaction.user.displayAvatarURL() })
-                .setThumbnail(checkPlayer.current?.thumbnail ?? interaction.guild?.iconURL() ?? null)
+                .setThumbnail(player.current?.thumbnail ?? interaction.guild?.iconURL() ?? null)
                 .setDescription(`▶️ The player has joined the voice channel to resume playing.`);
 
             await sendReply(interaction, { embeds: [embed.toJSON()] });
             await deleteReply(interaction, { timeout: 15000 });
             return true;
         }
-    } else {
+    }
+    else {
         throw new ValidationError("Please provide a song name or link to search.");
     }
 }
