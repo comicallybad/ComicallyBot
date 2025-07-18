@@ -13,18 +13,20 @@ export default {
 
         if (!logChannel || member.user.id === client.user?.id) return;
 
-        const currentDate = new Date();
-        const timeInServer = currentDate.getTime() - (member.joinedAt?.getTime() || 0);
-        const durationInServer = humanizeDuration(timeInServer, { round: true });
-
         const embed = new EmbedBuilder()
             .setColor("#0EFEFE")
             .setTitle("Member Left")
             .setThumbnail(member.user.displayAvatarURL())
             .setFooter({ text: `${member.user.tag}`, iconURL: member.user.displayAvatarURL() })
             .setTimestamp()
-            .setDescription(`${member} (${member.id})`)
-            .addFields({ name: 'Time in server:', value: `\`${durationInServer}\`` });
+            .setDescription(`${member} (${member.id})`);
+
+        if (member.joinedAt) {
+            const currentDate = new Date();
+            const timeInServer = currentDate.getTime() - member.joinedAt.getTime();
+            const durationInServer = humanizeDuration(timeInServer, { round: true });
+            embed.addFields({ name: 'Time in server:', value: `\`${durationInServer}\`` });
+        }
 
         return await sendMessage(logChannel, { embeds: [embed] });
     },
