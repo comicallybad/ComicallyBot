@@ -1,7 +1,12 @@
 import * as fs from "fs/promises";
 import * as path from "path";
 
-export async function logError(error: any, context?: string) {
+/**
+ * Logs an error to a file and the console.
+ * @param error The error to log.
+ * @param context Optional context to include in the log entry.
+ */
+export async function logError(error: any, context?: string): Promise<void> {
     const date = new Date();
     const fileName = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}.log`;
     const logDirectory = path.join(process.cwd(), "logs");

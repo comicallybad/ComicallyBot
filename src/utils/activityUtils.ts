@@ -1,6 +1,10 @@
 import { ActivityType, Client } from "discord.js";
 
-export function updateActivities(client: Client) {
+/**
+ * Updates the bot's activity list with current server and user counts.
+ * @param client The Discord client instance.
+ */
+export function updateActivities(client: Client): void {
     if (!client.user) return;
 
     client.activities = [
@@ -9,7 +13,11 @@ export function updateActivities(client: Client) {
     ];
 }
 
-export function initializeActivities(client: Client) {
+/**
+ * Initializes the bot's rotating activities and sets an interval to update them.
+ * @param client The Discord client instance.
+ */
+export function initializeActivities(client: Client): void {
     updateActivities(client);
 
     let i = 0;

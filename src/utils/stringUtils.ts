@@ -1,10 +1,22 @@
 import { Message, PartialMessage, Client } from "discord.js";
 import humanizeDuration from "humanize-duration";
 
+/**
+ * Escapes Markdown characters in a string.
+ * @param text The string to escape.
+ * @returns The escaped string.
+ */
 export function escapeMarkdown(text: string): string {
     return text.replace(/\|\|/g, "\\|\\").replace(/([_\*\`~])/g, "\\$1");
 }
 
+/**
+ * Formats a song title and author into a hyperlinked string for use in embeds.
+ * @param title The title of the song.
+ * @param author The author of the song.
+ * @param url The URL of the song.
+ * @returns The formatted and hyperlinked song title.
+ */
 export function formatSongTitle(title: string, author: string, url: string): string {
     const normalizeString = (str: string) => {
         return str.toLowerCase().replace(/\s/g, '').replace(/vevo$/i, '');
@@ -22,6 +34,11 @@ export function formatSongTitle(title: string, author: string, url: string): str
     return `[**${formattedTitle}**](${url})`;
 }
 
+/**
+ * Formats the content of a message, including text, embeds, attachments, and polls.
+ * @param message The message to format.
+ * @returns A string representation of the message's content.
+ */
 export function formatMessageContent(message: Message | PartialMessage): string {
     let content = "";
 
@@ -75,7 +92,13 @@ export function formatMessageContent(message: Message | PartialMessage): string 
     return content.trim() || "No content or attachments.";
 }
 
-export const getGuildNameAndId = async (client: Client, id: string) => {
+/**
+ * Fetches and formats a guild's name and ID.
+ * @param client The Discord client instance.
+ * @param id The ID of the guild to fetch.
+ * @returns A Promise that resolves to the formatted guild name and ID string.
+ */
+export const getGuildNameAndId = async (client: Client, id: string): Promise<string> => {
     try {
         const guild = await client.guilds.fetch(id);
         return `${guild.name} (\`${id}\`)`;

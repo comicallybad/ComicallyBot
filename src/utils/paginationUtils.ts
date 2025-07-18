@@ -1,11 +1,18 @@
 import {
     ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, MessageComponentInteraction,
-    ModalSubmitInteraction, EmbedBuilder, ComponentType
+    ModalSubmitInteraction, EmbedBuilder, ComponentType, ButtonInteraction
 } from "discord.js";
 import { editReply, deleteReply, deferUpdate } from "./replyUtils";
 import { ValidationError } from "./customErrors";
 
-export async function messagePrompt(interaction: CommandInteraction | MessageComponentInteraction | ModalSubmitInteraction, row: ActionRowBuilder<ButtonBuilder>, timeout: number) {
+/**
+ * Prompts the user with a message containing buttons and waits for a response.
+ * @param interaction The interaction to reply to.
+ * @param row The action row containing the buttons.
+ * @param timeout The time in milliseconds to wait for a response.
+ * @returns A Promise that resolves to the collected button interaction, or rejects if the prompt times out.
+ */
+export function messagePrompt(interaction: CommandInteraction | MessageComponentInteraction | ModalSubmitInteraction, row: ActionRowBuilder<ButtonBuilder>, timeout: number): Promise<ButtonInteraction> {
     return new Promise((resolve, reject) => {
         const collector = interaction.channel?.createMessageComponentCollector({
             filter: i => i.user.id === interaction.user.id,
@@ -17,7 +24,7 @@ export async function messagePrompt(interaction: CommandInteraction | MessageCom
             return;
         }
 
-        collector.on("collect", i => {
+        collector.on("collect", (i: ButtonInteraction) => {
             collector.stop();
             resolve(i);
         });
@@ -30,7 +37,16 @@ export async function messagePrompt(interaction: CommandInteraction | MessageCom
     });
 }
 
-export async function pageList(interaction: CommandInteraction | MessageComponentInteraction | ModalSubmitInteraction, array: any[], embed: EmbedBuilder, parameter: string, size: number, page: number) {
+/**
+ * Creates a paginated list from an array of items, displayed in an embed with navigation buttons.
+ * @param interaction The interaction to reply to.
+ * @param array The array of items to paginate.
+ * @param embed The base embed to use for the pages.
+ * @param parameter The label for each item in the list.
+ * @param size The number of items to display per page.
+ * @param page The initial page number to display.
+ */
+export async function pageList(interaction: CommandInteraction | MessageComponentInteraction | ModalSubmitInteraction, array: any[], embed: EmbedBuilder, parameter: string, size: number, page: number): Promise<void> {
     let pages = Math.ceil(array.length / size) - 1, newPage = page;
     embed.setFooter({ text: "Use the buttons to navigate, discard, or save." });
     embed.data.fields = [];
@@ -64,7 +80,7 @@ export async function pageList(interaction: CommandInteraction | MessageComponen
     await editReply(interaction, { embeds: [embed.toJSON()], components: [row.toJSON()] });
 
     try {
-        const i: any = await messagePrompt(interaction, row, 30000);
+        const i = await messagePrompt(interaction, row, 30000);
         await deferUpdate(i);
         switch (i.customId) {
             case "next":
