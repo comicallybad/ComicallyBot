@@ -50,7 +50,7 @@ async function setWelcomeMessage(interaction: ChatInputCommandInteraction, dbRes
     const textInput = new TextInputBuilder()
         .setCustomId("welcome-input")
         .setLabel("Welcome Message")
-        .setPlaceholder("Enter the welcome message here. Use `<user>` to mention the new user, and <#channelID> for channel mentions.")
+        .setPlaceholder("Enter the welcome message. (<user> & <#channelID> to mention).")
         .setMaxLength(2000)
         .setStyle(TextInputStyle.Paragraph)
         .setRequired(true);
@@ -128,8 +128,8 @@ async function removeWelcomeMessage(interaction: ChatInputCommandInteraction, db
         const collectedInteraction = await messagePrompt(interaction, row, 30000) as ButtonInteraction;
 
         if (collectedInteraction.customId === "cancel") {
-            await editReply(collectedInteraction, { content: "Selection cancelled.", embeds: [], components: [] });
-            await deleteReply(collectedInteraction, { timeout: 15000 });
+            await sendReply(interaction, { content: "Selection cancelled.", flags: MessageFlags.Ephemeral });
+            await deleteReply(interaction, { timeout: 0 });
             return;
         }
 
@@ -151,12 +151,13 @@ async function removeWelcomeMessage(interaction: ChatInputCommandInteraction, db
                 });
 
             await sendReply(collectedInteraction, { content: "The welcome message has been removed.", flags: MessageFlags.Ephemeral });
-            await deleteReply(collectedInteraction, { timeout: 7500 });
+            await deleteReply(interaction, { timeout: 0 });
             if (logChannel) await sendMessage(logChannel, { embeds: [embed] });
             return;
         }
     } catch (err: unknown) {
         if (err === "time") {
+            await deleteReply(interaction, { timeout: 0 });
             throw new ValidationError("Prompt timed out.");
         } else {
             throw err;

@@ -1,6 +1,6 @@
 import {
     SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits,
-    ChatInputCommandInteraction, GuildMember, InteractionContextType, ButtonInteraction
+    ChatInputCommandInteraction, GuildMember, InteractionContextType, ButtonInteraction, MessageFlags
 } from "discord.js";
 import { sendReply, deleteReply, editReply } from "../../utils/replyUtils";
 import { sendMessage } from "../../utils/messageUtils";
@@ -46,8 +46,8 @@ export default {
             const collectedInteraction = await messagePrompt(interaction, row, 30000) as ButtonInteraction;
 
             if (collectedInteraction.customId === "cancel") {
-                await editReply(interaction, { content: "Selection cancelled.", embeds: [], components: [] });
-                await deleteReply(interaction, { timeout: 15000 });
+                await sendReply(interaction, { content: "Selection cancelled.", flags: MessageFlags.Ephemeral });
+                await deleteReply(interaction, { timeout: 0 });
                 return;
             }
 
@@ -75,11 +75,12 @@ export default {
                     });
 
                 if (logChannel) await sendMessage(logChannel, { embeds: [embed.toJSON()] });
-                await editReply(interaction, { content: "Timeout removed.", embeds: [], components: [] });
-                await deleteReply(interaction, { timeout: 15000 });
+                await sendReply(interaction, { content: "Timeout removed.", flags: MessageFlags.Ephemeral });
+                await deleteReply(interaction, { timeout: 0 });
             }
         } catch (err: unknown) {
             if (err === "time") {
+                await deleteReply(interaction, { timeout: 0 });
                 throw new ValidationError("Prompt timed out.");
             } else {
                 throw err;

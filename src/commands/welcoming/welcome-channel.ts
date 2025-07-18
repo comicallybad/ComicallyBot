@@ -135,8 +135,8 @@ async function removeWelcomeChannel(interaction: ChatInputCommandInteraction) {
         const collectedInteraction = await messagePrompt(interaction, row, 30000) as ButtonInteraction;
 
         if (collectedInteraction.customId === "cancel") {
-            await editReply(interaction, { content: "Selection cancelled.", embeds: [], components: [] });
-            await deleteReply(interaction, { timeout: 15000 });
+            await sendReply(interaction, { content: "Selection cancelled.", flags: MessageFlags.Ephemeral });
+            await deleteReply(interaction, { timeout: 0 });
             return;
         }
 
@@ -160,12 +160,13 @@ async function removeWelcomeChannel(interaction: ChatInputCommandInteraction) {
                 });
 
             await sendReply(interaction, { content: "Removed welcome channel.", flags: MessageFlags.Ephemeral });
-            await deleteReply(interaction, { timeout: 7500 });
+            await deleteReply(interaction, { timeout: 0 });
             if (logChannel) await sendMessage(logChannel, { embeds: [embed] });
             return;
         }
     } catch (err: unknown) {
         if (err === "time") {
+            await deleteReply(interaction, { timeout: 0 });
             throw new ValidationError("Prompt timed out.");
         } else {
             throw err;

@@ -87,6 +87,7 @@ export async function pageList(interaction: CommandInteraction | MessageComponen
         }
     } catch (error: unknown) {
         if (error === "time") {
+            await deleteReply(interaction, { timeout: 0 });
             throw new ValidationError("Prompt timed out.");
         } else {
             throw error;

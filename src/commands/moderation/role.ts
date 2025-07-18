@@ -1,6 +1,6 @@
 import {
     SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits, type ChatInputCommandInteraction,
-    type GuildMember, type Role, type TextChannel, type ButtonInteraction, InteractionContextType,
+    type GuildMember, type Role, type TextChannel, type ButtonInteraction, InteractionContextType, MessageFlags,
 } from "discord.js";
 import { deleteReply, editReply, sendReply } from "../../utils/replyUtils";
 import { pageList, messagePrompt } from "../../utils/paginationUtils";
@@ -91,8 +91,8 @@ async function handleAddRemove(interaction: ChatInputCommandInteraction) {
         const collectedInteraction = await messagePrompt(interaction, row, 30000) as ButtonInteraction;
 
         if (collectedInteraction.customId === "cancel") {
-            await editReply(interaction, { content: "Selection cancelled.", embeds: [], components: [] });
-            await deleteReply(interaction, {});
+            await sendReply(interaction, { content: "Selection cancelled.", flags: MessageFlags.Ephemeral });
+            await deleteReply(interaction, { timeout: 0 });
             return;
         }
 
@@ -105,6 +105,7 @@ async function handleAddRemove(interaction: ChatInputCommandInteraction) {
         }
     } catch (err: unknown) {
         if (err === "time") {
+            await deleteReply(interaction, { timeout: 0 });
             throw new ValidationError("Prompt timed out.");
         } else {
             throw err;
@@ -114,8 +115,8 @@ async function handleAddRemove(interaction: ChatInputCommandInteraction) {
 
 async function addRole(interaction: ChatInputCommandInteraction, member: GuildMember, role: Role) {
     await member.roles.add(role);
-    await editReply(interaction, { content: `Successfully added the ${role} role to ${member}.`, embeds: [], components: [] });
-    await deleteReply(interaction, {});
+    await sendReply(interaction, { content: `Successfully added the ${role} role to ${member}.`, flags: MessageFlags.Ephemeral });
+    await deleteReply(interaction, { timeout: 0 });
 
     const logChannel = getLogChannel(interaction.guild!, ["action-logs"]);
     if (logChannel) {
@@ -135,8 +136,8 @@ async function addRole(interaction: ChatInputCommandInteraction, member: GuildMe
 
 async function removeRole(interaction: ChatInputCommandInteraction, member: GuildMember, role: Role) {
     await member.roles.remove(role);
-    await editReply(interaction, { content: `Successfully removed the ${role} role from ${member}.`, embeds: [], components: [] });
-    await deleteReply(interaction, {});
+    await sendReply(interaction, { content: `Successfully removed the ${role} role from ${member}.`, flags: MessageFlags.Ephemeral });
+    await deleteReply(interaction, { timeout: 0 });
 
     const logChannel = interaction.guild?.channels.cache.find(c => c.name.includes("action-logs")) as TextChannel | undefined;
     if (logChannel) {
