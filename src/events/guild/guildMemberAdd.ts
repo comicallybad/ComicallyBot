@@ -37,7 +37,7 @@ export default {
         const welcomeCH = getLogChannel(member.guild, ["welcome-logs"]);
         if (!welcomeCH || !member.guild.members.me?.permissionsIn(welcomeCH)?.has(PermissionFlagsBits.SendMessages)) return;
 
-        const welcomeMSG = exists.welcomeMessage.toString().replace(/\[user\]/g, `${member.user}`);
+        const welcomeMSG = exists.welcomeMessage.toString().replace(/<user>/g, `${member.user}`);
 
         if (welcomeCH && welcomeMSG)
             sendMessage(welcomeCH, { content: welcomeMSG }).catch(error => sendMessage(logChannel, { content: `There was an error in sending a welcome message: ${error}` }));

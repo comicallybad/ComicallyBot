@@ -39,7 +39,7 @@ export default {
         await interaction.showModal(modal);
 
         const submitted = await interaction.awaitModalSubmit({
-            time: 30000,
+            time: 300000,
             filter: i => i.user.id === interaction.user.id && i.customId.includes(interaction.id)
         }).catch(() => { throw new ValidationError("Modal submission timed out."); });
 

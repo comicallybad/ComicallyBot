@@ -50,7 +50,7 @@ async function setWelcomeMessage(interaction: ChatInputCommandInteraction, dbRes
     const textInput = new TextInputBuilder()
         .setCustomId("welcome-input")
         .setLabel("Welcome Message")
-        .setPlaceholder("Enter the welcome message here.")
+        .setPlaceholder("Enter the welcome message here. Use `<user>` to mention the new user, and <#channelID> for channel mentions.")
         .setMaxLength(2000)
         .setStyle(TextInputStyle.Paragraph)
         .setRequired(true);
@@ -61,7 +61,7 @@ async function setWelcomeMessage(interaction: ChatInputCommandInteraction, dbRes
     await interaction.showModal(modal);
 
     const submitted = await interaction.awaitModalSubmit({
-        time: 30000,
+        time: 300000,
         filter: i => i.user.id === interaction.user.id && i.customId.includes(interaction.id)
     }).catch(() => null) as ModalSubmitInteraction | null;
 
