@@ -1,8 +1,6 @@
 import {
-    CommandInteraction, MessageComponentInteraction, ModalSubmitInteraction,
-    ButtonBuilder, ButtonStyle, ActionRowBuilder, Message,
-    ButtonInteraction,
-    AnySelectMenuInteraction
+    CommandInteraction, MessageComponentInteraction, ModalSubmitInteraction, ButtonBuilder,
+    ButtonStyle, ActionRowBuilder, Message, ButtonInteraction, AnySelectMenuInteraction
 } from "discord.js";
 import { SendReplyOptions, EditReplyOptions, DeleteReplyOptions, DeferReplyOptions, SendUpdateOptions } from "../types/replyUtils";
 

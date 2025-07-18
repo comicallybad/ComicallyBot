@@ -3,7 +3,7 @@ import {
     ChatInputCommandInteraction, ModalSubmitInteraction, MessageFlags, GuildMember,
     ButtonBuilder, ButtonStyle, ButtonInteraction
 } from "discord.js";
-import { sendReply, deleteReply, editReply } from "../../utils/replyUtils";
+import { sendReply, deleteReply } from "../../utils/replyUtils";
 import { sendMessage } from "../../utils/messageUtils";
 import { GuildConfig } from "../../models/GuildConfig";
 import { ValidationError } from "../../utils/customErrors";

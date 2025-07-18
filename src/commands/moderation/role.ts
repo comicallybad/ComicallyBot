@@ -2,7 +2,7 @@ import {
     SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits, type ChatInputCommandInteraction,
     type GuildMember, type Role, type TextChannel, type ButtonInteraction, InteractionContextType, MessageFlags,
 } from "discord.js";
-import { deleteReply, editReply, sendReply } from "../../utils/replyUtils";
+import { sendReply, deleteReply } from "../../utils/replyUtils";
 import { pageList, messagePrompt } from "../../utils/paginationUtils";
 import { PermissionError, ValidationError } from "../../utils/customErrors";
 import { sendMessage } from "../../utils/messageUtils";
