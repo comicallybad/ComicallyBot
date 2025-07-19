@@ -242,6 +242,7 @@ async function resetFilters(interaction: ChatInputCommandInteraction, player: Pl
 async function sendFilterReply(interaction: ChatInputCommandInteraction, player: Player, title: string, description: string) {
     const embed = new EmbedBuilder()
         .setAuthor({ name: title, iconURL: interaction.user.displayAvatarURL() })
+        .setColor("#0EFEFE")
         .setThumbnail(player.current?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
         .setDescription(description);
 
