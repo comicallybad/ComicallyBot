@@ -43,7 +43,7 @@ export default {
             .setURL(`https://reddit.com${meme.permalink}`)
             .setFooter({ text: meme.caption });
 
-        await sendReply(interaction, { embeds: [embed.toJSON()] });
+        await sendReply(interaction, { embeds: [embed] });
         await deleteReply(interaction, { timeout: 30000 });
     }
 };

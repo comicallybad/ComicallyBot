@@ -57,43 +57,49 @@ async function skipSong(interaction: ChatInputCommandInteraction, player: Player
         .setColor("#0EFEFE")
         .setDescription("⏩ The current song has been skipped!");
 
-    await sendReply(interaction, { embeds: [embed.toJSON()] });
+    await sendReply(interaction, { embeds: [embed] });
     await deleteReply(interaction, { timeout: 30000 });
 }
 
 function parseTime(timeStr: string): number {
-    const match = timeStr.replace(/\s/g, '').match(/(\d+)(s|sec|secs|second|seconds|m|min|mins|minute|minutes|h|hour|hours)?/g);
-    if (!match) {
-        throw new ValidationError('Invalid time format');
-    }
-    let time = 0;
-    match.forEach((part) => {
-        const partMatch = part.match(/(\d+)(s|sec|secs|second|seconds|m|min|mins|minute|minutes|h|hour|hours)?/);
-        if (!partMatch) {
-            throw new ValidationError('Invalid time format');
-        }
-        const partTime = parseInt(partMatch[1], 10);
-        const unit = partMatch[2];
-        if (!unit || unit.startsWith('s')) {
-            time += partTime;
-        } else if (unit.startsWith('m')) {
-            time += partTime * 60;
-        } else if (unit.startsWith('h')) {
-            time += partTime * 3600;
+    const regex = /(\d+)(s|m|h)?/g;
+    let totalSeconds = 0;
+    let match;
+    let lastIndex = 0;
+
+    while ((match = regex.exec(timeStr.replace(/\s/g, ''))) !== null) {
+        const value = parseInt(match[1], 10);
+        const unit = match[2];
+
+        if (unit === 's' || !unit) {
+            totalSeconds += value;
+        } else if (unit === 'm') {
+            totalSeconds += value * 60;
+        } else if (unit === 'h') {
+            totalSeconds += value * 3600;
         } else {
             throw new ValidationError('Invalid time unit');
         }
-    });
-    return time;
+        lastIndex = regex.lastIndex;
+    }
+
+    if (lastIndex !== timeStr.replace(/\s/g, '').length || totalSeconds === 0) {
+        throw new ValidationError('Invalid time format');
+    }
+
+    return totalSeconds;
 }
 
 async function skipTo(interaction: ChatInputCommandInteraction, player: Player) {
     const timeStr = interaction.options.getString("time", true);
-    let time;
-    try {
-        time = parseTime(timeStr);
-    } catch (error: unknown) {
-        throw error;
+    const time = parseTime(timeStr);
+
+    if (time <= 0) {
+        throw new ValidationError("The time to skip to must be greater than 0.");
+    }
+
+    if (player.current && (time * 1000) > player.current.duration) {
+        throw new ValidationError("The time to skip to cannot be greater than the song's duration.");
     }
 
     player.setTextChannelId(interaction.channel!.id);
@@ -106,20 +112,23 @@ async function skipTo(interaction: ChatInputCommandInteraction, player: Player) 
         .setDescription(`⏩ The current song has been skipped to \`${humanizeDuration(time * 1000)}\`!`);
 
     await savePlayerState(player);
-    await sendReply(interaction, { embeds: [embed.toJSON()] });
+    await sendReply(interaction, { embeds: [embed] });
     await deleteReply(interaction, { timeout: 30000 });
 }
 
 async function skipAhead(interaction: ChatInputCommandInteraction, player: Player) {
     const timeStr = interaction.options.getString("time", true);
-    let time;
-    try {
-        time = parseTime(timeStr);
-    } catch (error: unknown) {
-        throw error;
+    const time = parseTime(timeStr);
+
+    if (time <= 0) {
+        throw new ValidationError("The time to skip ahead must be greater than 0.");
     }
 
-    const position = player.current.position + (time * 1000);
+    if (player.current && (player.current.position + (time * 1000)) > player.current.duration) {
+        throw new ValidationError("Skipping ahead would exceed the song's duration.");
+    }
+
+    const position = player.current?.position + (time * 1000);
     player.setTextChannelId(interaction.channel!.id);
     player.seek(position);
 
@@ -130,6 +139,6 @@ async function skipAhead(interaction: ChatInputCommandInteraction, player: Playe
         .setDescription(`⏩ The current song time has been skipped \`${humanizeDuration(time * 1000)}\` to \`${humanizeDuration(position, { round: true })}\`!`);
 
     await savePlayerState(player);
-    await sendReply(interaction, { embeds: [embed.toJSON()] });
+    await sendReply(interaction, { embeds: [embed] });
     await deleteReply(interaction, { timeout: 30000 });
 }

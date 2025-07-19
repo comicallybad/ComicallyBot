@@ -101,7 +101,7 @@ export default {
         await sendReply(interaction, { content: "Loading..." });
         const res = await client.music.search({ query: songOption?.value as string, requester: interaction.user.id });
         await handleLoadType(interaction, player, res);
-        await deleteReply(interaction, { timeout: 15000 });
+        await deleteReply(interaction, { timeout: 30000 });
     }
 }
 
@@ -116,10 +116,9 @@ async function handleNoSongOption(interaction: ChatInputCommandInteraction, voic
                 const embed = new EmbedBuilder()
                     .setAuthor({ name: `Player resumed.`, iconURL: interaction.user.displayAvatarURL() })
                     .setThumbnail(player.current?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
-                    .setDescription(`▶️ The player has been resumed. Use \`/pause\` to pause playing again. ⏸️`);
+                    .setDescription("▶️ The player has been resumed. Use `/pause` to pause playing again. ⏸️");
 
-                await sendReply(interaction, { embeds: [embed.toJSON()] });
-                await deleteReply(interaction, { timeout: 15000 });
+                await editReply(interaction, { embeds: [embed] });
                 return true;
             } else {
                 throw new ValidationError("Music is already playing in this channel.");
@@ -133,11 +132,10 @@ async function handleNoSongOption(interaction: ChatInputCommandInteraction, voic
 
             const embed = new EmbedBuilder()
                 .setAuthor({ name: `Player joined.`, iconURL: interaction.user.displayAvatarURL() })
-                .setThumbnail(player.current?.thumbnail ?? interaction.guild?.iconURL() ?? null)
+                .setThumbnail(player.current?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
                 .setDescription(`▶️ The player has joined the voice channel to resume playing.`);
 
-            await sendReply(interaction, { embeds: [embed.toJSON()] });
-            await deleteReply(interaction, { timeout: 15000 });
+            await editReply(interaction, { embeds: [embed] });
             return true;
         }
     }
@@ -182,11 +180,7 @@ async function sendEmbed(interaction: ChatInputCommandInteraction, title: string
         .setColor("#0EFEFE")
         .setDescription(`⌚ Queuing ${formatSongTitle(songTitle, songAuthor, songUrl)} \`${humanizeDuration(track.duration, { round: true })}\``);
 
-    try {
-        await editReply(interaction, { content: "", embeds: [embed.toJSON()] });
-    } catch (error: unknown) {
-        return;
-    }
+    await editReply(interaction, { content: "", embeds: [embed] });
 }
 
 async function sendPlaylistEmbed(interaction: ChatInputCommandInteraction, title: string, res: SearchResult) {
@@ -198,9 +192,5 @@ async function sendPlaylistEmbed(interaction: ChatInputCommandInteraction, title
         .setColor("#0EFEFE")
         .setDescription(`⌚ Queuing  [**${res.playlistInfo.name}**](${interaction.options.get("song")?.value as string}) ${res.tracks.length} tracks \`${duration}\``);
 
-    try {
-        await editReply(interaction, { content: "", embeds: [embed.toJSON()] });
-    } catch (error: unknown) {
-        return;
-    }
+    await editReply(interaction, { content: "", embeds: [embed] });
 }

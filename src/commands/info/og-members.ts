@@ -15,7 +15,7 @@ export default {
         const membersArray: string[] = sortedMembers.map(member => {
             const joinedTimestamp = member.joinedAt?.getTime();
             const daysAgo = joinedTimestamp ? Math.round((date.getTime() - joinedTimestamp) / 86400000) : "N/A";
-            return `**${member.nickname ? member.nickname : member.user.username}** (` + "`" + `${member.user.tag}` + "`" + `)\n        **Joined:** ${member.joinedAt?.toDateString()} (` + "`" + `${daysAgo}` + "`" + ` **DAYS AGO!)**`;
+            return `**${member.nickname ? member.nickname : member.user.username}** (\`${member.user.tag}\`)\n**Joined:** ${member.joinedAt?.toDateString()} (\`${daysAgo}\` **DAYS AGO!)**)`;
         });
 
         const embed = new EmbedBuilder()
@@ -26,16 +26,10 @@ export default {
 
         if (membersArray.length === 0) {
             embed.addFields({ name: "OG Members", value: "No members found." });
-            await sendReply(interaction, { embeds: [embed.toJSON()] });
-            await deleteReply(interaction, { timeout: 30000 });
-        } else if (membersArray.length <= 10) {
-            membersArray.forEach((user, index) => {
-                embed.addFields({ name: `OG Member #: ${index + 1}`, value: `${user}` });
-            });
-            await sendReply(interaction, { embeds: [embed.toJSON()] });
+            await sendReply(interaction, { embeds: [embed] });
             await deleteReply(interaction, { timeout: 30000 });
         } else {
-            await sendReply(interaction, { embeds: [embed.toJSON()] });
+            await sendReply(interaction, { embeds: [embed] });
             await pageList(interaction, membersArray, embed, "OG Member #", 10, 0);
         }
     }

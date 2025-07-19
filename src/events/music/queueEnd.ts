@@ -18,9 +18,9 @@ export default {
             .setColor("#FF0000")
             .setDescription("🛑 The queue has ended, and the bot successfully disconnected!");
 
-        const sentMessage = await sendMessage(channel, { embeds: [embed.toJSON()] });
+        const sentMessage = await sendMessage(channel, { embeds: [embed] });
         if (sentMessage) {
-            deleteMessage(sentMessage, { timeout: 15000 });
+            deleteMessage(sentMessage, { timeout: 30000 });
         }
     },
 };

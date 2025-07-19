@@ -26,7 +26,7 @@ export default {
             .setColor("#FF0000")
             .setDescription("🛑 The music player has successfully been disconnected!");
 
-        await sendReply(interaction, { embeds: [embed.toJSON()] });
+        await sendReply(interaction, { embeds: [embed] });
         await deleteReply(interaction, { timeout: 30000 });
     },
 };

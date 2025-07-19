@@ -30,7 +30,7 @@ export default {
             .setDescription("🔀 The song queue has been shuffled randomly!");
 
         await savePlayerState(player);
-        await sendReply(interaction, { embeds: [embed.toJSON()] });
+        await sendReply(interaction, { embeds: [embed] });
         await deleteReply(interaction, { timeout: 30000 });
     }
 }

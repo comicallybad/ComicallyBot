@@ -1,6 +1,6 @@
 import {
     SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, ChannelType, ChatInputCommandInteraction,
-    MessageFlags, ActionRowBuilder, ButtonBuilder, ButtonStyle, ButtonInteraction
+    MessageFlags, ActionRowBuilder, ButtonBuilder, ButtonStyle, ButtonInteraction, GuildMember
 } from "discord.js";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
 import { sendMessage } from "../../utils/messageUtils";
@@ -16,7 +16,8 @@ export default {
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels)
         .addSubcommand(subcommand => subcommand.setName('get').setDescription('Get the current welcome channel.'))
         .addSubcommand(subcommand => subcommand.setName('set').setDescription('Set a new welcome channel.')
-            .addChannelOption(option => option.setName('channel').setDescription('The channel to set as the welcome channel.').setRequired(true).addChannelTypes(ChannelType.GuildText)))
+            .addChannelOption(option =>
+                option.setName('channel').setDescription('The channel to set as the welcome channel.').setRequired(true).addChannelTypes(ChannelType.GuildText)))
         .addSubcommand(subcommand => subcommand.setName('remove').setDescription('Remove the current welcome channel.')),
     async execute(interaction: ChatInputCommandInteraction) {
         const subcommand = interaction.options.getSubcommand();
@@ -28,33 +29,28 @@ export default {
 };
 
 async function getWelcomeChannel(interaction: ChatInputCommandInteraction) {
-    const guildID = interaction.guildId;
+    const guildID = interaction.guild!.id;
     if (!guildID) return;
 
     const dbResult = await GuildConfig.findOne({ guildID: guildID, "channels.command": "welcome" });
 
     if (!dbResult || !dbResult.channels.length) {
         await sendReply(interaction, { content: "There has been no welcome channel set.", flags: MessageFlags.Ephemeral });
-        await deleteReply(interaction, { timeout: 7500 });
         return;
     }
 
     const welcomeChannelData = dbResult.channels.find((ch: any) => ch.command === "welcome");
     if (!welcomeChannelData) {
-        await sendReply(interaction, { content: "There has been no welcome channel set.", flags: MessageFlags.Ephemeral });
-        await deleteReply(interaction, { timeout: 7500 });
-        return;
+        throw new ValidationError("There has been no welcome channel set.");
     }
 
     const channel = await interaction.guild?.channels.fetch(welcomeChannelData.channelID);
     if (!channel) {
-        await sendReply(interaction, { content: "The configured welcome channel no longer exists.", flags: MessageFlags.Ephemeral });
-        await deleteReply(interaction, { timeout: 7500 });
-        return;
+        throw new ValidationError("The welcome channel could not be found in this server.");
     }
 
-    await sendReply(interaction, { content: `The current welcome channel is set to: ${channel}`, flags: MessageFlags.Ephemeral });
-    await deleteReply(interaction, { timeout: 7500 });
+    await sendReply(interaction, { content: `The current welcome channel is set to: ${channel}` });
+    await deleteReply(interaction, { timeout: 30000 });
     return;
 }
 
@@ -79,19 +75,14 @@ async function setWelcomeChannel(interaction: ChatInputCommandInteraction) {
         .setColor("#0efefe")
         .setTitle("Welcome Channel Set")
         .setThumbnail(interaction.user.displayAvatarURL())
-        .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
+        .setFooter({ text: (interaction.member as GuildMember)?.displayName || interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
         .setTimestamp()
-        .addFields({
-            name: '__**Channel**__',
-            value: `<#${channel.id}>`,
-            inline: true
-        }, {
-            name: '__**Moderator**__',
-            value: `${interaction.user}`,
-            inline: true
-        });
+        .addFields(
+            { name: '__**Channel**__', value: `<#${channel.id}>`, inline: true },
+            { name: '__**Moderator**__', value: `${interaction.user}`, inline: true }
+        );
 
-    if (!dbResult || !dbResult.channels.find((ch: any) => ch.command === "welcome")) {
+    if (!dbResult?.channels.some((ch: any) => ch.command === "welcome")) {
         await GuildConfig.updateOne({ guildID: guildID }, {
             $push: { channels: { command: "welcome", channelID: channel.id, channelName: channel.name } }
         }, { upsert: true });
@@ -102,14 +93,14 @@ async function setWelcomeChannel(interaction: ChatInputCommandInteraction) {
         });
     }
 
-    await sendReply(interaction, { content: dbResult ? "Updated welcome channel." : "Welcome channel has been set.", flags: MessageFlags.Ephemeral });
-    await deleteReply(interaction, { timeout: 7500 });
+    await sendReply(interaction, { content: dbResult ? "Updated welcome channel." : "Welcome channel has been set." });
+    await deleteReply(interaction, { timeout: 30000 });
     if (logChannel) await sendMessage(logChannel, { embeds: [embed] });
     return;
 }
 
 async function removeWelcomeChannel(interaction: ChatInputCommandInteraction) {
-    const guildID = interaction.guildId;
+    const guildID = interaction.guild!.id;
     if (!guildID) return;
 
     const dbResult = await GuildConfig.findOne({ guildID: guildID, "channels.command": "welcome" });
@@ -129,37 +120,32 @@ async function removeWelcomeChannel(interaction: ChatInputCommandInteraction) {
             new ButtonBuilder().setCustomId("cancel").setLabel("Cancel").setStyle(ButtonStyle.Danger)
         );
 
-    await sendReply(interaction, { embeds: [promptEmbed.toJSON()], components: [row.toJSON()] });
+    await sendReply(interaction, { embeds: [promptEmbed], components: [row] });
 
     try {
-        const collectedInteraction = await messagePrompt(interaction, row, 30000) as ButtonInteraction;
+        const collected = await messagePrompt(interaction, row, 30000) as ButtonInteraction;
 
-        if (collectedInteraction.customId === "cancel") {
-            await sendReply(interaction, { content: "Selection cancelled.", flags: MessageFlags.Ephemeral });
+        if (collected.customId === "cancel") {
+            await sendReply(collected, { content: "Selection cancelled.", flags: MessageFlags.Ephemeral });
             await deleteReply(interaction, { timeout: 0 });
             return;
         }
 
-        if (collectedInteraction.customId === "confirm") {
-            const logChannel = getLogChannel(interaction.guild!, ["mod-logs"]);
-
+        if (collected.customId === "confirm") {
             await GuildConfig.updateOne({ guildID: guildID }, {
                 $pull: { channels: { command: "welcome" } }
             });
 
+            const logChannel = getLogChannel(interaction.guild!, ["mod-logs"]);
             const embed = new EmbedBuilder()
                 .setColor("#0efefe")
                 .setTitle("Welcome Channel Removed")
                 .setThumbnail(interaction.user.displayAvatarURL())
-                .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
+                .setFooter({ text: (interaction.member as GuildMember)?.displayName || interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
                 .setTimestamp()
-                .addFields({
-                    name: '__**Moderator**__',
-                    value: `${interaction.user}`,
-                    inline: true
-                });
+                .addFields({ name: '__**Moderator**__', value: `${interaction.user}`, inline: true });
 
-            await sendReply(interaction, { content: "Removed welcome channel.", flags: MessageFlags.Ephemeral });
+            await sendReply(collected, { content: "The welcome channel has been removed.", flags: MessageFlags.Ephemeral });
             await deleteReply(interaction, { timeout: 0 });
             if (logChannel) await sendMessage(logChannel, { embeds: [embed] });
             return;

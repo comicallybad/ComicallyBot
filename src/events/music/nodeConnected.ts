@@ -76,7 +76,7 @@ export default {
                         .setColor("#0EFEFE")
                         .setDescription("🎶 The player is resuming from its last saved state.")
 
-                    const sentMessage = await sendMessage(textChannel, { embeds: [embed.toJSON()] });
+                    const sentMessage = await sendMessage(textChannel, { embeds: [embed] });
                     if (sentMessage) {
                         deleteMessage(sentMessage, { timeout: 30000 });
                     }

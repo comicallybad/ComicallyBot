@@ -18,19 +18,11 @@ export default {
             .setThumbnail(target.displayAvatarURL())
             .setFooter({ text: `${target.tag} | ${target.id}`, iconURL: target.displayAvatarURL() })
             .setTimestamp()
-            .addFields({
-                name: "__**User**__",
-                value: `${target}`,
-                inline: true,
-            }, {
-                name: "__**Channel**__",
-                value: `${newMessage.channel}`,
-                inline: true,
-            }, {
-                name: "__**Message**__",
-                value: `[View Message](${newMessage.url})`,
-                inline: true,
-            })
+            .addFields(
+                { name: "__**User**__", value: `${target}`, inline: true, },
+                { name: "__**Channel**__", value: `${newMessage.channel}`, inline: true, },
+                { name: "__**Message**__", value: `[View Message](${newMessage.url})`, inline: true, }
+            )
             .setDescription(`__**Old Message**__\n${formatMessageContent(oldMessage)}\n__**New Message**__\n${formatMessageContent(newMessage)}`)
 
         return await sendMessage(logChannel, { embeds: [embed] });

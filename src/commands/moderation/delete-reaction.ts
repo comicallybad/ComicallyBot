@@ -38,9 +38,7 @@ async function getDeleteReaction(interaction: ChatInputCommandInteraction) {
     }
 
     const reaction = guildConfig.deleteReaction;
-    await sendReply(interaction, {
-        content: `The current delete reaction has been set to: ${reaction}`,
-    });
+    await sendReply(interaction, { content: `The current delete reaction has been set to: ${reaction}` });
     await deleteReply(interaction, { timeout: 30000 });
 }
 
@@ -56,9 +54,7 @@ async function setDeleteReaction(interaction: ChatInputCommandInteraction) {
 
     const reaction = interaction.options.getString("emoji", true);
 
-    const validationMessage = await sendReply(interaction, {
-        content: "Validating Reaction Emoji...",
-    });
+    const validationMessage = await sendReply(interaction, { content: "Validating Reaction Emoji...", });
 
     if (!validationMessage) {
         throw new ValidationError("There was an issue sending a reply. Please try again.");
@@ -77,9 +73,7 @@ async function setDeleteReaction(interaction: ChatInputCommandInteraction) {
         throw new ValidationError(`The provided emoji could not be used. Please ensure it's a standard emoji or a custom emoji this server has access to.`);
     }
 
-    await editReply(interaction, {
-        content: "Delete reaction emoji has been verified and set.",
-    });
+    await editReply(interaction, { content: "Delete reaction emoji has been verified and set.", });
 
     await GuildConfig.updateOne(
         { guildID: interaction.guild!.id },
@@ -102,20 +96,15 @@ async function setDeleteReaction(interaction: ChatInputCommandInteraction) {
                 { name: "__**Reaction**__", value: `${reaction}`, inline: true },
                 { name: "__**Moderator**__", value: `${interaction.member}`, inline: true }
             );
-        try {
-            await logChannel.send({ embeds: [embed] });
-        } catch (error) {
-            await editReply(interaction, {
-                content: `Delete reaction emoji has been set, but I couldn't send a confirmation to the log channel. Please ensure I have \`Send Messages\` permissions in ${logChannel}.`,
-            });
-        }
+
+        await logChannel.send({ embeds: [embed] });
     } else {
         await editReply(interaction, {
             content: "Delete reaction emoji has been set, but I couldn't find a log channel named `mod-logs`, or I am missing permissions. The confirmation was not logged.",
         });
     }
 
-    await deleteReply(interaction, { timeout: 10000 });
+    await deleteReply(interaction, { timeout: 30000 });
 }
 
 async function removeDeleteReaction(interaction: ChatInputCommandInteraction) {
@@ -129,8 +118,6 @@ async function removeDeleteReaction(interaction: ChatInputCommandInteraction) {
         { $unset: { deleteReaction: "" } }
     );
 
-    await sendReply(interaction, {
-        content: "The delete reaction emoji has been removed.",
-    });
-    await deleteReply(interaction, { timeout: 7500 });
+    await sendReply(interaction, { content: "The delete reaction emoji has been removed.", });
+    await deleteReply(interaction, { timeout: 30000 });
 }

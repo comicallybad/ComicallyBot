@@ -17,7 +17,7 @@ export default {
             .setFooter({ text: `Select a reaction below to vote on` })
             .setTimestamp();
 
-        await sendReply(interaction, { embeds: [embed.toJSON()] });
+        await sendReply(interaction, { embeds: [embed] });
         const message = await interaction.fetchReply();
         await message.react("⬆️");
         await message.react("⬇️");

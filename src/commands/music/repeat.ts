@@ -48,7 +48,7 @@ async function trackRepeat(interaction: ChatInputCommandInteraction, player: Pla
         .setDescription(`Track repeat has been toggled ${player.loop !== "off" ? "**ON**\n(The current track will now repeat) 🔁" : "**OFF**\n(The current track will no longer repeat) ❌🔁"}`);
 
     await savePlayerState(player);
-    await sendReply(interaction, { embeds: [embed.toJSON()] });
+    await sendReply(interaction, { embeds: [embed] });
     await deleteReply(interaction, { timeout: 30000 });
 }
 
@@ -63,6 +63,6 @@ async function queueRepeat(interaction: ChatInputCommandInteraction, player: Pla
         .setDescription(`The player queue repeat has been toggled ${player.loop !== "off" ? "**ON**\n(The queue will now repeat) 🔁" : "**OFF**\n(The queue will no longer repeat) ❌🔁"}`);
 
     await savePlayerState(player);
-    await sendReply(interaction, { embeds: [embed.toJSON()] });
+    await sendReply(interaction, { embeds: [embed] });
     await deleteReply(interaction, { timeout: 30000 });
 }

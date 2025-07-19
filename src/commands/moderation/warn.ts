@@ -1,8 +1,8 @@
 import {
     SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, ChatInputCommandInteraction,
-    GuildMember, TextChannel, InteractionContextType, ChannelType
+    GuildMember, TextChannel, InteractionContextType, ChannelType, MessageFlags
 } from "discord.js";
-import { sendReply, deleteReply } from "../../utils/replyUtils";
+import { sendReply } from "../../utils/replyUtils";
 import { sendMessage } from "../../utils/messageUtils";
 import { getLogChannel } from "../../utils/channelUtils";
 import { PermissionError, ValidationError } from "../../utils/customErrors";
@@ -16,7 +16,6 @@ export default {
         .addUserOption(option => option.setName("member").setDescription("The member to warn").setRequired(true))
         .addStringOption(option => option.setName("reason").setDescription("The reason for the warning").setMaxLength(1024).setRequired(true))
         .addChannelOption(option => option.setName("channel").setDescription("The channel the warning was issued in").addChannelTypes(ChannelType.GuildText)),
-
     execute: async (interaction: ChatInputCommandInteraction) => {
         const wMember = interaction.options.getMember("member") as GuildMember;
         const reason = interaction.options.getString("reason", true);
@@ -42,20 +41,11 @@ export default {
             .setThumbnail(wMember.user.displayAvatarURL())
             .setFooter({ text: wMember.user.tag, iconURL: wMember.user.displayAvatarURL() })
             .setTimestamp()
-            .addFields({
-                name: "__**Target**__",
-                value: `${wMember}`,
-                inline: true
-            }, {
-                name: "__**Reason**__",
-                value: `${reason}`,
-                inline: true
-
-            }, {
-                name: "__**Moderator**__",
-                value: `${interaction.user}`,
-                inline: true
-            });
+            .addFields(
+                { name: "__**Target**__", value: `${wMember}`, inline: true },
+                { name: "__**Reason**__", value: `${reason}`, inline: true },
+                { name: "__**Moderator**__", value: `${interaction.user}`, inline: true }
+            );
 
         const warnEmbed = new EmbedBuilder()
             .setColor("#FF0000")
@@ -63,27 +53,21 @@ export default {
             .setThumbnail(wMember.user.displayAvatarURL())
             .setFooter({ text: wMember.user.tag, iconURL: wMember.user.displayAvatarURL() })
             .setTimestamp()
-            .addFields({
-                name: "__**Member**__",
-                value: `${wMember}`,
-                inline: true
-            }, {
-                name: "__**Reason**__",
-                value: `${reason}`,
-                inline: true
-            });
+            .addFields(
+                { name: "__**Member**__", value: `${wMember}`, inline: true },
+                { name: "__**Reason**__", value: `${reason}`, inline: true }
+            );
 
         if (channel) {
-            await sendMessage(channel, { embeds: [warnEmbed.toJSON()] });
+            await sendMessage(channel, { embeds: [warnEmbed] });
         } else if (interaction.channel) {
-            await sendMessage(interaction.channel as TextChannel, { embeds: [warnEmbed.toJSON()] });
+            await sendMessage(interaction.channel as TextChannel, { embeds: [warnEmbed] });
         }
 
         if (logChannel) {
-            await sendMessage(logChannel, { embeds: [embed.toJSON()] });
+            await sendMessage(logChannel, { embeds: [embed] });
         }
 
-        await sendReply(interaction, { content: "Warning has been issued." });
-        await deleteReply(interaction, { timeout: 7500 });
+        await sendReply(interaction, { content: "Warning has been issued.", flags: MessageFlags.Ephemeral });
     },
 };

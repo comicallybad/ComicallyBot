@@ -1,8 +1,5 @@
-import {
-    SlashCommandBuilder, ActionRowBuilder, ModalBuilder, TextInputBuilder,
-    TextInputStyle, ChatInputCommandInteraction, ModalSubmitInteraction
-} from "discord.js";
-import { sendReply } from "../../utils/replyUtils";
+import { SlashCommandBuilder, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ChatInputCommandInteraction } from "discord.js";
+import { deleteReply, sendReply } from "../../utils/replyUtils";
 import { translate } from "@vitalets/google-translate-api";
 import { ValidationError } from "../../utils/customErrors";
 
@@ -41,22 +38,21 @@ export default {
         const submitted = await interaction.awaitModalSubmit({
             time: 300000,
             filter: i => i.user.id === interaction.user.id && i.customId.includes(interaction.id)
-        }).catch(() => { throw new ValidationError("Modal submission timed out."); });
+        }).catch(async () => {
+            await deleteReply(interaction, { timeout: 0 });
+            throw new ValidationError("Modal submission timed out.");
+        });
 
         if (!submitted || !submitted.fields) return;
 
         const message = submitted.fields.getTextInputValue("translate-input");
 
-        try {
-            if (subcommand === "to") {
-                const res = await translate(message, { to: language });
-                await sendReply(submitted as ModalSubmitInteraction, { content: `**Translation:** ${res.text} **Translated from:** \`${res.raw.src}\`` });
-            } else {
-                const res = await translate(message, { to: "en" });
-                await sendReply(submitted as ModalSubmitInteraction, { content: `**Translation:** ${res.text} **Translated from:** \`${res.raw.src}\`` });
-            }
-        } catch (error: unknown) {
-            throw error;
+        if (subcommand === "to") {
+            const res = await translate(message, { to: language });
+            await sendReply(submitted, { content: `**Translation:** ${res.text} **Translated from:** \`${res.raw.src}\`` });
+        } else {
+            const res = await translate(message, { to: "en" });
+            await sendReply(submitted, { content: `**Translation:** ${res.text} **Translated from:** \`${res.raw.src}\`` });
         }
     }
 };

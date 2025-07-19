@@ -90,7 +90,7 @@ async function sendUsageEmbed(interaction: ChatInputCommandInteraction, title: s
     const description = (await Promise.all(data.slice(0, 10).map(formatter))).join("\n");
     embed.setDescription(description);
 
-    await sendReply(interaction, { embeds: [embed.toJSON()], flags: MessageFlags.Ephemeral });
+    await sendReply(interaction, { embeds: [embed], flags: MessageFlags.Ephemeral });
     await deleteReply(interaction, { timeout: 30000 });
 }
 

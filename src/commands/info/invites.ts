@@ -1,5 +1,5 @@
-import { SlashCommandBuilder, PermissionsBitField, EmbedBuilder, ChatInputCommandInteraction, InteractionContextType } from "discord.js";
-import { sendReply, deleteReply } from "../../utils/replyUtils";
+import { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, ChatInputCommandInteraction, InteractionContextType } from "discord.js";
+import { sendReply } from "../../utils/replyUtils";
 import { pageList } from "../../utils/paginationUtils";
 import { PermissionError, ValidationError } from "../../utils/customErrors";
 
@@ -11,7 +11,7 @@ export default {
     execute: async (interaction: ChatInputCommandInteraction) => {
         const guild = interaction.guild!;
 
-        if (!guild.members.me?.permissions.has(PermissionsBitField.Flags.ViewAuditLog)) {
+        if (!guild.members.me?.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
             throw new PermissionError("I need the `View Audit Log` permission to fetch invites.");
         }
 
@@ -42,15 +42,7 @@ export default {
             .setColor("#0efefe")
             .setTimestamp();
 
-        if (invitesArray.length <= 10) {
-            invitesArray.forEach((invite, index) => {
-                embed.addFields({ name: `Invite #${index + 1}:`, value: `${invite}` });
-            });
-            await sendReply(interaction, { embeds: [embed.toJSON()] });
-            await deleteReply(interaction, { timeout: 30000 });
-        } else {
-            await sendReply(interaction, { embeds: [embed.toJSON()] });
-            await pageList(interaction, invitesArray, embed, "Invite #", 10, 0);
-        }
+        await sendReply(interaction, { embeds: [embed] });
+        await pageList(interaction, invitesArray, embed, "Invite #", 10, 0);
     }
 };

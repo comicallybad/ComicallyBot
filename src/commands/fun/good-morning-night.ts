@@ -18,7 +18,6 @@ export default {
         const userOption = interaction.options.getUser("user");
         const messageOption = interaction.options.getString("message");
         const member = interaction.member as GuildMember;
-        const user = interaction.user as User;
 
         let targetMember: GuildMember;
         if (userOption) {
@@ -33,7 +32,7 @@ export default {
         }
 
         const embed = new EmbedBuilder()
-            .setFooter({ text: `Message from: ${member.displayName}`, iconURL: user.displayAvatarURL() })
+            .setFooter({ text: `Message from: ${member.displayName}`, iconURL: member.user.displayAvatarURL() })
             .setTimestamp();
 
         if (subcommand === "morning") {
@@ -52,6 +51,6 @@ export default {
                 .addFields({ name: "Goodnight Message:", value: message });
         }
 
-        await sendReply(interaction, { embeds: [embed.toJSON()] });
+        await sendReply(interaction, { embeds: [embed] });
     }
 };

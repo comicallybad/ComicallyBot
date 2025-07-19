@@ -34,7 +34,7 @@ export default {
         const guildConfig = await GuildConfig.findOne({ guildID: guild.id });
         if (!guildConfig || !guildConfig.welcomeMessage || guildConfig.welcomeMessage.length === 0) return;
 
-        const welcomeChannelConfig = guildConfig.channels.find(ch => ch.command === "welcome");
+        const welcomeChannelConfig = guildConfig.channels.find((ch: { command: string; channelID: string }) => ch.command === "welcome");
         if (!welcomeChannelConfig) return;
 
         const welcomeChannel = await guild.channels.fetch(welcomeChannelConfig.channelID).catch(() => null) as TextChannel;

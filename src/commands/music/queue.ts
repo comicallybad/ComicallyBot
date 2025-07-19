@@ -89,34 +89,24 @@ async function viewQueue(interaction: ChatInputCommandInteraction, player: Playe
 
     if (!track && queueLength === 0) {
         embed.setDescription("The queue is empty.");
-        await sendReply(interaction, { embeds: [embed.toJSON()] });
+        await sendReply(interaction, { embeds: [embed] });
         await deleteReply(interaction, { timeout: 30000 });
         return;
     }
 
-    if (queueLength <= 10) {
-        let desc = "";
-        if (track) {
-            desc += `__**Currently Playing:**__\n${formatQueueEntry(track)}\n`;
-        }
-        if (queueLength > 0) {
-            desc += `\n__**Rest of queue:**__\n`;
-            desc += queueTracks.map(formatQueueEntry).join("\n");
-        }
-        embed.setDescription(desc.trim());
-        await sendReply(interaction, { embeds: [embed.toJSON()] });
-        await deleteReply(interaction, { timeout: 30000 });
-    } else {
-        let desc = "";
-        if (track) {
-            desc += `__**Currently Playing:**__\n${formatQueueEntry(track)}\n\n__**Rest of queue:**__`;
-        }
-        embed.setDescription(desc.trim());
-        await sendReply(interaction, { embeds: [embed.toJSON()] });
-
-        const queueArray = queueTracks.map(formatQueueEntry);
-        await pageList(interaction, queueArray, embed, "Song #", 10, 0);
+    let desc = "";
+    if (track) {
+        desc += `__**Currently Playing:**__\n${formatQueueEntry(track)}\n`;
     }
+    if (queueLength > 0) {
+        desc += `\n__**Rest of queue:**__\n`;
+        desc += queueTracks.map(formatQueueEntry).join("\n");
+    }
+    embed.setDescription(desc.trim());
+    await sendReply(interaction, { embeds: [embed] });
+
+    const queueArray = queueTracks.map(formatQueueEntry);
+    await pageList(interaction, queueArray, embed, "Song #", 10, 0);
 }
 
 async function clearQueue(interaction: ChatInputCommandInteraction, player: Player) {
@@ -129,7 +119,7 @@ async function clearQueue(interaction: ChatInputCommandInteraction, player: Play
         .setDescription("The queue has been cleared.");
 
     await savePlayerState(player);
-    await sendReply(interaction, { embeds: [embed.toJSON()] });
+    await sendReply(interaction, { embeds: [embed] });
     await deleteReply(interaction, { timeout: 30000 });
 }
 
@@ -162,7 +152,7 @@ async function removeQueue(interaction: ChatInputCommandInteraction, player: Pla
         .setDescription(`${text} been removed from the queue.`)
 
     await savePlayerState(player);
-    await sendReply(interaction, { embeds: [embed.toJSON()] });
+    await sendReply(interaction, { embeds: [embed] });
     await deleteReply(interaction, { timeout: 30000 });
 }
 
@@ -182,6 +172,6 @@ async function swapQueue(interaction: ChatInputCommandInteraction, player: Playe
         .setColor("#0EFEFE")
         .setDescription(`Songs **${index1 + 1}** and **${index2 + 1}** have been swapped in the queue.`)
 
-    await sendReply(interaction, { embeds: [embed.toJSON()] });
+    await sendReply(interaction, { embeds: [embed] });
     await deleteReply(interaction, { timeout: 30000 });
 }

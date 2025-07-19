@@ -242,9 +242,9 @@ async function resetFilters(interaction: ChatInputCommandInteraction, player: Pl
 async function sendFilterReply(interaction: ChatInputCommandInteraction, player: Player, title: string, description: string) {
     const embed = new EmbedBuilder()
         .setAuthor({ name: title, iconURL: interaction.user.displayAvatarURL() })
-        .setThumbnail(player.current.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+        .setThumbnail(player.current?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
         .setDescription(description);
 
-    await sendReply(interaction, { embeds: [embed.toJSON()] });
+    await sendReply(interaction, { embeds: [embed] });
     await deleteReply(interaction, { timeout: 30000 });
 }

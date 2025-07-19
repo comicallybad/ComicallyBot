@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction, User } from "discord.js";
-import { sendReply } from "../../utils/replyUtils";
+import { sendReply, deleteReply } from "../../utils/replyUtils";
 import { ValidationError } from "../../utils/customErrors";
 import * as wd from "word-definition";
 
@@ -37,6 +37,7 @@ export default {
             .setFooter({ text: `Category of type: ${result.category}` })
             .setTimestamp();
 
-        await sendReply(interaction, { embeds: [embed.toJSON()] });
+        await sendReply(interaction, { embeds: [embed] });
+        await deleteReply(interaction, { timeout: 30000 });
     }
 };

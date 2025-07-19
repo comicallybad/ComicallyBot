@@ -14,6 +14,6 @@ export default {
             .setTitle(`**Avatar**`)
             .setImage(user.displayAvatarURL({ size: 4096 }));
 
-        await sendReply(interaction, { embeds: [embed.toJSON()] });
+        await sendReply(interaction, { embeds: [embed] });
     }
 };

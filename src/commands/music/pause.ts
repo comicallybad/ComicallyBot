@@ -30,7 +30,7 @@ export default {
             .setDescription(`⏸️ The player has been paused! Use \`/play\` to resume playing. ▶️`);
 
         await savePlayerState(player);
-        await sendReply(interaction, { embeds: [embed.toJSON()] });
+        await sendReply(interaction, { embeds: [embed] });
         await deleteReply(interaction, { timeout: 30000 });
     }
 };

@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction, GuildMember, InteractionContextType } from "discord.js";
-import { sendReply } from "../../utils/replyUtils";
+import { deleteReply, sendReply } from "../../utils/replyUtils";
 import { ValidationError } from "../../utils/customErrors";
 
 export default {
@@ -15,8 +15,7 @@ export default {
 
         if (!person || interaction.user.id === person.id) {
             const allMembers = [
-                ...(
-                    (await interaction.guild!.members.fetch())
+                ...((await interaction.guild!.members.fetch())
                         .filter(m => m.id !== interaction.user.id)
                 ).values()
             ];
@@ -42,6 +41,7 @@ export default {
                 value: `💟 ${Math.floor(love)}%\n\n${loveLevel}`
             }).setTimestamp();
 
-        await sendReply(interaction, { embeds: [embed.toJSON()] });
+        await sendReply(interaction, { embeds: [embed] });
+        await deleteReply(interaction, { timeout: 30000 });
     }
 };

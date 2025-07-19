@@ -2,7 +2,7 @@ import {
     SlashCommandBuilder, ChatInputCommandInteraction, PermissionFlagsBits,
     MessageFlags, Collection, Message, TextChannel, InteractionContextType
 } from "discord.js";
-import { deferReply, deleteReply, editReply } from "../../utils/replyUtils";
+import { sendReply } from "../../utils/replyUtils";
 import { PermissionError, ValidationError } from "../../utils/customErrors";
 
 export default {
@@ -31,8 +31,6 @@ export default {
         const user = interaction.options.getUser("user");
         const amount = interaction.options.getInteger("amount", true);
 
-        await deferReply(interaction, { flags: MessageFlags.Ephemeral });
-
         const fetchedMessages: Collection<string, Message> = await channel.messages.fetch({ limit: 100 });
         let filteredMessages: Collection<string, Message>;
 
@@ -42,13 +40,12 @@ export default {
         const messagesToDelete = [...filteredMessages.values()].slice(0, amount);
 
         if (messagesToDelete.length === 0) {
-            await editReply(interaction, { content: "No messages found to delete." });
-            await deleteReply(interaction, { timeout: 7500 });
+            await sendReply(interaction, { content: "No messages found to delete.", flags: MessageFlags.Ephemeral });
             return;
         }
 
         const deletedMessages = await channel.bulkDelete(messagesToDelete, true);
 
-        await editReply(interaction, { content: `Successfully deleted ${deletedMessages.size} messages.` });
+        await sendReply(interaction, { content: `Successfully deleted ${deletedMessages.size} messages.`, flags: MessageFlags.Ephemeral });
     }
 };

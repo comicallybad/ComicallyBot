@@ -1,6 +1,6 @@
 import {
     SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits,
-    ChatInputCommandInteraction, GuildMember, InteractionContextType, ButtonInteraction, MessageFlags
+    ChatInputCommandInteraction, GuildMember, InteractionContextType, ButtonInteraction, MessageFlags, DiscordAPIError
 } from "discord.js";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
 import { sendMessage } from "../../utils/messageUtils";
@@ -40,7 +40,7 @@ export default {
                 new ButtonBuilder().setCustomId("cancel").setLabel("Cancel").setStyle(ButtonStyle.Danger)
             );
 
-        await sendReply(interaction, { embeds: [promptEmbed.toJSON()], components: [row.toJSON()] });
+        await sendReply(interaction, { embeds: [promptEmbed], components: [row] });
 
         try {
             const collectedInteraction = await messagePrompt(interaction, row, 30000) as ButtonInteraction;
@@ -52,31 +52,29 @@ export default {
             }
 
             if (collectedInteraction.customId === "confirm") {
-                await mutee.timeout(null);
-                const embed = new EmbedBuilder()
-                    .setColor("#00ff00")
-                    .setTitle("Member Timeout Removed")
-                    .setThumbnail(mutee.user.displayAvatarURL())
-                    .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
-                    .setTimestamp()
-                    .addFields({
-                        name: "__**Target**__",
-                        value: `${mutee}`,
-                        inline: true
-                    }, {
-                        name: "__**Reason**__",
-                        value: `${reason}`,
-                        inline: true
+                try {
+                    await mutee.timeout(null);
+                    const embed = new EmbedBuilder()
+                        .setColor("#00ff00")
+                        .setTitle("Member Timeout Removed")
+                        .setThumbnail(mutee.user.displayAvatarURL())
+                        .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
+                        .setTimestamp()
+                        .addFields(
+                            { name: "__**Target**__", value: `${mutee}`, inline: true },
+                            { name: "__**Reason**__", value: `${reason}`, inline: true },
+                            { name: "__**Moderator**__", value: `${interaction.user}`, inline: true }
+                        );
 
-                    }, {
-                        name: "__**Moderator**__",
-                        value: `${interaction.user}`,
-                        inline: true
-                    });
-
-                if (logChannel) await sendMessage(logChannel, { embeds: [embed.toJSON()] });
-                await sendReply(interaction, { content: "Timeout removed.", flags: MessageFlags.Ephemeral });
-                await deleteReply(interaction, { timeout: 0 });
+                    if (logChannel) await sendMessage(logChannel, { embeds: [embed] });
+                    await sendReply(interaction, { content: "Timeout removed.", flags: MessageFlags.Ephemeral });
+                    await deleteReply(interaction, { timeout: 0 });
+                } catch (error: unknown) {
+                    if (error instanceof DiscordAPIError && error.code === 50013) {
+                        throw new PermissionError("I do not have the necessary permissions to remove this user's timeout.");
+                    }
+                    throw error;
+                }
             }
         } catch (err: unknown) {
             if (err === "time") {

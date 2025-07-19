@@ -1,8 +1,8 @@
 import {
     SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, ChatInputCommandInteraction,
-    GuildMember, InteractionContextType
+    GuildMember, InteractionContextType, MessageFlags
 } from "discord.js";
-import { sendReply, deleteReply } from "../../utils/replyUtils";
+import { sendReply } from "../../utils/replyUtils";
 import { sendMessage } from "../../utils/messageUtils";
 import { getLogChannel } from "../../utils/channelUtils";
 import { ValidationError } from "../../utils/customErrors";
@@ -18,7 +18,7 @@ export default {
         const rMember = interaction.options.getMember("member") as GuildMember;
         const reason = interaction.options.getString("reason", true);
 
-        if (!rMember || !rMember.user?.id) {
+        if (!rMember || !rMember.user.id) {
             throw new ValidationError("Please provide a member to report.");
         }
 
@@ -38,23 +38,13 @@ export default {
             .setThumbnail(rMember.user.displayAvatarURL())
             .setFooter({ text: rMember.user.tag, iconURL: rMember.user.displayAvatarURL() })
             .setTimestamp()
-            .addFields({
-                name: "__**Target**__",
-                value: `${rMember}`,
-                inline: true
-            }, {
-                name: "__**Reason**__",
-                value: `${reason}`,
-                inline: true
+            .addFields(
+                { name: "__**Target**__", value: `${rMember}`, inline: true },
+                { name: "__**Reason**__", value: `${reason}`, inline: true },
+                { name: "__**Reporter**__", value: `${interaction.user}`, inline: true }
+            );
 
-            }, {
-                name: "__**Reporter**__",
-                value: `${interaction.user}`,
-                inline: true
-            });
-
-        await sendMessage(logChannel, { embeds: [embed.toJSON()] });
-        await sendReply(interaction, { content: "Report has been filed." });
-        await deleteReply(interaction, { timeout: 7500 });
+        await sendMessage(logChannel, { embeds: [embed] });
+        await sendReply(interaction, { content: "Report has been filed.", flags: MessageFlags.Ephemeral });
     },
 };

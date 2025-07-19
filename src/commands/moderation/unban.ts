@@ -1,6 +1,6 @@
 import {
     SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits,
-    ChatInputCommandInteraction, InteractionContextType, ButtonInteraction, MessageFlags
+    ChatInputCommandInteraction, InteractionContextType, ButtonInteraction, MessageFlags, DiscordAPIError
 } from "discord.js";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
 import { sendMessage } from "../../utils/messageUtils";
@@ -40,43 +40,41 @@ export default {
                 new ButtonBuilder().setCustomId("cancel").setLabel("Cancel").setStyle(ButtonStyle.Danger)
             );
 
-        await sendReply(interaction, { embeds: [promptEmbed.toJSON()], components: [row.toJSON()] });
+        await sendReply(interaction, { embeds: [promptEmbed], components: [row] });
 
         try {
-            const collectedInteraction = await messagePrompt(interaction, row, 30000) as ButtonInteraction;
+            const collected = await messagePrompt(interaction, row, 30000) as ButtonInteraction;
 
-            if (collectedInteraction.customId === "cancel") {
-                await sendReply(interaction, { content: "Selection cancelled.", flags: MessageFlags.Ephemeral });
+            if (collected.customId === "cancel") {
+                await sendReply(collected, { content: "Selection cancelled.", flags: MessageFlags.Ephemeral });
                 await deleteReply(interaction, { timeout: 0 });
                 return;
             }
 
-            if (collectedInteraction.customId === "confirm") {
-                await interaction.guild.members.unban(bannedUser.id, reason);
-                const embed = new EmbedBuilder()
-                    .setColor("#00ff00")
-                    .setTitle("Member Unbanned")
-                    .setThumbnail(bannedUser.displayAvatarURL())
-                    .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
-                    .setTimestamp()
-                    .addFields({
-                        name: "__**Target**__",
-                        value: `${bannedUser}`,
-                        inline: true
-                    }, {
-                        name: "__**Reason**__",
-                        value: `${reason}`,
-                        inline: true
+            if (collected.customId === "confirm") {
+                try {
+                    await interaction.guild.members.unban(bannedUser.id, reason);
+                    const embed = new EmbedBuilder()
+                        .setColor("#00ff00")
+                        .setTitle("Member Unbanned")
+                        .setThumbnail(bannedUser.displayAvatarURL())
+                        .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
+                        .setTimestamp()
+                        .addFields(
+                            { name: "__**Target**__", value: `${bannedUser}`, inline: true },
+                            { name: "__**Reason**__", value: `${reason}`, inline: true },
+                            { name: "__**Moderator**__", value: `${interaction.user}`, inline: true }
+                        );
 
-                    }, {
-                        name: "__**Moderator**__",
-                        value: `${interaction.user}`,
-                        inline: true
-                    });
-
-                if (logChannel) await sendMessage(logChannel, { embeds: [embed.toJSON()] });
-                await sendReply(interaction, { content: "Member unbanned.", flags: MessageFlags.Ephemeral });
-                await deleteReply(interaction, { timeout: 0 });
+                    if (logChannel) await sendMessage(logChannel, { embeds: [embed] });
+                    await sendReply(interaction, { content: "Member unbanned.", flags: MessageFlags.Ephemeral });
+                    await deleteReply(interaction, { timeout: 0 });
+                } catch (error: unknown) {
+                    if (error instanceof DiscordAPIError && error.code === 50013) {
+                        throw new PermissionError("I do not have the necessary permissions to unban this user.");
+                    }
+                    throw error;
+                }
             }
         } catch (err: unknown) {
             if (err === "time") {

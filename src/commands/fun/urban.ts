@@ -53,7 +53,7 @@ export default {
             .setTimestamp()
             .setFooter({ text: `Written by ${author || "unknown"}` });
 
-        await sendReply(interaction, { embeds: [embed.toJSON()] });
+        await sendReply(interaction, { embeds: [embed] });
         await deleteReply(interaction, { timeout: 30000 });
     }
 };

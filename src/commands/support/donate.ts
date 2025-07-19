@@ -9,6 +9,5 @@ export default {
         const donationLink = "https://www.linktr.ee/comicallybad";
         await sendReply(interaction, { content: `The link to donate is: ${donationLink}` });
         await deleteReply(interaction, { timeout: 30000 });
-        return;
     },
 };

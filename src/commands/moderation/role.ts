@@ -1,6 +1,6 @@
 import {
     SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits, type ChatInputCommandInteraction,
-    type GuildMember, type Role, type TextChannel, type ButtonInteraction, InteractionContextType, MessageFlags,
+    type GuildMember, type Role, type ButtonInteraction, InteractionContextType, MessageFlags, DiscordAPIError
 } from "discord.js";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
 import { pageList, messagePrompt } from "../../utils/paginationUtils";
@@ -85,18 +85,18 @@ async function handleAddRemove(interaction: ChatInputCommandInteraction) {
             new ButtonBuilder().setCustomId("cancel").setLabel("Cancel").setStyle(ButtonStyle.Danger)
         );
 
-    await sendReply(interaction, { embeds: [promptEmbed.toJSON()], components: [row.toJSON()] });
+    await sendReply(interaction, { embeds: [promptEmbed], components: [row] });
 
     try {
-        const collectedInteraction = await messagePrompt(interaction, row, 30000) as ButtonInteraction;
+        const collected = await messagePrompt(interaction, row, 30000) as ButtonInteraction;
 
-        if (collectedInteraction.customId === "cancel") {
-            await sendReply(interaction, { content: "Selection cancelled.", flags: MessageFlags.Ephemeral });
+        if (collected.customId === "cancel") {
+            await sendReply(collected, { content: "Selection cancelled.", flags: MessageFlags.Ephemeral });
             await deleteReply(interaction, { timeout: 0 });
             return;
         }
 
-        if (collectedInteraction.customId === "confirm") {
+        if (collected.customId === "confirm") {
             if (subCommand === "add") {
                 await addRole(interaction, member, role);
             } else {
@@ -114,44 +114,58 @@ async function handleAddRemove(interaction: ChatInputCommandInteraction) {
 }
 
 async function addRole(interaction: ChatInputCommandInteraction, member: GuildMember, role: Role) {
-    await member.roles.add(role);
-    await sendReply(interaction, { content: `Successfully added the ${role} role to ${member}.`, flags: MessageFlags.Ephemeral });
-    await deleteReply(interaction, { timeout: 0 });
+    try {
+        await member.roles.add(role);
+        await sendReply(interaction, { content: `Successfully added the ${role} role to ${member}.`, flags: MessageFlags.Ephemeral });
+        await deleteReply(interaction, { timeout: 0 });
 
-    const logChannel = getLogChannel(interaction.guild!, ["action-logs"]);
-    if (logChannel) {
-        const embed = new EmbedBuilder()
-            .setColor("Green")
-            .setTitle("Role Added")
-            .setThumbnail(member.user.displayAvatarURL())
-            .setFooter({ text: `Moderator: ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() })
-            .setTimestamp()
-            .addFields(
-                { name: "Target", value: `${member}`, inline: true },
-                { name: "Role", value: `${role}`, inline: true }
-            );
-        await sendMessage(logChannel, { embeds: [embed.toJSON()] });
+        const logChannel = getLogChannel(interaction.guild!, ["action-logs"]);
+        if (logChannel) {
+            const embed = new EmbedBuilder()
+                .setColor("Green")
+                .setTitle("Role Added")
+                .setThumbnail(member.user.displayAvatarURL())
+                .setFooter({ text: `Moderator: ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() })
+                .setTimestamp()
+                .addFields(
+                    { name: "Target", value: `${member}`, inline: true },
+                    { name: "Role", value: `${role}`, inline: true }
+                );
+            await sendMessage(logChannel, { embeds: [embed] });
+        }
+    } catch (error: unknown) {
+        if (error instanceof DiscordAPIError && error.code === 50013) {
+            throw new PermissionError("I do not have the necessary permissions to add this role.");
+        }
+        throw error;
     }
 }
 
 async function removeRole(interaction: ChatInputCommandInteraction, member: GuildMember, role: Role) {
-    await member.roles.remove(role);
-    await sendReply(interaction, { content: `Successfully removed the ${role} role from ${member}.`, flags: MessageFlags.Ephemeral });
-    await deleteReply(interaction, { timeout: 0 });
+    try {
+        await member.roles.remove(role);
+        await sendReply(interaction, { content: `Successfully removed the ${role} role from ${member}.`, flags: MessageFlags.Ephemeral });
+        await deleteReply(interaction, { timeout: 0 });
 
-    const logChannel = interaction.guild?.channels.cache.find(c => c.name.includes("action-logs")) as TextChannel | undefined;
-    if (logChannel) {
-        const embed = new EmbedBuilder()
-            .setColor("Red")
-            .setTitle("Role Removed")
-            .setThumbnail(member.user.displayAvatarURL())
-            .setFooter({ text: `Moderator: ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() })
-            .setTimestamp()
-            .addFields(
-                { name: "Target", value: `${member}`, inline: true },
-                { name: "Role", value: `${role}`, inline: true }
-            );
-        await sendMessage(logChannel, { embeds: [embed.toJSON()] });
+        const logChannel = getLogChannel(interaction.guild!, ["action-logs"]);
+        if (logChannel) {
+            const embed = new EmbedBuilder()
+                .setColor("Red")
+                .setTitle("Role Removed")
+                .setThumbnail(member.user.displayAvatarURL())
+                .setFooter({ text: `Moderator: ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() })
+                .setTimestamp()
+                .addFields(
+                    { name: "Target", value: `${member}`, inline: true },
+                    { name: "Role", value: `${role}`, inline: true }
+                );
+            await sendMessage(logChannel, { embeds: [embed] });
+        }
+    } catch (error: unknown) {
+        if (error instanceof DiscordAPIError && error.code === 50013) {
+            throw new PermissionError("I do not have the necessary permissions to remove this role.");
+        }
+        throw error;
     }
 }
 
@@ -171,7 +185,7 @@ async function handleInfo(interaction: ChatInputCommandInteraction) {
         )
         .setTimestamp();
 
-    await sendReply(interaction, { embeds: [embed.toJSON()] });
+    await sendReply(interaction, { embeds: [embed] });
     await deleteReply(interaction, { timeout: 30000 });
 }
 
@@ -189,18 +203,9 @@ async function handleUsers(interaction: ChatInputCommandInteraction) {
     const memberList = membersWithRole.map(m => `${m.user.username} (\`${m.id}\`)`);
     const title = `${role.name} Members (${membersWithRole.size})`;
 
-    const embeds = [];
-    const chunkSize = 10;
+    const baseEmbed = new EmbedBuilder()
+        .setColor(role.hexColor)
+        .setTitle(title);
 
-    for (let i = 0; i < memberList.length; i += chunkSize) {
-        const chunk = memberList.slice(i, i + chunkSize);
-        const embed = new EmbedBuilder()
-            .setColor(role.hexColor)
-            .setTitle(title)
-            .setDescription(chunk.join("\n"))
-            .setFooter({ text: `Page ${Math.floor(i / chunkSize) + 1} of ${Math.ceil(memberList.length / chunkSize)}` });
-        embeds.push(embed);
-    }
-
-    await pageList(interaction, embeds, new EmbedBuilder(), title, 10, 0);
+    await pageList(interaction, memberList, baseEmbed, "Member #", 10, 0);
 }

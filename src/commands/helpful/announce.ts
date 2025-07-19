@@ -1,6 +1,6 @@
 import {
     SlashCommandBuilder, PermissionFlagsBits, ActionRowBuilder, ModalBuilder, TextInputBuilder,
-    TextInputStyle, ChatInputCommandInteraction, TextChannel, ModalSubmitInteraction
+    TextInputStyle, ChatInputCommandInteraction, TextChannel, MessageFlags, ChannelType
 } from "discord.js";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
 import { sendMessage } from "../../utils/messageUtils";
@@ -11,7 +11,8 @@ export default {
         .setName("announce")
         .setDescription("Make an announcement to a channel.")
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
-        .addChannelOption(option => option.setName("channel").setDescription("The channel to send the announcement to.").addChannelTypes(0)),
+        .addChannelOption(option =>
+            option.setName("channel").setDescription("The channel to send the announcement to.").addChannelTypes(ChannelType.GuildText)),
     execute: async (interaction: ChatInputCommandInteraction) => {
         const channel = interaction.options.getChannel("channel") as TextChannel || interaction.channel as TextChannel;
 
@@ -35,14 +36,15 @@ export default {
         const submitted = await interaction.awaitModalSubmit({
             time: 300000,
             filter: i => i.user.id === interaction.user.id && i.customId.includes(interaction.id)
-        }).catch(() => { throw new ValidationError("Modal submission timed out."); });
+        }).catch(async () => {
+            await deleteReply(interaction, { timeout: 0 });
+            throw new ValidationError("Modal submission timed out.");
+        });
 
         if (!submitted || !submitted.fields) return;
 
         const announcement = submitted.fields.getTextInputValue("announcement-input");
-        await sendReply(submitted as ModalSubmitInteraction, { content: "Announcement sent." });
-        await deleteReply(submitted as ModalSubmitInteraction, { timeout: 30000 });
+        await sendReply(submitted, { content: "Announcement sent.", flags: MessageFlags.Ephemeral });
         await sendMessage(channel, { content: announcement });
-        return;
     }
 };

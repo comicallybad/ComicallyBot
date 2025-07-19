@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, EmbedBuilder, GuildMember, ChatInputCommandInteraction, RoleManager, InteractionContextType } from "discord.js";
+import { SlashCommandBuilder, EmbedBuilder, GuildMember, ChatInputCommandInteraction, InteractionContextType } from "discord.js";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
 import { ValidationError } from "../../utils/customErrors";
 
@@ -24,12 +24,7 @@ export default {
 
         const joinedTimestamp = member.joinedAt ? Math.floor(member.joinedAt.getTime() / 1000) : "N/A";
 
-        let roles = "none";
-        if (member.roles instanceof RoleManager) {
-            roles = member.roles.cache.filter(r => r.id !== interaction.guild!.id).map(r => r.toString()).join(", ") || "none";
-        } else if (Array.isArray(member.roles)) {
-            roles = member.roles.filter(roleId => roleId !== interaction.guild!.id).map(roleId => `<@&${roleId}>`).join(", ") || "none";
-        }
+        let roles = member.roles.cache.filter(r => r.id !== interaction.guild!.id).map(r => r.toString()).join(", ") || "none";
 
         const created = Math.floor(member.user.createdAt.getTime() / 1000);
 
@@ -41,16 +36,25 @@ export default {
             .addFields(
                 {
                     name: "__**Member information:**__",
-                    value: `**Display name:** \`${member.displayName}\`\n**Joined:** ${joinedTimestamp !== "N/A" ? `<t:${joinedTimestamp}:f>` : "N/A"}\n**Roles:** ${roles}`
+                    value: [
+                        `**Display name:** \`${member.displayName}\``,
+                        `**Joined:** ${joinedTimestamp !== "N/A" ? `<t:${joinedTimestamp}:f>` : "N/A"}`,
+                        `**Roles:** ${roles}`
+                    ].join("\n")
                 },
                 {
                     name: "__**User information:**__",
-                    value: `**ID:** \`${member.user.id}\`\n**Username:** \`${member.user.username}\`\n**Tag:** \`${member.user.tag}\`\n**Account Created:** <t:${created}:R>`
+                    value: [
+                        `**ID:** \`${member.user.id}\``,
+                        `**Username:** \`${member.user.username}\``,
+                        `**Tag:** \`${member.user.tag}\``,
+                        `**Account Created:** <t:${created}:R>`
+                    ].join("\n")
                 }
             )
             .setTimestamp();
 
-        await sendReply(interaction, { embeds: [embed.toJSON()] });
+        await sendReply(interaction, { embeds: [embed] });
         await deleteReply(interaction, { timeout: 30000 });
     }
 };

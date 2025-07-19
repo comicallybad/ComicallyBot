@@ -24,13 +24,13 @@ export default {
 
         const embed = new EmbedBuilder()
             .setAuthor({ name: "Current Song!", iconURL: interaction.guild?.iconURL() || undefined })
-            .setThumbnail(player.current.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+            .setThumbnail(player.current?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
             .setColor("#0EFEFE")
             .setDescription(`${!player.paused ? "▶️" : "⏸️"} ${formatSongTitle(songTitle, songAuthor, songUrl)} ${humanizeDuration(duration, { round: true })}
             __**Currently at:**__ \`${humanizeDuration(position, { round: true })}\``)
             .setFooter({ text: `Requested by ${requester?.tag || "Unknown"}`, iconURL: requester?.displayAvatarURL() || undefined });
 
-        await sendReply(interaction, { embeds: [embed.toJSON()] });
+        await sendReply(interaction, { embeds: [embed] });
         await deleteReply(interaction, { timeout: 30000 });
     }
 };

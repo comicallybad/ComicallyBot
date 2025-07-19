@@ -32,7 +32,7 @@ export default {
             .setFooter({ text: footerText, iconURL: requester?.displayAvatarURL() || undefined });
 
         clearPlayerIntervalsAndCollectors(player);
-        const sentMessage = await sendMessage(channel, { embeds: [embed.toJSON()] });
+        const sentMessage = await sendMessage(channel, { embeds: [embed] });
         if (sentMessage) {
             player.data.message = sentMessage;
             updateTimeline(sentMessage, embed, player, track, timelineLength);
@@ -67,7 +67,7 @@ function updateTimeline(message: Message, embed: EmbedBuilder, player: Player, t
         embed.setDescription(`▶️ ${formattedTitle} \`${humanizeDuration(track.duration ?? 0, { round: true })}\`\n${timelineArray.join('')}\n\`${humanizeDuration(player.current.position ?? 0, { round: true })}\``);
 
         try {
-            await editMessage(message, { embeds: [embed.toJSON()] });
+            await editMessage(message, { embeds: [embed] });
             await savePlayerState(player);
         } catch (error: unknown) {
             clearPlayerIntervalsAndCollectors(player);
@@ -99,7 +99,7 @@ function createControlRows(): ActionRowBuilder<ButtonBuilder>[] {
 async function createControlCollector(message: Message, embed: EmbedBuilder, player: Player) {
     if (!message || !message.id) return;
     const rows = createControlRows();
-    await editMessage(message, { components: rows.map(row => row.toJSON()) });
+    await editMessage(message, { components: rows });
 
     const filter = (i: any) => {
         const voiceChannel = i.member?.voice.channel;
@@ -165,7 +165,7 @@ function createVolumeRow(): ActionRowBuilder<ButtonBuilder>[] {
 async function createVolumeCollector(message: Message, embed: EmbedBuilder, player: Player) {
     if (!message || !message.id) return;
     const rows = createVolumeRow();
-    await editMessage(message, { components: rows.map(row => row.toJSON()) });
+    await editMessage(message, { components: rows });
 
     const filter = (i: any) => {
         const voiceChannel = i.member?.voice.channel;
@@ -231,7 +231,7 @@ async function handleVolume(message: Message, embed: EmbedBuilder, player: Playe
     }
 
     const rows = createVolumeRow();
-    await editMessage(message, { components: rows.map(row => row.toJSON()) });
+    await editMessage(message, { components: rows });
     await editFields(message, embed, player);
     await volumeControls(message, embed, player, track);
 }
@@ -324,7 +324,7 @@ async function handleMusic(message: Message, embed: EmbedBuilder, player: Player
         player.data.volumeCollector = null;
     }
     const rows = createControlRows();
-    await editMessage(message, { components: rows.map(row => row.toJSON()) });
+    await editMessage(message, { components: rows });
     await editFields(message, embed);
     await controls(message, embed, player, track);
 }
@@ -342,5 +342,5 @@ async function editFields(message: Message, embed: EmbedBuilder, player?: Player
             embed.addFields([{ name: title, value: text }]);
         }
     }
-    await editMessage(message, { embeds: [embed.toJSON()] });
+    await editMessage(message, { embeds: [embed] });
 }
