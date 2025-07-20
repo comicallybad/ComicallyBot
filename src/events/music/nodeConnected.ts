@@ -2,6 +2,7 @@ import { Client, EmbedBuilder, TextChannel } from "discord.js";
 import { Node } from "moonlink.js";
 import { getAllSavedPlayerStates, deletePlayerState } from "../../utils/dbUtils";
 import { sendMessage, deleteMessage } from "../../utils/messageUtils";
+import { logError } from "../../utils/logUtils";
 
 export default {
     name: "nodeConnected",
@@ -34,13 +35,34 @@ export default {
 
                 player.connect({ setDeaf: true, setMute: false });
 
+                const connectionTimeout = 15000;
+                const voiceConnectionPromise = new Promise<void>((resolve, reject) => {
+                    const timeout = setTimeout(() => {
+                        reject(new Error(`Voice connection timed out after ${connectionTimeout / 1000} seconds.`));
+                    }, connectionTimeout);
+
+                    client.once(`botVoiceChannelConnect:${savedState.guildId}`, () => {
+                        clearTimeout(timeout);
+                        resolve();
+                    });
+                });
+
+                try {
+                    await voiceConnectionPromise;
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                } catch (error) {
+                    logError(error, `Player restoration for guild ${savedState.guildId} failed`);
+                    player.disconnect();
+                    player.destroy();
+                    await deletePlayerState(savedState.guildId);
+                    continue;
+                }
+
                 if (savedState.currentTrack) {
                     player.queue.add(savedState.currentTrack);
                 }
                 if (savedState.queue.length > 0) {
-                    for (const track of savedState.queue) {
-                        player.queue.add(track);
-                    }
+                    player.queue.add(savedState.queue)
                 }
                 if (savedState.previous.length > 0) {
                     for (const track of savedState.previous) {
@@ -51,21 +73,11 @@ export default {
                 player.setLoop(savedState.loop as any);
                 player.setVolume(savedState.volume);
 
-                if (savedState.playing) {
-                    player.play({
-                        position: savedState.position,
-                    });
-                    if (savedState.paused) {
-                        player.pause();
-                    }
+                if (player.queue.size > 0) {
+                    player.data.isRestored = true;
+                    player.data.wasPaused = savedState.paused;
+                    player.play({ position: savedState.position });
                 }
-
-                setTimeout(() => {
-                    if (player && !player.current) {
-                        player.disconnect();
-                        player.destroy();
-                    }
-                }, 5000);
 
                 const textChannel = await client.channels.fetch(savedState.textChannelId) as TextChannel;
                 if (textChannel) {
@@ -84,7 +96,7 @@ export default {
 
                 await deletePlayerState(savedState.guildId);
             } catch (error) {
-                console.error(`Failed to restore player for guild ${savedState.guildId}:`, error);
+                logError(error, `Failed to restore player for guild ${savedState.guildId}`);
                 await deletePlayerState(savedState.guildId);
             }
         }
