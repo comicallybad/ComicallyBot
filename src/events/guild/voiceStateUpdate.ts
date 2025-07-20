@@ -8,15 +8,6 @@ export default {
         if (!client.user) return;
 
         const botId = client.user.id;
-
-        if (
-            newState.member?.id === botId &&
-            newState.channelId &&
-            oldState.sessionId !== newState.sessionId
-        ) {
-            client.emit(`botVoiceChannelConnect:${newState.guild.id}`);
-        }
-
         const oldChannel = oldState.channel;
         const newChannel = newState.channel;
 

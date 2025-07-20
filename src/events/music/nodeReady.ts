@@ -33,29 +33,6 @@ export default {
 
                 player.connect({ setDeaf: true, setMute: false });
 
-                const connectionTimeout = 15000;
-                const voiceConnectionPromise = new Promise<void>((resolve, reject) => {
-                    const timeout = setTimeout(() => {
-                        reject(new Error(`Voice connection timed out after ${connectionTimeout / 1000} seconds.`));
-                    }, connectionTimeout);
-
-                    client.once(`botVoiceChannelConnect:${savedState.guildId}`, () => {
-                        clearTimeout(timeout);
-                        resolve();
-                    });
-                });
-
-                try {
-                    await voiceConnectionPromise;
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                } catch (error) {
-                    logError(error, `Player restoration for guild ${savedState.guildId} failed`);
-                    player.disconnect();
-                    player.destroy();
-                    await deletePlayerState(savedState.guildId);
-                    continue;
-                }
-
                 if (savedState.currentTrack) {
                     player.queue.add(savedState.currentTrack);
                 }
