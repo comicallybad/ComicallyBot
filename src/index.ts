@@ -1,6 +1,7 @@
 import { ShardingManager } from "discord.js";
 import * as dotenv from "dotenv";
 import { loadProcessErrorHandlers } from "./handlers/processErrorHandler";
+import { formatLogTimestamp } from "./utils/logUtils";
 
 dotenv.config();
 
@@ -14,7 +15,9 @@ const manager = new ShardingManager("./dist/client.js", {
     token: process.env.DISCORD_TOKEN,
 });
 
-manager.on("shardCreate", shard => console.log(`Launched shard ${shard.id}`));
+manager.on("shardCreate", shard => {
+    console.log(`${formatLogTimestamp()} [INFO] Shard ${shard.id} launched`);
+});
 
 try {
     manager.spawn();
