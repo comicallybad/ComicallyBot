@@ -12,7 +12,7 @@ const intents = [
     GatewayIntentBits.MessageContent,
     GatewayIntentBits.GuildModeration,
     GatewayIntentBits.GuildVoiceStates,
-    GatewayIntentBits.GuildEmojisAndStickers,
+    GatewayIntentBits.GuildExpressions,
     GatewayIntentBits.GuildMessageReactions
 ];
 
@@ -42,7 +42,6 @@ client.music = new Manager({
 });
 
 config({ path: __dirname + "/.env" });
-global.voiceChannels = [], global.warnUsers = [];
 
 client.commands = new Collection();
 client.aliases = new Collection();

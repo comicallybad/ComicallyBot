@@ -1,9 +1,9 @@
 lavalink:
     plugins:
-      - dependency: "com.github.topi314.lavasrc:lavasrc-plugin:4.3.0"
-        repository: "https://maven.lavalink.dev/releases"
-        snapshot: false
-      - dependency: "dev.lavalink.youtube:youtube-plugin:1.11.5"
+      - dependency: com.github.topi314.lavasrc:lavasrc-plugin:dbda8e7
+        repository: https://maven.topi.wtf/snapshots
+        snapshot: true
+      - dependency: "dev.lavalink.youtube:youtube-plugin:1.13.3"
         repository: "https://maven.lavalink.dev/releases"
     server:
         bufferDurationMs: 400

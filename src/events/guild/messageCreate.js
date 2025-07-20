@@ -1,13 +1,11 @@
 const { PermissionFlagsBits } = require("discord.js")
 const { del } = require("../../../utils/functions/functions.js");
-const { checkWarn } = require("../../../utils/functions/dbFunctions.js");
 
 module.exports = async (client, message) => {
     if (!message || !message.guild || message.author.bot) return;
     if (!message.member) message.member = await message.guild.members.fetch(message).catch(err => err);
     if (message.guild.members.me.isCommunicationDisabled()) return;
 
-    checkWarn(client, message);
     checkOwnerCommand(client, message);
 }
 
