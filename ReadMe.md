@@ -1,78 +1,191 @@
-<div style="display: flex; align-items: flex-start;">
-<img src="https://i.imgur.com/99mnwjg.png" alt="ComicallyBot" width="200" style="margin-right: 20px;">
-
-<div>
-
 # ComicallyBot
 
-ComicallyBot is a Discord bot built with TypeScript that has many features. From moderating your server, providing a modern music player, to tons of fun commands, ComicallyBot is designed to enhance your Discord experience.
-
-ComicallyBot is made and managed by [ComicallyBad](https://github.com/comicallybad).
-
+<div align="center">
+  <img src="https://i.imgur.com/99mnwjg.png" alt="ComicallyBot" width="200">
+  <p>
+    <b>A feature-rich Discord bot built with TypeScript to enhance your server experience.</b>
+  </p>
+  <p>
+    <a href="https://github.com/comicallybad/ComicallyBot/blob/master/LICENSE"><img src="https://img.shields.io/github/license/comicallybad/ComicallyBot?style=for-the-badge" alt="License"></a>
+    <a href="https://github.com/comicallybad/ComicallyBot/issues"><img src="https://img.shields.io/github/issues/comicallybad/ComicallyBot?style=for-the-badge" alt="Issues"></a>
+    <a href="https://github.com/comicallybad/ComicallyBot/watchers"><img src="https://img.shields.io/github/watchers/comicallybad/ComicallyBot?style=for-the-badge&logo=github&label=Watch" alt="Watchers"></a>
+    <a href="https://github.com/comicallybad/ComicallyBot/forks"><img src="https://img.shields.io/github/forks/comicallybad/ComicallyBot?style=for-the-badge&logo=github&label=Forks" alt="Forks"></a>
+    <a href="https://github.com/comicallybad/ComicallyBot"><img src="https://img.shields.io/github/stars/comicallybad/ComicallyBot?style=for-the-badge" alt="Stars"></a>
+  </p>
 </div>
-</div>
 
-## Features
+## ✨ Features
 
-- **Slash Commands**: Use Discord's new slash commands for a smoother experience.
-- **Music Player**: Enjoy music with a new and improved player, complete with an equalizer and music controls.
-- **Welcoming**: Welcome new users with a welcome message and channel.
-- **Moderation**: Whether you need auto-moderation, or manual, the bot has you covered.
-- **Information**: Find helpful information on your guild, roles, and members.
-- **Event Logging**: Keep track of what's happening in your server with detailed event logging.
-- **And More**: ComicallyBot is always improving with new features being added regularly.
+ComicallyBot is packed with features to make your Discord server more engaging and manageable.
 
-## Updates
+| Category          | Description                                                                                             |
+| :---------------- | :------------------------------------------------------------------------------------------------------ |
+| **😂 Fun**        | A variety of entertaining commands to keep your community engaged.                                      |
+| **👋 Welcoming**  | Greet new members with customizable welcome messages and designated channels.                           |
+| **🛡️ Moderation** | A suite of moderation tools to keep your server safe and clean.                                         |
+| **🎧 Music**      | High-quality music playback with an equalizer, volume controls, and more.                               |
+| **ℹ️ Info**       | Get detailed information about your server, roles, and members.                                         |
+| **🙋‍♂️ Helpful**    | A collection of useful commands to assist with various tasks.                                           |
+| **👑 Owner**      | Exclusive commands for the bot owner to manage the bot.                                                 |
+| **🎭 Selection Roles** | Creates a message with a selection role menu.                                                         |
+| **❤️ Support**    | Get help and support for the bot.                                                                       |
 
-- **TypeScript Port**: The entire project has been ported from JavaScript to TypeScript for improved maintainability and type safety.
-- **Slash Commands**: Global and developer guild slash commands have been implemented for a cleaner and more intuitive user experience.
-- **Music Player**: The music player has been modernized and made more efficient.
-- **Event Logging**: Event logging has been improved with centralized error handling and logging to files.
-- **More To Come**: Features are always in the works! Suggestions and feedback are greatly appreciated.
+## 🚀 Getting Started
 
-## How to Use
+To get ComicallyBot up and running on your own server, follow these steps:
 
-To clone and use ComicallyBot, follow these steps:
+### Prerequisites
 
-1. Install [mongodb](https://www.mongodb.com/try/download/community)
-2. Install [Lavalink](https://github.com/lavalink-devs/Lavalink/releases/)
-3. Install the required Java version mentioned [here](https://github.com/lavalink-devs/Lavalink#requirements)
-4. Place `lavalink.jar` into `/src/lavalink`.
-5. Create an `application.yml` file inside the lavalink folder. An example can be found [here](https://github.com/lavalink-devs/Lavalink/blob/master/LavalinkServer/application.yml.example)
-6. Create a `.env` file with:
-    - `DISCORD_TOKEN`: Your Discord bot token.
-    - `CLIENT_ID`: Your Discord bot's client ID.
-    - `DEV_GUILD_ID` Your Discord guild ID for developer commands
-    - `BOT_OWNER_ID`: Your Discord user ID (for owner-only commands and error DMs).
-    - `DM_CHANNEL_ID`: The ID of a DM channel with the bot (for `/clean_dms` command).
-    - `MUSIC`: Your Lavalink/Moonlink password.
-7. Run `npm install` to install the necessary packages.
-8. Run `npm run build` to compile the TypeScript code.
-9. Run `npm run deploy` to deploy the slash commands to Discord.
-10. Run the `start.bat` within the root directory to start Lavalink and the bot.
+- [Node.js](https://nodejs.org/en/) (v16.9.0 or higher)
+- [MongoDB](https://www.mongodb.com/try/download/community)
+- [Java](https://www.java.com/en/download/) (Version 17 or higher)
+- [Lavalink](https://github.com/lavalink-devs/Lavalink/releases/)
 
-## Support
+### Installation
 
-For Bug Reports, Feature Requests, Help, and Other inquiries: 
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/comicallybad/ComicallyBot.git
+    cd ComicallyBot
+    ```
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+3.  **Set up Lavalink:**
+    -   Place the `Lavalink.jar` file in the `src/lavalink` directory.
+    -   Create an `application.yml` file in the same directory. You can use the [applicationSkeleton.yml](https://github.com/comicallybad/ComicallyBot/blob/master/src/lavalink/applicationSkeleton.yml) as a template.
+4.  **Configure environment variables:**
+    -   Create a `.env` file in the root directory of the project. You can use the [.envSkeleton](https://github.com/comicallybad/ComicallyBot/blob/master/.envSkeleton) as a template.
+    -   Add the following variables to the `.env` file, replacing the placeholder values with your own:
+        ```
+        DISCORD_TOKEN=YOUR_DISCORD_BOT_TOKEN
+        CLIENT_ID=YOUR_DISCORD_BOT_CLIENT_ID
+        DEV_GUILD_ID=YOUR_DEVELOPMENT_SERVER_ID
+        BOT_OWNER_ID=YOUR_DISCORD_USER_ID
+        DM_CHANNEL_ID=YOUR_DM_CHANNEL_ID_WITH_THE_BOT
+        MUSIC=YOUR_LAVALINK_PASSWORD
+        ```
+5.  **Build the project:**
+    ```bash
+    npm run build
+    ```
+6.  **Deploy slash commands:**
+    ```bash
+    npm run deploy
+    ```
+7.  **Start the bot:**
+    ```bash
+    npm run start
+    ```
 
-1. Navigate to the [GitHub Issues Tab](https://github.com/comicallybad/ComicallyBot/issues). 
-2. Click `New Issue` on the top right.
-3. Select `Get Started` from the applicable option.
-4. Provide as much information as possible. For extra help:
-    - Node.js version: `node --version`
-    - Discord.js version: found in `package.json`
-    - Java version: `java --version`
-5. Click `Submit new issue` and await a response!
+## 🤖 Commands
 
-## Code Documentation
+ComicallyBot uses slash commands for a seamless user experience. Here's a list of available commands:
 
-For help understanding the code and technologies used in this project, you can refer to the following resources:
+### Fun
 
-- **W3Schools JavaScript Tutorial**: [W3Schools JavaScript Tutorial](https://www.w3schools.com/js/default.asp)
-- **MDN's JavaScript Guide**: [MDN's JavaScript Guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Introduction)
-- **Discord.js Guide**: [Discord.js Guide](https://discordjs.guide/#before-you-begin)
-- **Discord.js Documentation**: [Discord.js Documentation](https://discord.js.org)
-- **Lavalink Documentation**: [Lavalink Documentation](https://github.com/lavalink-devs/Lavalink?tab=readme-ov-file#lavalink)
-- **Moonlink Documentation**: [Moonlink Documentation](https://moonlink.js.org/introduction)
+| Command | Description |
+| :--- | :--- |
+| `/good` | Sends a goodmorning or goodnight message. |
+| `/love` | Calculates the love affinity another person has for you. |
+| `/meme` | Get a random meme. |
+| `/urban` | Gets an urban dictionary definition |
 
-These resources provide comprehensive guides and documentation to help you understand and use JavaScript, Discord.js, Lavalink, and Moonlink.js effectively.
+### Helpful
+
+| Command | Description |
+| :--- | :--- |
+| `/announce` | Make an announcement to a channel. |
+| `/avatar` | Responds with an embed of a users avatar. |
+| `/define` | Defines a word for you. |
+| `/translate` | Translates a message for you. |
+| `/vote` | Sends a message users can vote on. |
+
+### Info
+
+| Command | Description |
+| :--- | :--- |
+| `/invites` | Provides server invite links and information. |
+| `/og-members` | Shows a list of earliest users in the discord server. |
+| `/ping` | Returns ping and latency of the bot. |
+| `/who-is` | Returns user information. |
+
+### Moderation
+
+| Command | Description |
+| :--- | :--- |
+| `/clear` | Clears messages from a channel. |
+| `/create-log-channels` | Create log channels |
+| `/delete-reaction` | Manages the delete reaction emoji. |
+| `/report` | Reports a member. |
+| `/role` | Add, remove, view information, or view users for a role. |
+| `/unban` | Unban a member. |
+| `/unmute` | Remove timeout from a member. |
+| `/warn` | Warns a member. |
+
+### Music
+
+| Command | Description |
+| :--- | :--- |
+| `/equalizer` | Adjusts the music equalizer. |
+| `/pause` | Pause the current song. |
+| `/play` | Resume player, move player, or queue a song/playlist from YouTube/SoundCloud/Spotify. |
+| `/queue` | Manage or view the current queue. |
+| `/repeat` | Repeats the current track or entire queue. |
+| `/shuffle` | Shuffles the current queue. |
+| `/skip` | Skip ahead, skip to a position, or skip the current song. |
+| `/song` | Displays what song is currently playing. |
+| `/stop` | Disconnects the bot from the voice channel. |
+| `/volume` | Changes the volume of the music player. |
+
+### Owner
+
+| Command | Description |
+| :--- | :--- |
+| `/clean_dms` | Cleans DM messages from bot to owner (Owner Only). |
+| `/eval` | Executes arbitrary JavaScript code (Owner Only). |
+| `/usage` | Provides statistics on command usage (Owner Only). |
+
+### Selection Roles
+
+| Command | Description |
+| :--- | :--- |
+| `/selection-roles` | Create a selection role message. |
+
+### Support
+
+| Command | Description |
+| :--- | :--- |
+| `/donate` | Provides the donation link. |
+| `/github` | Provides a link to the GitHub repository. |
+| `/support` | Provides a link to the support server. |
+
+### Welcoming
+
+| Command | Description |
+| :--- | :--- |
+| `/welcome-channel` | Manage or view the welcome channel. |
+| `/welcome-message` | Manage or view the welcome message. |
+
+## 🛠️ Technologies Used
+
+-   [**Discord.js**](https://discord.js.org/) - The official Discord API library for Node.js.
+-   [**Discord.js Guide**](https://discordjs.guide/#before-you-begin) - The official Discord.js guide.
+-   [**TypeScript**](https://www.typescriptlang.org/) - A typed superset of JavaScript that compiles to plain JavaScript.
+-   [**Moonlink.js**](https://moonlink.js.org/) - A powerful Lavalink client for Discord.js
+-   [**Lavalink**](https://github.com/lavalink-devs/Lavalink?tab=readme-ov-file#lavalink) - A standalone audio sending node.
+-   [**MongoDB**](https://www.mongodb.com/) - A NoSQL database for storing guild configurations.
+-   [**Mongoose**](https://mongoosejs.com/) - An ODM for MongoDB and Node.js.
+
+## 🤝 Contributing
+
+Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue on the [GitHub repository](https://github.com/comicallybad/ComicallyBot/issues).
+
+## 📜 License
+
+This project is licensed under the ISC License - see the [LICENSE](LICENSE) file for details.
+
+## 📧 Support
+
+For bug reports, feature requests, help, and other inquiries, please navigate to the [GitHub Issues Tab](https://github.com/comicallybad/ComicallyBot/issues) and select the appropriate template.
