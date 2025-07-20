@@ -12,7 +12,7 @@ export default {
     name: "ready",
     once: true,
     execute(client: Client) {
-        console.log(`${formatLogTimestamp()} [INFO] ${client.user?.tag} (${client.user?.id}) is online on shard ${client.shard?.ids[0]}`);
+        console.log(`${formatLogTimestamp()} [INFO] Bot ${client.user?.tag} (${client.user?.id}) online on shard ${client.shard?.ids[0]}.`);
 
         initializeActivities(client);
 
@@ -24,7 +24,7 @@ export default {
 
         mongoose.set("strictQuery", true);
         mongoose.connect("mongodb://0.0.0.0/ComicallyBot").then(() => {
-            console.log(`${formatLogTimestamp()} [SUCCESS] MongoDB: [CONNECTED]`);
+            console.log(`${formatLogTimestamp()} [SUCCESS] MongoDB connection established.`);
             setupGuilds(client);
         });
     },

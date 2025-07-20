@@ -7,7 +7,7 @@ import { logError, formatLogTimestamp } from "../../utils/logUtils";
 export default {
     name: "nodeReady",
     execute: async (client: Client, node: Node) => {
-        console.log(`${formatLogTimestamp()} [SUCCESS] Lavalink Node ${node.identifier}: [READY]`);
+        console.log(`${formatLogTimestamp()} [SUCCESS] Lavalink Node ${node.identifier} ready.`);
 
         const savedPlayerStates = await getAllSavedPlayerStates();
         if (savedPlayerStates.length === 0) return;

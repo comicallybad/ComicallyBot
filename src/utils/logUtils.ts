@@ -42,9 +42,9 @@ export async function logError(error: any, context?: string): Promise<void> {
         errorMessage = String(error);
     }
 
-    const logEntry = `[${date.toLocaleString()}]${context ? ` [${context}]` : ""} ERROR: ${errorMessage}\n\n`;
+    const logEntry = `${formatLogTimestamp()} ${context ? `[${context}] ` : ""} [ERROR] ${errorMessage}\n\n`;
 
-    console.error(`[${date.toLocaleString()}] New error logged: ${errorMessage.split('\n')[0]}`);
+    console.error(`${formatLogTimestamp()} [ERROR] New error logged: ${errorMessage.split('\n')[0]}`);
 
     try {
         await fs.mkdir(logDirectory, { recursive: true });
