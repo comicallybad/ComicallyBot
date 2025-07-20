@@ -5,7 +5,7 @@ import { sendMessage, deleteMessage } from "../../utils/messageUtils";
 import { logError } from "../../utils/logUtils";
 
 export default {
-    name: "nodeConnected",
+    name: "nodeReady",
     execute: async (client: Client, node: Node) => {
         const savedPlayerStates = await getAllSavedPlayerStates();
         if (savedPlayerStates.length === 0) return;
