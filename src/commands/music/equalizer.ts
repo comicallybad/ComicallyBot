@@ -29,7 +29,7 @@ for (let i = -8; i <= 8; i++) {
 
 export default {
     data: new SlashCommandBuilder()
-        .setName("eq")
+        .setName("equalizer")
         .setDescription("Adjusts the music equalizer.")
         .setContexts(InteractionContextType.Guild)
         .addSubcommand(command => command.setName("bass").setDescription("Boosts the bass.")
