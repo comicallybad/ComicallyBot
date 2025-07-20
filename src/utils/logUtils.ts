@@ -2,6 +2,17 @@ import * as fs from "fs/promises";
 import * as path from "path";
 
 /**
+ * Formats the current date and time into a standardized log timestamp string.
+ * @returns A string in the format "[HH:MM:SS AM/PM] [MM/DD/YYYY]".
+ */
+export function formatLogTimestamp(): string {
+    const now = new Date();
+    const time = now.toLocaleTimeString('en-US', { hour12: true });
+    const date = now.toLocaleDateString('en-US');
+    return `[${time}] [${date}]`;
+}
+
+/**
  * Logs an error to a file and the console.
  * @param error The error to log.
  * @param context Optional context to include in the log entry.

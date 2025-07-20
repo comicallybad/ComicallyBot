@@ -2,13 +2,16 @@ import { Client, EmbedBuilder, TextChannel } from "discord.js";
 import { Node } from "moonlink.js";
 import { getAllSavedPlayerStates, deletePlayerState } from "../../utils/dbUtils";
 import { sendMessage, deleteMessage } from "../../utils/messageUtils";
-import { logError } from "../../utils/logUtils";
+import { logError, formatLogTimestamp } from "../../utils/logUtils";
 
 export default {
     name: "nodeReady",
     execute: async (client: Client, node: Node) => {
+        console.log(`${formatLogTimestamp()} [SUCCESS] Lavalink Node ${node.identifier}: [READY]`);
+
         const savedPlayerStates = await getAllSavedPlayerStates();
         if (savedPlayerStates.length === 0) return;
+        console.log(`${formatLogTimestamp()} [INFO] Attempting restoration of ${savedPlayerStates.length} saved player states.`);
 
         for (const savedState of savedPlayerStates) {
             try {
