@@ -11,7 +11,7 @@ export default {
 
         const savedPlayerStates = await getAllSavedPlayerStates();
         if (savedPlayerStates.length === 0) return;
-        console.log(`${formatLogTimestamp()} [INFO] Attempting restoration of ${savedPlayerStates.length} saved player state(s)`);
+        console.log(`${formatLogTimestamp()} [INFO] Attempting restoration of ${savedPlayerStates.length} saved player state(s).`);
 
         for (const savedState of savedPlayerStates) {
             try {

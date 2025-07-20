@@ -9,6 +9,7 @@ interface Command {
 import * as dotenv from "dotenv";
 import * as fs from "fs";
 import * as path from "path";
+import { formatLogTimestamp } from "./utils/logUtils";
 
 dotenv.config();
 
@@ -34,7 +35,7 @@ for (const folder of commandFolders) {
                 globalCommands.push(commandModule.data.toJSON());
             }
         } else {
-            console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+            console.log(`${formatLogTimestamp()} [WARN] The command at ${filePath} is missing a required "data" or "execute" property.`);
         }
     }
 }
@@ -43,26 +44,26 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN as string);
 
 (async () => {
     try {
-        console.log(`Started refreshing ${globalCommands.length} global application (/) commands.`);
+        console.log(`${formatLogTimestamp()} [INFO] Started refreshing ${globalCommands.length} global application (/) commands.`);
 
         const globalData: any = await rest.put(
             Routes.applicationCommands(process.env.CLIENT_ID as string),
             { body: globalCommands },
         );
 
-        console.log(`Successfully reloaded ${globalData.length} global application (/) commands.`);
+        console.log(`${formatLogTimestamp()} [SUCCESS] Successfully reloaded ${globalData.length} global application (/) commands.`);
 
         if (process.env.DEV_GUILD_ID) {
-            console.log(`Started refreshing ${devCommands.length} development guild application (/) commands.`);
+            console.log(`${formatLogTimestamp()} [INFO] Started refreshing ${devCommands.length} development guild application (/) commands.`);
 
             const devData: any = await rest.put(
                 Routes.applicationGuildCommands(process.env.CLIENT_ID as string, process.env.DEV_GUILD_ID as string),
                 { body: devCommands },
             );
 
-            console.log(`Successfully reloaded ${devData.length} development guild application (/) commands.`);
+            console.log(`${formatLogTimestamp()} [SUCCESS] Successfully reloaded ${devData.length} development guild application (/) commands.`);
         } else {
-            console.log("DEV_GUILD_ID is not set. Skipping deployment of owner commands to a development guild.");
+            console.log(`${formatLogTimestamp()} [INFO] DEV_GUILD_ID is not set. Skipping deployment of owner commands to a development guild.`);
         }
     } catch (error: unknown) {
         console.error(error);
