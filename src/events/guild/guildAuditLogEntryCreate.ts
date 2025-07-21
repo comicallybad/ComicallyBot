@@ -492,7 +492,6 @@ export default {
                 for (const change of changes!) {
                     let oldValue: any = change.old;
                     let newValue: any = change.new;
-
                     if ((change.key as string) === 'colors') {
                         continue;
                     }
@@ -535,6 +534,10 @@ export default {
                     } else if (change.key === 'hoist' || change.key === 'mentionable') {
                         oldValue = oldValue ? 'Yes' : 'No';
                         newValue = newValue ? 'Yes' : 'No';
+                    } else if (change.key === 'icon_hash') {
+                        const roleId = role?.id;
+                        oldValue = oldValue ? `https://cdn.discordapp.com/role-icons/${roleId}/${oldValue}.png` : 'None';
+                        newValue = newValue ? `https://cdn.discordapp.com/role-icons/${roleId}/${newValue}.png` : 'None';
                     }
 
                     if ((change.key as string) !== 'permissions') {
