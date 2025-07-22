@@ -51,9 +51,10 @@ To get ComicallyBot up and running on your own server, follow these steps:
 2.  **Install dependencies:**
     ```bash
     npm install
+    npm install -g typescript
     ```
 3.  **Set up Lavalink:**
-    -   Place the `Lavalink.jar` file in the `src/lavalink` directory.
+    -   Place the `lavalink.jar` file in the `src/lavalink` directory.
     -   Create an `application.yml` file in the same directory. You can use the [applicationSkeleton.yml](https://github.com/comicallybad/ComicallyBot/blob/master/src/lavalink/applicationSkeleton.yml) as a template.
 4.  **Configure environment variables:**
     -   Create a `.env` file in the root directory of the project. You can use the [.envSkeleton](https://github.com/comicallybad/ComicallyBot/blob/master/.envSkeleton) as a template.
