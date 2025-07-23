@@ -100,7 +100,6 @@ async function viewQueue(interaction: ChatInputCommandInteraction, player: Playe
     }
     if (queueLength > 0) {
         desc += `\n__**Rest of queue:**__\n`;
-        desc += queueTracks.map(formatQueueEntry).join("\n");
     }
     embed.setDescription(desc.trim());
     await sendReply(interaction, { embeds: [embed] });
