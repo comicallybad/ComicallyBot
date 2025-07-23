@@ -1,7 +1,6 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction, DMChannel, MessageFlags, InteractionContextType, DiscordAPIError, PermissionsBitField } from "discord.js";
+import { SlashCommandBuilder, ChatInputCommandInteraction, DMChannel, MessageFlags, InteractionContextType, PermissionsBitField } from "discord.js";
 import { sendReply, editReply } from "../../utils/replyUtils";
 import { PermissionError, ValidationError } from "../../utils/customErrors";
-import { logError } from "../../utils/logUtils";
 
 export default {
     ownerOnly: true,
