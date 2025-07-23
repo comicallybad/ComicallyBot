@@ -1,5 +1,6 @@
 import * as fs from "fs/promises";
 import * as path from "path";
+import { inspect } from "util";
 
 /**
  * Formats the current date and time into a standardized log timestamp string.
@@ -28,16 +29,7 @@ export async function logError(error: any, context?: string): Promise<void> {
     if (error instanceof Error) {
         errorMessage = error.stack || error.message;
     } else if (typeof error === "object" && error !== null) {
-        const cache = new Set();
-        errorMessage = JSON.stringify(error, (key, value) => {
-            if (typeof value === "object" && value !== null) {
-                if (cache.has(value)) {
-                    return;
-                }
-                cache.add(value);
-            }
-            return value;
-        }, 2);
+        errorMessage = inspect(error, { depth: 5 });
     } else {
         errorMessage = String(error);
     }
