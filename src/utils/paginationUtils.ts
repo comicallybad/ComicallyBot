@@ -13,27 +13,28 @@ import { ValidationError } from "./customErrors";
  * @returns A Promise that resolves to the collected button interaction, or rejects if the prompt times out.
  */
 export function messagePrompt(interaction: CommandInteraction | MessageComponentInteraction | ModalSubmitInteraction, row: ActionRowBuilder<ButtonBuilder>, timeout: number): Promise<ButtonInteraction> {
-    return new Promise((resolve, reject) => {
-        const collector = interaction.channel?.createMessageComponentCollector({
-            filter: i => i.user.id === interaction.user.id,
-            componentType: ComponentType.Button,
-            time: timeout
-        });
+    return new Promise(async (resolve, reject) => {
+        try {
+            const reply = await interaction.fetchReply();
+            const collector = reply.createMessageComponentCollector({
+                filter: i => i.user.id === interaction.user.id,
+                componentType: ComponentType.Button,
+                time: timeout
+            });
 
-        if (!collector) {
-            return;
+            collector.on("collect", (i: ButtonInteraction) => {
+                collector.stop();
+                resolve(i);
+            });
+
+            collector.on("end", (collected, reason) => {
+                if (reason === "time") {
+                    reject("time");
+                }
+            });
+        } catch (error) {
+            reject(error);
         }
-
-        collector.on("collect", (i: ButtonInteraction) => {
-            collector.stop();
-            resolve(i);
-        });
-
-        collector.on("end", (collected, reason) => {
-            if (reason === "time") {
-                reject("time");
-            }
-        });
     });
 }
 
