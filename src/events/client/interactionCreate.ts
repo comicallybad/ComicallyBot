@@ -1,4 +1,4 @@
-import { Interaction, Client, InteractionType, User, MessageFlags, PermissionFlagsBits, GuildMember, EmbedBuilder, ComponentType, ActionRow } from "discord.js";
+import { Interaction, Client, InteractionType, User, MessageFlags, PermissionFlagsBits, GuildMember, EmbedBuilder, ComponentType } from "discord.js";
 import { incrementCommandUsage } from "../../utils/dbUtils";
 import { canCommunicate } from "../../utils/preconditions";
 import { deferUpdate, deleteReply, sendReply, sendUpdate } from "../../utils/replyUtils";

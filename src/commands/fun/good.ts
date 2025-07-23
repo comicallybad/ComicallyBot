@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction, User, GuildMember, InteractionContextType } from "discord.js";
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction, GuildMember, InteractionContextType } from "discord.js";
 import { sendReply } from "../../utils/replyUtils";
 import { ValidationError } from "../../utils/customErrors";
 

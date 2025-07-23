@@ -1,6 +1,6 @@
 import {
-    SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits, type ChatInputCommandInteraction,
-    type GuildMember, type Role, type ButtonInteraction, InteractionContextType, MessageFlags, DiscordAPIError
+    SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits, ChatInputCommandInteraction,
+    GuildMember, Role, ButtonInteraction, InteractionContextType, MessageFlags, DiscordAPIError
 } from "discord.js";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
 import { pageList, messagePrompt } from "../../utils/paginationUtils";
