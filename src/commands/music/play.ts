@@ -146,8 +146,10 @@ async function handleNoSongOption(interaction: ChatInputCommandInteraction, voic
 
 async function handleLoadType(interaction: ChatInputCommandInteraction, player: Player, res: SearchResult) {
     if (res.loadType === "error") {
+        await deleteReply(interaction, { timeout: 0 });
         throw new ValidationError("The provided track/url could not be loaded.");
     } else if (res.loadType === "empty") {
+        await deleteReply(interaction, { timeout: 0 });
         throw new ValidationError("No results were found for the provided track/url.");
     }
 
@@ -165,8 +167,14 @@ async function handleLoadType(interaction: ChatInputCommandInteraction, player: 
 }
 
 function startPlaying(player: Player) {
-    if (player && !player.playing) return player.play();
-    if (player && player.paused) return player.resume();
+    if (player && !player.playing && !player.paused) {
+        player.play();
+        return;
+    }
+    if (player && player.paused) {
+        player.resume();
+        return;
+    }
 }
 
 async function sendEmbed(interaction: ChatInputCommandInteraction, title: string, track: Track) {
