@@ -99,7 +99,7 @@ async function viewQueue(interaction: ChatInputCommandInteraction, player: Playe
         desc += `__**Currently Playing:**__\n${formatQueueEntry(track)}\n`;
     }
     if (queueLength > 0) {
-        desc += `\n__**Rest of queue (\`${queueLength} song(s)\`):**__\n`;
+        desc += `\n__**Rest of queue:**__ \`${queueLength} song(s)\`\n`;
     }
     embed.setDescription(desc.trim());
     await sendReply(interaction, { embeds: [embed] });
