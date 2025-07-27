@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction, MessageFlags, InteractionContextType, PermissionsBitField } from "discord.js";
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction, MessageFlags, InteractionContextType, PermissionsBitField, Client } from "discord.js";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
 import { PermissionError, ValidationError } from "../../utils/customErrors";
 import beautify from "beautify";
@@ -12,7 +12,7 @@ export default {
         .setContexts(InteractionContextType.Guild)
         .addStringOption(option =>
             option.setName("code").setDescription("The code to execute.").setRequired(true)),
-    async execute(interaction: ChatInputCommandInteraction) {
+    async execute(interaction: ChatInputCommandInteraction, client: Client) {
         if (interaction.user.id !== process.env.BOT_OWNER_ID) {
             throw new PermissionError("This command can only be used by the bot owner.");
         }

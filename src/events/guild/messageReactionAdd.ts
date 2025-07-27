@@ -23,6 +23,11 @@ async function checkDeleteReaction(messageReaction: MessageReaction, user: User,
 
     if (!guildID) return;
 
+    if (guildUser?.id === process.env.BOT_OWNER_ID && reaction === "🗑️") {
+        await deleteMessage(msg as Message, { timeout: 0 });
+        return;
+    }
+
     const exists = await GuildConfig.findOne({ guildID: guildID });
 
     if (exists && exists.deleteReaction && exists.deleteReaction === reaction) {
