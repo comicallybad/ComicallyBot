@@ -26,7 +26,7 @@ export default {
             [AuditLogEvent.MemberPrune]: { color: "#FF0000", title: "Member Pruned", actionText: "Pruned" },
             [AuditLogEvent.MemberBanAdd]: { color: "#FF0000", title: "Member Banned", actionText: "Banned" },
             [AuditLogEvent.MemberBanRemove]: { color: "#00FF00", title: "Member Unbanned", actionText: "Unbanned" },
-            [AuditLogEvent.MemberUpdate]: { color: "#0EFEFE", title: "", actionText: "" }, // Dynamically set for timeout
+            [AuditLogEvent.MemberUpdate]: { color: "#0EFEFE", title: "Member Updated", actionText: "Updated" }, // Dynamically set for timeout
             [AuditLogEvent.MemberRoleUpdate]: { color: "#0EFEFE", title: "Member Role Updated", actionText: "Updated" },
             [AuditLogEvent.MemberMove]: { color: "#0EFEFE", title: "Member Moved", actionText: "Moved" },
             [AuditLogEvent.MemberDisconnect]: { color: "#FF0000", title: "Member Disconnected", actionText: "Disconnected" },
