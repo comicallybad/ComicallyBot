@@ -6,12 +6,23 @@ import { getLogChannel } from "../../utils/channelUtils";
 export default {
     name: "messageReactionAdd",
     async execute(client: Client, messageReaction: MessageReaction, user: User) {
-        const hasManageMessages = messageReaction.message.guild?.members.me?.permissions.has(PermissionFlagsBits.ManageMessages);
+        if (messageReaction.partial) {
+            try {
+                await messageReaction.fetch();
+            } catch (error) {
+                return;
+            }
+        }
 
-        if (!hasManageMessages || user.id === client.user?.id) return;
+        const { message } = messageReaction;
+        const me = message.guild?.members.me;
 
-        const fullMessage = messageReaction.partial ? await messageReaction.fetch() : messageReaction;
-        checkDeleteReaction(fullMessage, user, client.user?.id);
+        if (!me || user.id === client.user?.id) return;
+
+        const hasManageMessages = me.permissions.has(PermissionFlagsBits.ManageMessages);
+        if (!hasManageMessages) return;
+
+        checkDeleteReaction(messageReaction, user, client.user?.id);
     },
 };
 
