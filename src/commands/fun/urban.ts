@@ -1,6 +1,5 @@
-import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction, escapeMarkdown } from "discord.js";
 import { deleteReply, sendReply } from "../../utils/replyUtils";
-import { escapeMarkdown } from "../../utils/stringUtils";
 import urban from "relevant-urban";
 import { ValidationError } from "../../utils/customErrors";
 

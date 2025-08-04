@@ -1,14 +1,5 @@
-import { Message, PartialMessage, Client } from "discord.js";
+import { Message, PartialMessage, Client, escapeMarkdown } from "discord.js";
 import humanizeDuration from "humanize-duration";
-
-/**
- * Escapes Markdown characters in a string.
- * @param text The string to escape.
- * @returns The escaped string.
- */
-export function escapeMarkdown(text: string): string {
-    return text.replace(/\|\|/g, "\\|\\").replace(/([_\*\`~])/g, "\\$1");
-}
 
 /**
  * Formats a song title and author into a hyperlinked string for use in embeds.
