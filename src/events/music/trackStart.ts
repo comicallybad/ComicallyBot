@@ -55,14 +55,22 @@ export default {
 };
 
 function updateTimeline(embed: EmbedBuilder, player: Player, track: Track, timelineLength: number) {
-    const currentPosition = Math.floor((player.current.position || 0) / 1000);
-    const totalLength = Math.floor((track.duration || 0) / 1000);
-    const markerPosition = Math.round((currentPosition / totalLength) * timelineLength);
-    const timelineArray = '▬'.repeat(timelineLength + 1).split('');
-    timelineArray[markerPosition] = '🔘';
     const formattedTitle = formatSongTitle(track.title || "", track.author || "", track.url || "");
 
-    embed.setDescription(`▶️ ${formattedTitle} \`${humanizeDuration(track.duration ?? 0, { round: true })}\`\n${timelineArray.join('')}\n\`${humanizeDuration(player.current.position ?? 0, { round: true })}\``);
+    if (track.isStream) {
+        embed.setDescription(`▶️ ${formattedTitle} \`LIVE\`\n${'▬'.repeat(timelineLength)}🔘\n\`${humanizeDuration(player.current.position ?? 0, { round: true })}\``);
+    } else {
+        const currentPosition = Math.floor((player.current.position || 0) / 1000);
+        const totalLength = Math.floor((track.duration || 0) / 1000);
+        const markerPosition = totalLength > 0 ? Math.round((currentPosition / totalLength) * timelineLength) : 0;
+        const timelineArray = '▬'.repeat(timelineLength + 1).split('');
+
+        if (markerPosition >= 0 && markerPosition < timelineArray.length) {
+            timelineArray[markerPosition] = '🔘';
+        }
+
+        embed.setDescription(`▶️ ${formattedTitle} ` + "`" + `${humanizeDuration(track.duration ?? 0, { round: true })}` + "`" + `\n${timelineArray.join('')}\n` + "`" + `${humanizeDuration(player.current.position ?? 0, { round: true })}` + "`");
+    }
 }
 
 function createTimelineInterval(message: Message, embed: EmbedBuilder, player: Player, track: Track, timelineLength: number) {
