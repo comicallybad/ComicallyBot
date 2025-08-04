@@ -181,24 +181,41 @@ async function sendEmbed(interaction: ChatInputCommandInteraction, title: string
     const songTitle = track.title ?? "";
     const songAuthor = track.author ?? "";
     const songUrl = track.url ?? "";
+    const durationString = track.isStream ? `\`LIVE\`` : `\`${humanizeDuration(track.duration, { round: true })}\``;
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: title, iconURL: interaction.user.displayAvatarURL() })
         .setThumbnail(track.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
         .setColor("#0EFEFE")
-        .setDescription(`⌚ Queuing ${formatSongTitle(songTitle, songAuthor, songUrl)} \`${humanizeDuration(track.duration, { round: true })}\``);
+        .setDescription(`⌚ Queuing ${formatSongTitle(songTitle, songAuthor, songUrl)} ${durationString}`);
 
     await editReply(interaction, { content: "", embeds: [embed] });
 }
 
 async function sendPlaylistEmbed(interaction: ChatInputCommandInteraction, title: string, res: SearchResult) {
-    const duration = humanizeDuration(res.getTotalDuration(), { round: true });
+    const nonLiveTracks = res.tracks.filter(track => !track.isStream);
+    const liveTrackCount = res.tracks.length - nonLiveTracks.length;
+
+    let durationString = "";
+    if (nonLiveTracks.length > 0) {
+        const totalDuration = nonLiveTracks.reduce((acc, track) => acc + (track.duration || 0), 0);
+        durationString = `\`${humanizeDuration(totalDuration, { round: true })}\``;
+    }
+
+    if (liveTrackCount > 0) {
+        const liveString = `\`${liveTrackCount} LIVE stream${liveTrackCount > 1 ? 's' : ''}\``;
+        if (durationString) {
+            durationString += ` & ${liveString}`;
+        } else {
+            durationString = liveString;
+        }
+    }
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: title, iconURL: interaction.user.displayAvatarURL() })
         .setThumbnail(res.tracks[0]?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
         .setColor("#0EFEFE")
-        .setDescription(`⌚ Queuing  [**${res.playlistInfo.name}**](${interaction.options.get("song")?.value as string}) ${res.tracks.length} tracks \`${duration}\``);
+        .setDescription(`⌚ Queuing  [**${res.playlistInfo.name}**](${interaction.options.get("song")?.value as string}) ${res.tracks.length} tracks ${durationString}`);
 
     await editReply(interaction, { content: "", embeds: [embed] });
 }
