@@ -1,4 +1,7 @@
-import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction, MessageFlags, InteractionContextType, PermissionsBitField, Client } from "discord.js";
+import {
+    SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction, MessageFlags, InteractionContextType, PermissionsBitField,
+    Client, ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, ModalSubmitInteraction
+} from "discord.js";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
 import { PermissionError, ValidationError } from "../../utils/customErrors";
 import beautify from "beautify";
@@ -9,15 +12,39 @@ export default {
         .setName("eval")
         .setDescription("Executes arbitrary JavaScript code (Owner Only).")
         .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator)
-        .setContexts(InteractionContextType.Guild)
-        .addStringOption(option =>
-            option.setName("code").setDescription("The code to execute.").setRequired(true)),
+        .setContexts(InteractionContextType.Guild),
     async execute(interaction: ChatInputCommandInteraction, client: Client) {
         if (interaction.user.id !== process.env.BOT_OWNER_ID) {
             throw new PermissionError("This command can only be used by the bot owner.");
         }
 
-        const code = interaction.options.getString("code", true);
+        const modal = new ModalBuilder()
+            .setCustomId("evalModal")
+            .setTitle("Code Evaluation");
+
+        const codeInput = new TextInputBuilder()
+            .setCustomId("codeInput")
+            .setLabel("Enter code to evaluate")
+            .setStyle(TextInputStyle.Paragraph)
+            .setRequired(true);
+
+        const actionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(codeInput);
+        modal.addComponents(actionRow);
+
+        await interaction.showModal(modal);
+
+        let submission: ModalSubmitInteraction;
+        try {
+            submission = await interaction.awaitModalSubmit({
+                filter: (i) => i.customId === "evalModal" && i.user.id === interaction.user.id,
+                time: 300000,
+            });
+        } catch (err) {
+            await deleteReply(interaction, { timeout: 0 });
+            throw new ValidationError("Modal submission timed out.");
+        }
+
+        const code = submission.fields.getTextInputValue("codeInput");
         let result: any;
         let embed: EmbedBuilder;
 
@@ -34,7 +61,7 @@ export default {
             embed = new EmbedBuilder()
                 .setColor("#00FF00")
                 .setTimestamp()
-                .setFooter({ text: interaction.client.user?.username || "", iconURL: interaction.client.user?.displayAvatarURL() || "" })
+                .setFooter({ text: client.user?.username || "", iconURL: client.user?.displayAvatarURL() || "" })
                 .setTitle("Eval")
                 .addFields(
                     {
@@ -47,10 +74,10 @@ export default {
         } catch (error: any) {
             embed = new EmbedBuilder()
                 .setTitle("\:x: Error!").setColor("#FF0000").setDescription(`${error}`)
-                .setFooter({ text: interaction.client.user?.username || "", iconURL: interaction.client.user?.displayAvatarURL() || "" });
+                .setFooter({ text: client.user?.username || "", iconURL: client.user?.displayAvatarURL() || "" });
         }
 
-        await sendReply(interaction, { embeds: [embed], flags: MessageFlags.Ephemeral });
-        await deleteReply(interaction, { timeout: 30000 });
+        await sendReply(submission, { embeds: [embed], flags: MessageFlags.Ephemeral });
+        await deleteReply(submission, { timeout: 30000 });
     },
 };
