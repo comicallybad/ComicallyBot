@@ -1,0 +1,38 @@
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction, Client, InteractionContextType } from "discord.js";
+import { sendReply, deleteReply } from "../../utils/replyUtils";
+import { savePlayerState } from "../../utils/dbUtils";
+import { ValidationError } from "../../utils/customErrors";
+
+export default {
+    data: new SlashCommandBuilder()
+        .setName("autoplay")
+        .setDescription("Enables or disables autoplay.")
+        .setContexts(InteractionContextType.Guild)
+        .addBooleanOption(option =>
+            option.setName("enabled").setDescription("Whether to enable or disable autoplay.").setRequired(true)),
+    execute: async (interaction: ChatInputCommandInteraction, client: Client) => {
+        const player = client.music.players.get(interaction.guildId!);
+
+        if (!player || !player.current) {
+            throw new ValidationError("No song(s) currently playing in this guild.");
+        }
+
+        const member = interaction.member;
+        if (!member || !('voice' in member) || !member.voice.channel || member.voice.channel.id !== player.voiceChannelId) {
+            throw new ValidationError("You need to be in the same voice channel as the bot to use this command.");
+        }
+
+        const enabled = interaction.options.getBoolean("enabled", true);
+        player.setAutoPlay(enabled);
+
+        const embed = new EmbedBuilder()
+            .setAuthor({ name: `Autoplay ${enabled ? "Enabled" : "Disabled"}!`, iconURL: interaction.user.displayAvatarURL() })
+            .setThumbnail(player.current.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+            .setColor("#0EFEFE")
+            .setDescription(`🎵 Autoplay has been ${enabled ? "enabled" : "disabled"}!`);
+
+        await savePlayerState(player);
+        await sendReply(interaction, { embeds: [embed] });
+        await deleteReply(interaction, { timeout: 30000 });
+    }
+};

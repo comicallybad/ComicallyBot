@@ -52,7 +52,7 @@ export default {
 
         switch (subcommand) {
             case 'view':
-                await viewQueue(interaction, player);
+                await viewQueue(interaction, player, client);
                 break;
             case 'clear':
                 await clearQueue(interaction, player);
@@ -67,17 +67,17 @@ export default {
     }
 }
 
-function formatQueueEntry(track: Track): string {
+function formatQueueEntry(track: Track, client: Client): string {
     const songTitle = track.title ?? "";
     const songAuthor = track.author ?? "";
     const songUrl = track.url ?? "";
-    const requesterId = typeof track.requestedBy === 'object' && (track.requestedBy as any)?.id
+    const requesterId = (typeof track.requestedBy === 'object' && (track.requestedBy as any)?.id
         ? (track.requestedBy as any).id
-        : track.requestedBy;
+        : track.requestedBy) ?? client.user?.id;
     return `${formatSongTitle(songTitle, songAuthor, songUrl)} - **Requester:** <@${requesterId}>`;
 }
 
-async function viewQueue(interaction: ChatInputCommandInteraction, player: Player) {
+async function viewQueue(interaction: ChatInputCommandInteraction, player: Player, client: Client) {
     const track = player.current || undefined;
     const queueTracks = player.queue.tracks;
     const queueLength = queueTracks.length;
@@ -96,15 +96,15 @@ async function viewQueue(interaction: ChatInputCommandInteraction, player: Playe
 
     let desc = "";
     if (track) {
-        desc += `__**Currently Playing:**__\n${formatQueueEntry(track)}\n`;
+        desc += `__**Currently Playing:**__\n${formatQueueEntry(track, client)}\n`;
     }
     if (queueLength > 0) {
-        desc += `\n__**Rest of queue:**__ \`${queueLength} song(s)\`\n`;
+        desc += `\n__**Rest of queue:**__ \`${queueLength} ${queueLength === 1 ? "song" : "songs"}\``;
     }
     embed.setDescription(desc.trim());
     await sendReply(interaction, { embeds: [embed] });
 
-    const queueArray = queueTracks.map(formatQueueEntry);
+    const queueArray = queueTracks.map(track => formatQueueEntry(track, client));
     await pageList(interaction, queueArray, embed, "Song #", 10, 0);
 }
 

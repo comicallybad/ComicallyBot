@@ -92,7 +92,6 @@ export default {
                 voiceChannelId: voiceChannel.id,
                 textChannelId: interaction.channel!.id,
                 volume: 10,
-                autoLeave: true
             });
         }
 

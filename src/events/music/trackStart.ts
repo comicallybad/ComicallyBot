@@ -279,7 +279,7 @@ async function handlePrevious(message: Message, player: Player, track: Track) {
 async function handleNext(message: Message, player: Player) {
     await deleteMessage(message, { timeout: 0 });
     clearPlayerIntervalsAndCollectors(player);
-    if (!player.queue.size) player.stop();
+    if (player.queue.size === 0) player.destroy();
     else player.skip();
 }
 
