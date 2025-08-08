@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { IGuildConfig } from "../types/GuildConfig.d";
+import { IGuildConfig } from "../types/guildConfig";
 
 const GuildConfigSchema = new Schema<IGuildConfig>({
     _id: { type: Schema.Types.ObjectId, required: true },

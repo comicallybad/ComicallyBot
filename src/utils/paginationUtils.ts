@@ -3,7 +3,6 @@ import {
     ModalSubmitInteraction, EmbedBuilder, ComponentType, ButtonInteraction
 } from "discord.js";
 import { editReply, deleteReply, deferUpdate } from "./replyUtils";
-import { ValidationError } from "./customErrors";
 
 /**
  * Prompts the user with a message containing buttons and waits for a response.
@@ -106,7 +105,7 @@ export async function pageList(interaction: CommandInteraction | MessageComponen
         if (error === "time") {
             await deleteReply(interaction, { timeout: 0 });
         } else {
-            throw error;
+            return;
         }
     }
 };
