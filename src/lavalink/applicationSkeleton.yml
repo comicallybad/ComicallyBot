@@ -2,7 +2,7 @@ lavalink:
     plugins:
       - dependency: "com.github.topi314.lavasrc:lavasrc-plugin:4.8.0"
         repository: "https://maven.lavalink.dev/releases"
-      - dependency: "dev.lavalink.youtube:youtube-plugin:1.13.4"
+      - dependency: "dev.lavalink.youtube:youtube-plugin:1.13.5"
         repository: "https://maven.lavalink.dev/releases"
     server:
         bufferDurationMs: 400
