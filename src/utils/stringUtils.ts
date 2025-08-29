@@ -1,5 +1,27 @@
 import { Message, PartialMessage, Client, escapeMarkdown } from "discord.js";
 import humanizeDuration from "humanize-duration";
+import { diffLines, Change } from "diff";
+
+/**
+ * Creates a diff string between two text inputs, highlighting additions and deletions.
+ * 
+ * @param oldText The original text.
+ * @param newText The updated text.
+ * @returns A formatted string showing the differences, or a message if there's no change.
+ */
+export function createDiff(oldText: string, newText: string): string {
+    const changes: Change[] = diffLines(oldText, newText);
+    let diffOutput = "";
+
+    for (const part of changes) {
+        const prefix = part.added ? '+ ' : part.removed ? '- ' : '';
+        if (prefix) {
+            diffOutput += part.value.replace(/\n$/, '').split('\n').map(line => prefix + line).join('\n') + '\n';
+        }
+    }
+
+    return diffOutput.trim() ? `\`\`\`diff\n${diffOutput.trim()}\`\`\`` : "No changes detected.";
+}
 
 /**
  * Formats a song title and author into a hyperlinked string for use in embeds.
@@ -34,7 +56,7 @@ export function formatMessageContent(message: Message | PartialMessage): string 
     let content = "";
 
     if (message.content) {
-        content += `Text: ${message.content}\n`;
+        content += `${message.content}\n`;
     }
 
     if (message.embeds && message.embeds.length > 0) {

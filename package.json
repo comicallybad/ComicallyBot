@@ -17,9 +17,11 @@
   "dependencies": {
     "@discordjs/builders": "^1.11.2",
     "@discordjs/rest": "^2.5.1",
+    "@types/diff": "^7.0.2",
     "@types/node": "^24.0.10",
     "@vitalets/google-translate-api": "^9.2.1",
     "beautify": "^0.0.8",
+    "diff": "^8.0.2",
     "discord-api-types": "^0.38.15",
     "discord.js": "^14.21.0",
     "dotenv": "^16.0.3",
