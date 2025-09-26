@@ -73,17 +73,17 @@ plugins:
                 playback: false
                 playlistLoading: false
                 searching: false
-                videoLoading: true
+                videoLoading: false
             MUSIC:
                 playback: false
                 playlistLoading: false
                 searching: true
                 videoLoading: false
             TVHTML5EMBEDDED:
-                playback: true
+                playback: false
                 playlistLoading: false
                 searching: false
-                videoLoading: true
+                videoLoading: false
             WEB:
                 playback: false
                 playlistLoading: true
@@ -94,7 +94,13 @@ plugins:
                 playlistLoading: false
                 searching: false
                 videoLoading: false
+            ANDROID_VR:
+                playback: true
+                playlistLoading: false
+                searching: false
+                videoLoading: true
         clients:
+            - ANDROID_VR
             - MUSIC
             - ANDROID_MUSIC
             - WEB
