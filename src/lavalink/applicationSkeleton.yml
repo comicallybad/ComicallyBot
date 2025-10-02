@@ -2,7 +2,7 @@ lavalink:
     plugins:
       - dependency: "com.github.topi314.lavasrc:lavasrc-plugin:4.8.0"
         repository: "https://maven.lavalink.dev/releases"
-      - dependency: "dev.lavalink.youtube:youtube-plugin:1.13.5"
+      - dependency: "dev.lavalink.youtube:youtube-plugin:1.14.0"
         repository: "https://maven.lavalink.dev/releases"
     server:
         bufferDurationMs: 400
@@ -80,12 +80,12 @@ plugins:
                 searching: true
                 videoLoading: false
             TVHTML5EMBEDDED:
-                playback: false
+                playback: true
                 playlistLoading: false
                 searching: false
                 videoLoading: false
             WEB:
-                playback: false
+                playback: true
                 playlistLoading: true
                 searching: true
                 videoLoading: false
