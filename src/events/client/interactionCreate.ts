@@ -1,4 +1,4 @@
-import { Interaction, Client, InteractionType, User, MessageFlags, PermissionFlagsBits, GuildMember, EmbedBuilder, ComponentType } from "discord.js";
+import { Interaction, Client, InteractionType, User, MessageFlags, PermissionFlagsBits, GuildMember, EmbedBuilder, ComponentType, ButtonInteraction } from "discord.js";
 import { incrementCommandUsage } from "../../utils/dbUtils";
 import { canCommunicate } from "../../utils/preconditions";
 import { deferUpdate, deleteReply, sendReply, sendUpdate } from "../../utils/replyUtils";
@@ -6,6 +6,7 @@ import { PermissionError, ValidationError } from "../../utils/customErrors";
 import { logError } from "../../utils/logUtils";
 import { getLogChannel } from "../../utils/channelUtils";
 import { sendMessage } from "../../utils/messageUtils";
+import { handleMusicInteraction } from "../../utils/musicUtils";
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -20,7 +21,7 @@ export default {
         } else if (interaction.type === InteractionType.ApplicationCommandAutocomplete) {
             return handleApplicationCommandAutocomplete(client, interaction);
         } else if (interaction.type === InteractionType.MessageComponent) {
-            return handleMessageComponent(interaction);
+            return handleMessageComponent(client, interaction);
         } else return;
     },
 };
@@ -95,7 +96,7 @@ async function handleApplicationCommandAutocomplete(client: Client, interaction:
     }
 }
 
-async function handleMessageComponent(interaction: Interaction) {
+async function handleMessageComponent(client: Client, interaction: Interaction) {
     if (!interaction.isMessageComponent()) return;
 
     const customId = interaction.customId;
@@ -103,7 +104,10 @@ async function handleMessageComponent(interaction: Interaction) {
     const isOwnerOfMessage = messageOwnerId === interaction.user.id;
     const hasManageMessages = interaction.inGuild() && interaction.member instanceof GuildMember && interaction.member.permissions.has(PermissionFlagsBits.ManageMessages);
 
-    if (customId.startsWith("save-")) {
+
+    if (customId.startsWith("music-")) {
+        return handleMusicInteraction(interaction as ButtonInteraction, client);
+    } else if (customId.startsWith("save-")) {
         if (isOwnerOfMessage || hasManageMessages) {
             return sendUpdate(interaction, { components: [] });
         } else {
