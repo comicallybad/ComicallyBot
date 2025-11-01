@@ -26,6 +26,11 @@ export default {
                     continue;
                 }
 
+                const existingPlayer = client.music.players.get(savedState.guildId);
+                if (existingPlayer) {
+                    existingPlayer.destroy();
+                }
+
                 const player = client.music.createPlayer({
                     guildId: savedState.guildId,
                     voiceChannelId: savedState.voiceChannelId,
