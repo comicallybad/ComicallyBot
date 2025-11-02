@@ -1,12 +1,10 @@
-import { Client, Message } from "discord.js";
+import { Client } from "discord.js";
 import { Player } from "moonlink.js";
-import { deleteMessage } from "../../utils/messageUtils";
+import { clearPlayerInterval } from "../../utils/musicUtils";
 
 export default {
     name: "trackEnd",
     execute: async (client: Client, player: Player) => {
-        if (player.data.message) {
-            deleteMessage(player.data.message as Message, { timeout: 0 });
-        }
+        clearPlayerInterval(player);
     },
 };

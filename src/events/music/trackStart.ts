@@ -6,13 +6,13 @@ import { formatSongTitle } from "../../utils/stringUtils";
 import { savePlayerState, deletePlayerState } from "../../utils/dbUtils";
 import { clearPlayerInterval, createControlRows } from "../../utils/musicUtils";
 
-const TIMELINE_UPDATE_INTERVAL = 5000;
 const DEFAULT_TIMELINE_LENGTH = 25;
 const SHORT_TIMELINE_LENGTH = 20;
 
 export default {
     name: "trackStart",
     execute: async (client: Client, player: Player, track: Track) => {
+        clearPlayerInterval(player);
         const guild = await client.guilds.fetch(player.guildId);
         const channel = await client.channels.fetch(player.textChannelId) as TextChannel;
         const requestedBy = track.requestedBy && typeof track.requestedBy === 'object' && 'id' in track.requestedBy ? String(track.requestedBy.id) : undefined;
@@ -25,7 +25,6 @@ export default {
             .setColor("#0EFEFE")
             .setFooter({ text: footerText, iconURL: requester?.displayAvatarURL() || undefined });
 
-        clearPlayerInterval(player);
         updateTimeline(embed, player, track, timelineLength);
 
         if (player.data.isRestored && player.data.wasPaused) {
@@ -44,7 +43,19 @@ export default {
         const sentMessage = await sendMessage(channel, { embeds: [embed], components: rows });
         if (sentMessage) {
             player.data.message = sentMessage;
-            createTimelineInterval(sentMessage, player, track, timelineLength);
+
+            let timelineUpdateInterval;
+            const trackDuration = track.duration || 0;
+
+            if (trackDuration <= 300000) {
+                timelineUpdateInterval = 10000;
+            } else if (trackDuration <= 600000) {
+                timelineUpdateInterval = 15000;
+            } else {
+                timelineUpdateInterval = 30000;
+            }
+
+            createPlayerInterval(sentMessage, player, track, timelineLength, timelineUpdateInterval);
             await savePlayerState(player);
         }
     },
@@ -69,7 +80,7 @@ function updateTimeline(embed: EmbedBuilder, player: Player, track: Track, timel
     }
 }
 
-function createTimelineInterval(message: Message, player: Player, track: Track, timelineLength: number) {
+function createPlayerInterval(message: Message, player: Player, track: Track, timelineLength: number, interval: number) {
     player.data.timelineInterval = setInterval(async () => {
         if (player.destroyed) {
             await deletePlayerState(player.guildId);
@@ -92,5 +103,5 @@ function createTimelineInterval(message: Message, player: Player, track: Track, 
             clearPlayerInterval(player);
             return;
         }
-    }, TIMELINE_UPDATE_INTERVAL);
+    }, interval);
 }

@@ -78,6 +78,11 @@ export default {
             throw new PermissionError("I am missing the `View Channel`, `Connect`, or `Speak` permissions for that voice channel.");
         }
 
+        const musicNode = client.music.nodes.cache.values().next().value;
+        if (!musicNode || musicNode.state !== "READY" || !musicNode.sessionId) {
+            throw new ValidationError("The music player is not ready. Please try again shortly.");
+        }
+
         const songOption = interaction.options.get("song");
         let player = client.music.players.get(interaction.guildId!);
 

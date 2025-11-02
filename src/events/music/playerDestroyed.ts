@@ -1,7 +1,8 @@
-import { Client, EmbedBuilder, TextChannel, Message } from "discord.js";
+import { Client, EmbedBuilder, TextChannel } from "discord.js";
 import { Player } from "moonlink.js";
 import { deletePlayerState } from "../../utils/dbUtils";
 import { sendMessage, deleteMessage } from "../../utils/messageUtils";
+import { clearPlayerInterval } from "../../utils/musicUtils";
 
 export default {
     name: "playerDestroyed",
@@ -10,9 +11,7 @@ export default {
 
         const channel = await client.channels.fetch(player.textChannelId) as TextChannel;
 
-        if (player.data.message) {
-            deleteMessage(player.data.message as Message, { timeout: 0 });
-        }
+        clearPlayerInterval(player);
 
         const embed = new EmbedBuilder()
             .setAuthor({ name: "Queue Ended!", iconURL: client.user?.displayAvatarURL() })

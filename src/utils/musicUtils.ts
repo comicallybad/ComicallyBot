@@ -206,8 +206,8 @@ export function clearPlayerInterval(player: Player) {
         clearInterval(player.data.timelineInterval as NodeJS.Timeout);
         player.data.timelineInterval = null;
     }
-    if (player.data.message as Message) {
-        deleteMessage(player.data.message as Message);
+    if (player.data.message) {
+        deleteMessage(player.data.message as Message, { timeout: 0 });
     }
     player.data.message = null;
     return;
