@@ -10,7 +10,7 @@ export default {
     execute: async (interaction: ChatInputCommandInteraction, client: Client) => {
         const player = client.music.players.get(interaction.guildId!);
 
-        if (!player || !player.current) {
+        if (!player) {
             throw new ValidationError("No song(s) currently playing in this guild.");
         }
 
