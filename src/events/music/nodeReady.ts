@@ -42,6 +42,9 @@ export default {
                 player.connect({ setDeaf: true, setMute: false });
 
                 if (savedState.currentTrack) {
+                    if (!savedState.currentTrack.requestedBy) {
+                        savedState.currentTrack.requestedBy = { id: client.user?.id };
+                    }
                     player.queue.add(savedState.currentTrack);
                 }
                 if (savedState.queue.length > 0) {
