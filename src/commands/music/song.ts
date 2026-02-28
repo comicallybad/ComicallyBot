@@ -16,16 +16,16 @@ export default {
             throw new ValidationError("No song(s) currently playing in this guild.");
         }
 
-        const { title, author, duration, position, url, requestedBy, isStream } = player.current;
+        const { title, author, duration, position, uri, requestedBy, isStream } = player.current;
         const songTitle = title ?? "";
         const songAuthor = author ?? "";
-        const songUrl = url ?? "";
+        const songUrl = uri ?? "";
         const requester = requestedBy && typeof requestedBy === 'object' && 'id' in requestedBy ? await client.users.fetch(requestedBy.id as string) : null;
         const durationString = isStream ? "`LIVE`" : ` ${humanizeDuration(duration, { round: true })}`;
 
         const embed = new EmbedBuilder()
             .setAuthor({ name: "Current Song!", iconURL: interaction.guild?.iconURL() || undefined })
-            .setThumbnail(player.current?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+            .setThumbnail(player.current?.thumbnail ?? interaction.guild?.iconURL() ?? null)
             .setColor("#0EFEFE")
             .setDescription(`${!player.paused ? "▶️" : "⏸️"} ${formatSongTitle(songTitle, songAuthor, songUrl)} ${durationString}
             __**Currently at:**__ \`${humanizeDuration(position, { round: true })}\``)

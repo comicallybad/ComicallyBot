@@ -43,7 +43,7 @@ async function trackRepeat(interaction: ChatInputCommandInteraction, player: Pla
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: `Track Repeat: ${player.loop !== "off" ? "ON" : "OFF"}!`, iconURL: interaction.user.displayAvatarURL() })
-        .setThumbnail(player.current?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+        .setThumbnail(player.current?.thumbnail ?? interaction.guild?.iconURL() ?? null)
         .setColor("#0EFEFE")
         .setDescription(`Track repeat has been toggled ${player.loop !== "off" ? "**ON**\n(The current track will now repeat) 🔁" : "**OFF**\n(The current track will no longer repeat) ❌🔁"}`);
 
@@ -58,7 +58,7 @@ async function queueRepeat(interaction: ChatInputCommandInteraction, player: Pla
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: `Queue Repeat: ${player.loop !== "off" ? "ON" : "OFF"}!`, iconURL: interaction.user.displayAvatarURL() })
-        .setThumbnail(player.current?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+        .setThumbnail(player.current?.thumbnail ?? interaction.guild?.iconURL() ?? null)
         .setColor("#0EFEFE")
         .setDescription(`The player queue repeat has been toggled ${player.loop !== "off" ? "**ON**\n(The queue will now repeat) 🔁" : "**OFF**\n(The queue will no longer repeat) ❌🔁"}`);
 

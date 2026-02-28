@@ -19,7 +19,7 @@ export default {
             throw new ValidationError("You need to be in the same voice channel as the bot to use this command.");
         }
 
-        player.destroy();
+        await player.destroy();
 
         const embed = new EmbedBuilder()
             .setAuthor({ name: "Music Player Disconnected!", iconURL: interaction.user.displayAvatarURL() })

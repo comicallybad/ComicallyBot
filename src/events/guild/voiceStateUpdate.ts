@@ -18,11 +18,11 @@ export default {
         // User leaves a channel or moves to another
         if (oldChannel && (!newChannel || oldChannel.id !== newChannel.id)) {
             if (isBotAlone(oldChannel)) {
-                const timer = setTimeout(() => {
+                const timer = setTimeout(async () => {
                     const player = client.music.players.get(oldChannel.guild.id);
                     if (player) {
-                        player.disconnect();
-                        player.destroy();
+                        await player.disconnect();
+                        await player.destroy();
                     }
                     disconnectTimers.delete(oldChannel.id);
                 }, 180000); // 3 minutes

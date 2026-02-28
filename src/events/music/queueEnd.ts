@@ -7,6 +7,6 @@ export default {
     execute: async (client: Client, player: Player) => {
         await deletePlayerState(player.guildId);
 
-        if (!player.autoPlay) player.destroy();
+        if (!player.autoPlay) await player.destroy();
     },
 };

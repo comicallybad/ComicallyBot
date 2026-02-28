@@ -34,7 +34,7 @@ export default {
 
         const embed = new EmbedBuilder()
             .setAuthor({ name: `Volume Changed!`, iconURL: interaction.user.displayAvatarURL() })
-            .setThumbnail(player.current?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+            .setThumbnail(player.current?.thumbnail ?? interaction.guild?.iconURL() ?? null)
             .setColor("#0EFEFE")
             .setDescription(`The volume has been set to: **${volume}%** ${volLevel}`);
 

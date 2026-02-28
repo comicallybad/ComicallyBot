@@ -21,11 +21,11 @@ export default {
         }
 
         player.setTextChannelId(interaction.channel!.id);
-        player.shuffle();
+        player.queue.shuffle();
 
         const embed = new EmbedBuilder()
             .setAuthor({ name: "Queue Shuffled!", iconURL: interaction.user.displayAvatarURL() })
-            .setThumbnail(player.current?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+            .setThumbnail(player.current?.thumbnail ?? interaction.guild?.iconURL() ?? null)
             .setColor("#0EFEFE")
             .setDescription("🔀 The song queue has been shuffled randomly!");
 

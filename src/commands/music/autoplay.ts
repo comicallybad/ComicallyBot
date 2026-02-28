@@ -27,7 +27,7 @@ export default {
 
         const embed = new EmbedBuilder()
             .setAuthor({ name: `Autoplay ${enabled ? "Enabled" : "Disabled"}!`, iconURL: interaction.user.displayAvatarURL() })
-            .setThumbnail(player.current.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+            .setThumbnail(player.current.thumbnail ?? interaction.guild?.iconURL() ?? null)
             .setColor("#0EFEFE")
             .setDescription(`🎵 Autoplay has been ${enabled ? "enabled" : "disabled"}!`);
 

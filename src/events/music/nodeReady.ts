@@ -28,10 +28,10 @@ export default {
 
                 const existingPlayer = client.music.players.get(savedState.guildId);
                 if (existingPlayer) {
-                    existingPlayer.destroy();
+                    await existingPlayer.destroy();
                 }
 
-                const player = client.music.createPlayer({
+                const player = client.music.players.create({
                     guildId: savedState.guildId,
                     voiceChannelId: savedState.voiceChannelId,
                     textChannelId: savedState.textChannelId,
@@ -39,11 +39,11 @@ export default {
                     autoLeave: true,
                 });
 
-                player.connect({ setDeaf: true, setMute: false });
+                await player.connect({ selfDeaf: true });
 
                 if (savedState.currentTrack) {
                     if (!savedState.currentTrack.requestedBy) {
-                        savedState.currentTrack.requestedBy = { id: client.user?.id };
+                        savedState.currentTrack.requestedBy = client.user ?? undefined;
                     }
                     player.queue.add(savedState.currentTrack);
                 }
@@ -62,7 +62,7 @@ export default {
                 if (player.queue.size > 0) {
                     player.data.isRestored = true;
                     player.data.wasPaused = savedState.paused;
-                    player.play({ position: savedState.position });
+                    await player.play({ position: savedState.position });
                 }
 
                 const textChannel = await client.channels.fetch(savedState.textChannelId) as TextChannel;

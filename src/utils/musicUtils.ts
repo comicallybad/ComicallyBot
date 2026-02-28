@@ -1,4 +1,3 @@
-
 import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, EmbedBuilder, Message } from "discord.js";
 import { Player } from "moonlink.js";
 import { deleteMessage, editMessage } from "./messageUtils";
@@ -98,8 +97,8 @@ async function handleVolume(message: Message, embed: EmbedBuilder, player: Playe
 }
 
 async function handlePlayPause(message: Message, embed: EmbedBuilder, player: Player) {
-    if (player && !player.paused) player.pause();
-    else if (player && player.paused) player.resume();
+    if (player && !player.paused) await player.pause();
+    else if (player && player.paused) await player.resume();
     await editFields(message, embed, player, `Player ${!player.paused ? "Resumed" : "Paused"}`,
         `⏯ The player has successfully ${!player.paused ? "**resumed**" : "**paused**."}`);
 }
@@ -109,21 +108,21 @@ async function handlePrevious(message: Message, player: Player) {
     clearPlayerInterval(player);
 
     if (player && Array.isArray(player.previous) && player.previous.length > 0) {
-        player.back();
+        await player.back();
     } else if (player && player.current) {
-        player.replay();
+        await player.replay();
     }
 }
 
 async function handleNext(message: Message, player: Player) {
     await deleteMessage(message, { timeout: 0 });
     clearPlayerInterval(player);
-    if (player.queue.size === 0) player.destroy();
-    else player.skip();
+    if (player.queue.size === 0) await player.destroy();
+    else await player.skip();
 }
 
 async function handleShuffle(message: Message, embed: EmbedBuilder, player: Player) {
-    if (player) player.shuffle();
+    if (player) player.queue.shuffle();
     await editFields(message, embed, player, "Queue Shuffled: ",
         "🔀 The song queue has been shuffled randomly!");
 }
@@ -145,7 +144,7 @@ async function handleTrackRepeat(message: Message, embed: EmbedBuilder, player: 
 async function handleStop(message: Message, player: Player) {
     await deleteMessage(message, { timeout: 0 });
     clearPlayerInterval(player);
-    if (player) player.destroy();
+    if (player) await player.destroy();
 }
 
 async function handleVolumeUp(message: Message, embed: EmbedBuilder, player: Player) {
@@ -160,11 +159,12 @@ async function handleVolumeDown(message: Message, embed: EmbedBuilder, player: P
 
 async function handleBassBoost(message: Message, embed: EmbedBuilder, player: Player) {
     if (!player) return;
-    const equalizerFilter = (player.filters as any).filters.equalizer;
+    const equalizerFilter = (player.filters as any)?.equalizer;
     const isBassBoostActive = equalizerFilter && equalizerFilter.length > 0 && equalizerFilter.some((band: any) => band.gain > 0);
 
     if (isBassBoostActive) {
-        player.filters.resetFilters();
+        player.filters.clear();
+        await player.filters.apply();
     } else {
         player.filters.setEqualizer([
             { band: 0, gain: 0.15 },
@@ -174,6 +174,7 @@ async function handleBassBoost(message: Message, embed: EmbedBuilder, player: Pl
             { band: 4, gain: -0.1 },
             { band: 5, gain: 0.05 }
         ]);
+        await player.filters.apply();
     }
     await editFields(message, embed, player, `Bass Boost ${!isBassBoostActive ? "On" : "Off"}`,
         `📈 Bass Boost was successfully turned  ${!isBassBoostActive ? "**on**" : "**off**."}`);

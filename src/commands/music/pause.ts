@@ -21,11 +21,11 @@ export default {
         }
 
         player.setTextChannelId(interaction.channel!.id,);
-        player.pause();
+        await player.pause();
 
         const embed = new EmbedBuilder()
             .setAuthor({ name: `Player Paused!`, iconURL: interaction.user.displayAvatarURL() })
-            .setThumbnail(player.current.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+            .setThumbnail(player.current.thumbnail ?? interaction.guild?.iconURL() ?? null)
             .setColor("#0EFEFE")
             .setDescription(`⏸️ The player has been paused! Use \`/play\` to resume playing. ▶️`);
 

@@ -129,6 +129,7 @@ async function bassEQ(interaction: ChatInputCommandInteraction, player: Player) 
         { band: 4, gain: -0.1 * intensity },
         { band: 5, gain: 0.05 * intensity }
     ]);
+    await player.filters.apply();
 
     await sendFilterReply(interaction, player, `Equalizer Set To Bass Boosted.`, `The equalizer has been set to **bass boosted** with intensity **${intensity}**.`);
 }
@@ -144,6 +145,7 @@ async function highEQ(interaction: ChatInputCommandInteraction, player: Player) 
         { band: 4, gain: 0.25 * intensity },
         { band: 5, gain: 0.25 * intensity }
     ]);
+    await player.filters.apply();
 
     await sendFilterReply(interaction, player, `Equalizer Set To High Pass.`, `The equalizer has been set to **high pass** with intensity **${intensity}**.`);
 }
@@ -159,6 +161,7 @@ async function bandEQ(interaction: ChatInputCommandInteraction, player: Player) 
         { band: 4, gain: -0.15 * intensity },
         { band: 5, gain: -0.15 * intensity }
     ]);
+    await player.filters.apply();
 
     await sendFilterReply(interaction, player, `Equalizer Set To Band Pass.`, `The equalizer has been set to **band pass** with intensity **${intensity}**.`);
 }
@@ -173,6 +176,7 @@ async function timescaleEQ(interaction: ChatInputCommandInteraction, player: Pla
         pitch: pitch,
         rate: rate,
     });
+    await player.filters.apply();
 
     await sendFilterReply(interaction, player, `Timescale Adjusted!`, `The timescale has been adjusted with speed: **${speed ?? "default"}**, pitch: **${pitch ?? "default"}**, and rate: **${rate ?? "default"}**.`);
 }
@@ -183,6 +187,7 @@ async function karaokeFilter(interaction: ChatInputCommandInteraction, player: P
     player.filters.setKaraoke({
         level: level,
     });
+    await player.filters.apply();
 
     await sendFilterReply(interaction, player, `Karaoke Filter Applied!`, `Karaoke filter has been applied with level: **${level ?? "default"}**.`);
 }
@@ -195,6 +200,7 @@ async function tremoloFilter(interaction: ChatInputCommandInteraction, player: P
         frequency: frequency,
         depth: depth,
     });
+    await player.filters.apply();
 
     await sendFilterReply(interaction, player, `Tremolo Filter Applied!`, `Tremolo filter has been applied with frequency: **${frequency ?? "default"}** and depth: **${depth}**.`);
 }
@@ -207,6 +213,7 @@ async function vibratoFilter(interaction: ChatInputCommandInteraction, player: P
         frequency: frequency,
         depth: depth,
     });
+    await player.filters.apply();
 
     await sendFilterReply(interaction, player, `Vibrato Filter Applied!`, `Vibrato filter has been applied with frequency: **${frequency ?? "default"}** and depth: **${depth}**.`);
 }
@@ -217,6 +224,7 @@ async function rotationFilter(interaction: ChatInputCommandInteraction, player: 
     player.filters.setRotation({
         rotationHz: rotationHz,
     });
+    await player.filters.apply();
 
     await sendFilterReply(interaction, player, `Rotation Filter Applied!`, `Rotation filter has been applied with rotationHz: **${rotationHz ?? "default"}**.`);
 }
@@ -229,12 +237,14 @@ async function distortionFilter(interaction: ChatInputCommandInteraction, player
         sinOffset: sinOffset,
         sinScale: sinScale,
     });
+    await player.filters.apply();
 
     await sendFilterReply(interaction, player, `Distortion Filter Applied!`, `Distortion filter has been applied with sinOffset: **${sinOffset ?? "default"}** and sinScale: **${sinScale ?? "default"}**.`);
 }
 
 async function resetFilters(interaction: ChatInputCommandInteraction, player: Player) {
-    player.filters.resetFilters();
+    player.filters.clear();
+    await player.filters.apply();
 
     await sendFilterReply(interaction, player, `All Filters Reset!`, `All filters have been reset to their default values.`);
 }
@@ -243,7 +253,7 @@ async function sendFilterReply(interaction: ChatInputCommandInteraction, player:
     const embed = new EmbedBuilder()
         .setAuthor({ name: title, iconURL: interaction.user.displayAvatarURL() })
         .setColor("#0EFEFE")
-        .setThumbnail(player.current?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+        .setThumbnail(player.current?.thumbnail ?? interaction.guild?.iconURL() ?? null)
         .setDescription(description);
 
     await sendReply(interaction, { embeds: [embed] });

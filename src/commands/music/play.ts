@@ -40,7 +40,7 @@ export default {
                 choices = res.tracks.slice(0, 25).map((x: any, i: number) => {
                     let name = `${i + 1}) ${x.title}`;
                     if (name.length > 100) name = name.substring(0, 97) + '...';
-                    let value = `${x.url}`;
+                    let value = `${x.uri}`;
                     if (value.length > 100) value = value.substring(0, 100);
                     return { name, value };
                 });
@@ -78,8 +78,8 @@ export default {
             throw new PermissionError("I am missing the `View Channel`, `Connect`, or `Speak` permissions for that voice channel.");
         }
 
-        const musicNode = client.music.nodes.cache.values().next().value;
-        if (!musicNode || musicNode.state !== "READY" || !musicNode.sessionId) {
+        const musicNode = client.music.nodes.nodes.values().next().value;
+        if (!musicNode || musicNode.state !== 4 || !musicNode.sessionId) {
             throw new ValidationError("The music player is not ready. Please try again shortly.");
         }
 
@@ -88,11 +88,14 @@ export default {
 
         if (!songOption) {
             const handled = await handleNoSongOption(interaction, voiceChannel, player);
-            if (handled) return;
+            if (handled) {
+                await deleteReply(interaction, { timeout: 30000 });
+                return;
+            }
         }
 
         if (!player) {
-            player = client.music.createPlayer({
+            player = client.music.players.create({
                 guildId: interaction.guild!.id,
                 voiceChannelId: voiceChannel.id,
                 textChannelId: interaction.channel!.id,
@@ -100,7 +103,11 @@ export default {
             });
         }
 
-        if (!player.connected) player.connect({ setDeaf: true, setMute: false });
+        if (!player) {
+            throw new ValidationError("Failed to create or retrieve player.");
+        }
+
+        if (!player.connected) await player.connect({ selfDeaf: true });
 
         await sendReply(interaction, { content: "Loading..." });
         const res = await client.music.search({ query: songOption?.value as string, requester: interaction.user.id });
@@ -109,17 +116,17 @@ export default {
     }
 }
 
-async function handleNoSongOption(interaction: ChatInputCommandInteraction, voiceChannel: any, player: Player): Promise<boolean> {
+async function handleNoSongOption(interaction: ChatInputCommandInteraction, voiceChannel: any, player: Player | undefined): Promise<boolean> {
     if (player) {
         if (player.voiceChannelId === voiceChannel.id) {
             if (player.paused) {
                 player.setTextChannelId(interaction.channel!.id);
-                player.resume();
+                await player.resume();
                 await savePlayerState(player);
 
                 const embed = new EmbedBuilder()
                     .setAuthor({ name: `Player resumed.`, iconURL: interaction.user.displayAvatarURL() })
-                    .setThumbnail(player.current?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+                    .setThumbnail(player.current?.thumbnail ?? interaction.guild?.iconURL() ?? null)
                     .setDescription("▶️ The player has been resumed. Use `/pause` to pause playing again. ⏸️");
 
                 await editReply(interaction, { embeds: [embed] });
@@ -131,12 +138,12 @@ async function handleNoSongOption(interaction: ChatInputCommandInteraction, voic
         else {
             player.setTextChannelId(interaction.channel!.id);
             player.setVoiceChannelId(voiceChannel.id);
-            player.connect({ setDeaf: true, setMute: false });
+            await player.connect({ selfDeaf: true });
             await savePlayerState(player);
 
             const embed = new EmbedBuilder()
                 .setAuthor({ name: `Player joined.`, iconURL: interaction.user.displayAvatarURL() })
-                .setThumbnail(player.current?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+                .setThumbnail(player.current?.thumbnail ?? interaction.guild?.iconURL() ?? null)
                 .setDescription(`▶️ The player has joined the voice channel to resume playing.`);
 
             await editReply(interaction, { embeds: [embed] });
@@ -157,26 +164,26 @@ async function handleLoadType(interaction: ChatInputCommandInteraction, player: 
         throw new ValidationError("No results were found for the provided track/url.");
     }
 
-    if (res.loadType === "playlist") {
+    if (res.isPlaylist) {
         player.queue.add(res.tracks);
         await sendPlaylistEmbed(interaction, "Playlist Added To Queue!", res);
-        startPlaying(player);
+        await startPlaying(player);
         await savePlayerState(player);
     } else {
         player.queue.add(res.tracks[0]);
         await sendEmbed(interaction, "Song Added To Queue!", res.tracks[0]);
-        startPlaying(player);
+        await startPlaying(player);
         await savePlayerState(player);
     }
 }
 
-function startPlaying(player: Player) {
+async function startPlaying(player: Player) {
     if (player && !player.playing && !player.paused) {
-        player.play();
+        await player.play();
         return;
     }
     if (player && player.paused) {
-        player.resume();
+        await player.resume();
         return;
     }
 }
@@ -184,12 +191,12 @@ function startPlaying(player: Player) {
 async function sendEmbed(interaction: ChatInputCommandInteraction, title: string, track: Track) {
     const songTitle = track.title ?? "";
     const songAuthor = track.author ?? "";
-    const songUrl = track.url ?? "";
+    const songUrl = track.uri ?? "";
     const durationString = track.isStream ? `\`LIVE\`` : `\`${humanizeDuration(track.duration, { round: true })}\``;
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: title, iconURL: interaction.user.displayAvatarURL() })
-        .setThumbnail(track.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+        .setThumbnail(track.thumbnail ?? interaction.guild?.iconURL() ?? null)
         .setColor("#0EFEFE")
         .setDescription(`⌚ Queuing ${formatSongTitle(songTitle, songAuthor, songUrl)} ${durationString}`);
 
@@ -217,9 +224,9 @@ async function sendPlaylistEmbed(interaction: ChatInputCommandInteraction, title
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: title, iconURL: interaction.user.displayAvatarURL() })
-        .setThumbnail(res.tracks[0]?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+        .setThumbnail(res.tracks[0]?.thumbnail ?? interaction.guild?.iconURL() ?? null)
         .setColor("#0EFEFE")
-        .setDescription(`⌚ Queuing  [**${res.playlistInfo.name}**](${interaction.options.get("song")?.value as string}) ${res.tracks.length} tracks ${durationString}`);
+        .setDescription(`⌚ Queuing  [**${res.playlistInfo?.name}**](${interaction.options.get("song")?.value as string}) ${res.tracks.length} tracks ${durationString}`);
 
     await editReply(interaction, { content: "", embeds: [embed] });
 }

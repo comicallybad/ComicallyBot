@@ -15,13 +15,13 @@ export default {
         clearPlayerInterval(player);
         const guild = await client.guilds.fetch(player.guildId);
         const channel = await client.channels.fetch(player.textChannelId) as TextChannel;
-        const requestedBy = track.requestedBy && typeof track.requestedBy === 'object' && 'id' in track.requestedBy ? String(track.requestedBy.id) : undefined;
+        const requestedBy = track.requester ?? undefined;
         const requester = requestedBy ? await client.users.fetch(requestedBy).catch(() => client.user) : client.user;
         const footerText = `Requested by ${requester?.tag || "Unknown"}`;
         const timelineLength = footerText.length > 30 ? SHORT_TIMELINE_LENGTH : DEFAULT_TIMELINE_LENGTH;
         const embed = new EmbedBuilder()
             .setAuthor({ name: "Now Playing!", iconURL: guild.iconURL() || undefined })
-            .setThumbnail(track.getThumbnailUrl() ?? guild.iconURL() ?? null)
+            .setThumbnail(track.thumbnail ?? guild.iconURL() ?? null)
             .setColor("#0EFEFE")
             .setFooter({ text: footerText, iconURL: requester?.displayAvatarURL() || undefined });
 
@@ -33,7 +33,7 @@ export default {
 
         if (player.data.isRestored) {
             if (player.data.wasPaused) {
-                player.pause();
+                await player.pause();
             }
             delete player.data.isRestored;
             delete player.data.wasPaused;
@@ -62,12 +62,12 @@ export default {
 };
 
 function updateTimeline(embed: EmbedBuilder, player: Player, track: Track, timelineLength: number) {
-    const formattedTitle = formatSongTitle(track.title || "", track.author || "", track.url || "");
+    const formattedTitle = formatSongTitle(track.title || "", track.author || "", track.uri || "");
 
     if (track.isStream) {
-        embed.setDescription(`▶️ ${formattedTitle} \`LIVE\`\n${'▬'.repeat(timelineLength)}🔘\n\`${humanizeDuration(player.current.position ?? 0, { round: true })}\``);
+        embed.setDescription(`▶️ ${formattedTitle} \`LIVE\`\n${'▬'.repeat(timelineLength)}🔘\n\`${humanizeDuration(player.current?.position ?? 0, { round: true })}\``);
     } else {
-        const currentPosition = Math.floor((player.current.position || 0) / 1000);
+        const currentPosition = Math.floor((player.current?.position || 0) / 1000);
         const totalLength = Math.floor((track.duration || 0) / 1000);
         const markerPosition = totalLength > 0 ? Math.round((currentPosition / totalLength) * timelineLength) : 0;
         const timelineArray = '▬'.repeat(timelineLength + 1).split('');
@@ -76,7 +76,7 @@ function updateTimeline(embed: EmbedBuilder, player: Player, track: Track, timel
             timelineArray[markerPosition] = '🔘';
         }
 
-        embed.setDescription(`▶️ ${formattedTitle} ` + "`" + `${humanizeDuration(track.duration ?? 0, { round: true })}` + "`" + `\n${timelineArray.join('')}\n` + "`" + `${humanizeDuration(player.current.position ?? 0, { round: true })}` + "`");
+        embed.setDescription(`▶️ ${formattedTitle} ` + "`" + `${humanizeDuration(track.duration ?? 0, { round: true })}` + "`" + `\n${timelineArray.join('')}\n` + "`" + `${humanizeDuration(player.current?.position ?? 0, { round: true })}` + "`");
     }
 }
 

@@ -49,8 +49,8 @@ async function skipSong(interaction: ChatInputCommandInteraction, player: Player
     }
     player.setTextChannelId(channelId);
 
-    if (player.queue.size === 0) player.destroy();
-    else player.skip();
+    if (player.queue.size === 0) await player.destroy();
+    else await player.skip();
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: "Song Skipped!", iconURL: interaction.user.displayAvatarURL() })
@@ -103,11 +103,11 @@ async function skipTo(interaction: ChatInputCommandInteraction, player: Player) 
     }
 
     player.setTextChannelId(interaction.channel!.id);
-    player.seek(time * 1000);
+    await player.seek(time * 1000);
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: "Song Time Set!", iconURL: interaction.user.displayAvatarURL() })
-        .setThumbnail(player.current?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+        .setThumbnail(player.current?.thumbnail ?? interaction.guild?.iconURL() ?? null)
         .setColor("#0EFEFE")
         .setDescription(`⏩ The current song has been skipped to \`${humanizeDuration(time * 1000)}\`!`);
 
@@ -128,13 +128,13 @@ async function skipAhead(interaction: ChatInputCommandInteraction, player: Playe
         throw new ValidationError("Skipping ahead would exceed the song's duration.");
     }
 
-    const position = player.current?.position + (time * 1000);
+    const position = (player.current?.position ?? 0) + (time * 1000);
     player.setTextChannelId(interaction.channel!.id);
-    player.seek(position);
+    await player.seek(position);
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: "Song Time Set!", iconURL: interaction.user.displayAvatarURL() })
-        .setThumbnail(player.current?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+        .setThumbnail(player.current?.thumbnail ?? interaction.guild?.iconURL() ?? null)
         .setColor("#0EFEFE")
         .setDescription(`⏩ The current song time has been skipped \`${humanizeDuration(time * 1000)}\` to \`${humanizeDuration(position, { round: true })}\`!`);
 

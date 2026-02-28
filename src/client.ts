@@ -1,5 +1,5 @@
 import { Client, GatewayIntentBits, Partials } from "discord.js";
-import { Manager } from "moonlink.js";
+import { Connectors, Manager } from "moonlink.js";
 import { loadEvents } from "./handlers/eventHandler";
 import { loadCommands } from "./handlers/commandHandler";
 import { loadMusicEvents } from "./handlers/musicHandler";
@@ -41,12 +41,10 @@ client.music = new Manager({
         port: 2333,
         secure: false
     }],
-    options: { disableNativeSources: true },
-    sendPayload: (guildId: string, payload: any) => {
-        const guild = client.guilds.cache.get(guildId);
-        if (guild) guild.shard.send(JSON.parse(payload));
-    },
+    options: {},
 });
+
+client.music.use(new Connectors.DiscordJs(), client);
 
 loadEvents(client);
 loadCommands(client);

@@ -70,7 +70,7 @@ export default {
 function formatQueueEntry(track: Track, client: Client): string {
     const songTitle = track.title ?? "";
     const songAuthor = track.author ?? "";
-    const songUrl = track.url ?? "";
+    const songUrl = track.uri ?? "";
     const requesterId = (typeof track.requestedBy === 'object' && (track.requestedBy as any)?.id
         ? (track.requestedBy as any).id
         : track.requestedBy) ?? client.user?.id;
@@ -84,7 +84,7 @@ async function viewQueue(interaction: ChatInputCommandInteraction, player: Playe
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: `🎧 Current Queue for ${interaction.guild?.name}`, iconURL: interaction.guild?.iconURL() || undefined })
-        .setThumbnail(track?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+        .setThumbnail(track?.thumbnail ?? interaction.guild?.iconURL() ?? null)
         .setColor("#0EFEFE");
 
     if (!track && queueLength === 0) {
@@ -113,7 +113,7 @@ async function clearQueue(interaction: ChatInputCommandInteraction, player: Play
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: `🎧 Queue Cleared for ${interaction.guild?.name}`, iconURL: interaction.guild?.iconURL() || undefined })
-        .setThumbnail(player.current?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+        .setThumbnail(player.current?.thumbnail ?? interaction.guild?.iconURL() ?? null)
         .setColor("#FF0000")
         .setDescription("The queue has been cleared.");
 
@@ -146,7 +146,7 @@ async function removeQueue(interaction: ChatInputCommandInteraction, player: Pla
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: `🎧 Queue Edited for ${interaction.guild?.name}`, iconURL: interaction.guild?.iconURL() || undefined })
-        .setThumbnail(player.current?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+        .setThumbnail(player.current?.thumbnail ?? interaction.guild?.iconURL() ?? null)
         .setColor("#FF0000")
         .setDescription(`${text} been removed from the queue.`)
 
@@ -167,7 +167,7 @@ async function swapQueue(interaction: ChatInputCommandInteraction, player: Playe
 
     const embed = new EmbedBuilder()
         .setAuthor({ name: `🎧 Queue Edited for ${interaction.guild?.name}`, iconURL: interaction.guild?.iconURL() || undefined })
-        .setThumbnail(player.current?.getThumbnailUrl() ?? interaction.guild?.iconURL() ?? null)
+        .setThumbnail(player.current?.thumbnail ?? interaction.guild?.iconURL() ?? null)
         .setColor("#0EFEFE")
         .setDescription(`Songs **${index1 + 1}** and **${index2 + 1}** have been swapped in the queue.`)
 

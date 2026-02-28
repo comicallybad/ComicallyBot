@@ -8,7 +8,7 @@ interface IPlayerState extends Document {
     messageId: string;
     queue: Track[];
     previous: Track[];
-    currentTrack: Track | null;
+    currentTrack: Track | undefined;
     position: number;
     playing: boolean;
     paused: boolean;
