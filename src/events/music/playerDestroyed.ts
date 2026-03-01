@@ -5,7 +5,7 @@ import { sendMessage, deleteMessage } from "../../utils/messageUtils";
 import { clearPlayerInterval } from "../../utils/musicUtils";
 
 export default {
-    name: "playerDestroy",
+    name: "playerDestroyed",
     execute: async (client: Client, player: Player) => {
         await deletePlayerState(player.guildId);
 
