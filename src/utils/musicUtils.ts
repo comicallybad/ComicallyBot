@@ -1,7 +1,10 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, EmbedBuilder, Message } from "discord.js";
-import { Player } from "moonlink.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, EmbedBuilder, Message, TextChannel } from "discord.js";
+import { Player, Track } from "moonlink.js";
+import humanizeDuration from "humanize-duration";
 import { deleteMessage, editMessage } from "./messageUtils";
 import { deferUpdate } from "./replyUtils";
+import { formatSongTitle } from "./stringUtils";
+import { savePlayerState, deletePlayerState } from "./dbUtils";
 
 function createButton(customId: string, label: string, style: ButtonStyle): ButtonBuilder {
     return new ButtonBuilder().setCustomId(customId).setLabel(label).setStyle(style);
@@ -212,4 +215,54 @@ export function clearPlayerInterval(player: Player) {
     }
     player.data.message = null;
     return;
+}
+
+export function updateTimeline(embed: EmbedBuilder, player: Player, track: Track, timelineLength: number) {
+    const formattedTitle = formatSongTitle(track.title || "", track.author || "", track.uri || "");
+
+    if (track.isStream) {
+        embed.setDescription(`▶️ ${formattedTitle} \`LIVE\`\n${'▬'.repeat(timelineLength)}🔘\n\`${humanizeDuration(player.current?.position ?? 0, { round: true })}\``);
+    } else {
+        const currentPosition = Math.floor((player.current?.position || 0) / 1000);
+        const totalLength = Math.floor((track.duration || 0) / 1000);
+        const markerPosition = totalLength > 0 ? Math.round((currentPosition / totalLength) * timelineLength) : 0;
+        const timelineArray = '▬'.repeat(timelineLength + 1).split('');
+
+        if (markerPosition >= 0 && markerPosition < timelineArray.length) {
+            timelineArray[markerPosition] = '🔘';
+        }
+
+        embed.setDescription(`▶️ ${formattedTitle} ` + "`" + `${humanizeDuration(track.duration ?? 0, { round: true })}` + "`" + `\n${timelineArray.join('')}\n` + "`" + `${humanizeDuration(player.current?.position ?? 0, { round: true })}` + "`");
+    }
+
+    if (player.paused) {
+        embed.setFields([]);
+        embed.addFields([{ name: "Player Paused", value: "⏯ The player is currently **paused**." }]);
+    }
+}
+
+export function createPlayerInterval(message: Message, player: Player, track: Track, timelineLength: number, interval: number) {
+    player.data.timelineInterval = setInterval(async () => {
+        if (player.destroyed) {
+            await deletePlayerState(player.guildId);
+            clearPlayerInterval(player);
+            return;
+        }
+
+        if (!player || !player.current || !player.data.message || !message.embeds[0]?.toJSON) {
+            clearPlayerInterval(player);
+            return;
+        }
+
+        const embed = new EmbedBuilder(message.embeds[0].toJSON());
+        updateTimeline(embed, player, track, timelineLength);
+
+        try {
+            await editMessage(message, { embeds: [embed] });
+            await savePlayerState(player);
+        } catch (error: unknown) {
+            clearPlayerInterval(player);
+            return;
+        }
+    }, interval);
 }

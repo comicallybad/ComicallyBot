@@ -1,10 +1,8 @@
 import { EmbedBuilder, Client, Message, TextChannel } from "discord.js";
 import { Player, Track } from "moonlink.js";
-import humanizeDuration from "humanize-duration";
-import { sendMessage, editMessage } from "../../utils/messageUtils";
-import { formatSongTitle } from "../../utils/stringUtils";
-import { savePlayerState, deletePlayerState } from "../../utils/dbUtils";
-import { clearPlayerInterval, createControlRows } from "../../utils/musicUtils";
+import { sendMessage } from "../../utils/messageUtils";
+import { savePlayerState } from "../../utils/dbUtils";
+import { clearPlayerInterval, createControlRows, updateTimeline, createPlayerInterval } from "../../utils/musicUtils";
 
 const DEFAULT_TIMELINE_LENGTH = 25;
 const SHORT_TIMELINE_LENGTH = 20;
@@ -27,18 +25,6 @@ export default {
 
         updateTimeline(embed, player, track, timelineLength);
 
-        if (player.data.isRestored && player.data.wasPaused) {
-            embed.addFields([{ name: "Player Paused", value: "⏯ The player is currently **paused**." }]);
-        }
-
-        if (player.data.isRestored) {
-            if (player.data.wasPaused) {
-                await player.pause();
-            }
-            delete player.data.isRestored;
-            delete player.data.wasPaused;
-        }
-
         const rows = createControlRows();
         const sentMessage = await sendMessage(channel, { embeds: [embed], components: rows });
         if (sentMessage) {
@@ -60,48 +46,3 @@ export default {
         }
     },
 };
-
-function updateTimeline(embed: EmbedBuilder, player: Player, track: Track, timelineLength: number) {
-    const formattedTitle = formatSongTitle(track.title || "", track.author || "", track.uri || "");
-
-    if (track.isStream) {
-        embed.setDescription(`▶️ ${formattedTitle} \`LIVE\`\n${'▬'.repeat(timelineLength)}🔘\n\`${humanizeDuration(player.current?.position ?? 0, { round: true })}\``);
-    } else {
-        const currentPosition = Math.floor((player.current?.position || 0) / 1000);
-        const totalLength = Math.floor((track.duration || 0) / 1000);
-        const markerPosition = totalLength > 0 ? Math.round((currentPosition / totalLength) * timelineLength) : 0;
-        const timelineArray = '▬'.repeat(timelineLength + 1).split('');
-
-        if (markerPosition >= 0 && markerPosition < timelineArray.length) {
-            timelineArray[markerPosition] = '🔘';
-        }
-
-        embed.setDescription(`▶️ ${formattedTitle} ` + "`" + `${humanizeDuration(track.duration ?? 0, { round: true })}` + "`" + `\n${timelineArray.join('')}\n` + "`" + `${humanizeDuration(player.current?.position ?? 0, { round: true })}` + "`");
-    }
-}
-
-function createPlayerInterval(message: Message, player: Player, track: Track, timelineLength: number, interval: number) {
-    player.data.timelineInterval = setInterval(async () => {
-        if (player.destroyed) {
-            await deletePlayerState(player.guildId);
-            clearPlayerInterval(player);
-            return;
-        }
-
-        if (!player || !player.current || !player.data.message || !message.embeds[0]?.toJSON) {
-            clearPlayerInterval(player);
-            return;
-        }
-
-        const embed = new EmbedBuilder(message.embeds[0].toJSON());
-        updateTimeline(embed, player, track, timelineLength);
-
-        try {
-            await editMessage(message, { embeds: [embed] });
-            await savePlayerState(player);
-        } catch (error: unknown) {
-            clearPlayerInterval(player);
-            return;
-        }
-    }, interval);
-}

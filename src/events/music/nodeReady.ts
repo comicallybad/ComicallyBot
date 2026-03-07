@@ -9,28 +9,32 @@ export default {
     execute: async (client: Client, node: Node) => {
         console.log(`${formatLogTimestamp()} [SUCCESS] Lavalink Node ${node.identifier} ready.`);
 
-        const savedPlayerStates = await getAllSavedPlayerStates();
-        if (savedPlayerStates.length === 0) return;
-        console.log(`${formatLogTimestamp()} [INFO] Attempting restoration of ${savedPlayerStates.length} saved player state(s).`);
+        setTimeout(() => {
+            restoreSavedPlayerStates(client);
+        }, 5000);
+    },
+};
 
-        for (const savedState of savedPlayerStates) {
-            try {
-                if (!savedState.guildId || !savedState.messageId) {
-                    await deletePlayerState(savedState.guildId);
-                    continue;
-                }
+async function restoreSavedPlayerStates(client: Client) {
+    const savedPlayerStates = await getAllSavedPlayerStates();
+    if (savedPlayerStates.length === 0) return;
+    console.log(`${formatLogTimestamp()} [INFO] Attempting restoration of ${savedPlayerStates.length} saved player state(s).`);
 
-                if ((!savedState.currentTrack && savedState.queue.length === 0) || !savedState.voiceChannelId || !savedState.textChannelId) {
-                    await deletePlayerState(savedState.guildId);
-                    await deleteOldMessage(client, savedState.textChannelId, savedState.messageId);
-                    continue;
-                }
+    for (const savedState of savedPlayerStates) {
+        try {
+            if (!savedState.guildId || !savedState.messageId) {
+                await deletePlayerState(savedState.guildId);
+                continue;
+            }
 
-                const existingPlayer = client.music.players.get(savedState.guildId);
-                if (existingPlayer) {
-                    await existingPlayer.destroy();
-                }
+            if ((!savedState.currentTrack && savedState.queue.length === 0) || !savedState.voiceChannelId || !savedState.textChannelId) {
+                await deletePlayerState(savedState.guildId);
+                await deleteOldMessage(client, savedState.textChannelId, savedState.messageId);
+                continue;
+            }
 
+            const existingPlayer = client.music.players.get(savedState.guildId);
+            if (!existingPlayer) {
                 const player = client.music.players.create({
                     guildId: savedState.guildId,
                     voiceChannelId: savedState.voiceChannelId,
@@ -56,38 +60,39 @@ export default {
                     }
                 }
 
-                player.setLoop(savedState.loop as any);
                 player.setVolume(savedState.volume);
+                player.setLoop(savedState.loop as any);
+                player.setAutoPlay(savedState.autoPlay);
+
+                await deleteOldMessage(client, savedState.textChannelId, savedState.messageId);
 
                 if (player.queue.size > 0) {
                     player.data.isRestored = true;
                     player.data.wasPaused = savedState.paused;
                     await player.play({ position: savedState.position });
                 }
-
-                const textChannel = await client.channels.fetch(savedState.textChannelId) as TextChannel;
-                if (textChannel) {
-                    await deleteOldMessage(client, savedState.textChannelId, savedState.messageId);
-
-                    const embed = new EmbedBuilder()
-                        .setAuthor({ name: "Player Resuming", iconURL: textChannel.guild.iconURL() || undefined })
-                        .setColor("#0EFEFE")
-                        .setDescription("🎶 The player is resuming from its last saved state.")
-
-                    const sentMessage = await sendMessage(textChannel, { embeds: [embed] });
-                    if (sentMessage) {
-                        deleteMessage(sentMessage, { timeout: 30000 });
-                    }
-                }
-
-                await deletePlayerState(savedState.guildId);
-            } catch (error) {
-                logError(error, `Failed to restore player for guild ${savedState.guildId}`);
-                await deletePlayerState(savedState.guildId);
             }
+
+            const textChannel = await client.channels.fetch(savedState.textChannelId) as TextChannel;
+            if (textChannel) {
+                const embed = new EmbedBuilder()
+                    .setAuthor({ name: "Player Resuming", iconURL: textChannel.guild.iconURL() || undefined })
+                    .setColor("#0EFEFE")
+                    .setDescription("🎶 The player is resuming from its last saved state.")
+
+                const sentMessage = await sendMessage(textChannel, { embeds: [embed] });
+                if (sentMessage) {
+                    deleteMessage(sentMessage, { timeout: 30000 });
+                }
+            }
+
+            await deletePlayerState(savedState.guildId);
+        } catch (error) {
+            logError(error, `Failed to restore player for guild ${savedState.guildId}`);
+            await deletePlayerState(savedState.guildId);
         }
-    },
-};
+    }
+}
 
 async function deleteOldMessage(client: Client, textChannelId: string, messageId: string) {
     const textChannel = await client.channels.fetch(textChannelId) as TextChannel;
