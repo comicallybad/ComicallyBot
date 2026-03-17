@@ -120,7 +120,7 @@ async function handlePrevious(message: Message, player: Player) {
 async function handleNext(message: Message, player: Player) {
     await deleteMessage(message, { timeout: 0 });
     clearPlayerInterval(player);
-    if (player.queue.size === 0) await player.destroy();
+    if (player.queue.size === 0 && !player.autoPlay) await player.destroy();
     else await player.skip();
 }
 

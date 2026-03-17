@@ -71,9 +71,7 @@ function formatQueueEntry(track: Track, client: Client): string {
     const songTitle = track.title ?? "";
     const songAuthor = track.author ?? "";
     const songUrl = track.uri ?? "";
-    const requesterId = (typeof track.requestedBy === 'object' && (track.requestedBy as any)?.id
-        ? (track.requestedBy as any).id
-        : track.requestedBy) ?? client.user?.id;
+    const requesterId = track.requester ?? client.user?.id;
     return `${formatSongTitle(songTitle, songAuthor, songUrl)} - **Requester:** <@${requesterId}>`;
 }
 

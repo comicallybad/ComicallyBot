@@ -49,7 +49,7 @@ async function skipSong(interaction: ChatInputCommandInteraction, player: Player
     }
     player.setTextChannelId(channelId);
 
-    if (player.queue.size === 0) await player.destroy();
+    if (player.queue.size === 0 && !player.autoPlay) await player.destroy();
     else await player.skip();
 
     const embed = new EmbedBuilder()
