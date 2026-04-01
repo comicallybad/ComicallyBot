@@ -186,7 +186,7 @@ export default {
                 value: `${reason}`,
                 inline: true,
             }, {
-                name: "__**Moderator**__",
+                name: "__**Executor**__",
                 value: `${executor}`,
                 inline: true
             });
@@ -409,6 +409,47 @@ export default {
                             inline: true,
                         });
                     }
+                }
+            }
+        }
+
+        // Handle member role fields
+        if (action === AuditLogEvent.MemberRoleUpdate) {
+            const addedRoles = changes?.find(change => change.key === "$add")?.new as { name: string; id: string }[] | undefined;
+            const removedRoles = changes?.find(change => change.key === "$remove")?.new as { name: string; id: string }[] | undefined;
+
+            if (addedRoles) {
+                for (const role of addedRoles) {
+                    embed.addFields({
+                        name: "__**Joined Role**__",
+                        value: `${role.name}`,
+                        inline: true,
+                    }, {
+                        name: "__**Role ID**__",
+                        value: `${role.id}`,
+                        inline: true,
+                    }, {
+                        name: "__**Mention**__",
+                        value: `<@&${role.id}>`,
+                        inline: true,
+                    });
+                }
+            }
+            if (removedRoles) {
+                for (const role of removedRoles) {
+                    embed.addFields({
+                        name: "__**Removed Role**__",
+                        value: `${role.name}`,
+                        inline: true,
+                    }, {
+                        name: "__**Role ID**__",
+                        value: `${role.id}`,
+                        inline: true,
+                    }, {
+                        name: "__**Mention**__",
+                        value: `<@&${role.id}>`,
+                        inline: true,
+                    });
                 }
             }
         }
