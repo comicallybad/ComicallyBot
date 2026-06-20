@@ -41,10 +41,24 @@ client.music = new Manager({
         port: 2333,
         secure: false
     }],
-    options: {},
+    options: {
+        resume: true,
+        search: {
+            playlistLoadLimit: 500
+        },
+        spotify: {
+            enabled: false,
+            clientId: process.env.SPOTIFY_CLIENT_ID,
+            clientSecret: process.env.SPOTIFY_CLIENT_SECRET
+        }
+    },
 });
 
 client.music.use(new Connectors.DiscordJs(), client);
+
+// client.music.on("debug", (message) => {
+//     console.log(`[Music Debug] ${message}`);
+// });
 
 loadEvents(client);
 loadCommands(client);
