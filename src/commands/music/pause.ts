@@ -16,7 +16,7 @@ export default {
         }
 
         const member = interaction.member;
-        if (!member || !('voice' in member) || !member.voice.channel || member.voice.channel.id !== player.voiceChannelId) {
+        if (!member || !("voice" in member) || !member.voice.channel || member.voice.channel.id !== player.voiceChannelId) {
             throw new ValidationError("You need to be in the same voice channel as the bot to use this command.");
         }
 

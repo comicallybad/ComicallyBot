@@ -14,7 +14,7 @@ export default {
         const embed = new EmbedBuilder()
             .setColor("#FF0000")
             .setTitle(`Messages Deleted`)
-            .setDescription(`${messages.map(message => `${message.author}: ${message.content}`).join('\n')}`)
+            .setDescription(`${messages.map(message => `${message.author}: ${message.content}`).join("\n")}`)
             .setTimestamp();
 
         return await sendMessage(logChannel, { embeds: [embed] });

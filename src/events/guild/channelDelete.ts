@@ -4,7 +4,7 @@ import { GuildConfig } from "../../models/GuildConfig";
 export default {
     name: "channelDelete",
     async execute(client: Client, channel: Channel) {
-        if (!('guild' in channel)) return;
+        if (!("guild" in channel)) return;
 
         const channelID = channel.id;
         const guildID = channel.guild.id;

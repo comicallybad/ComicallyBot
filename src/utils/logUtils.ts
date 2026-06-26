@@ -8,8 +8,8 @@ import { inspect } from "util";
  */
 export function formatLogTimestamp(): string {
     const now = new Date();
-    const time = now.toLocaleTimeString('en-US', { hour12: true });
-    const date = now.toLocaleDateString('en-US');
+    const time = now.toLocaleTimeString("en-US", { hour12: true });
+    const date = now.toLocaleDateString("en-US");
     return `[${time}] [${date}]`;
 }
 
@@ -20,7 +20,7 @@ export function formatLogTimestamp(): string {
  */
 export async function logError(error: any, context?: string): Promise<void> {
     const date = new Date();
-    const fileName = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}.log`;
+    const fileName = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}.log`;
     const logDirectory = path.join(process.cwd(), "logs");
     const logFilePath = path.join(logDirectory, fileName);
 
@@ -36,7 +36,7 @@ export async function logError(error: any, context?: string): Promise<void> {
 
     const logEntry = `${formatLogTimestamp()} ${context ? `[${context}] ` : ""} [ERROR] ${errorMessage}\n\n`;
 
-    console.error(`${formatLogTimestamp()} [ERROR] New error logged: ${errorMessage.split('\n')[0]}`);
+    console.error(`${formatLogTimestamp()} [ERROR] New error logged: ${errorMessage.split("\n")[0]}`);
 
     try {
         await fs.mkdir(logDirectory, { recursive: true });

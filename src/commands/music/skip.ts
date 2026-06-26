@@ -12,9 +12,9 @@ export default {
         .setContexts(InteractionContextType.Guild)
         .addSubcommand(command => command.setName("song").setDescription("Skip the current song in queue."))
         .addSubcommand(command => command.setName("to").setDescription("Skip to a specific time in the song.")
-            .addStringOption(option => option.setName('time').setDescription('The time to skip to in the song. Examples: `1m30s`, `90s`.').setRequired(true)))
+            .addStringOption(option => option.setName("time").setDescription("The time to skip to in the song. Examples: `1m30s`, `90s`.").setRequired(true)))
         .addSubcommand(command => command.setName("ahead").setDescription("Skip ahead in the current song.")
-            .addStringOption(option => option.setName('time').setDescription('The time to skip ahead in the song. Examples: `30s`, `1m`.').setRequired(true))),
+            .addStringOption(option => option.setName("time").setDescription("The time to skip ahead in the song. Examples: `30s`, `1m`.").setRequired(true))),
     execute: async (interaction: ChatInputCommandInteraction, client: Client) => {
         const subcommand = interaction.options.getSubcommand();
         const player = client.music.players.get(interaction.guildId!);
@@ -24,7 +24,7 @@ export default {
         }
 
         const member = interaction.member;
-        if (!member || !('voice' in member) || !member.voice.channel || member.voice.channel.id !== player.voiceChannelId) {
+        if (!member || !("voice" in member) || !member.voice.channel || member.voice.channel.id !== player.voiceChannelId) {
             throw new ValidationError("You need to be in the voice channel to use this command.");
         }
 
@@ -67,24 +67,24 @@ function parseTime(timeStr: string): number {
     let match;
     let lastIndex = 0;
 
-    while ((match = regex.exec(timeStr.replace(/\s/g, ''))) !== null) {
+    while ((match = regex.exec(timeStr.replace(/\s/g, ""))) !== null) {
         const value = parseInt(match[1], 10);
         const unit = match[2];
 
-        if (unit === 's' || !unit) {
+        if (unit === "s" || !unit) {
             totalSeconds += value;
-        } else if (unit === 'm') {
+        } else if (unit === "m") {
             totalSeconds += value * 60;
-        } else if (unit === 'h') {
+        } else if (unit === "h") {
             totalSeconds += value * 3600;
         } else {
-            throw new ValidationError('Invalid time unit');
+            throw new ValidationError("Invalid time unit");
         }
         lastIndex = regex.lastIndex;
     }
 
-    if (lastIndex !== timeStr.replace(/\s/g, '').length || totalSeconds === 0) {
-        throw new ValidationError('Invalid time format');
+    if (lastIndex !== timeStr.replace(/\s/g, "").length || totalSeconds === 0) {
+        throw new ValidationError("Invalid time format");
     }
 
     return totalSeconds;
@@ -99,7 +99,7 @@ async function skipTo(interaction: ChatInputCommandInteraction, player: Player) 
     }
 
     if (player.current && (time * 1000) > player.current.duration) {
-        throw new ValidationError("The time to skip to cannot be greater than the song's duration.");
+        throw new ValidationError("The time to skip to cannot be greater than the song duration.");
     }
 
     player.setTextChannelId(interaction.channel!.id);
@@ -125,7 +125,7 @@ async function skipAhead(interaction: ChatInputCommandInteraction, player: Playe
     }
 
     if (player.current && (player.current.position + (time * 1000)) > player.current.duration) {
-        throw new ValidationError("Skipping ahead would exceed the song's duration.");
+        throw new ValidationError("Skipping ahead would exceed the song duration.");
     }
 
     const position = (player.current?.position ?? 0) + (time * 1000);

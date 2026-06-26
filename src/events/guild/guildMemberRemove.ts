@@ -25,7 +25,7 @@ export default {
             const currentDate = new Date();
             const timeInServer = currentDate.getTime() - member.joinedAt.getTime();
             const durationInServer = humanizeDuration(timeInServer, { round: true });
-            embed.addFields({ name: 'Time in server:', value: `\`${durationInServer}\`` });
+            embed.addFields({ name: "Time in server:", value: `\`${durationInServer}\`` });
         }
 
         return await sendMessage(logChannel, { embeds: [embed] });

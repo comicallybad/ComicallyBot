@@ -20,7 +20,7 @@ export default {
         const songTitle = title ?? "";
         const songAuthor = author ?? "";
         const songUrl = uri ?? "";
-        const requester = requestedBy && typeof requestedBy === 'object' && 'id' in requestedBy ? await client.users.fetch(requestedBy.id as string) : null;
+        const requester = requestedBy && typeof requestedBy === "object" && "id" in requestedBy ? await client.users.fetch(requestedBy.id as string) : null;
         const durationString = isStream ? "`LIVE`" : ` ${humanizeDuration(duration, { round: true })}`;
 
         const embed = new EmbedBuilder()

@@ -22,7 +22,7 @@ export default {
 
         const timeoutPromise = new Promise<any[]>((resolve) => {
             setTimeout(() => {
-                let truncatedValue = focusedValue.length > 100 ? focusedValue.substring(0, 97) + '...' : focusedValue;
+                let truncatedValue = focusedValue.length > 100 ? focusedValue.substring(0, 97) + "..." : focusedValue;
                 resolve([{ name: truncatedValue, value: truncatedValue }]);
             }, 2500);
         });
@@ -39,7 +39,7 @@ export default {
             if (res.tracks) {
                 choices = res.tracks.slice(0, 25).map((x: any, i: number) => {
                     let name = `${i + 1}) ${x.title}`;
-                    if (name.length > 100) name = name.substring(0, 97) + '...';
+                    if (name.length > 100) name = name.substring(0, 97) + "...";
                     let value = `${x.uri}`;
                     if (value.length > 100) value = value.substring(0, 100);
                     return { name, value };
@@ -48,14 +48,14 @@ export default {
 
             if (res.data?.info?.name || res?.playlistInfo?.name) {
                 let playlistName = `Playlist: ${res.data?.info?.name ? res.data.info.name : res.playlistInfo.name}`;
-                if (playlistName.length > 100) playlistName = playlistName.substring(0, 97) + '...';
+                if (playlistName.length > 100) playlistName = playlistName.substring(0, 97) + "...";
                 let playlistValue = focusedValue;
-                if (playlistValue.length > 100) playlistValue = playlistValue.substring(0, 97) + '...';
+                if (playlistValue.length > 100) playlistValue = playlistValue.substring(0, 97) + "...";
                 choices.unshift({ name: playlistName, value: playlistValue });
             }
 
             if (choices.length === 0) {
-                let truncatedValue = focusedValue.length > 100 ? focusedValue.substring(0, 97) + '...' : focusedValue;
+                let truncatedValue = focusedValue.length > 100 ? focusedValue.substring(0, 97) + "..." : focusedValue;
                 choices.push({ name: truncatedValue, value: truncatedValue });
             }
 
@@ -68,7 +68,7 @@ export default {
     },
     execute: async (interaction: ChatInputCommandInteraction, client: Client) => {
         const member = interaction.member;
-        if (!member || !('voice' in member) || !member.voice.channel) {
+        if (!member || !("voice" in member) || !member.voice.channel) {
             throw new ValidationError("You must be in a voice channel to use this command.");
         }
         const voiceChannel = member.voice.channel;
@@ -214,7 +214,7 @@ async function sendPlaylistEmbed(interaction: ChatInputCommandInteraction, title
     }
 
     if (liveTrackCount > 0) {
-        const liveString = `\`${liveTrackCount} LIVE stream${liveTrackCount > 1 ? 's' : ''}\``;
+        const liveString = `\`${liveTrackCount} LIVE stream${liveTrackCount > 1 ? "s" : ""}\``;
         if (durationString) {
             durationString += ` & ${liveString}`;
         } else {

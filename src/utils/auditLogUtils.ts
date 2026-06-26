@@ -283,7 +283,7 @@ export async function handleRole(embed: EmbedBuilder, auditLog: GuildAuditLogsEn
                     if (addedPermissions.length > 0) embed.addFields({ name: "__**Permissions Added**__", value: addedPermissions.join(", "), inline: true });
                     if (removedPermissions.length > 0) embed.addFields({ name: "__**Permissions Removed**__", value: removedPermissions.join(", "), inline: true });
                 } else {
-                    if (change.key as string === 'colors') continue;
+                    if (change.key as string === "colors") continue;
                     let { old: oldValue, new: newValue } = change;
                     if (change.key === "color") {
                         oldValue = oldValue ? `#${(oldValue as number).toString(16).padStart(6, "0")}` : "None";

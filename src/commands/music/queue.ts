@@ -14,14 +14,14 @@ export default {
         .setName("queue")
         .setDescription("Manage the current song queue.")
         .setContexts(InteractionContextType.Guild)
-        .addSubcommand(subcommand => subcommand.setName('view').setDescription('Display the current song queue.'))
-        .addSubcommand(subcommand => subcommand.setName('clear').setDescription('Clear the current song queue.'))
-        .addSubcommand(subcommand => subcommand.setName('remove').setDescription('Removes a song or group of song from the song queue.')
-            .addIntegerOption(option => option.setName('index').setDescription('The index of the song to remove from the queue.').setRequired(true).setAutocomplete(true))
-            .addIntegerOption(option => option.setName('end').setDescription('The index of which songs will be removed until.').setAutocomplete(true)))
-        .addSubcommand(subcommand => subcommand.setName('swap').setDescription('Swap two songs in the queue.')
-            .addIntegerOption(option => option.setName('index-1').setDescription('The index of the first song to swap.').setRequired(true).setAutocomplete(true))
-            .addIntegerOption(option => option.setName('index-2').setDescription('The index of the second song to swap.').setRequired(true).setAutocomplete(true))),
+        .addSubcommand(subcommand => subcommand.setName("view").setDescription("Display the current song queue."))
+        .addSubcommand(subcommand => subcommand.setName("clear").setDescription("Clear the current song queue."))
+        .addSubcommand(subcommand => subcommand.setName("remove").setDescription("Removes a song or group of song from the song queue.")
+            .addIntegerOption(option => option.setName("index").setDescription("The index of the song to remove from the queue.").setRequired(true).setAutocomplete(true))
+            .addIntegerOption(option => option.setName("end").setDescription("The index of which songs will be removed until.").setAutocomplete(true)))
+        .addSubcommand(subcommand => subcommand.setName("swap").setDescription("Swap two songs in the queue.")
+            .addIntegerOption(option => option.setName("index-1").setDescription("The index of the first song to swap.").setRequired(true).setAutocomplete(true))
+            .addIntegerOption(option => option.setName("index-2").setDescription("The index of the second song to swap.").setRequired(true).setAutocomplete(true))),
     autocomplete: async (interaction: AutocompleteInteraction, client: Client) => {
         const player = client.music.players.get(interaction.guildId!);
         if (!player || !player.current) return;
@@ -51,16 +51,16 @@ export default {
         }
 
         switch (subcommand) {
-            case 'view':
+            case "view":
                 await viewQueue(interaction, player, client);
                 break;
-            case 'clear':
+            case "clear":
                 await clearQueue(interaction, player);
                 break;
-            case 'remove':
+            case "remove":
                 await removeQueue(interaction, player);
                 break;
-            case 'swap':
+            case "swap":
                 await swapQueue(interaction, player);
                 break;
         }
@@ -121,8 +121,8 @@ async function clearQueue(interaction: ChatInputCommandInteraction, player: Play
 }
 
 async function removeQueue(interaction: ChatInputCommandInteraction, player: Player) {
-    const index = interaction.options.getInteger('index', true);
-    const end = interaction.options.getInteger('end');
+    const index = interaction.options.getInteger("index", true);
+    const end = interaction.options.getInteger("end");
     let text;
 
     if (index < 1 || index > player.queue.size) {
@@ -154,8 +154,8 @@ async function removeQueue(interaction: ChatInputCommandInteraction, player: Pla
 }
 
 async function swapQueue(interaction: ChatInputCommandInteraction, player: Player) {
-    const index1 = interaction.options.getInteger('index-1', true) - 1;
-    const index2 = interaction.options.getInteger('index-2', true) - 1;
+    const index1 = interaction.options.getInteger("index-1", true) - 1;
+    const index2 = interaction.options.getInteger("index-2", true) - 1;
 
     if (index1 < 0 || index1 >= player.queue.size || index2 < 0 || index2 >= player.queue.size) {
         throw new ValidationError("Please provide a valid index for the current queue.");

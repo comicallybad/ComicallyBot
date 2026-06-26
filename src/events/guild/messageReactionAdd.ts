@@ -58,7 +58,7 @@ async function checkDeleteReaction(messageReaction: MessageReaction, user: User,
 }
 
 function buildEmbed(guildUser: GuildMember | undefined, author: User | GuildMember | undefined, msg: Message | PartialMessage) {
-    const authorDisplayAvatarURL = (author as GuildMember)?.user?.displayAvatarURL() || (author as User)?.displayAvatarURL() || '';
+    const authorDisplayAvatarURL = (author as GuildMember)?.user?.displayAvatarURL() || (author as User)?.displayAvatarURL() || "";
 
     return new EmbedBuilder()
         .setColor("#FF0000")
@@ -68,15 +68,15 @@ function buildEmbed(guildUser: GuildMember | undefined, author: User | GuildMemb
         .setTimestamp(msg.createdAt || null)
         .addFields({
             name: "__**Author**__",
-            value: `${author || 'Unknown'}`,
+            value: `${author || "Unknown"}`,
             inline: true,
         }, {
             name: `__**Channel**__`,
-            value: `${msg.channel || 'Unknown'}`,
+            value: `${msg.channel || "Unknown"}`,
             inline: true
         }, {
             name: "__**Moderator**__",
-            value: `${guildUser || 'Unknown'}`,
+            value: `${guildUser || "Unknown"}`,
             inline: true
         })
         .setDescription(msg.content && msg.content.length <= 1020 ? msg.content : msg.content ? msg.content.substring(0, 1020) + "`...`" : "No content");

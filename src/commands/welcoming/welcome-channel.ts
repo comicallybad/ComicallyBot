@@ -11,14 +11,14 @@ import { getLogChannel } from "../../utils/channelUtils";
 
 export default {
     data: new SlashCommandBuilder()
-        .setName('welcome-channel')
-        .setDescription('Manage the welcome channel.')
+        .setName("welcome-channel")
+        .setDescription("Manage the welcome channel.")
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels)
-        .addSubcommand(subcommand => subcommand.setName('get').setDescription('Get the current welcome channel.'))
-        .addSubcommand(subcommand => subcommand.setName('set').setDescription('Set a new welcome channel.')
+        .addSubcommand(subcommand => subcommand.setName("get").setDescription("Get the current welcome channel."))
+        .addSubcommand(subcommand => subcommand.setName("set").setDescription("Set a new welcome channel.")
             .addChannelOption(option =>
-                option.setName('channel').setDescription('The channel to set as the welcome channel.').setRequired(true).addChannelTypes(ChannelType.GuildText)))
-        .addSubcommand(subcommand => subcommand.setName('remove').setDescription('Remove the current welcome channel.')),
+                option.setName("channel").setDescription("The channel to set as the welcome channel.").setRequired(true).addChannelTypes(ChannelType.GuildText)))
+        .addSubcommand(subcommand => subcommand.setName("remove").setDescription("Remove the current welcome channel.")),
     async execute(interaction: ChatInputCommandInteraction) {
         const subcommand = interaction.options.getSubcommand();
 
@@ -55,7 +55,7 @@ async function getWelcomeChannel(interaction: ChatInputCommandInteraction) {
 }
 
 async function setWelcomeChannel(interaction: ChatInputCommandInteraction) {
-    const channel = interaction.options.getChannel('channel');
+    const channel = interaction.options.getChannel("channel");
 
     if (!channel || channel.type !== ChannelType.GuildText) {
         throw new ValidationError("Please provide a valid text channel.");
@@ -78,8 +78,8 @@ async function setWelcomeChannel(interaction: ChatInputCommandInteraction) {
         .setFooter({ text: (interaction.member as GuildMember)?.displayName || interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
         .setTimestamp()
         .addFields(
-            { name: '__**Channel**__', value: `<#${channel.id}>`, inline: true },
-            { name: '__**Moderator**__', value: `${interaction.user}`, inline: true }
+            { name: "__**Channel**__", value: `<#${channel.id}>`, inline: true },
+            { name: "__**Moderator**__", value: `${interaction.user}`, inline: true }
         );
 
     if (!dbResult?.channels.some((ch: any) => ch.command === "welcome")) {
@@ -88,8 +88,8 @@ async function setWelcomeChannel(interaction: ChatInputCommandInteraction) {
         }, { upsert: true });
     } else {
         embed.setTitle("Welcome Channel Changed");
-        await GuildConfig.updateOne({ guildID: guildID, 'channels.command': "welcome" }, {
-            $set: { 'channels.$.channelID': channel.id, 'channels.$.channelName': channel.name }
+        await GuildConfig.updateOne({ guildID: guildID, "channels.command": "welcome" }, {
+            $set: { "channels.$.channelID": channel.id, "channels.$.channelName": channel.name }
         });
     }
 
@@ -143,7 +143,7 @@ async function removeWelcomeChannel(interaction: ChatInputCommandInteraction) {
                 .setThumbnail(interaction.user.displayAvatarURL())
                 .setFooter({ text: (interaction.member as GuildMember)?.displayName || interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
                 .setTimestamp()
-                .addFields({ name: '__**Moderator**__', value: `${interaction.user}`, inline: true });
+                .addFields({ name: "__**Moderator**__", value: `${interaction.user}`, inline: true });
 
             await sendReply(collected, { content: "The welcome channel has been removed.", flags: MessageFlags.Ephemeral });
             await deleteReply(interaction, { timeout: 0 });

@@ -14,9 +14,9 @@ export function createDiff(oldText: string, newText: string): string {
     let diffOutput = "";
 
     for (const part of changes) {
-        const prefix = part.added ? '+ ' : part.removed ? '- ' : '';
+        const prefix = part.added ? "+ " : part.removed ? "- " : "";
         if (prefix) {
-            diffOutput += part.value.replace(/\n$/, '').split('\n').map(line => prefix + line).join('\n') + '\n';
+            diffOutput += part.value.replace(/\n$/, "").split("\n").map(line => prefix + line).join("\n") + "\n";
         }
     }
 
@@ -32,7 +32,7 @@ export function createDiff(oldText: string, newText: string): string {
  */
 export function formatSongTitle(title: string, author: string, url: string): string {
     const normalizeString = (str: string) => {
-        return str.toLowerCase().replace(/\s/g, '').replace(/vevo$/i, '');
+        return str.toLowerCase().replace(/\s/g, "").replace(/vevo$/i, "");
     };
 
     const normalizedTitle = normalizeString(title);
