@@ -1,6 +1,6 @@
-import { SlashCommandBuilder, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ChatInputCommandInteraction } from "discord.js";
-import { deleteReply, sendReply } from "../../utils/replyUtils";
+import { SlashCommandBuilder, ModalBuilder, TextInputBuilder, LabelBuilder, TextInputStyle, ChatInputCommandInteraction } from "discord.js";
 import { translate } from "@vitalets/google-translate-api";
+import { deleteReply, sendReply } from "../../utils/replyUtils";
 import { ValidationError } from "../../utils/customErrors";
 
 export default {
@@ -24,14 +24,16 @@ export default {
 
         const textInput = new TextInputBuilder()
             .setCustomId("translate-input")
-            .setLabel("Message To Translate")
             .setPlaceholder("Enter the message to translate here.")
             .setMaxLength(1024)
             .setStyle(TextInputStyle.Paragraph)
             .setRequired(true);
 
-        const actionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(textInput);
-        modal.addComponents(actionRow);
+        const label = new LabelBuilder()
+            .setLabel("Message To Translate")
+            .setTextInputComponent(textInput);
+
+        modal.addLabelComponents(label);
 
         await interaction.showModal(modal);
 
