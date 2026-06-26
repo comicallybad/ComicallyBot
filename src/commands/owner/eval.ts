@@ -1,10 +1,10 @@
 import {
-    SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction, MessageFlags, InteractionContextType, PermissionsBitField,
-    Client, ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, ModalSubmitInteraction
+    SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction, MessageFlags, InteractionContextType,
+    PermissionsBitField, Client, ModalBuilder, TextInputBuilder, LabelBuilder, TextInputStyle, ModalSubmitInteraction
 } from "discord.js";
+import beautify from "beautify";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
 import { PermissionError, ValidationError } from "../../utils/customErrors";
-import beautify from "beautify";
 
 export default {
     ownerOnly: true,
@@ -12,10 +12,90 @@ export default {
         .setName("eval")
         .setDescription("Executes arbitrary JavaScript code (Owner Only).")
         .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator)
-        .setContexts(InteractionContextType.Guild),
+        .setContexts(InteractionContextType.Guild)
+        .addStringOption(option => option.setName("guild-id").setDescription("The ID of the guild to fetch. Examples: 123456789012345678").setRequired(false))
+        .addStringOption(option => option.setName("channel-id").setDescription("The ID of the channel to fetch. Examples: 123456789012345678").setRequired(false))
+        .addStringOption(option => option.setName("message-id").setDescription("The ID of the message to fetch. Examples: 123456789012345678").setRequired(false))
+        .addStringOption(option => option.setName("user-id").setDescription("The ID of the user to fetch. Examples: 123456789012345678").setRequired(false)),
     async execute(interaction: ChatInputCommandInteraction, client: Client) {
         if (interaction.user.id !== process.env.BOT_OWNER_ID) {
             throw new PermissionError("This command can only be used by the bot owner.");
+        }
+
+        const guildIdInput = interaction.options.getString("guild-id");
+        const channelIdInput = interaction.options.getString("channel-id");
+        const messageIdInput = interaction.options.getString("message-id");
+        const userIdInput = interaction.options.getString("user-id");
+
+        let targetGuild: any = null;
+        let targetChannel: any = null;
+        let targetMessage: any = null;
+        let targetMember: any = null;
+        let targetUser: any = null;
+        let targetPlayer: any = null;
+
+        if (guildIdInput) {
+            try {
+                targetGuild = await client.guilds.fetch(guildIdInput);
+                if (!targetGuild) {
+                    throw new Error("Guild not found.");
+                }
+            } catch (error) {
+                throw new ValidationError(`Failed to fetch guild with ID "${guildIdInput}": ${error instanceof Error ? error.message : error}`);
+            }
+        }
+
+        if (channelIdInput) {
+            try {
+                if (targetGuild) {
+                    targetChannel = await targetGuild.channels.fetch(channelIdInput);
+                } else {
+                    targetChannel = await client.channels.fetch(channelIdInput);
+                }
+                if (!targetChannel) {
+                    throw new Error("Channel not found.");
+                }
+            } catch (error) {
+                throw new ValidationError(`Failed to fetch channel with ID "${channelIdInput}": ${error instanceof Error ? error.message : error}`);
+            }
+        }
+
+        if (messageIdInput) {
+            if (!targetGuild) {
+                throw new ValidationError("A guild ID must be provided to fetch a message.");
+            }
+            if (!targetChannel) {
+                throw new ValidationError("A channel ID must be provided to fetch a message.");
+            }
+            if (!("messages" in targetChannel)) {
+                throw new ValidationError("The fetched channel is not a text-based channel.");
+            }
+            try {
+                targetMessage = await targetChannel.messages.fetch(messageIdInput);
+                if (!targetMessage) {
+                    throw new Error("Message not found.");
+                }
+            } catch (error) {
+                throw new ValidationError(`Failed to fetch message with ID "${messageIdInput}": ${error instanceof Error ? error.message : error}`);
+            }
+        }
+
+        if (userIdInput) {
+            try {
+                if (targetGuild) {
+                    targetMember = await targetGuild.members.fetch(userIdInput);
+                    targetUser = targetMember.user;
+                } else {
+                    targetUser = await client.users.fetch(userIdInput);
+                }
+            } catch (error) {
+                const typeStr = targetGuild ? "member" : "user";
+                throw new ValidationError(`Failed to fetch ${typeStr} with ID "${userIdInput}": ${error instanceof Error ? error.message : error}`);
+            }
+        }
+
+        if (targetGuild && client.music) {
+            targetPlayer = client.music.players.get(targetGuild.id) || null;
         }
 
         const modal = new ModalBuilder()
@@ -24,12 +104,14 @@ export default {
 
         const codeInput = new TextInputBuilder()
             .setCustomId("codeInput")
-            .setLabel("Enter code to evaluate")
             .setStyle(TextInputStyle.Paragraph)
             .setRequired(true);
 
-        const actionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(codeInput);
-        modal.addComponents(actionRow);
+        const label = new LabelBuilder()
+            .setLabel("Enter code to evaluate")
+            .setTextInputComponent(codeInput);
+
+        modal.addLabelComponents(label);
 
         await interaction.showModal(modal);
 
@@ -53,9 +135,20 @@ export default {
         }
 
         try {
-            result = await (async () => {
-                return eval(code);
-            })();
+            const guild = targetGuild;
+            const channel = targetChannel;
+            const message = targetMessage;
+            const member = targetMember;
+            const user = targetUser;
+            const player = targetPlayer;
+
+            const isAsync = code.includes("await");
+            const wrappedCode = isAsync ? `(async () => {\n${code}\n})()` : code;
+            let evaled = eval(wrappedCode);
+            if (evaled instanceof Promise) {
+                evaled = await evaled;
+            }
+            result = evaled;
 
             const beautified = beautify(code, { format: "js" });
             embed = new EmbedBuilder()
@@ -73,7 +166,9 @@ export default {
                 );
         } catch (error: any) {
             embed = new EmbedBuilder()
-                .setTitle("\:x: Error!").setColor("#FF0000").setDescription(`${error}`)
+                .setTitle(":x: Error!")
+                .setColor("#FF0000")
+                .setDescription(`${error}`)
                 .setFooter({ text: client.user?.username || "", iconURL: client.user?.displayAvatarURL() || "" });
         }
 
