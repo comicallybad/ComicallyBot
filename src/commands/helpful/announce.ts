@@ -1,5 +1,5 @@
 import {
-    SlashCommandBuilder, PermissionFlagsBits, ActionRowBuilder, ModalBuilder, TextInputBuilder,
+    SlashCommandBuilder, PermissionFlagsBits, ModalBuilder, TextInputBuilder, LabelBuilder,
     TextInputStyle, ChatInputCommandInteraction, TextChannel, MessageFlags, ChannelType
 } from "discord.js";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
@@ -22,14 +22,16 @@ export default {
 
         const textInput = new TextInputBuilder()
             .setCustomId("announcement-input")
-            .setLabel("Announcement Message")
             .setPlaceholder("Enter the announcement message here.")
             .setMaxLength(2000)
             .setStyle(TextInputStyle.Paragraph)
             .setRequired(true);
 
-        const actionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(textInput);
-        modal.addComponents(actionRow);
+        const label = new LabelBuilder()
+            .setLabel("Announcement Message")
+            .setTextInputComponent(textInput);
+
+        modal.addLabelComponents(label);
 
         await interaction.showModal(modal);
 

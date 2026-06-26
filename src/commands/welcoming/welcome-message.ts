@@ -1,6 +1,6 @@
 import {
-    SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle,
-    ChatInputCommandInteraction, MessageFlags, GuildMember, ButtonBuilder, ButtonStyle
+    SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, ActionRowBuilder, ModalBuilder, TextInputBuilder, LabelBuilder,
+    TextInputStyle, ChatInputCommandInteraction, MessageFlags, GuildMember, ButtonBuilder, ButtonStyle
 } from "discord.js";
 import { sendReply, deleteReply } from "../../utils/replyUtils";
 import { sendMessage } from "../../utils/messageUtils";
@@ -11,12 +11,12 @@ import { getLogChannel } from "../../utils/channelUtils";
 
 export default {
     data: new SlashCommandBuilder()
-        .setName('welcome-message')
-        .setDescription('Manage the welcome message for new users.')
+        .setName("welcome-message")
+        .setDescription("Manage the welcome message for new users.")
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels)
-        .addSubcommand(subcommand => subcommand.setName('get').setDescription('Get the current welcome message.'))
-        .addSubcommand(subcommand => subcommand.setName('set').setDescription('Set a new welcome message.'))
-        .addSubcommand(subcommand => subcommand.setName('remove').setDescription('Remove the current welcome message.')),
+        .addSubcommand(subcommand => subcommand.setName("get").setDescription("Get the current welcome message."))
+        .addSubcommand(subcommand => subcommand.setName("set").setDescription("Set a new welcome message."))
+        .addSubcommand(subcommand => subcommand.setName("remove").setDescription("Remove the current welcome message.")),
     async execute(interaction: ChatInputCommandInteraction) {
         const subcommand = interaction.options.getSubcommand();
         const guildID = interaction.guildId;
@@ -24,9 +24,13 @@ export default {
 
         const dbResult = await GuildConfig.findOne({ guildID: guildID });
 
-        if (subcommand === 'get') return await getWelcomeMessage(interaction, dbResult);
-        else if (subcommand === 'set') return await setWelcomeMessage(interaction, dbResult);
-        else if (subcommand === 'remove') return await removeWelcomeMessage(interaction, dbResult);
+        if (subcommand === "get") {
+            return await getWelcomeMessage(interaction, dbResult);
+        } else if (subcommand === "set") {
+            return await setWelcomeMessage(interaction, dbResult);
+        } else if (subcommand === "remove") {
+            return await removeWelcomeMessage(interaction, dbResult);
+        }
     }
 };
 
@@ -45,14 +49,16 @@ async function setWelcomeMessage(interaction: ChatInputCommandInteraction, dbRes
 
     const textInput = new TextInputBuilder()
         .setCustomId("welcome-input")
-        .setLabel("Welcome Message")
         .setPlaceholder("Enter the welcome message. (<user> & <#channelID> to mention).")
         .setMaxLength(2000)
         .setStyle(TextInputStyle.Paragraph)
         .setRequired(true);
 
-    const actionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(textInput);
-    modal.addComponents(actionRow);
+    const label = new LabelBuilder()
+        .setLabel("Welcome Message")
+        .setTextInputComponent(textInput);
+
+    modal.addLabelComponents(label);
 
     await interaction.showModal(modal);
 
@@ -81,8 +87,8 @@ async function setWelcomeMessage(interaction: ChatInputCommandInteraction, dbRes
         .setFooter({ text: (interaction.member as GuildMember)?.displayName || interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
         .setTimestamp()
         .addFields(
-            { name: '__**Message**__', value: `${newMessage}`, inline: true },
-            { name: '__**Moderator**__', value: `${interaction.user}`, inline: true }
+            { name: "__**Message**__", value: `${newMessage}`, inline: true },
+            { name: "__**Moderator**__", value: `${interaction.user}`, inline: true }
         );
 
     await sendReply(submitted, { content: `The welcome message has been changed to: ${newMessage}`, flags: MessageFlags.Ephemeral });
@@ -132,7 +138,7 @@ async function removeWelcomeMessage(interaction: ChatInputCommandInteraction, db
                 .setThumbnail(interaction.user.displayAvatarURL())
                 .setFooter({ text: (interaction.member as GuildMember)?.displayName || interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
                 .setTimestamp()
-                .addFields({ name: '__**Moderator**__', value: `${interaction.user}`, inline: true });
+                .addFields({ name: "__**Moderator**__", value: `${interaction.user}`, inline: true });
 
             await sendReply(collected, { content: "The welcome message has been removed.", flags: MessageFlags.Ephemeral });
             await deleteReply(interaction, { timeout: 0 });
