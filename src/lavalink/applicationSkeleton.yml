@@ -2,7 +2,7 @@ lavalink:
     plugins:
       - dependency: "com.github.topi314.lavasrc:lavasrc-plugin:4.8.1"
         repository: "https://maven.lavalink.dev/releases"
-      - dependency: "dev.lavalink.youtube:youtube-plugin:1.18.1"
+      - dependency: "dev.lavalink.youtube:youtube-plugin:158726dc7d570e8ff32512d6ab15736d561040b7"
         repository: "https://maven.lavalink.dev/releases"
     server:
         bufferDurationMs: 400
@@ -96,10 +96,16 @@ plugins:
                 videoLoading: false
             ANDROID_VR:
                 playback: true
-                playlistLoading: false
-                searching: false
+                playlistLoading: true
+                searching: true
+                videoLoading: true
+            VISIONOS:
+                playback: true
+                playlistLoading: true
+                searching: true
                 videoLoading: true
         clients:
+            - VISIONOS
             - ANDROID_VR
             - MUSIC
             - ANDROID_MUSIC
