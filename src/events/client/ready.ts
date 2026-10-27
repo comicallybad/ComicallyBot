@@ -10,10 +10,16 @@ dotenv.config();
 export default {
     name: "ready",
     once: true,
-    execute(client: Client) {
+    async execute(client: Client) {
         console.log(`${formatLogTimestamp()} [INFO] ${client.user?.tag} (${client.user?.id}) online on shard ${client.shard?.ids[0]}.`);
 
         initializeActivities(client);
+
+        for (const guild of client.guilds.cache.values()) {
+            await guild.members.fetch().catch((error: unknown) => {
+                console.error(`${formatLogTimestamp()} [ERROR] Failed to fetch members for guild ${guild.name} (${guild.id}): ${(error as Error).message}`);
+            });
+        }
 
         mongoose.set("strictQuery", true);
         mongoose.connect("mongodb://0.0.0.0/ComicallyBot").then(() => {
